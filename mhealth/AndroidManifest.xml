@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ashesi.cs.mhealth.data"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.ashesi.cs.mhealth.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.data.Topics"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_topics"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.OPDCaseActivity"
+            android:label="@string/title_activity_opdcase" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.CommunityActivity"
+            android:label="@string/title_activity_community" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.CommunityMembersRecordActivity"
+            android:label="@string/title_activity_community_members_record" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.ReportActivity"
+            android:label="@string/title_activity_report" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.Synch"
+            android:label="@string/title_activity_synch" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.CommunityMemberRecordActivity"
+            android:label="@string/title_activity_community_member_record" >
+        </activity>
+    </application>
+
+</manifest>

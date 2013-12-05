@@ -1,0 +1,180 @@
+<TableLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/TableLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="fill"
+    android:orientation="vertical"
+    tools:context=".CommunityMembersRecordActivity" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <Spinner
+            android:id="@+id/spinnerCommunities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </TableRow>
+	<TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+		<TextView
+		    android:id="@+id/textFullname"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/fullname" />
+		<EditText
+	        android:id="@+id/editFullname"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="left|top"
+	        android:ems="10"
+	        android:hint="@string/hintLastnameFirstname"
+	        android:inputType="textPersonName" >
+	
+	        <requestFocus />
+    	</EditText>
+
+    </TableRow>
+
+	<TableRow
+	    android:id="@+id/tableRow3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+		<TextView
+	        android:id="@+id/textCommunityMembersRecOthersTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/birthdate" />
+		<EditText
+	        android:id="@+id/editCommunityMemberRecordBirthdate"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:hint="@string/hintDateformat"
+	        android:inputType="date" />
+		<TextView
+		    android:id="@+id/textAge"
+		    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/Age"
+		    />
+		<EditText
+	        android:id="@+id/editCommunityMemberAge"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:inputType="number" />
+	</TableRow>
+	
+    <TableRow
+	    android:id="@+id/tableRow4"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+	
+        <RadioGroup
+        android:id="@+id/radioGroup2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        	<RadioButton
+            	android:id="@+id/radioCommunityMemberRecordMale"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:checked="true"
+            	android:text="@string/male" />
+
+        <RadioButton
+            	android:id="@+id/radioCommunityMemberFemale"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:text="@string/female" />
+    	</RadioGroup>
+        	
+	</TableRow>
+
+    <TableRow
+	    android:id="@+id/tableRow5"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+        <TextView
+        	android:id="@+id/textCardNo"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="left|center_vertical"
+        	android:text="@string/cardNo" />
+        <EditText
+        	android:id="@+id/editCardNo"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="left|top"
+        	android:ems="10"
+        	android:hint="@string/cardNumber" />
+        
+	</TableRow>
+
+
+    
+    <TableRow
+        android:id="@+id/tableRow7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    	
+    	<TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nhisIDNumber"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/editNHISId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" >
+        </EditText>
+        
+    </TableRow>
+    
+    <TableRow
+        android:id="@+id/tableRow8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nhisExpiryDate"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <EditText
+            android:id="@+id/editNHISExpiryDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hintDateformat"
+            android:inputType="date" />
+        
+    </TableRow>
+    	
+    <TableRow
+        android:id="@+id/tableRow6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+    	<Button
+        	android:id="@+id/buttonAddCommunityMember"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="left|top"
+        	android:text="@string/addCommunityMember" />
+        
+    </TableRow>
+    
+    
+</TableLayout>

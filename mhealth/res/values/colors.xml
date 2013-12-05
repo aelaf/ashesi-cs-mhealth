@@ -1,0 +1,7 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="list_divider">#FFFFFF</color>
+    <color name="error">#00FF00</color>
+
+</resources>
