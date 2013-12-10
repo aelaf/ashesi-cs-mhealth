@@ -494,6 +494,45 @@ public class CommunityMembers extends DataClass {
 			values.put(OPDCaseRecords.REC_DATE, date);
 			values.put(OPDCaseRecords.SERVER_REC_NO, 0);
 			values.put(DataClass.REC_STATE, DataClass.REC_STATE_NEW);
+			values.put(OPDCaseRecords.LAB, OPDCaseRecords.LAB_NOT_CONFIRMED);
+			if(db.insert(OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES, null, values)<=0){
+				return false;
+			}
+			return true;
+		}catch(Exception ex){
+			Log.e("CommunityMembers.recordOPDCase", "Exception ex" +ex.getMessage());
+			return false;
+		}
+		
+		
+	}
+	
+	/**
+	 * Records OPD case for a community member
+	 * @param communityMemberId community member id from table
+	 * @param opdCaseId OPD case id form table
+	 * @param date date the information was recored
+	 * @param choId the CHO recording it
+	 * @param lab the case is lab confirmed
+	 * @return
+	 */
+	public boolean recordOPDCase(int communityMemberId, int opdCaseId, String date, int choId, boolean lab){
+		try
+		{
+			db=getWritableDatabase();
+			ContentValues values=new ContentValues();
+			values.put(COMMUNITY_MEMBER_ID, communityMemberId);
+			values.put(OPDCases.OPD_CASE_ID, opdCaseId);
+			values.put(CHOs.CHO_ID,choId);
+			values.put(OPDCaseRecords.REC_DATE, date);
+			values.put(OPDCaseRecords.SERVER_REC_NO, 0);
+			values.put(DataClass.REC_STATE, DataClass.REC_STATE_NEW);
+			
+			if(lab==true){
+				values.put(OPDCaseRecords.LAB, OPDCaseRecords.LAB_CONFIRMED);
+			}else{
+				values.put(OPDCaseRecords.LAB, OPDCaseRecords.LAB_NOT_CONFIRMED);
+			}
 			
 			if(db.insert(OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES, null, values)<=0){
 				return false;

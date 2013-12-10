@@ -299,6 +299,9 @@ public class Synch extends Activity implements OnClickListener {
 			if(result==0){
 				textStatus.setText("error uploading backup data " +strResultMessage);
 				progressBar.setProgress(5);
+			}else{
+				textStatus.setText("backup completed successfully");
+				progressBar.setProgress(5);
 			}
 			enableButtons();
 		}

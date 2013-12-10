@@ -15,11 +15,12 @@ import android.content.Context;
 import android.util.Log;
 
 public class OPDCaseRecords extends DataClass {
-	
+	public static final String LAB_CONFIRMED="true";
+	public static final String LAB_NOT_CONFIRMED="false";
 	public static final String REC_NO="rec_no";
 	public static final String REC_DATE="rec_date";
 	public static final String OPD_CASE_NAME="opd_case_name";
-	
+	public static final String LAB="lab";
 	public static final String SERVER_REC_NO="server_rec_no";
 	public static final String TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES="community_members_opd_cases";
 	public OPDCaseRecords(Context context){
@@ -35,7 +36,7 @@ public class OPDCaseRecords extends DataClass {
 		{
 			db=getReadableDatabase();
 			String[] columns={REC_NO,CommunityMembers.COMMUNITY_MEMBER_ID, OPDCases.OPD_CASE_ID,
-						CommunityMembers.COMMUNITY_MEMBER_NAME,OPD_CASE_NAME,REC_DATE,CHOs.CHO_ID};
+						CommunityMembers.COMMUNITY_MEMBER_NAME,OPD_CASE_NAME,REC_DATE,LAB,CHOs.CHO_ID};
 			String selection=CommunityMembers.COMMUNITY_MEMBER_ID+"="+communityMemberId;
 			
 			cursor=db.query(DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES, columns, 
@@ -59,6 +60,7 @@ public class OPDCaseRecords extends DataClass {
 			}
 			String fullname="";
 			String opdCaseName="";
+			String lab=OPDCaseRecords.LAB_NOT_CONFIRMED;
 			int index=cursor.getColumnIndex(REC_NO);
 			int recNo=cursor.getInt(index);
 			index=cursor.getColumnIndex(CommunityMembers.COMMUNITY_MEMBER_ID);
@@ -77,8 +79,11 @@ public class OPDCaseRecords extends DataClass {
 			if(index>=0){
 				opdCaseName=cursor.getString(index);
 			}
-			
-			OPDCaseRecord opdCaseRecord=new OPDCaseRecord(recNo,communityMemberId,opdCaseId,recDate,fullname,opdCaseName,choId);
+			index=cursor.getColumnIndex(LAB);
+			if(index>=0){
+				lab=cursor.getString(index);
+			}
+			OPDCaseRecord opdCaseRecord=new OPDCaseRecord(recNo,communityMemberId,opdCaseId,recDate,fullname,opdCaseName,choId,lab);
 			cursor.moveToNext();
 			return opdCaseRecord;
 		}catch(Exception ex){
@@ -303,7 +308,8 @@ public class OPDCaseRecords extends DataClass {
 				+CHOs.CHO_ID+ " integer, "
 				+REC_DATE+ " text, "
 				+SERVER_REC_NO+ " integer, "
-				+REC_STATE+" integer "
+				+REC_STATE+" integer, "
+				+LAB+ " text "
 				+" )";
 	}
 	
@@ -319,7 +325,8 @@ public class OPDCaseRecords extends DataClass {
 				+ CommunityMembers.BIRTHDATE +", "
 				+ CommunityMembers.GENDER +", "
 				+ REC_DATE +"-"+ CommunityMembers.BIRTHDATE +" AS AGE, "
-				+ OPD_CASE_NAME
+				+ OPD_CASE_NAME+", "
+				+ LAB 
 				+ " from "
 				+ TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES
 				+ " left join " + CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS

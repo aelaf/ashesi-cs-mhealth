@@ -39,7 +39,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class DataClass extends SQLiteOpenHelper {
-	protected static final int DATABASE_VERSION=1; 
+	/*
+	 * DATABASE VERSION 2
+	 * adds LAB text column to community_member_opd_cases table
+	 * modifies view_community_member_opd_cases to include LAB column
+	 */
+	protected static final int DATABASE_VERSION=2; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -459,6 +464,10 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(OPDCases.getCreateSQLString());
 			
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
+			/*this cases are added just for testing 
+			 * The complete OPD case list should be downloaded using synch
+			 * */
+			
 			db.execSQL(OPDCases.getInsertSQLString(1, "AFP(Polio)",1));
 			db.execSQL(OPDCases.getInsertSQLString(10, "U Malaria Lab",2));
 			db.execSQL(OPDCases.getInsertSQLString(11, "U Malaria",2));
@@ -493,12 +502,24 @@ public class DataClass extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+		try
+		{
+			if(oldVersion==1 && newVersion==2){
+				//add lab colunm to table
+				String sql="alter table "+ OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES
+						+" add column "+OPDCaseRecords.LAB +" text default '"+OPDCaseRecords.LAB_NOT_CONFIRMED+ "'";
+				db.execSQL(sql);
+				//re create Record view
+				db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
+				db.execSQL(OPDCaseRecords.getCreateViewString());
+			}
+		}catch(Exception ex){
+			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
+		}
 		
 	}
 	
 	public String getDataFilePath(){
-		//String str="//data/data/com.ashesi.cs.mhealth/databases/" +DataClass.DATABASE_NAME +".db";
 		db=this.getReadableDatabase();
 		String str=db.getPath();
 		close();

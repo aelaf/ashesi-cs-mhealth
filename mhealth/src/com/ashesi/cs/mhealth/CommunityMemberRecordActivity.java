@@ -45,6 +45,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -742,7 +743,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			String todaysDate=dateFormat.format(calendar.getTime());
-			members.recordOPDCase(communityMemberId, opdCase.getID(),todaysDate,1);
+			
+			CheckBox cbLab=(CheckBox)rootView.findViewById(R.id.cbLab);
+			
+			members.recordOPDCase(communityMemberId, opdCase.getID(),todaysDate,1,cbLab.isChecked());
 			//ArrayAdapter<OPDCase> adapter=(ArrayAdapter<OPDCase>)spinner.getAdapter();
 			getListOfOPDCases();
 			
@@ -763,6 +767,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			return;
 		}
+		
+		
 
 	}
 

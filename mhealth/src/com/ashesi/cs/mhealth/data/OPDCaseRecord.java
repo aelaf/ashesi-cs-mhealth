@@ -14,6 +14,7 @@ public class OPDCaseRecord {
 	private String fullname;
 	private String opdCaseName;
 	private int choId;
+	private String lab;
 	//private int serverRecNo;
 	//private int newRec;
 	
@@ -26,6 +27,19 @@ public class OPDCaseRecord {
 		this.fullname=fullname;
 		this.opdCaseName=opdCaseName;
 		this.choId=choId;
+		this.lab=OPDCaseRecords.LAB_NOT_CONFIRMED;
+		
+	}
+	
+	public OPDCaseRecord(int recNo,int communityMemberId,int opdCaseId,String recDate,String fullname,String opdCaseName,int choId,String lab){
+		this.recNo=recNo;
+		this.communityMemberId=communityMemberId;
+		this.opdCaseId=opdCaseId;
+		this.recDate=recDate;
+		this.fullname=fullname;
+		this.opdCaseName=opdCaseName;
+		this.choId=choId;
+		this.lab=lab;
 		
 	}
 	
@@ -73,8 +87,35 @@ public class OPDCaseRecord {
 	}
 	
 	public String toString(){
-		return fullname +" "+ opdCaseName  +" " +getFormatedRecDate();
+		String str="not lab confirmed";
+		if(isLab()){
+			str="lab confirmed";
+		}
+		return fullname +", "+ opdCaseName  +", " +str+", "+getFormatedRecDate();
 		
+	}
+	
+	public void setLab(String lab){
+		this.lab=lab;
+	}
+	
+	public String getLab(){
+		if(this.lab==null){
+			return OPDCaseRecords.LAB_NOT_CONFIRMED;
+		}
+		
+		return this.lab;
+	}
+	
+	public boolean isLab(){
+		if(this.lab==null){
+			return false;
+		}
+		if(this.lab.equalsIgnoreCase(OPDCaseRecords.LAB_CONFIRMED)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	public String getJSON(){
@@ -86,6 +127,7 @@ public class OPDCaseRecord {
 			obj.put("opdCaseId", opdCaseId);
 			obj.put("choId",choId);
 			obj.put("recDate",recDate);
+			obj.put("lab",lab);
 			return obj.toString();
 		}catch(Exception ex){
 			return "{}";
