@@ -60,6 +60,10 @@
             android:name="com.ashesi.cs.mhealth.CommunityMemberRecordActivity"
             android:label="@string/title_activity_community_member_record" >
         </activity>
+         <activity
+            android:name="com.ashesi.cs.mhealth.AddCommunityActivity"
+            android:label="@string/title_add_community" >
+        </activity>
     </application>
 
 </manifest>

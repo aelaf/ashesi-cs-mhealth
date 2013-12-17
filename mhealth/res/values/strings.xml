@@ -74,5 +74,7 @@
     <string name="getAllinCommunity">Get All in Community</string>
     <string name="next">Get More</string>
     <string name="lab">Lab</string>
+    <string name="add_community">Add Community</string>
+    <string name="title_add_community">Add Community</string>
 
 </resources>
