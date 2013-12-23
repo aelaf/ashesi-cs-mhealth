@@ -65,4 +65,7 @@ public class VaccineRecord {
 		}
 	}
 
+	public String toString(){
+		return fullname +" "+vaccineName;
+	}
 }
