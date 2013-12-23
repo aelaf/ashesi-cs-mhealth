@@ -20,6 +20,8 @@ import com.ashesi.cs.mhealth.data.R.id;
 import com.ashesi.cs.mhealth.data.R.layout;
 import com.ashesi.cs.mhealth.data.R.menu;
 import com.ashesi.cs.mhealth.data.R.string;
+import com.ashesi.cs.mhealth.data.Vaccine;
+import com.ashesi.cs.mhealth.data.Vaccines;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -181,8 +183,12 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			Fragment fragment;
 			if(position==0 ){
 				fragment= new MainSectionFragment();
-			}else{
+			}else if(position==1){
 				fragment=new OtherFragment();
+			}else if(position==2){
+				fragment=new VaccineFragment();
+			}else{
+				fragment= new MainSectionFragment(); //default
 			}
 			
 			Bundle args = new Bundle();
@@ -210,7 +216,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			case 1:
 				return getString(R.string.title_cm_record_other).toUpperCase(l);
 			case 2:
-				return getString(R.string.title_cm_record_note).toUpperCase(l);
+				return getString(R.string.title_cm_record_vaccine).toUpperCase(l);
 			}
 			return null;
 		}
@@ -771,5 +777,75 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 
 	}
+	
+	public static class VaccineFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
+		
+		ArrayList<Vaccine> listVaccines;
+		 
+		
+		View rootView;
+		int communityMemberId=0;
+		
+		public VaccineFragment(){
+			
+		}
+		
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_community_member_record_vaccine, container,false);
+			this.rootView=rootView;
+			
+			communityMemberId=getArguments().getInt("id");
+			
+			fillVaccineSpinner();
+			return rootView;
+		}
 
+		@Override
+		public void onClick(View v) {
+			
+		}
+		
+		@Override
+		public void onCreateContextMenu(ContextMenu menu,View v, ContextMenuInfo menuInfo){
+			super.onCreateContextMenu(menu, v, menuInfo);
+			//getActivity().getMenuInflater().inflate(R.menu.menu_community_members_record_context, menu);
+		}
+		
+		@Override
+		public boolean onContextItemSelected(MenuItem item) {
+			
+			return true;
+		}
+		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item){
+			
+			return true;
+		
+		}
+		
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+		private void fillVaccineSpinner(){
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
+			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
+			listVaccines=vaccines.getVaccines();
+			ArrayAdapter<Vaccine> adapter=new ArrayAdapter<Vaccine>(getActivity(), android.R.layout.simple_dropdown_item_1line,listVaccines);
+			spinner.setAdapter(adapter);
+			
+		
+		}
+
+	}
 }

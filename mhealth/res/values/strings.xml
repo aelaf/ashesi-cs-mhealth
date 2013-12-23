@@ -45,7 +45,7 @@
     <string name="title_cm_record_other">OPD</string>
     <string name="title_cm_record_note">notes</string>
     <string name="title_report_opdsection">OPD</string>
-    <string name="title_report_other">others</string>
+    <string name="title_cm_record_vaccine">vaccine</string><string name="title_report_other">others</string>
     <string name="title_report_next">next</string>
     <string name="report">Go to report</string>
     <string name="open">Open</string>
@@ -74,5 +74,6 @@
     <string name="getAllinCommunity">Get All in Community</string>
     <string name="next">Get More</string>
     <string name="lab">Lab</string>
+    
 
 </resources>
