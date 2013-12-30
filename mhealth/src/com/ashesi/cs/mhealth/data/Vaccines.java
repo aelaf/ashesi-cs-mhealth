@@ -121,7 +121,7 @@ public class Vaccines extends DataClass {
 			String vaccineName=cursor.getString(index);
 			index=cursor.getColumnIndex(VACCINE_SCHEDULE);
 			int schedule=cursor.getInt(index);
-			close();
+			cursor.moveToNext();
 			return new Vaccine(id,vaccineName,schedule);
 		}catch(Exception ex){
 			close();

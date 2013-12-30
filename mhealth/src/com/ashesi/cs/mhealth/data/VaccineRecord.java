@@ -28,7 +28,7 @@ public class VaccineRecord {
 		this.vaccineDate=vaccineDate;
 	}
 	
-	public int getVaccineRecordId(){
+	public int getId(){
 		return this.vaccineRecordId;
 	}
 	
@@ -67,5 +67,12 @@ public class VaccineRecord {
 
 	public String toString(){
 		return fullname +" "+vaccineName;
+	}
+	
+	public boolean equals(VaccineRecord record){
+		if(record.getId()==vaccineRecordId){
+			return true;
+		}
+		return false;
 	}
 }

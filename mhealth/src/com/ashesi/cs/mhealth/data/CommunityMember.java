@@ -127,6 +127,18 @@ public class CommunityMember {
 		}
 	}
 	
+	public java.util.Date getBirthdateDate(){
+		try
+		{
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			return dateFormat.parse(birthdate);
+		}
+		catch(Exception ex){
+			return null;
+		}
+		
+	}
+	
 	public String getGender(){
 		return gender;
 	}

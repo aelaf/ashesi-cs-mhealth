@@ -16,14 +16,16 @@ import com.ashesi.cs.mhealth.data.OPDCaseRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
-import com.ashesi.cs.mhealth.data.R.id;
-import com.ashesi.cs.mhealth.data.R.layout;
-import com.ashesi.cs.mhealth.data.R.menu;
-import com.ashesi.cs.mhealth.data.R.string;
 import com.ashesi.cs.mhealth.data.Vaccine;
+import com.ashesi.cs.mhealth.data.VaccineGridAdapter;
+import com.ashesi.cs.mhealth.data.VaccineRecord;
+import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
 
 import android.app.ActionBar;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.support.v4.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,11 +33,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,15 +44,18 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 public class CommunityMemberRecordActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -781,7 +783,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	public static class VaccineFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
 		ArrayList<Vaccine> listVaccines;
-		 
+		VaccineGridAdapter adapter; 
 		
 		View rootView;
 		int communityMemberId=0;
@@ -797,7 +799,15 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			communityMemberId=getArguments().getInt("id");
 			
-			fillVaccineSpinner();
+			//fillVaccineSpinner();
+			showSchedule();
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+		        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		            //Toast.makeText(getActivity().getApplicationContext(), "Position=" + position, Toast.LENGTH_SHORT).show();
+		            itemClicked(parent,v,position,id);
+		        }
+		    });
 			return rootView;
 		}
 
@@ -838,6 +848,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		
 		private void fillVaccineSpinner(){
+			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
 			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
 			listVaccines=vaccines.getVaccines();
@@ -846,6 +857,136 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 		
 		}
+		
+		private void showSchedule(){
+			if(communityMemberId==0){
+				return;
+			}
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
 
+			CommunityMembers communityMembers=new CommunityMembers(getActivity().getApplicationContext());
+			CommunityMember cm=communityMembers.getCommunityMember(communityMemberId);
+			
+			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
+			listVaccines=vaccines.getVaccines();
+	
+			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
+			ArrayList<VaccineRecord>listVaccineRecords=vaccineRecords.getVaccineRecords(communityMemberId);
+			adapter=new VaccineGridAdapter(getActivity().getApplicationContext());
+			adapter.setList(listVaccines,cm,listVaccineRecords);
+			
+			gridView.setAdapter(adapter);
+	
+		}
+		
+		private void itemClicked(AdapterView<?> parent, View v, int position, long id){
+			int columnIndex=position%4;
+		
+			if(columnIndex==3){	//recording
+				if(!adapter.getStatus(position)){	//vaccination is not recored, hence record
+					showDatePicker(position);
+					//recordVaccine(position);
+				}else{
+				
+					removeVaccineRecord(position);	//its recored, so remove it. 
+				}
+			}
+		}
+		
+		private void showDatePicker(int position){
+			DatePickerFragment datePicker=new DatePickerFragment();
+			datePicker.vf=this;
+			datePicker.position=position;
+			datePicker.show(this.getActivity().getSupportFragmentManager(), "datePicker");
+			
+			
+		}
+		private void recordVaccine(int position,String date){
+			
+			Vaccine vaccine=adapter.getVaccine(position);	
+			int vaccineId=vaccine.getId();
+			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
+			//check if its already recorded
+			VaccineRecord record=vaccineRecords.getVaccineRecord(communityMemberId, vaccineId);
+			if(record!=null){
+				//Already recorded
+				return;
+			}
+			//get todays date
+		
+//			DatePickerFragment datePicker=new DatePickerFragment();
+//			datePicker.show(this.getActivity().getSupportFragmentManager(), "datePicker");
+//			Calendar c=Calendar.getInstance();
+//			SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+//			
+//			String todaysDate=dateFormat.format(c.getTime());//datePicker.getDateString();
+			//record
+			if(!vaccineRecords.addRecord(communityMemberId,vaccineId,date)){
+				return;
+			}
+			//update adapter
+			record=vaccineRecords.getVaccineRecord(communityMemberId,vaccineId);
+			adapter.updateNewRecord(position, record);
+		
+			
+		}
+		
+		private void removeVaccineRecord(int position){
+			
+			Vaccine vaccine=adapter.getVaccine(position);	
+			int vaccineId=vaccine.getId();
+			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
+			//check if its already recorded
+			VaccineRecord record=vaccineRecords.getVaccineRecord(communityMemberId, vaccineId);
+			if(record==null){
+				return; 
+			}
+			
+			if(!vaccineRecords.reomveRecord(record.getId())){
+				return;
+			}
+			
+			adapter.updateRemovedRecord(position, record);
+		}
+	}
+	
+	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+
+		Calendar calendar;
+		public VaccineFragment vf;
+		public int position;
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+		// Use the current date as the default date in the picker
+			calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH);
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			
+			// Create a new instance of DatePickerDialog and return it
+			return new DatePickerDialog(getActivity(), this, year, month, day);
+		}
+		
+		public void onDateSet(DatePicker view, int year, int month, int day) {
+		// Do something with the date chosen by the user
+			calendar.set(year, month, day);
+			this.vf.recordVaccine(position,getDateString());
+		}
+		
+		public java.util.Date getDate(){
+			return calendar.getTime();
+		}
+		
+		public String getDateString(){
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			return dateFormat.format(calendar.getTime());
+		}
+		
+		public String getFormattedDateString(){
+			SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+			return dateFormat.format(calendar.getTime());
+		}
+		
 	}
 }

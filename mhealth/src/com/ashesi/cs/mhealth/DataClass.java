@@ -498,7 +498,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Vaccines.getInsertSQLString(4, "OPV-1", 70));
 			
 			db.execSQL(VaccineRecords.getCreateSQLString());
-			setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORD,0);
+			setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORDS,0);
 			
 			
 			Log.d("DataClass.onCreate", "data base created");
@@ -507,6 +507,8 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(OPDCaseRecords.getCreateViewString());
 			//view for community members
 			db.execSQL(CommunityMembers.getViewCreateSQLString());
+			//view for vaccine records
+			db.execSQL(VaccineRecords.getCreateViewSQLString());
 				
 			
 		}catch(Exception ex){

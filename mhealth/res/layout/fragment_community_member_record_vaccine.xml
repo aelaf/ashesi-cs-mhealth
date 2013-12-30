@@ -20,13 +20,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/record" />
-
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:id="@+id/LinearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:numColumns="4" >
+
+        </GridView>
     </TableRow>
 
 </TableLayout>

@@ -1,7 +1,9 @@
 package com.ashesi.cs.mhealth.data;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Vaccine {
 	private int vaccineId;
@@ -18,15 +20,15 @@ public class Vaccine {
 		this.schedule=schedule;
 	}
 	
-	int getId(){
+	public int getId(){
 		return vaccineId;
 	}
 	
-	String getVaccineName(){
+	public String getVaccineName(){
 		return vaccineName;
 	}
 	
-	int getVaccineSchedule(){
+	public int getVaccineSchedule(){
 		return schedule;
 	}
 	
@@ -37,7 +39,22 @@ public class Vaccine {
 	 * @return
 	 */
 	public Date getWhenToVaccine(Date date){
-		return Calendar.getInstance().getTime();
+		Calendar calendar=Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_YEAR,schedule);
+		return calendar.getTime();
+	}
+	
+	public Date getWhenToVaccine(String date){
+		try
+		{
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			java.util.Date d=dateFormat.parse(date);
+			return getWhenToVaccine(d);
+		}
+		catch(Exception ex){
+			return null;
+		}
 	}
 	
 	public String toString(){
