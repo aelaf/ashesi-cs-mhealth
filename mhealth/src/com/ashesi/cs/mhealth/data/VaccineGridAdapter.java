@@ -186,8 +186,12 @@ public class VaccineGridAdapter extends BaseAdapter {
 		for(int i=0;i<listVaccine.size();i++){
 			v=listVaccine.get(i);
 			column0.add(i,v.getVaccineName());
-			java.util.Date date=v.getWhenToVaccine(communityMember.getBirthdate());
-    		column1.add(i,getFormattedDate(date));
+			if(v.getVaccineSchedule()>=0){
+				java.util.Date date=v.getWhenToVaccine(communityMember.getBirthdate());
+				column1.add(i,getFormattedDate(date));
+			}else{
+				column1.add(i,"---");
+			}
     		r=findVaccineRecord(v.getId());
     		if(r==null){
     			column2.add(i,"no record");

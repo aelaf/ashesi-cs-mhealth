@@ -39,6 +39,9 @@ public class Vaccine {
 	 * @return
 	 */
 	public Date getWhenToVaccine(Date date){
+		if(schedule<0){	//there is no schedule
+			return null;
+		}
 		Calendar calendar=Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_YEAR,schedule);

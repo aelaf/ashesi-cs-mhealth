@@ -14,6 +14,7 @@ import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.layout;
 import com.ashesi.cs.mhealth.data.R.menu;
+import com.ashesi.cs.mhealth.data.Vaccines;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class Synch extends Activity implements OnClickListener {
 	TextView textStatus;
 	Button buttonSynchCommunities;
 	Button buttonSynchOPDCases;
+	Button buttonSynchVaccine;
 	Button buttonSynchBackup;
 	Button buttonSynchCancel;
 	AsyncTask task;
@@ -52,6 +54,8 @@ public class Synch extends Activity implements OnClickListener {
 		buttonSynchCancel.setOnClickListener(this);
 		buttonSynchBackup=(Button)findViewById(R.id.buttonSynchBackup);
 		buttonSynchBackup.setOnClickListener(this);
+		buttonSynchVaccine=(Button)findViewById(R.id.buttonSynchVaccine);
+		buttonSynchVaccine.setOnClickListener(this);
 		task=null;
 		
 	}
@@ -78,6 +82,9 @@ public class Synch extends Activity implements OnClickListener {
 			case R.id.buttonSynchBackup:
 				backupData();
 				break;
+			case R.id.buttonSynchVaccine:
+				downloadVaccine();
+				break;
 			case R.id.buttonSynchCancel:
 				cancel();
 				break;
@@ -103,6 +110,17 @@ public class Synch extends Activity implements OnClickListener {
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={2};
+		download.execute(n);
+		
+	}
+	
+	public void downloadVaccine(){
+		if(task!=null){
+			cancel();
+		}
+		disableButtons();
+		DownloadCommunities download=new DownloadCommunities();
+		Integer[] n={3};	//vaccine
 		download.execute(n);
 		
 	}
@@ -163,11 +181,13 @@ public class Synch extends Activity implements OnClickListener {
 		buttonSynchCommunities.setEnabled(false);
 		buttonSynchOPDCases.setEnabled(false);
 		buttonSynchBackup.setEnabled(false);
+		buttonSynchVaccine.setEnabled(false);
 	}
 	public void enableButtons(){
 		buttonSynchCommunities.setEnabled(true);
 		buttonSynchOPDCases.setEnabled(true);
 		buttonSynchBackup.setEnabled(true);
+		buttonSynchVaccine.setEnabled(true);
 	}
 	
 	private class DownloadCommunities extends AsyncTask<Integer, Integer, Integer> {
@@ -192,6 +212,9 @@ public class Synch extends Activity implements OnClickListener {
 						break;
 					case 2:
 						obj= new OPDCases(getApplicationContext());
+						break;
+					case 3:
+						obj=new Vaccines(getApplicationContext());
 						break;
 					default:
 						return 0;

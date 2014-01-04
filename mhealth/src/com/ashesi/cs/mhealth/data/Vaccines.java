@@ -46,7 +46,7 @@ public class Vaccines extends DataClass {
 
 	public HttpURLConnection connect(){
 		try{
-			return super.connect("communityActions.php?cmd=5&sid=0&deviceId="+mDeviceId);
+			return super.connect("vaccineActions.php?cmd=1&deviceId="+mDeviceId);
 		}catch(Exception ex){
 			return null;
 		}
@@ -68,9 +68,9 @@ public class Vaccines extends DataClass {
 			JSONArray jsonArray=obj.getJSONArray("vaccines");
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);
-				int vaccineId=obj.getInt("vaccineId");
+				int vaccineId=obj.getInt("id");
 				String vaccineName=obj.getString("vaccineName");
-				int vaccineSchedule=obj.getInt("vaccineSchedule");
+				int vaccineSchedule=obj.getInt("schedule");
 				
 				addVaccine(vaccineId,vaccineName,vaccineSchedule);
 			}
