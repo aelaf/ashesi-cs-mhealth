@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,15 +20,22 @@ import android.widget.TextView;
 public class VaccineGridAdapter extends BaseAdapter {
 	private Context mContext;
 	private CommunityMember communityMember=null;
-	private ArrayList<Vaccine> listVaccine;
+	private ArrayList<Vaccine> listVaccine;	//list of scheduled vaccines
 	private ArrayList<VaccineRecord> listVaccineRecords;
-	private ArrayList<String> vaccinationDate=null;
+	
+	//There are 4 columns in GridView of vaccine records. In SCHEDULE_LIST mode these string arrays
+	//will be used as data source. In RECORD_LIST mode, the data comes from listVaccineRecord
 	private ArrayList<String> column0;
 	private ArrayList<String> column1;
 	private ArrayList<String> column2;
 	private ArrayList<Boolean> column3;
+	
+	public static final int  SCHEDULE_LIST=2;
+	public static final int  RECORD_LIST=1;
 
-
+	private int mMode=SCHEDULE_LIST;
+	
+	private int textColor;
 	
 	public VaccineGridAdapter(Context context){
 		mContext=context;
@@ -34,123 +43,179 @@ public class VaccineGridAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		if(listVaccine==null){
-			return  0;
+		if(mMode==RECORD_LIST){
+			if(listVaccineRecords==null){
+				return  0;
+			}
+			//for each vaccine there will be 4 items
+			return listVaccineRecords.size()*4;
+		}else{
+			if(listVaccine==null){
+				return  0;
+			}
+			//for each vaccine there will be 4 items
+			return listVaccine.size()*4;	
 		}
-		//for each vaccine there will be 4 items
-		return listVaccine.size()*4;
+		
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO based on position, it could be Vaccine record;
 		int index= (int)position/4; 
 		if(listVaccine==null){
 			return null;
 		}
+		// TODO: in case of RECORD_LIST view, it should return VaccineRecord from listVaccineRecord
 		return listVaccine.get(index);
 	
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return 0;
+		int index= (int)position/4; 
+		if(mMode==RECORD_LIST){
+			return this.listVaccineRecords.get(index).getId();
+		}else{
+			return this.listVaccine.get(index).getId();
+		}
+		
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
-        	return getNewView(position);
-            
-        } else {
-        	return getExistingView(position,convertView);
-        }
+		return getNewView(position);
+        //the best method would be to update existing views if they exists
+		//but it is not working in RECORD_LIST mode when attempting to delete two records 
+		//if (convertView == null) {  // if it's not recycled, initialize some attributes
+        //	return getNewView(position);  
+        //} else {
+        //	return getExistingView(position,convertView);
+        //}
 
 	}
 	
-        
-	public void setList(ArrayList<Vaccine> list ){
-		this.listVaccine=list;
+	public int getMode(){
+		return mMode;
 	}
-	public void setList(ArrayList<Vaccine> list,CommunityMember cm,ArrayList<VaccineRecord> vaccineRecords){
-		this.listVaccine=list;
+	
+	public void setMode(int mode){
+		mMode=mode;
+		this.notifyDataSetChanged();
+		
+	}
+        
+	public void setList(ArrayList<VaccineRecord> vaccineRecords ){
+		this.listVaccineRecords=vaccineRecords;
+		mMode=VaccineGridAdapter.SCHEDULE_LIST;
+	}
+	
+	public void setList(ArrayList<Vaccine> vaccines,CommunityMember cm,ArrayList<VaccineRecord> vaccineRecords){
+		this.listVaccine=vaccines;
 		this.listVaccineRecords=vaccineRecords;
 		this.communityMember=cm;
+		mMode=SCHEDULE_LIST;
 		prepareVaccinationColumn();
 	}
 	
+	public void setList(ArrayList<Vaccine> vaccines,CommunityMember cm,ArrayList<VaccineRecord> vaccineRecords, int mode){
+		this.listVaccine=vaccines;
+		this.listVaccineRecords=vaccineRecords;
+		this.communityMember=cm;
+		this.mMode=mode;
+		
+		prepareVaccinationColumn();
+	}
+	/**
+	 * It returns a view based on position. 
+	 * @param position
+	 * @return
+	 */
 	private View getNewView(int position){
 		int columnIndex=position%4;
 		int index=position/4;
-		
-		if(columnIndex==0){// column 0: vaccine name
-			return (View)getTextView(column0.get(index));
-    	}else if(columnIndex==1){ //column 1: vaccine schedule
-    		TextView view=getTextView(column1.get(index));
-    		view.setHint("vaccine schedule based on birthdate");
-    		return (View)view;
-    	}else if(columnIndex==2){
-    		TextView view=getTextView(column2.get(index));
-    		view.setHint("date vaccination recored");
-    		return (View)view;
-    	}else if(columnIndex==3){ //third column in the grid
-    		return (View)getImageView(column3.get(index));
-		}else {
-    		return (View)getTextView("---");
-    	}
+		try
+		{
+			
+			if(mMode==SCHEDULE_LIST){
+				if(columnIndex==0){// column 0: vaccine name
+					return (View)getTextView(column0.get(index));
+				}else if(columnIndex==1){ //column 1: vaccine schedule
+					TextView view=getTextView(column1.get(index));
+					view.setHint("vaccine schedule based on birthdate");
+					return (View)view;
+				}else if(columnIndex==2){
+					TextView view=getTextView(column2.get(index));
+					view.setHint("date vaccination recored");
+					return (View)view;
+				}else if(columnIndex==3){ //third column in the grid
+					return (View)getImageView(column3.get(index));
+				}else {
+					return (View)getTextView("---");
+				}
+			}else{	//simple list
+				//Log.d("VaccineGRidAdapter.ExcistingView", "NP=" +position);
+				if(columnIndex==0){// column 0: vaccine name
+					//Log.d("VaccineGRidAdapter.NewView", "text 0");
+					return (View)getTextView(listVaccineRecords.get(index).getVaccineName());
+				}else if(columnIndex==1){ //column 1: vaccine schedule
+					TextView view=getTextView("---");
+					//Log.d("VaccineGRidAdapter.NewView", "text 1");
+					view.setHint("vaccine schedule based on birthdate");
+					return (View)view;
+				}else if(columnIndex==2){
+					TextView view=getTextView(listVaccineRecords.get(index).getVaccineDate());
+					//Log.d("VaccineGRidAdapter.NewView", "text 2");
+					view.setHint("date vaccination recored");
+					return (View)view;
+				}else if(columnIndex==3){ //third column in the grid
+					//Log.d("VaccineGRidAdapter.NewView", "image 3");
+					return (View)getImageViewRemove();
+				}else {
+					//Log.d("VaccineGRidAdapter.NewView", "text default");
+					return (View)getTextView("---");
+				}
+			}
+		}catch(Exception ex){
+			//Log.e("VaccineGridApapter.getNewView", ex.getMessage());
+			return null;
+		}
     
 	}
 	
-	private View getExistingView(int position, View convertView){
-		int columnIndex=position%4;
-		int index=position/4;
-		
-		if(columnIndex==0){//column 0: name
-			TextView textView=(TextView)convertView;
-			textView.setText(column0.get(index));
-	        return (View)textView;
-		}else if (columnIndex==1){ //column 1: schedule date based on birthday
-			TextView textView=(TextView)convertView;
-    		textView.setText(column1.get(index));
-    		return (View)textView;
-		}else if(columnIndex==2){
-			TextView textView=(TextView)convertView;
-			textView.setText(column2.get(index));
-    		return (View)textView;
-		}else if(columnIndex==3){	//column 3: vaccine given/not
-			ImageView image=(ImageView)convertView;
-			if(column3.get(index)){
-				image.setImageResource(R.drawable.checked);
-			}else{
-				image.setImageResource(R.drawable.unchecked);
-			}
-			return (View)image;
-		}else {
-			TextView textView=(TextView)convertView;
-			textView.setText("test");
-	        return (View)textView;
-		}
+	public void setTextColor(int c){
+		textColor=c;
 	}
+	
 	private TextView getTextView(String t){
 		TextView textView=new TextView(mContext);
 		textView.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT,GridView.LayoutParams.WRAP_CONTENT));
 		textView.setPadding(8, 8, 8, 8);
 		textView.setText(t);
+		if(textColor!=0){
+			textView.setTextColor(textColor);
+		}
+		
 		return textView;
 	}
 	
-	private ImageView getImageView( boolean checked ){
+	private ImageView getImageView(boolean checked ){
 		ImageView image=new ImageView(mContext);
-		image.setLayoutParams(new GridView.LayoutParams(24,24));
+		image.setLayoutParams(new GridView.LayoutParams(30,30));
 		image.setPadding(8,8,8,8);
 		if(checked){
 			image.setImageResource(R.drawable.checked);
 		}else{
 			image.setImageResource(R.drawable.unchecked);
 		}
+		
+		return image;
+		
+	}
+	private ImageView getImageViewRemove(){
+		ImageView image=new ImageView(mContext);
+		image.setLayoutParams(new GridView.LayoutParams(30,30));
+		image.setPadding(8,8,8,8);
+		image.setImageResource(R.drawable.remove);
 		
 		return image;
 		
@@ -171,13 +236,14 @@ public class VaccineGridAdapter extends BaseAdapter {
 		}
 	}
 	/**
-	 * prepares the four columns based on list of vaccines and vaccine record
+	 * prepares the four columns based on list of vaccines and vaccine record for schedule view
 	 */
 	private void prepareVaccinationColumn(){
-		int vaccineId;
+		
+		//prepare for schedule view
 		Vaccine v;
 		VaccineRecord r;
-		String str;
+
 		column0=new ArrayList<String>(listVaccine.size());
 		column1=new ArrayList<String>(listVaccine.size());
 		column2=new ArrayList<String>(listVaccine.size());
@@ -205,7 +271,7 @@ public class VaccineGridAdapter extends BaseAdapter {
 		
 	}
 	/**
-	 * gets a record for a particlar vaccine from list
+	 * gets a record for a particular vaccine from list
 	 * @param vaccineId
 	 * @return
 	 */
@@ -218,9 +284,15 @@ public class VaccineGridAdapter extends BaseAdapter {
 		return null;
 	}
 	
-	public VaccineRecord getVaccineRecord(int index){
-		Vaccine v=listVaccine.get(index);
-		return findVaccineRecord(v.getId());
+	public VaccineRecord getVaccineRecord(int position){
+		int index=position/4;
+		if(mMode==RECORD_LIST){
+			return listVaccineRecords.get(index);
+		}else{
+			Vaccine v=listVaccine.get(index);
+			return findVaccineRecord(v.getId());
+		}
+		
 	}
 	
 	public boolean getStatus(int position){
@@ -238,76 +310,97 @@ public class VaccineGridAdapter extends BaseAdapter {
 	}
 	
 	public boolean updateNewRecord(int position, VaccineRecord record){
-		int index=position/4;
+
 		listVaccineRecords.add(record);
-		column2.set(index, record.getVaccineDate());
-		column3.set(index, true);
+		if(mMode==SCHEDULE_LIST){
+			int index=position/4;
+			column2.set(index, record.getVaccineDate());
+			column3.set(index, true);
+		}
 		this.notifyDataSetChanged();
 		return true;
 	}
 	
 	public boolean updateRemovedRecord(int position, VaccineRecord record){
-		int index=position/4;
-		listVaccineRecords.remove(record);
-//		for(int i=0;i<listVaccineRecords.size();i++){
-//			if(listVaccineRecords.get(i).getId()==record.getId()){
-//				listVaccineRecords.remove(index);
-//			}
-//		}
 		
-		column2.set(index, "no record");
-		column3.set(index, false);
+		
+		listVaccineRecords.remove(record);
+
+		if(mMode==SCHEDULE_LIST){
+			int index=position/4;
+			column2.set(index, "no record");
+			column3.set(index, false);
+		}
 		this.notifyDataSetChanged();
 		return true;
 	}
 	/*
-	 * this two function are alternative algorithms
-	private View getNewView(int position){
-		int columnIndex=position%4;
-		int index=position/4;
-		Vaccine v=listVaccine.get(index);
-		if(columnIndex==0){// column 0: vaccine name
-			return (View)getTextView(v.getVaccineName());
-    	}else if(columnIndex==1){ //column 1: vaccine schedule
-    		java.util.Date date=v.getWhenToVaccine(Calendar.getInstance().getTime());
-    		String str=getFormattedDate(date);
-    		return (View)getTextView(str);
-    	}else if(columnIndex==2){
-    		return (View)getTextView(vaccinationDate.get(v.getId()));
-    	}else if(columnIndex==3){ //third column in the grid
-    		return (View)getCheckBox(true);
-		}else {
-    		return (View)getTextView("--");
-    	}
-    
-	}
-	
 	private View getExistingView(int position, View convertView){
 		int columnIndex=position%4;
 		int index=position/4;
-		Vaccine v=listVaccine.get(index);
-		if(columnIndex==0){//column 0: name
-			TextView textView=(TextView)convertView;
-			textView.setText(v.getVaccineName());
-	        return (View)textView;
-		}else if (columnIndex==1){ //column 1: schedule date based on birthday
-			TextView textView=(TextView)convertView;
-			java.util.Date date=v.getWhenToVaccine(Calendar.getInstance().getTime());
-    		String str=getFormattedDate(date);
-    		textView.setText(str);
-    		return (View)textView;
-		}else if(columnIndex==2){
-			TextView textView=(TextView)convertView;
-			textView.setText(vaccinationDate.get(v.getId()));
-    		return (View)textView;
-		}else if(columnIndex==3){	//column 3: vaccine given/not
-			CheckBox cb=(CheckBox)convertView;
-			cb.setChecked(true);
-			return (View)cb;
-		}else {
-			TextView textView=(TextView)convertView;
-			textView.setText("test");
-	        return (View)textView;
+		try
+		{
+			if(mMode==SCHEDULE_LIST){
+				if(columnIndex==0){//column 0: name
+					TextView textView=(TextView)convertView;
+					textView.setText(column0.get(index));
+					return (View)textView;
+				}else if (columnIndex==1){ //column 1: schedule date based on birthday
+					TextView textView=(TextView)convertView;
+					textView.setText(column1.get(index));
+					return (View)textView;
+				}else if(columnIndex==2){
+					TextView textView=(TextView)convertView;
+					textView.setText(column2.get(index));
+					return (View)textView;
+				}else if(columnIndex==3){	//column 3: vaccine given/not
+					ImageView image=(ImageView)convertView;
+					if(column3.get(index)){
+						image.setImageResource(R.drawable.checked);
+					}else{
+						image.setImageResource(R.drawable.unchecked);
+					}
+					return (View)image;
+				}else {
+					TextView textView=(TextView)convertView;
+					textView.setText("test");
+					return (View)textView;
+				}
+			}else{
+			
+				Log.d("VaccineGRidAdapter.ExcistingView", "P=" +position);
+				if(columnIndex==0){//column 0: name
+					TextView textView=(TextView)convertView;
+					textView.setText(listVaccineRecords.get(index).getVaccineName());
+					Log.d("VaccineGRidAdapter.ExcistingView", "text 0");
+					return (View)textView;
+				}else if (columnIndex==1){ //column 1: schedule date based on birthday
+					TextView textView=(TextView)convertView;
+					textView.setText("---");
+					Log.d("VaccineGRidAdapter.ExcistingView", "text 1");
+					return (View)textView;
+				}else if(columnIndex==2){
+					TextView textView=(TextView)convertView;
+					textView.setText(listVaccineRecords.get(index).getFormattedVaccineDate());
+					Log.d("VaccineGRidAdapter.ExcistingView", "text 2");
+					return (View)textView;
+				}else if(columnIndex==3){	//column 3: vaccine given/not
+					ImageView image=(ImageView)convertView;
+					image.setImageResource(R.drawable.remove);
+					Log.d("VaccineGRidAdapter.ExcistingView", "image 3");
+					return (View)image;
+				}else {
+					TextView textView=(TextView)convertView;
+					textView.setText("---");
+					Log.d("VaccineGRidAdapter.ExcistingView", "text default");
+					return (View)textView;
+				}	
+			}
+		}catch(Exception ex){
+			Log.e("VaccineGridAddpapter.getExisitngView", ex.getMessage());
+			return null;
 		}
-	}*/
+	}
+	*/
+
 }

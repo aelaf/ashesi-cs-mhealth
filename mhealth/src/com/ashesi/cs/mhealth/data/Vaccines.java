@@ -154,6 +154,58 @@ public class Vaccines extends DataClass {
 			return list;
 		}
 	}
+	
+	/**
+	 * return all vaccines in the table
+	 * @return
+	 */
+	public ArrayList<Vaccine> getScheduledVaccines(){
+		ArrayList<Vaccine> list=new ArrayList<Vaccine>();
+		String[] columns={VACCINE_ID,VACCINE_NAME,VACCINE_SCHEDULE};
+		try
+		{
+			String selector=VACCINE_SCHEDULE+">=0";
+			db=getReadableDatabase();
+			cursor=db.query(TABLE_NAME_VACCINES, columns,selector,null, null, null, null);
+			cursor.moveToFirst();
+			Vaccine v=fetch();
+			while(v!=null){
+				list.add(v);
+				v=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
+			close();
+			return list;
+		}
+	}
+	
+	/**
+	 * return all vaccines in the table
+	 * @return
+	 */
+	public ArrayList<Vaccine> getUnscheduledVaccines(){
+		ArrayList<Vaccine> list=new ArrayList<Vaccine>();
+		String[] columns={VACCINE_ID,VACCINE_NAME,VACCINE_SCHEDULE};
+		try
+		{
+			String selector=VACCINE_SCHEDULE+"=-1";
+			db=getReadableDatabase();
+			cursor=db.query(TABLE_NAME_VACCINES, columns,selector,null, null, null, null);
+			cursor.moveToFirst();
+			Vaccine v=fetch();
+			while(v!=null){
+				list.add(v);
+				v=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
+			close();
+			return list;
+		}
+	}
 
 	
 }

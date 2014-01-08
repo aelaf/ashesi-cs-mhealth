@@ -53,6 +53,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
@@ -782,7 +783,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	
 	public static class VaccineFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
-		ArrayList<Vaccine> listVaccines;
+		
 		VaccineGridAdapter adapter; 
 		
 		View rootView;
@@ -799,7 +800,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			communityMemberId=getArguments().getInt("id");
 			
-			//fillVaccineSpinner();
+			fillVaccineSpinner();
 			showSchedule();
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
 			gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -808,12 +809,29 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		            itemClicked(parent,v,position,id);
 		        }
 		    });
+			
+			RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
+			radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+				
+				@Override
+				public void onCheckedChanged(RadioGroup raidoGroup, int checkedId) {
+					// TODO Auto-generated method stub
+					showSchedule();
+				}
+			});
+			
+			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
+			buttonAddVaccine.setOnClickListener(this);
 			return rootView;
 		}
 
 		@Override
 		public void onClick(View v) {
-			
+			switch(v.getId()){
+				case R.id.buttonAddVaccine:
+					showDatePicker(-1);	//add vaccines to record
+					break;
+			}
 		}
 		
 		@Override
@@ -845,13 +863,12 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			// TODO Auto-generated method stub
 			
 		}
-		
-		
+				
 		private void fillVaccineSpinner(){
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
 			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
-			listVaccines=vaccines.getVaccines();
+			ArrayList<Vaccine> listVaccines=vaccines.getUnscheduledVaccines();
 			ArrayAdapter<Vaccine> adapter=new ArrayAdapter<Vaccine>(getActivity(), android.R.layout.simple_dropdown_item_1line,listVaccines);
 			spinner.setAdapter(adapter);
 			
@@ -862,38 +879,47 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			if(communityMemberId==0){
 				return;
 			}
+			
+			
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
 
 			CommunityMembers communityMembers=new CommunityMembers(getActivity().getApplicationContext());
 			CommunityMember cm=communityMembers.getCommunityMember(communityMemberId);
 			
 			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
-			listVaccines=vaccines.getVaccines();
+			ArrayList<Vaccine> listVaccines=vaccines.getScheduledVaccines();
 	
 			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
 			ArrayList<VaccineRecord>listVaccineRecords=vaccineRecords.getVaccineRecords(communityMemberId);
 			adapter=new VaccineGridAdapter(getActivity().getApplicationContext());
-			adapter.setList(listVaccines,cm,listVaccineRecords);
 			
+			adapter.setList(listVaccines,cm,listVaccineRecords,getSelectedViewMode());
+			adapter.setTextColor(getResources().getColor(R.color.black_text_color));
 			gridView.setAdapter(adapter);
 	
 		}
 		
 		private void itemClicked(AdapterView<?> parent, View v, int position, long id){
 			int columnIndex=position%4;
-		
-			if(columnIndex==3){	//recording
+			if(columnIndex!=3){ //if the click is not on 4th column there is nothing to do
+				return;
+			}
+			if(adapter.getMode()!=VaccineGridAdapter.SCHEDULE_LIST){
+				removeVaccineRecord(position);
+				return;
+			}else{
+
 				if(!adapter.getStatus(position)){	//vaccination is not recored, hence record
 					showDatePicker(position);
-					//recordVaccine(position);
 				}else{
-				
 					removeVaccineRecord(position);	//its recored, so remove it. 
 				}
+
 			}
 		}
 		
 		private void showDatePicker(int position){
+
 			DatePickerFragment datePicker=new DatePickerFragment();
 			datePicker.vf=this;
 			datePicker.position=position;
@@ -901,14 +927,20 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			
 		}
+		
 		private void recordVaccine(int position,String date){
-			
-			Vaccine vaccine=adapter.getVaccine(position);	
+			Vaccine vaccine;
+			if(adapter.getMode()==VaccineGridAdapter.RECORD_LIST){
+				vaccine=getSelectedVaccine();
+			}else{
+				vaccine=adapter.getVaccine(position);
+			}
+				
 			int vaccineId=vaccine.getId();
 			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
 			//check if its already recorded
 			VaccineRecord record=vaccineRecords.getVaccineRecord(communityMemberId, vaccineId);
-			if(record!=null){
+			if(record!=null && vaccine.getVaccineSchedule()>=0){
 				//Already recorded
 				return;
 			}
@@ -932,34 +964,64 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		private void removeVaccineRecord(int position){
-			
-			Vaccine vaccine=adapter.getVaccine(position);	
-			int vaccineId=vaccine.getId();
+			VaccineRecord record;
 			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
-			//check if its already recorded
-			VaccineRecord record=vaccineRecords.getVaccineRecord(communityMemberId, vaccineId);
-			if(record==null){
-				return; 
+			if(adapter.getMode()==VaccineGridAdapter.RECORD_LIST){
+				record=adapter.getVaccineRecord(position);
+				if(record==null){
+					return; 
+				}
+				
+				if(!vaccineRecords.reomveRecord(record.getId())){
+					return;
+				}
+				
+				adapter.updateRemovedRecord(position, record);
+			}else{
+				Vaccine vaccine=adapter.getVaccine(position);	
+				int vaccineId=vaccine.getId();
+				//check if its already recorded
+				record=vaccineRecords.getVaccineRecord(communityMemberId, vaccineId);
 			}
 			
-			if(!vaccineRecords.reomveRecord(record.getId())){
-				return;
-			}
 			
-			adapter.updateRemovedRecord(position, record);
+			
+		}
+		
+		public Vaccine getSelectedVaccine(){
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
+			return (Vaccine)spinner.getSelectedItem();
+		}
+	
+		private int getSelectedViewMode(){
+			RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
+			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
+			int selected=radioGroup.getCheckedRadioButtonId();
+			if(selected==R.id.radioVaccineRecordView){
+				buttonAddVaccine.setEnabled(true);
+				return VaccineGridAdapter.RECORD_LIST;
+			}else{
+				buttonAddVaccine.setEnabled(false);
+				return VaccineGridAdapter.SCHEDULE_LIST;
+			}
 		}
 	}
+	
+	
 	
 	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
 
 		Calendar calendar;
+	
 		public VaccineFragment vf;
 		public int position;
+		
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the current date as the default date in the picker
 			calendar = Calendar.getInstance();
+	
 			int year = calendar.get(Calendar.YEAR);
 			int month = calendar.get(Calendar.MONTH);
 			int day = calendar.get(Calendar.DAY_OF_MONTH);

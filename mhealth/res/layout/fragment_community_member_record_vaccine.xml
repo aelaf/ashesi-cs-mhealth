@@ -5,6 +5,36 @@
     android:layout_height="match_parent" >
 
     <TableRow
+        android:id="@id/tableRow3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+             >
+
+            <RadioButton
+                android:id="@+id/radioVaccineScheduleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/vaccine_view_schedule" />
+
+            <RadioButton
+                android:id="@+id/radioVaccineRecordView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vaccine_view_record" />
+
+           
+        </RadioGroup>
+
+    </TableRow>
+
+    <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -34,7 +64,6 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:numColumns="4" >
-
         </GridView>
     </TableRow>
 

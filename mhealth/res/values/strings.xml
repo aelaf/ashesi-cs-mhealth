@@ -75,6 +75,8 @@
     <string name="next">Get More</string>
     <string name="lab">Lab</string>
     <string name="updateVaccineData">Update Vaccine Data</string>
+    <string name="vaccine_view_schedule">schedule</string>
+    <string name="vaccine_view_record">record</string>
     
 
 </resources>

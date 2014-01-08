@@ -26,6 +26,7 @@ public class VaccineRecord {
 		this.fullname=fullname;
 		this.vaccineId=vaccineId;
 		this.vaccineDate=vaccineDate;
+		this.vaccineName=vaccineName;
 	}
 	
 	public int getId(){
