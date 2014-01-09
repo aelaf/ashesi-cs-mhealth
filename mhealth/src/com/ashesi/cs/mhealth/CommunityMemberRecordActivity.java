@@ -625,6 +625,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 		}
 		
+		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_community_member_record_other, container,false);
@@ -690,6 +691,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public void onNothingSelected(AdapterView<?> arg0) {
 			// TODO Auto-generated method stub
 			
+		}
+		
+		@Override
+		public void onResume(){
+			super.onResume();
+			//if a new community is added get the id 
+			CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+			communityMemberId=a.getCommunityMemberId();
 		}
 
 		public boolean fillOPDCaseSpinner(){
@@ -863,6 +872,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			// TODO Auto-generated method stub
 			
 		}
+		
+		@Override
+		public void onResume(){
+			super.onResume();
+			CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+			communityMemberId=a.getCommunityMemberId();
+		}
 				
 		private void fillVaccineSpinner(){
 			
@@ -900,6 +916,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		private void itemClicked(AdapterView<?> parent, View v, int position, long id){
+			if(communityMemberId<=0){
+				//if community member is not know, there is nothing to do
+				return;
+			}
 			int columnIndex=position%4;
 			if(columnIndex!=3){ //if the click is not on 4th column there is nothing to do
 				return;
@@ -919,16 +939,29 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		private void showDatePicker(int position){
-
 			DatePickerFragment datePicker=new DatePickerFragment();
 			datePicker.vf=this;
 			datePicker.position=position;
+			if(adapter.getMode()==VaccineGridAdapter.SCHEDULE_LIST){
+			
+				Vaccine vaccine=adapter.getVaccine(position);
+				CommunityMembers communityMembers=new CommunityMembers(getActivity().getApplicationContext());
+				CommunityMember cm=communityMembers.getCommunityMember(communityMemberId);
+				java.util.Date date=vaccine.getWhenToVaccine(cm.getBirthdateDate());
+				datePicker.setDate(date);
+				
+			}
+			
 			datePicker.show(this.getActivity().getSupportFragmentManager(), "datePicker");
 			
 			
 		}
 		
 		private void recordVaccine(int position,String date){
+			if(communityMemberId<=0){
+				//if community member is not know, there is nothing to do
+				return;
+			}
 			Vaccine vaccine;
 			if(adapter.getMode()==VaccineGridAdapter.RECORD_LIST){
 				vaccine=getSelectedVaccine();
@@ -964,6 +997,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		private void removeVaccineRecord(int position){
+			if(communityMemberId<=0){
+				//if community member is not know, there is nothing to do
+				return;
+			}
 			VaccineRecord record;
 			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
 			if(adapter.getMode()==VaccineGridAdapter.RECORD_LIST){
@@ -996,31 +1033,40 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private int getSelectedViewMode(){
 			RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
 			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
 			int selected=radioGroup.getCheckedRadioButtonId();
 			if(selected==R.id.radioVaccineRecordView){
 				buttonAddVaccine.setEnabled(true);
+				buttonAddVaccine.setVisibility(View.VISIBLE);
+				spinner.setVisibility(View.VISIBLE);
 				return VaccineGridAdapter.RECORD_LIST;
 			}else{
 				buttonAddVaccine.setEnabled(false);
+				buttonAddVaccine.setVisibility(View.INVISIBLE);
+				spinner.setVisibility(View.INVISIBLE);
 				return VaccineGridAdapter.SCHEDULE_LIST;
 			}
 		}
 	}
 	
-	
-	
 	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-
+		
 		Calendar calendar;
 	
 		public VaccineFragment vf;
 		public int position;
 		
+		public DatePickerFragment(){
+			calendar = Calendar.getInstance();
+		}
+		
+	
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the current date as the default date in the picker
-			calendar = Calendar.getInstance();
+			
+			//calendar = Calendar.getInstance();
 	
 			int year = calendar.get(Calendar.YEAR);
 			int month = calendar.get(Calendar.MONTH);
@@ -1034,6 +1080,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		// Do something with the date chosen by the user
 			calendar.set(year, month, day);
 			this.vf.recordVaccine(position,getDateString());
+		}
+		
+		public void setDate(java.util.Date date){
+			if(calendar==null){
+				calendar = Calendar.getInstance();
+			}
+			calendar.setTime(date);
 		}
 		
 		public java.util.Date getDate(){

@@ -174,6 +174,7 @@ public class OPDCaseRecords extends DataClass {
 			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
 		}else if(month==1){	//this year
+			calendar.set(Calendar.YEAR,year);
 			calendar.set(Calendar.MONTH,Calendar.JANUARY);
 			calendar.set(Calendar.DAY_OF_MONTH,1);
 			firstDateOfTheMonth=dateFormat.format(calendar.getTime());

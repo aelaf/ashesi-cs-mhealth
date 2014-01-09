@@ -49,6 +49,9 @@ public class Vaccine {
 	}
 	
 	public Date getWhenToVaccine(String date){
+		if(schedule<0){	//there is no schedule
+			return null;
+		}
 		try
 		{
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);

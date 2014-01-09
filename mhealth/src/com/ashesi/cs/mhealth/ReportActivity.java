@@ -172,7 +172,7 @@ public class ReportActivity extends FragmentActivity implements
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private String[] ageGroups={"Total","U 1","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
 		private String[] vaccineAgeGroups={"Total","U 1","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
-		private String[] months={"this month","this year","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+		private String[] months={"this month","whole year","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 
 		public DummySectionFragment() {
 		}
@@ -189,10 +189,13 @@ public class ReportActivity extends FragmentActivity implements
 			
 			fillAgeGroupSpinner(rootView);
 			fillMonthSpinner(rootView);
+			fillYearSpinner(rootView);
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerOPDReportAgeGroup);
 			spinner.setOnItemSelectedListener(this);
 			spinner=(Spinner)rootView.findViewById(R.id.spinnerReportMonth);
+			spinner.setOnItemSelectedListener(this);
+			spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
 			spinner.setOnItemSelectedListener(this);
 			
 			loadData(rootView);
@@ -222,7 +225,7 @@ public class ReportActivity extends FragmentActivity implements
 			
 			int ageGroup=getSelectedAgeGroup();
 			int month=getSelectedMonth();
-			int year=Calendar.getInstance().get(Calendar.YEAR);
+			int year=getSelectedYear();
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
 			String[] headers={"OPD Case","Gender","no cases"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
@@ -245,7 +248,7 @@ public class ReportActivity extends FragmentActivity implements
 			
 			int ageGroup=getSelectedAgeGroup();
 			int month=getSelectedMonth();
-			int year=Calendar.getInstance().get(Calendar.YEAR);
+			int year=getSelectedYear();
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
 			String[] headers={"Vaccination","","no cases"};
 			VaccinationReport vaccinationReport=new VaccinationReport(this.getActivity().getApplicationContext());
@@ -267,7 +270,6 @@ public class ReportActivity extends FragmentActivity implements
 
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
 			switch(v.getId()){
 				
 			}
@@ -275,7 +277,6 @@ public class ReportActivity extends FragmentActivity implements
 
 		@Override
 		public void onItemSelected(AdapterView<?> adapter, View v, int startIndex, long length) {
-			// TODO Auto-generated method stub
 			loadData(this.getView());
 		}
 
@@ -308,6 +309,18 @@ public class ReportActivity extends FragmentActivity implements
 			spinner.setOnItemSelectedListener(this);
 		}
 		
+		private void fillYearSpinner(View rootView){
+			String[] strYears=new String[2];
+			int year=Calendar.getInstance().get(Calendar.YEAR); //this year
+			strYears[0]=Integer.toString(year);
+			strYears[1]=Integer.toString((year-1));
+			
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
+			ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,strYears);
+			spinner.setAdapter(adapter);
+			spinner.setOnItemSelectedListener(this);
+		}
+		
 		private int getSelectedAgeGroup(){
 			View rootView=getView();
 			if(rootView==null){
@@ -335,6 +348,22 @@ public class ReportActivity extends FragmentActivity implements
 			}
 			
 			return month;
+		}
+		
+		private int getSelectedYear(){
+			View rootView=getView();
+			if(rootView==null){
+				return 0;
+			}
+			int year=Calendar.getInstance().get(Calendar.YEAR); //this year
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
+			int n=spinner.getSelectedItemPosition();
+			if(n<0){
+				n=0;
+				spinner.setSelection(n);
+			}
+			year=year-n;
+			return year;
 		}
 	}
 

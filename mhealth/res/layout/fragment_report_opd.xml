@@ -24,13 +24,18 @@
                  android:id="@+id/spinnerOPDReportAgeGroup"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_weight="1" />
+                 android:layout_weight="0.3" />
 
              <Spinner
                  android:id="@+id/spinnerReportMonth"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_weight="1" />
+                 android:layout_weight="0.3" />
+             <Spinner
+		        android:id="@+id/spinnerReportYear"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+				android:layout_weight="0.3"/>
 
          </LinearLayout>
             
