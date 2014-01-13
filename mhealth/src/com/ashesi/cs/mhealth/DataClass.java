@@ -28,6 +28,8 @@ import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
+import com.ashesi.cs.mhealth.data.VaccineRecords;
+import com.ashesi.cs.mhealth.data.Vaccines;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 
 import android.content.ContentValues;
@@ -486,6 +488,18 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getInsert(2,"Salome",2));
 			
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
+			
+			db.execSQL(Vaccines.getCreateSQLString());
+			setDataVersion(db,Vaccines.TABLE_NAME_VACCINES,0);
+			
+			db.execSQL(Vaccines.getInsertSQLString(1, "BCG", 0));
+			db.execSQL(Vaccines.getInsertSQLString(2, "Hepatitis B", 0));
+			db.execSQL(Vaccines.getInsertSQLString(3, "OPV-0", 0));
+			db.execSQL(Vaccines.getInsertSQLString(4, "OPV-1", 70));
+			
+			db.execSQL(VaccineRecords.getCreateSQLString());
+			setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORD,0);
+			
 			
 			Log.d("DataClass.onCreate", "data base created");
 			
