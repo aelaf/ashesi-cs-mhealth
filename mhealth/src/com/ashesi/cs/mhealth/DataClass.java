@@ -45,8 +45,12 @@ public class DataClass extends SQLiteOpenHelper {
 	 * DATABASE VERSION 2
 	 * adds LAB text column to community_member_opd_cases table
 	 * modifies view_community_member_opd_cases to include LAB column
+	 * DATABASE VERSION 3
+	 * vaccine table is added
+	 * vaccine record table is added
+	 * 
 	 */
-	protected static final int DATABASE_VERSION=2; 
+	protected static final int DATABASE_VERSION=3; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -489,6 +493,13 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
+			
+			//view for opd case records
+			db.execSQL(OPDCaseRecords.getCreateViewString());
+			//view for community members
+			db.execSQL(CommunityMembers.getViewCreateSQLString());
+			
+			//added in version 3
 			db.execSQL(Vaccines.getCreateSQLString());
 			setDataVersion(db,Vaccines.TABLE_NAME_VACCINES,0);
 			
@@ -500,16 +511,10 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(VaccineRecords.getCreateSQLString());
 			setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORDS,0);
 			
-			
-			Log.d("DataClass.onCreate", "data base created");
-			
-			//view for opd case records
-			db.execSQL(OPDCaseRecords.getCreateViewString());
-			//view for community members
-			db.execSQL(CommunityMembers.getViewCreateSQLString());
 			//view for vaccine records
 			db.execSQL(VaccineRecords.getCreateViewSQLString());
-				
+			
+			Log.d("DataClass.onCreate", "data base created");	
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
@@ -522,17 +527,54 @@ public class DataClass extends SQLiteOpenHelper {
 		{
 			if(oldVersion==1 && newVersion==2){
 				//add lab colunm to table
-				String sql="alter table "+ OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES
-						+" add column "+OPDCaseRecords.LAB +" text default '"+OPDCaseRecords.LAB_NOT_CONFIRMED+ "'";
-				db.execSQL(sql);
-				//re create Record view
-				db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
-				db.execSQL(OPDCaseRecords.getCreateViewString());
+				upgradeToVersion2(db);
+			}
+						
+			if(oldVersion==2 && newVersion==3){
+				upgradeToVersion3(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
 		
+	}
+	/**
+	 * upgrade the database from version 1 to 2
+	 * @param db
+	 */
+	private void upgradeToVersion2(SQLiteDatabase db){
+		//add lab colunm to table
+		String sql="alter table "+ OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES
+				+" add column "+OPDCaseRecords.LAB +" text default '"+OPDCaseRecords.LAB_NOT_CONFIRMED+ "'";
+		db.execSQL(sql);
+		//re create Record view
+		db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
+		db.execSQL(OPDCaseRecords.getCreateViewString());
+	}
+	
+	/**
+	 * upgrade the database from version 2 to 3
+	 * @param db
+	 */
+	private void upgradeToVersion3(SQLiteDatabase db){
+		//this is tables are not in DB 2
+		db.execSQL(Vaccines.getCreateSQLString());
+		setDataVersion(db,Vaccines.TABLE_NAME_VACCINES,0);
+		
+		db.execSQL(Vaccines.getInsertSQLString(1, "BCG", 0));
+		db.execSQL(Vaccines.getInsertSQLString(2, "Hepatitis B", 0));
+		db.execSQL(Vaccines.getInsertSQLString(3, "OPV-0", 0));
+		db.execSQL(Vaccines.getInsertSQLString(4, "OPV-1", 70));
+		
+		db.execSQL(VaccineRecords.getCreateSQLString());
+		setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORDS,0);
+		
+		db.execSQL(VaccineRecords.getCreateViewSQLString());
+		
+		//add more CHOs
+		db.execSQL(CHOs.getInsert(3, "Peace",2));
+		db.execSQL(CHOs.getInsert(4,"Theresa",2));
+		db.execSQL(CHOs.getInsert(5,"Sandra",2));
 	}
 	
 	public String getDataFilePath(){
