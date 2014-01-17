@@ -22,8 +22,6 @@ public class Communities extends DataClass {
 	public static final String POPULATION="population";
     public static final String HOUSEHOLD="household";
 
-    		
-    
 	public Communities(Context context){
 		 super(context);
 	}

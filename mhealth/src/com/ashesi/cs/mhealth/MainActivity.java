@@ -40,7 +40,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		buttonOpenClose.setOnClickListener(this);
 		View buttonOpenRecord=findViewById(R.id.buttonMainOpenRecord);
 		buttonOpenRecord.setOnClickListener(this);
-
+		View buttonTakeNote = findViewById(R.id.btnTakeNote);
+		buttonTakeNote.setOnClickListener(this);
+		
 		
 		loadSpinner();
 		textStatus.setText("application ready");
@@ -58,10 +60,16 @@ public class MainActivity extends Activity implements OnClickListener {
 				intent.putExtra("choId", currentCHO.getId());
 				startActivity(intent);
 				break;
+				
 			case R.id.buttonMainLoginStart:
 				loginAndStart();
 				break;
 				
+			case R.id.btnTakeNote:
+				Intent takeNoteIntent = new Intent(this,NotesActivity.class);
+				takeNoteIntent.putExtra("choId", currentCHO.getId());
+				startActivity(takeNoteIntent);
+				break;
 		}
 	}
 	
@@ -70,7 +78,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		currentCHO=(CHO)spinner.getSelectedItem();
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(true);
 		findViewById(R.id.buttonMainKnowledge).setEnabled(true);
-	
+		findViewById(R.id.btnTakeNote).setEnabled(true);
 	}
 	
 	@Override

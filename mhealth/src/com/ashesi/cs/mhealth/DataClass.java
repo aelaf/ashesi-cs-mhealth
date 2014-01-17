@@ -23,9 +23,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 
+
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.Notes;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
@@ -461,11 +463,14 @@ public class DataClass extends SQLiteOpenHelper {
 			setDataVersion(db,Communities.TABLE_COMMUNITIES,0);
 			
 			db.execSQL(CommunityMembers.getCreateSQLString());
-			
 			setDataVersion(db,CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS,0);
-			db.execSQL(OPDCases.getCreateSQLString());
 			
+			db.execSQL(OPDCases.getCreateSQLString());
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
+			
+			db.execSQL(Notes.getCreateQuery());
+			setDataVersion(db,Notes.TABLE_NAME_NOTES,0);
+			
 			/*this cases are added just for testing 
 			 * The complete OPD case list should be downloaded using synch
 			 * */
@@ -507,6 +512,8 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(OPDCaseRecords.getCreateViewString());
 			//view for community members
 			db.execSQL(CommunityMembers.getViewCreateSQLString());
+			//view for notes
+			//db.execSQL(Notes.getViewCreateSQLString());
 				
 			
 		}catch(Exception ex){

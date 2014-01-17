@@ -29,9 +29,11 @@ public class CHOs extends DataClass {
 				+ CHO_ID +" int primary key, "
 				+ CHO_NAME +" text, "
 				+ SUBDISTRICT_ID +" int "
-				+ " )";
+				+ ")";
 		
 	}
+	
+	
 	
 	public static String getInsert(int id,String choName,int subdistrictId){
 		return "insert into "

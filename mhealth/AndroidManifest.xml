@@ -9,7 +9,7 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -59,6 +59,18 @@
         <activity
             android:name="com.ashesi.cs.mhealth.CommunityMemberRecordActivity"
             android:label="@string/title_activity_community_member_record" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.NotesActivity"
+            android:label="@string/title_activity_notes" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.EditNoteFragment"
+            android:label="@string/title_activity_edit_note_fragment" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.ShowNotes"
+            android:label="@string/title_activity_show_notes" >
         </activity>
     </application>
 

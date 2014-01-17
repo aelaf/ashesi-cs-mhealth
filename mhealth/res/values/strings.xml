@@ -45,7 +45,8 @@
     <string name="title_cm_record_other">OPD</string>
     <string name="title_cm_record_note">notes</string>
     <string name="title_report_opdsection">OPD</string>
-    <string name="title_cm_record_vaccine">vaccine</string><string name="title_report_other">others</string>
+    <string name="title_cm_record_vaccine">vaccine</string>
+    <string name="title_report_other">others</string>
     <string name="title_report_next">next</string>
     <string name="report">Go to report</string>
     <string name="open">Open</string>
@@ -74,6 +75,16 @@
     <string name="getAllinCommunity">Get All in Community</string>
     <string name="next">Get More</string>
     <string name="lab">Lab</string>
-    
+    <string name="title_activity_notes">NotesActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="clear">Clear</string>
+    <string name="recent_notes">Recent Notes</string>
+    <string name="title_activity_edit_note_fragment">EditNoteFragment</string>
+    <string name="title_activity_show_notes">ShowNotes</string>
+    <string name="takenote">Take Note</string>
+    <string name="savedNotes">Saved Notes</string>
+    <string name="searchnote">Search Note</string>
 
 </resources>
