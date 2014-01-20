@@ -327,10 +327,12 @@ public class CommunityMembers extends DataClass {
 					}
 					values.put(DataClass.REC_STATE, DataClass.REC_STATE_UPTODATE);
 					db.update(TABLE_NAME_COMMUNITY_MEMBERS, values, whereClause, null);
+					
 					if(localId!=serverId){	//if the id changes, update all other records of community member
 						values=new ContentValues();
 						values.put(COMMUNITY_MEMBER_ID, serverId);
 						db.update(OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES, values, whereClause, null);
+						db.update(VaccineRecords.TABLE_NAME_VACCINE_RECORDS, values, whereClause, null);
 					}
 				}
 			}

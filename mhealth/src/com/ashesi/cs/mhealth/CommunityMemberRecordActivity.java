@@ -1005,22 +1005,25 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			VaccineRecords vaccineRecords=new VaccineRecords(getActivity().getApplicationContext());
 			if(adapter.getMode()==VaccineGridAdapter.RECORD_LIST){
 				record=adapter.getVaccineRecord(position);
-				if(record==null){
-					return; 
-				}
+
 				
-				if(!vaccineRecords.reomveRecord(record.getId())){
-					return;
-				}
-				
-				adapter.updateRemovedRecord(position, record);
 			}else{
 				Vaccine vaccine=adapter.getVaccine(position);	
 				int vaccineId=vaccine.getId();
 				//check if its already recorded
 				record=vaccineRecords.getVaccineRecord(communityMemberId, vaccineId);
+			
 			}
 			
+			if(record==null){
+				return; 
+			}
+			
+			if(!vaccineRecords.reomveRecord(record.getId())){
+				return;
+			}
+			
+			adapter.updateRemovedRecord(position, record);
 			
 			
 		}

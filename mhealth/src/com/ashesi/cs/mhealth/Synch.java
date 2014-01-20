@@ -95,6 +95,7 @@ public class Synch extends Activity implements OnClickListener {
 		if(task!=null){
 			cancel();
 		}
+		textStatus.setText("downloading communities...");
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={1};
@@ -107,6 +108,7 @@ public class Synch extends Activity implements OnClickListener {
 		if(task!=null){
 			cancel();
 		}
+		textStatus.setText("downloading OPD cases...");
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={2};
@@ -118,6 +120,7 @@ public class Synch extends Activity implements OnClickListener {
 		if(task!=null){
 			cancel();
 		}
+		textStatus.setText("downloading vaccine list...");
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={3};	//vaccine

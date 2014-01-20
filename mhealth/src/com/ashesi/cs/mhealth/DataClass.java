@@ -120,6 +120,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			Log.d("DataClass.request", "connection open, getting stream");
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
+			connection.setReadTimeout(CONNECTION_TIMEOUT);
 			connection.connect();
 			return connection;
 		}catch(Exception ex){
@@ -136,19 +137,19 @@ public class DataClass extends SQLiteOpenHelper {
 	public String request(HttpURLConnection connection){
 
 		
-		char buffer[]=new char[1024];
+		char buffer[]=new char[256];
 		
 		String data="";
 		
 		try{
 			
-		
+			
 			InputStream stream=connection.getInputStream();
 			Log.d("DataClass.request","stream");
 			Reader reader=new InputStreamReader(stream,"UTF-8");
 			
-			int readLength=1024;
-			while(readLength==1024){
+			int readLength=256;
+			while(readLength==256){
 				readLength=reader.read(buffer);
 				data=data+(new String(buffer));
 			}
@@ -184,6 +185,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
+			connection.setReadTimeout(CONNECTION_TIMEOUT);
 			connection.connect();
 		
 			data=request(connection);
@@ -490,6 +492,9 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getCreateQuery());
 			db.execSQL(CHOs.getInsert(1, "Eric",1));
 			db.execSQL(CHOs.getInsert(2,"Salome",2));
+			db.execSQL(CHOs.getInsert(3, "Peace",2));
+			db.execSQL(CHOs.getInsert(4,"Theresa",2));
+			db.execSQL(CHOs.getInsert(5,"Sandra",2));
 			
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
