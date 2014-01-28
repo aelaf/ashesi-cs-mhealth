@@ -50,11 +50,13 @@
 	        android:id="@+id/textCommunityMembersRecOthersTitle"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="0.2"
 	        android:text="@string/birthdate" />
 		<EditText
 	        android:id="@+id/editCommunityMemberRecordBirthdate"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="0.2"
 	        android:ems="10"
 	        android:hint="@string/hintDateformat"
 	        android:inputType="date" />
@@ -63,12 +65,20 @@
 		    android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/Age"
+	        android:layout_weight="0.1"
 		    />
 		<EditText
 	        android:id="@+id/editCommunityMemberAge"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_weight="0.2"
 	        android:inputType="number" />
+		<Spinner
+		    android:id="@+id/spinnerCommunityMemberAgeUnits"
+		    android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.2" />"
+		    
 	</TableRow>
 	
     <TableRow

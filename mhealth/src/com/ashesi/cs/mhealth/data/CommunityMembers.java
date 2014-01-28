@@ -41,7 +41,12 @@ public class CommunityMembers extends DataClass {
 	public CommunityMembers(Context context){
 		super(context);
 	}
-
+	
+	/**
+	 * gets all community members in a community 
+	 * @param communityId
+	 * @return
+	 */
 	public boolean getAllCommunityMember(int communityId){
 		try{
 			String selector=null;
@@ -419,7 +424,7 @@ public class CommunityMembers extends DataClass {
 	}
 	
 	/**
-   	 * returns community member records in cursor as ArrayList
+   	 * returns all community member records in cursor as ArrayList
 	 * @return
 	 */
 	public ArrayList<CommunityMember> getArrayList(){
@@ -576,7 +581,7 @@ public class CommunityMembers extends DataClass {
 				+NHIS_ID+", "
 				+NHIS_EXPIRY_DATE+", "
 				+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+DataClass.REC_STATE+", "
-				+" (date()-"+CommunityMembers.BIRTHDATE+") as "+CommunityMembers.AGE+", "
+				+" ((julianday('now')-julianday("+CommunityMembers.BIRTHDATE+"))/366) as "+CommunityMembers.AGE+", "
 				+Communities.COMMUNITY_NAME
 				+" from "+ CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
 				+ " left join "+ Communities.TABLE_COMMUNITIES

@@ -325,7 +325,7 @@ public class OPDCaseRecords extends DataClass {
 				+ TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +"." +REC_STATE+","
 				+ CommunityMembers.BIRTHDATE +", "
 				+ CommunityMembers.GENDER +", "
-				+ REC_DATE +"-"+ CommunityMembers.BIRTHDATE +" AS AGE, "
+				+ " ((julianday("+ REC_DATE +")- julianday("+ CommunityMembers.BIRTHDATE +"))/366) AS AGE, "
 				+ OPD_CASE_NAME+", "
 				+ LAB 
 				+ " from "

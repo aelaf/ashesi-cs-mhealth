@@ -50,7 +50,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * vaccine record table is added
 	 * 
 	 */
-	protected static final int DATABASE_VERSION=3; 
+	protected static final int DATABASE_VERSION=4; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -495,6 +495,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getInsert(3, "Peace",2));
 			db.execSQL(CHOs.getInsert(4,"Theresa",2));
 			db.execSQL(CHOs.getInsert(5,"Sandra",2));
+			db.execSQL(CHOs.getInsert(6,"Dorthy",2));
 			
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
@@ -538,6 +539,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion==2 && newVersion==3){
 				upgradeToVersion3(db);
 			}
+			
+			if(oldVersion==3 && newVersion==4){
+				upgradeToVersion4(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -580,6 +585,20 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(CHOs.getInsert(3, "Peace",2));
 		db.execSQL(CHOs.getInsert(4,"Theresa",2));
 		db.execSQL(CHOs.getInsert(5,"Sandra",2));
+	}
+	
+	/**
+	 * upgrade the database from version 2 to 3
+	 * @param db
+	 */
+	private void upgradeToVersion4(SQLiteDatabase db){
+		//this is tables are not in DB 2
+		
+		db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
+		db.execSQL(OPDCaseRecords.getCreateViewString());
+		
+		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
+		db.execSQL(CommunityMembers.getViewCreateSQLString());
 	}
 	
 	public String getDataFilePath(){

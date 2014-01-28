@@ -242,6 +242,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private EditText editNHISId;
 		private EditText editNHISExpiryDate;
 		private Spinner spinnerCommunities;
+		private Spinner spinnerAgeUnit;
 
 		private CHO currentCHO;
 		private int communityId;
@@ -344,6 +345,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			editNHISId=(EditText)rootView.findViewById(R.id.editNHISId);
 			editNHISExpiryDate=(EditText)rootView.findViewById(R.id.editNHISExpiryDate);
 			spinnerCommunities=(Spinner)rootView.findViewById(R.id.spinnerCommunities);
+			spinnerAgeUnit=(Spinner)rootView.findViewById(R.id.spinnerCommunityMemberAgeUnits);
+			
+			fillAgeUnitSpinner();
 			
 			if(state==STATE_NEW_MEMBER){
 				fillCommunitiesSpinner(communityId);
@@ -360,7 +364,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				editNHISExpiryDate.setText(cm.getFormatedNHISExpiryDate());
 				setGender(cm.getGender());
 				fillCommunitiesSpinner(cm.getCommunityID());
-
+				
 				
 			}
 
@@ -373,6 +377,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			setState(state);
 		}
 		
+		protected void fillAgeUnitSpinner(){
+			String units[]={"years","months"};
+			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,units);
+			spinnerAgeUnit.setAdapter(adapter);
+			
+		}
+
 		public boolean fillCommunitiesSpinner(int selectedId){
 
 			
@@ -402,8 +413,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 			
 			int age=Integer.parseInt(temp);
+			int unit=spinnerAgeUnit.getSelectedItemPosition();
+			if(unit==1){
+				date.add(java.util.Calendar.MONTH,(-1)*age);
+			}else{
+				date.add(java.util.Calendar.YEAR,(-1)*age);
+			}
 			
-			date.add(java.util.Calendar.YEAR,(-1)*age);
 			date.set(Calendar.DAY_OF_MONTH, 1);
 			date.set(Calendar.MONTH, Calendar.JANUARY);
 			SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
@@ -420,11 +436,26 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				return;
 			}
 			Calendar c=Calendar.getInstance();
-			int thisYear=c.get(Calendar.YEAR);
+			
+			//int thisYear=c.get(Calendar.YEAR);
+			//int thisMonth=c.get(Calendar.YEAR);
+			long thisTime=c.getTimeInMillis();
 			c.setTime(date);
-			int birthYear=c.get(Calendar.YEAR);
-			int age=thisYear-birthYear;
+			//int birthYear=c.get(Calendar.YEAR);
+			//int birthMonth=c.get(Calendar.MONTH);
+			long birthTime=c.getTimeInMillis();
+			long ym= 31622400000L; 
+			int age=(int)((thisTime-birthTime)/ym); 
+
+			spinnerAgeUnit.setSelection(0);	//year
+			if(age<1){
+				ym= 2592000000L; 
+				age=(int)((thisTime-birthTime)/ym);
+				spinnerAgeUnit.setSelection(1);	//month
+			}
+			
 			editAge.setText(Integer.toString(age));
+			
 		}
 		
 		public void buttonClicked(){
@@ -437,6 +468,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 		}
 		
+		/**
+		 * This method is used to save community member personal information after add or edit
+		 * 
+		 */
 		public void addCommunityMember(){
 			//get fullname
 			EditText editFullname=(EditText)rootView.findViewById(R.id.editFullname);
@@ -476,7 +511,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				int id=members.addCommunityMember(0, communityId, name, birthdate, gender,cardNo,nhisId,nhisExpiryDate);
 				if(id!=0){
 					communityMemberId=id;
-					setCommunityMemberId(id);
+					setCommunityMemberId(id); //make the new id available to the other fragments through the activity
 					state=STATE_RECORD;
 					stateAction();
 					setState(state);	//set activity state
@@ -493,6 +528,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				//??
 			}
 			
+			computeAge();
 
 		}
 				
@@ -541,6 +577,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					editCardNo.setEnabled(false);
 					editNHISId.setEnabled(false);
 					editNHISExpiryDate.setEnabled(false);
+					spinnerAgeUnit.setEnabled(false);
 					button.setText(R.string.editClient);
 					break;
 				case STATE_NEW_MEMBER:
@@ -555,6 +592,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
 					editNHISExpiryDate.setEnabled(true);
+					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.addCommunityMember);
 					break;
 				case STATE_EDIT_MEMBER:
@@ -569,6 +607,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
 					editNHISExpiryDate.setEnabled(true);
+					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.saveCommunityMember);
 					
 			}

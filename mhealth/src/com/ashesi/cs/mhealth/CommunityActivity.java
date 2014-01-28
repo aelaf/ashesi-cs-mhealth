@@ -121,11 +121,11 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		
 		communityMembers.close();
 		int communityId=getSelectedCommunityId();
-		if(!communityMembers.getAllCommunityMember(communityId)){
+		if(!communityMembers.getAllCommunityMember(communityId) && listCommunityMembers!=null){
 			listCommunityMembers.clear();
 			
 		}else{
-			listCommunityMembers=communityMembers.getArrayList(0);
+			listCommunityMembers=communityMembers.getArrayList(0); //get first page
 		}
 		page=0;
 		ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
