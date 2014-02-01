@@ -48,7 +48,8 @@ public class DataClass extends SQLiteOpenHelper {
 	 * DATABASE VERSION 3
 	 * vaccine table is added
 	 * vaccine record table is added
-	 * 
+	 * DATABASE VERSION 4
+	 * community member view and community member opd record view has been changed to compute age using julianday 
 	 */
 	protected static final int DATABASE_VERSION=4; 
 	protected SQLiteDatabase db;
@@ -466,6 +467,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Communities.getCreateTable());
 			setDataVersion(db,Communities.TABLE_COMMUNITIES,0);
 			
+			
 			db.execSQL(CommunityMembers.getCreateSQLString());
 			
 			setDataVersion(db,CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS,0);
@@ -520,7 +522,11 @@ public class DataClass extends SQLiteOpenHelper {
 			//view for vaccine records
 			db.execSQL(VaccineRecords.getCreateViewSQLString());
 			
-			Log.d("DataClass.onCreate", "data base created");	
+			Log.d("DataClass.onCreate", "data base created");
+			
+			//add in version 4, it should not be included in upgraded
+			db.execSQL(Communities.getInsertSQL(15, "Berekuso", 1));	//dont include in upgrade
+			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version			
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
@@ -560,6 +566,7 @@ public class DataClass extends SQLiteOpenHelper {
 		//re create Record view
 		db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
 		db.execSQL(OPDCaseRecords.getCreateViewString());
+		setDataVersion(db,DATABASE_NAME,2); 			//note down the data base version
 	}
 	
 	/**
@@ -585,6 +592,7 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(CHOs.getInsert(3, "Peace",2));
 		db.execSQL(CHOs.getInsert(4,"Theresa",2));
 		db.execSQL(CHOs.getInsert(5,"Sandra",2));
+		setDataVersion(db,DATABASE_NAME,3); 			//note down the data base version
 	}
 	
 	/**
@@ -599,6 +607,8 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
+		
+		setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version
 	}
 	
 	public String getDataFilePath(){

@@ -117,7 +117,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		choId=intent.getIntExtra("choId",0);
 		state=intent.getIntExtra("state", 1);
 		communityMemberId=intent.getIntExtra("id",0);
-		
+				
 		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 			// Create a tab with text corresponding to the page title defined by
@@ -150,21 +150,49 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	public void onTabReselected(ActionBar.Tab tab,FragmentTransaction fragmentTransaction) {
 	}
 
-	public void setCommunityMemberId(int id){
-		this.communityMemberId=id;
-	}
 	
+	
+	public int getCommunityId(){
+		return this.communityId;
+	}
+	/**
+	 * use this method to set community id if it changes in the fragments
+	 * @param id
+	 */
+	public void setCommunityId(int id){
+		this.communityId=id;
+	}
+	/**
+	 * use this method to set state if it changes in the fragments
+	 * @param id
+	 */
 	public void setState(int state){
 		this.state=state;
 	}
+	/**
+	 * get state as stored in the activity
+	 * @return
+	 */
+	public int getState(){
+		return this.state;
+	}
 	
+	/**
+	 * use this method to set community member id if it changes in the fragments
+	 * @param id
+	 */
+	public void setCommunityMemberId(int id){
+		this.communityMemberId=id;
+	}
+	/**
+	 * get the community member stored in the activity
+	 * @return
+	 */
 	public int getCommunityMemberId(){
 		return this.communityMemberId;
 	}
 	
-	public int getState(){
-		return this.state;
-	}
+	
 	
 	
 	/**
@@ -266,10 +294,25 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			//TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
 			//dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
 			
+			communityMemberId=getArguments().getInt("id");
+			state=getArguments().getInt("state");
+			communityId=getArguments().getInt("communityId");
 			this.rootView=rootView;
 			create();
 			return rootView;
 		}
+		
+		@Override
+		public void onResume(){
+			super.onResume();
+			//if a new community is added get the id 
+			state=this.getState();
+			communityMemberId=this.getCommunityMemberId();
+			communityId=this.getActivityCommunityId();
+			create();
+			
+		}
+
 		
 		@Override
 		public void onFocusChange(View v, boolean focus) {
@@ -307,6 +350,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
 			return activity.getState();
 		}
+	
 		
 		public int getCommunityMemberId(){
 			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
@@ -324,6 +368,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 		}
 		
+		public void setActivityCommunityId(int id){
+			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
+			activity.setCommunityId(id);
+		}
+		
+		public int getActivityCommunityId(){
+			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
+			return activity.getCommunityId();
+		}
+		
 		public void create(){
 			
 			
@@ -333,12 +387,11 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
 			editAge.setOnFocusChangeListener(this);
 			
-			communityMemberId=getArguments().getInt("id");
-			state=getArguments().getInt("state");
+			
 			int choId=getArguments().getInt("choId");
 			getCurrentCHO(choId);
 			
-			communityId=getArguments().getInt("communityId");
+			
 			editFullname=(EditText)rootView.findViewById(R.id.editFullname);
 			editBirthdate=(EditText)rootView.findViewById(R.id.editCommunityMemberRecordBirthdate);
 			editCardNo=(EditText)rootView.findViewById(R.id.editCardNo);
@@ -513,8 +566,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					communityMemberId=id;
 					setCommunityMemberId(id); //make the new id available to the other fragments through the activity
 					state=STATE_RECORD;
-					stateAction();
+					stateAction();	
 					setState(state);	//set activity state
+					setActivityCommunityId(communityId);	//make the new id available to the other fragments through the activity
+					
 				}
 				
 			}else if(state==STATE_EDIT_MEMBER){
@@ -523,6 +578,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					state=STATE_RECORD;
 					stateAction();
 					setState(state);	//set activity state
+					setActivityCommunityId(communityId);	//make the new id available to the other fragments through the activity
 				}
 			}else{
 				//??

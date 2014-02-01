@@ -100,6 +100,22 @@ public class Communities extends DataClass {
 				+HOUSEHOLD + " integer "
 				+")";
 		
+	}
+	
+	static public String getInsertSQL(int id,String communityName,int subdistrictId){
+		return "insert into "+TABLE_COMMUNITIES +"("
+				+COMMUNITY_ID +" , "
+				+COMMUNITY_NAME +" , "
+				+SUBDISTRICT_ID+", "
+				+LATITUDE +", "
+				+LONGITUDE +" , "
+				+POPULATION +", "
+				+HOUSEHOLD 
+				+") values("
+				+id+", "
+				+"'" +communityName+"', "
+				+subdistrictId +", 0,0,0,0)";
+
 	}	
 	
 	public HttpURLConnection connect(){
