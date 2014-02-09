@@ -74,6 +74,9 @@
     <string name="getAllinCommunity">Get All in Community</string>
     <string name="next">Get More</string>
     <string name="lab">Lab</string>
+    <string name="title_activity_knowledge">mHealth Knowledge</string>
+    <string name="the_current_cho_is_">"The Current CHO is: "</string>
+   
     
 
 </resources>

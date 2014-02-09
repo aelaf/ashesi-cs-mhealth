@@ -31,6 +31,7 @@ import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
 import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.Questions;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -507,8 +508,13 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(OPDCaseRecords.getCreateViewString());
 			//view for community members
 			db.execSQL(CommunityMembers.getViewCreateSQLString());
-				
 			
+			//Create the knowledge - Question table	
+			db.execSQL(Questions.getCreateQuery());				
+			//Create categories
+			db.execSQL(Categories.getCreateSqlString());
+			
+
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
 		}
@@ -525,7 +531,7 @@ public class DataClass extends SQLiteOpenHelper {
 				db.execSQL(sql);
 				//re create Record view
 				db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
-				db.execSQL(OPDCaseRecords.getCreateViewString());
+				db.execSQL(OPDCaseRecords.getCreateViewString());					
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());

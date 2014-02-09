@@ -22,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
-
 	CHO currentCHO;
 	Menu menu;
 
@@ -40,7 +39,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		buttonOpenClose.setOnClickListener(this);
 		View buttonOpenRecord=findViewById(R.id.buttonMainOpenRecord);
 		buttonOpenRecord.setOnClickListener(this);
-
+        View buttonOpenKnowledge = findViewById(R.id.buttonMainKnowledge);
+        buttonOpenKnowledge.setOnClickListener(this);
 		
 		loadSpinner();
 		textStatus.setText("application ready");
@@ -60,6 +60,11 @@ public class MainActivity extends Activity implements OnClickListener {
 				break;
 			case R.id.buttonMainLoginStart:
 				loginAndStart();
+				break;
+			case R.id.buttonMainKnowledge:
+				Intent knowledge = new Intent(this,KnowledgeActivity.class);
+				knowledge.putExtra("choId", currentCHO.getId());
+				startActivity(knowledge);
 				break;
 				
 		}
@@ -89,8 +94,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			case R.id.itemMainActionBarSynch:
 				synch();	//you can synch with out logging in
 				return true;
-			case R.id.itemOPDCases:
-				
+			case R.id.itemOPDCases:	
 				Log.d("MainActivity","starting activity");
 				Intent intent=new Intent(this,CommunityActivity.class);
 				intent.putExtra("choId", currentCHO.getId());
