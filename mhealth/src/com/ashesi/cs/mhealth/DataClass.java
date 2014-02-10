@@ -462,6 +462,8 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Communities.getCreateTable());
 			setDataVersion(db,Communities.TABLE_COMMUNITIES,0);
 			
+			
+			
 			db.execSQL(CommunityMembers.getCreateSQLString());
 			setDataVersion(db,CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS,0);
 			
@@ -507,13 +509,15 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			
 			Log.d("DataClass.onCreate", "data base created");
+			System.out.println("Database CREATED!!");
 			
 			//view for opd case records
 			db.execSQL(OPDCaseRecords.getCreateViewString());
 			//view for community members
 			db.execSQL(CommunityMembers.getViewCreateSQLString());
 			//view for notes
-			//db.execSQL(Notes.getViewCreateSQLString());
+			db.execSQL(Notes.getViewCreateSQLString());
+			System.out.println("MY NOTE TABLE IS CREATED");
 				
 			
 		}catch(Exception ex){
@@ -536,8 +540,7 @@ public class DataClass extends SQLiteOpenHelper {
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
-		}
-		
+		}	
 	}
 	
 	public String getDataFilePath(){
@@ -564,10 +567,6 @@ public class DataClass extends SQLiteOpenHelper {
 		}catch(Exception ex){
 			mDeviceId=0;
 		}
-		return mDeviceId;
-		
+		return mDeviceId;	
 	}
-	
-	
-	
 }

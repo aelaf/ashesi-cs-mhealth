@@ -24,7 +24,9 @@ public class Notes extends DataClass {
 	public static final String NOTE = "note";
 	public static final String DATE_TAKEN = "date_taken";
 	public static final String COMMUNITY_ID = Communities.COMMUNITY_ID;
+	public static final String COMMUNITY_NAME = Communities.COMMUNITY_NAME;
 	public static final String CHO_ID = CHOs.CHO_ID;
+	public static final String CHO_NAME = CHOs.CHO_NAME;
 	
 	public static final String VIEW_NAME_NOTES = "view_notes";
 	
@@ -41,27 +43,39 @@ public class Notes extends DataClass {
 				+ NOTE_ID +" int primary key, "
 				+ NOTE +" text, "
 				+ DATE_TAKEN +" text, "
-				+ COMMUNITY_ID +" text, "
-				+ CHO_ID +" text, "
+				+ COMMUNITY_ID +" int, "
+				+ CHO_ID +" int "
 				+ " )";
-		
 	}
 	
-	/*
+	
 	public static String getViewCreateSQLString(){
-		return "create view "+VIEW_NAME_NOTES+ " as select "
-				SELECT * FROM TABLE_NAME_NOTES INNER JOIN 
-	}*/
+	/*Things I need from this view, CHO's name
+	the community this note is about, 
+	the note, the date taken, */
+	
+		return "create view "+VIEW_NAME_NOTES+ " as select "+
+				NOTE_ID+ ", " +NOTE+ ", "
+				+DATE_TAKEN+", "
+				+Communities.TABLE_COMMUNITIES+"."+Communities.COMMUNITY_NAME+" as "
+				+COMMUNITY_NAME+", "
+				+CHOs.TABLE_NAME_CHOS+"."+CHOs.CHO_NAME+" as "
+				+CHO_NAME+ 
+				" FROM "+TABLE_NAME_NOTES+" INNER JOIN "+ 
+				CHOs.TABLE_NAME_CHOS+" ON "+TABLE_NAME_NOTES+"."+CHO_ID+ " = "+CHOs.TABLE_NAME_CHOS+"."+CHOs.CHO_ID+ 
+				" INNER JOIN "+ 
+				Communities.TABLE_COMMUNITIES+" ON "+ TABLE_NAME_NOTES+"."+COMMUNITY_ID+" = "+Communities.TABLE_COMMUNITIES+"."+Communities.COMMUNITY_ID; 
+	}
 	
 	public boolean getAllNotes(){
 		try{
-			String[] columns ={NOTE_ID,NOTE,DATE_TAKEN,COMMUNITY_ID,CHO_ID}; 
+			String[] columns2 ={NOTE_ID,NOTE,DATE_TAKEN,Communities.COMMUNITY_NAME,CHOs.CHO_NAME}; 
 			db=getReadableDatabase();
-			cursor=db.query(VIEW_NAME_NOTES, columns, null,null, null, null, null);
+			cursor=db.query(TABLE_NAME_NOTES, columns, null,null, null, null, null);
 			return true;
 			
 		}catch(Exception ex){
-			Log.e("Notes.getAllNOtes()","Exception "+ex.getMessage());
+			Log.e("Notes.getAllNotes()","Exception "+ex.getMessage());
 			close();
 			return false;
 			//cursor=db.query(TABLE_NAME_NOTES, columns, NOTE_ID+"="+note_id,null, null, null, null);	
@@ -86,7 +100,7 @@ public class Notes extends DataClass {
 			cv.put(DATE_TAKEN, dateFormat.format(noteDate));
 			
 			cv.put(NOTE, note);
-			
+				
 			if(db.insertWithOnConflict(TABLE_NAME_NOTES, null, cv, SQLiteDatabase.CONFLICT_FAIL)<=0){
 				close();
 				return 0;
@@ -103,8 +117,7 @@ public class Notes extends DataClass {
 	}
 	
 	public int getNextId(){
-		try
-		{
+		try{
 			db=getReadableDatabase();
 			String [] columns={"MAX(" +NOTE_ID+")"};
 			cursor=db.query(TABLE_NAME_NOTES,columns, null, null, null, null, null);
@@ -164,7 +177,14 @@ public class Notes extends DataClass {
 		ArrayList<Note> list = new ArrayList<Note>();
 		Note n = fetch();
 		
-		return null;
+		while(n != null){
+			list.add(n);
+			n = fetch();
+			//System.out.println("Are You Fetching something");
+		}
+		
+		close();
+		return list;
 	}
 	
 }

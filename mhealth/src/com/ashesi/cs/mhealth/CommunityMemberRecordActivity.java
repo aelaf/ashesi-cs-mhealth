@@ -848,4 +848,5 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 	}
+
 }
