@@ -6,17 +6,17 @@ public class HealthPromotion {
 	private String topic;
 	private String method;
 	private String target_audience;
-	private int number_of_audience;
+	private String number_of_audience;
 	private String remarks;
 	private String month;
 	private String latitude;
 	private String longitude;
 	private String image;
-	private int idcho;
-	private int subdistrict_id;
+	private String idcho;
+	private String subdistrict_id;
 	
-	public HealthPromotion(String date,String venue,String topic,String method,String target_audience,int number_of_audience,
-			String remarks, String month, String latitude, String longitude, String image, int idcho, int subdistrict_id){
+	public HealthPromotion(String date,String venue,String topic,String method,String target_audience,String number_of_audience,
+			String remarks, String month, String latitude, String longitude, String image,String dcho, String subdistrict_id){
 		this.date=date;
 		this.venue=venue;
 		this.topic=topic;
@@ -51,11 +51,11 @@ public class HealthPromotion {
 	public String getTargetAudience(){
 		return target_audience;
 	}
-	public int getNumberAudience(){
+	public String getNumberAudience(){
 		return number_of_audience;
 	}
 	
-	public int getChoId(){
+	public String getChoId(){
 		return idcho;
 	}
 	public String getRemarks(){
@@ -74,7 +74,7 @@ public class HealthPromotion {
 	public String getImage(){
 		return image;
 	}
-	public int getSubdistrictid(){
+	public String getSubdistrictid(){
 		return subdistrict_id;
 	}
 }

@@ -32,4 +32,8 @@ public class CHO {
 	public String toString(){
 		return fullname +" - "+ subdistrictName;
 	}
+	
+	public String getAll(){
+		return fullname +" - "+ subdistrictId+ " - "+ id;
+	}
 }

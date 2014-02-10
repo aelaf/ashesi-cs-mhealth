@@ -82,7 +82,7 @@
                
 
             </TableRow>
-        </TableLayout><TableRow
+            <TableRow
             android:id="@+id/tableRow5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
@@ -95,5 +95,20 @@
 				      android:text="@string/add_community" />
             
         </TableRow>
+        <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
+				  <Button
+				      android:id="@+id/buttonHealthPromotions"
+				      android:layout_width="match_parent"
+				      android:layout_height="wrap_content"
+				      android:enabled="false"
+				      android:text="@string/add_health_promotion" />
+            
+        </TableRow>
+        
+            
+        </TableLayout>
 </LinearLayout>

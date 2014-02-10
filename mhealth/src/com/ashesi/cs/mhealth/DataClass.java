@@ -23,9 +23,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 
+
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.HealthPromotions;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
@@ -445,7 +447,7 @@ public class DataClass extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		
+		System.out.println(HealthPromotions.getCreateSQLString());
 		try
 		{
 			
@@ -466,6 +468,10 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(OPDCases.getCreateSQLString());
 			
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
+			
+			db.execSQL(HealthPromotions.getCreateSQLString());
+			setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
+			
 			/*this cases are added just for testing 
 			 * The complete OPD case list should be downloaded using synch
 			 * */
@@ -499,6 +505,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			db.execSQL(VaccineRecords.getCreateSQLString());
 			setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORD,0);
+			
 			
 			
 			Log.d("DataClass.onCreate", "data base created");
