@@ -478,6 +478,11 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(OPDCases.getInsertSQLString(34, "Hypertension",3));
 			
 			db.execSQL(Categories.getCreateSqlString());
+			db.execSQL(Categories.getInsert("Nutrition"));
+			db.execSQL(Categories.getInsert("Pharmaceuticals"));
+			db.execSQL(Categories.getInsert("Administration"));
+			db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
+			db.execSQL(Categories.getInsert("Childcare"));
 
 			setDataVersion(db,Categories.TABLE_NAME_CATEGORIES,0);
 			
@@ -511,8 +516,8 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			//Create the knowledge - Question table	
 			db.execSQL(Questions.getCreateQuery());				
-			//Create categories
-			db.execSQL(Categories.getCreateSqlString());
+			//Create categorie
+			
 			
 
 		}catch(Exception ex){
@@ -525,7 +530,7 @@ public class DataClass extends SQLiteOpenHelper {
 		try
 		{
 			if(oldVersion==1 && newVersion==2){
-				//add lab colunm to table
+				//add lab column to table
 				String sql="alter table "+ OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES
 						+" add column "+OPDCaseRecords.LAB +" text default '"+OPDCaseRecords.LAB_NOT_CONFIRMED+ "'";
 				db.execSQL(sql);
