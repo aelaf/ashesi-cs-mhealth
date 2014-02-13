@@ -525,7 +525,7 @@ public class DataClass extends SQLiteOpenHelper {
 			Log.d("DataClass.onCreate", "data base created");
 			
 			//add in version 4, it should not be included in upgraded
-			db.execSQL(Communities.getInsertSQL(15, "Berekuso", 1));	//dont include in upgrade
+			db.execSQL(Communities.getInsertSQL(15, "Berekuso", 1));	//don't include in upgrade
 			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version			
 			
 		}catch(Exception ex){
@@ -566,7 +566,7 @@ public class DataClass extends SQLiteOpenHelper {
 		//re create Record view
 		db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
 		db.execSQL(OPDCaseRecords.getCreateViewString());
-		setDataVersion(db,DATABASE_NAME,2); 			//note down the data base version
+		setDataVersion(db,DATABASE_NAME,2); 			//note down the database version
 	}
 	
 	/**
@@ -592,7 +592,7 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(CHOs.getInsert(3, "Peace",2));
 		db.execSQL(CHOs.getInsert(4,"Theresa",2));
 		db.execSQL(CHOs.getInsert(5,"Sandra",2));
-		setDataVersion(db,DATABASE_NAME,3); 			//note down the data base version
+		setDataVersion(db,DATABASE_NAME,3); 			//note down the database version
 	}
 	
 	/**
@@ -608,7 +608,7 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		
-		setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version
+		setDataVersion(db,DATABASE_NAME,4); 			//note down the database version
 	}
 	
 	public String getDataFilePath(){

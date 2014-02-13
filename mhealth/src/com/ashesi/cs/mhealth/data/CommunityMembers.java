@@ -101,7 +101,7 @@ public class CommunityMembers extends DataClass {
 			cv.put(SERIAL_NO, id);
 			cv.put(COMMUNITY_ID, community_id);
 			cv.put(COMMUNITY_MEMBER_NAME, communityMemberName);
-			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-d",Locale.UK);
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			cv.put(BIRTHDATE, dateFormat.format(birthdate));
 			cv.put(GENDER,gender);
 			cv.put(CARD_NO,cardNo);
@@ -143,7 +143,7 @@ public class CommunityMembers extends DataClass {
 			
 			cv.put(COMMUNITY_ID, community_id);
 			cv.put(COMMUNITY_MEMBER_NAME, communityMemberName);
-			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-d",Locale.UK);
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			cv.put(BIRTHDATE, dateFormat.format(birthdate));
 			cv.put(GENDER,gender);
 			cv.put(CARD_NO,cardNo);
@@ -177,7 +177,7 @@ public class CommunityMembers extends DataClass {
 			db=getWritableDatabase();
 			ContentValues cv=new ContentValues();
 			
-			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-d",Locale.UK);
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			
 			cv.put(NHIS_ID,nhisID);
 			cv.put(NHIS_EXPIRY_DATE,dateFormat.format(nhisExpiryDate));
@@ -586,5 +586,32 @@ public class CommunityMembers extends DataClass {
 				+" from "+ CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
 				+ " left join "+ Communities.TABLE_COMMUNITIES
 				+ " on " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+CommunityMembers.COMMUNITY_ID+"="+Communities.TABLE_COMMUNITIES+"."+Communities.COMMUNITY_ID;
+	}
+	/**
+	 * this method is added to correct issue with birth dates. In earlier versions in some cases birth date was 
+	 * stored in a database as yyyy-mm-d instead of yyyy-mm-dd. This method corrects it. 
+	 * @return
+	 */
+	public boolean correctBirthdate(){
+		if(!getAllCommunityMember(0)){
+			return false;
+		}
+		java.util.Date birthdate;
+		ContentValues cv=new ContentValues();
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		SQLiteDatabase dbw=getWritableDatabase();
+		CommunityMember obj=fetch();
+		String whereClause="";
+		int u;
+		while(obj!=null){
+			birthdate=obj.getBirthdateDate();
+			cv.put(BIRTHDATE, dateFormat.format(birthdate));
+			whereClause=CommunityMembers.COMMUNITY_MEMBER_ID+"="+obj.getId();
+			u=dbw.update(TABLE_NAME_COMMUNITY_MEMBERS, cv, whereClause, null);
+			obj=fetch();
+		}
+		dbw.close();
+		close();
+		return true;
 	}
 }

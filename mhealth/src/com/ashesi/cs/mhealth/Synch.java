@@ -10,6 +10,7 @@ import java.util.Calendar;
 import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.data.Communities;
+import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.layout;
@@ -19,7 +20,9 @@ import com.ashesi.cs.mhealth.data.Vaccines;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -156,6 +159,7 @@ public class Synch extends Activity implements OnClickListener {
 			FileInputStream fis=new FileInputStream(dc.getDataFilePath());
 			progressBar.setProgress(2);
 			textStatus.setText("reading data file...");
+			//TODO:limit the buffer size to fixed number
 			byte[] buffer=new byte[fis.available()];
 			fis.read(buffer);
 			progressBar.setProgress(4);
@@ -165,11 +169,75 @@ public class Synch extends Activity implements OnClickListener {
 			fis.close();
 			progressBar.setProgress(5);
 			textStatus.setText("local backup complete");
+			//correctBirthdate(); 					//call  to correct birth dates recorded in yyyy-mm-d form instead of yyyy-mm-dd 	
 		}catch(Exception ex){
 			textStatus.setText("local backup fialed");
 		}
 		
 	}
+	
+	public void localRestor(){
+		try{
+			progressBar.setMax(5);
+			progressBar.setProgress(0);
+			textStatus.setText("starting...");
+			DataClass dc=new DataClass(getApplicationContext());
+			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			String restoreFilename=downloadPath.getPath() + "/mhealthbackup"; 
+			FileInputStream fis=new FileInputStream(restoreFilename);
+			String dbFilepath=dc.getDataFilePath();
+			
+			File dbFile=new File(dbFilepath);
+			if(dbFile.delete()){
+				Log.d("Synch", "db file deleted");
+			}
+			
+			FileOutputStream fos=new FileOutputStream(dbFile,false);
+			
+			progressBar.setProgress(2);
+			textStatus.setText("reading backfile file...");
+			byte[] buffer=new byte[fis.available()];
+			fis.read(buffer);
+			progressBar.setProgress(4);
+			textStatus.setText("restoring...");
+			
+			fos.write(buffer);
+			fos.close();
+			fis.close();
+			progressBar.setProgress(5);
+			textStatus.setText("local backup complete");
+			correctBirthdate();	
+		}catch(Exception ex){
+			textStatus.setText("local backup fialed");
+		}
+		
+	}
+	/**
+	 * this method runs once only to correct birth dates stored in the wrong format
+	 */
+	private void correctBirthdate(){
+		int done=0;
+		try{
+			done=this.getPreferences(MODE_PRIVATE).getInt("iss4", 0);
+			
+		}catch(Exception ex){
+			done=0;
+		}
+		if(done!=0){
+			return;
+		}
+		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
+		SharedPreferences.Editor editor=this.getPreferences(MODE_PRIVATE).edit();
+		if(communityMembers.correctBirthdate()){
+			editor.putInt("iss4", 1);
+			textStatus.setText("local backup complete birthdate corrected");
+		}else{
+			editor.putInt("iss4", 0);
+			textStatus.setText("local backup complete birthdate failed to correct");
+		}
+		editor.commit();
+	}
+	
 	public void cancel(){
 		if(task==null){
 			return;
@@ -186,6 +254,7 @@ public class Synch extends Activity implements OnClickListener {
 		buttonSynchBackup.setEnabled(false);
 		buttonSynchVaccine.setEnabled(false);
 	}
+	
 	public void enableButtons(){
 		buttonSynchCommunities.setEnabled(true);
 		buttonSynchOPDCases.setEnabled(true);
