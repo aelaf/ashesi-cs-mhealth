@@ -30,8 +30,11 @@ import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
+import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Questions;
+import com.ashesi.cs.mhealth.knowledge.ResourceLinks;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -514,9 +517,20 @@ public class DataClass extends SQLiteOpenHelper {
 			//view for community members
 			db.execSQL(CommunityMembers.getViewCreateSQLString());
 			
-			//Create the knowledge - Question table	
+			
+			/*Knowledge Section*/
+			//Create the Question table	
 			db.execSQL(Questions.getCreateQuery());				
-			//Create categorie
+			
+			//Create resources materials
+			db.execSQL(ResourceMaterials.getCreateQuery());
+			
+			//Create resource links
+			db.execSQL(ResourceLinks.getCreateQuery());
+			
+			//Create answers table
+			db.execSQL(Answers.getCreateQuery());
+			
 			
 			
 

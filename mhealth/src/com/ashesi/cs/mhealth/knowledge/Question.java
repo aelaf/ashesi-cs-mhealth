@@ -5,13 +5,15 @@ public class Question {
 	private String qContent;
 	private int choId;
 	private int categoryId;
+	private String date;
 	
-	public Question(int id, String content, int choId, int catId) {
+	public Question(int id, String content, int choId, int catId, String theDate) {
 		// TODO Auto-generated constructor stub
 		qId = id;
 		qContent = content;
 		this.choId = choId;
 		categoryId = catId;
+		date = theDate;
 	}
 	
 	public int getId(){
@@ -32,6 +34,10 @@ public class Question {
 	
 	public String toString(){
 		return qContent + " - " + choId + " under category: " + categoryId;
+	}
+	
+	public String getDate(){
+		return date;
 	}
 
 }

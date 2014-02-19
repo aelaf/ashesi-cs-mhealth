@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.data.CHO;
@@ -25,14 +26,14 @@ import com.ashesi.cs.mhealth.knowledge.Category;
 import com.ashesi.cs.mhealth.knowledge.Question;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 
-public class KnowledgeActivity extends Activity implements OnClickListener{
+public class PostQuestionActivity extends Activity implements OnClickListener{
 	private CHO currentCHO;
-	private Spinner spinner;
+	private Spinner spinner, spinner2;
 	private Questions db;
 	private Categories db1;
 	ArrayList<Question> qs;
 	ArrayList<Category> cat;
-	private List<String> list;
+	private List<String> list, sortList;
 	private Button btn;
 	private EditText question;
 	private ListView theVList;
@@ -42,7 +43,7 @@ public class KnowledgeActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_knowledge);
+		setContentView(R.layout.activity_post_question);
 		Intent intent=getIntent();
 		int choId=intent.getIntExtra("choId", 0);
 		CHOs chos=new CHOs(getApplicationContext());
@@ -59,33 +60,50 @@ public class KnowledgeActivity extends Activity implements OnClickListener{
 		
 		 qs = db.getAllQuestions();
 		 cat = db1.getAllCategories();
-			refreshData();
+		 //refreshData();
 		for(Question q : qs){
 			String log = q.toString();
 			Log.d("Question: ", log);
 		}
 		
 		list = new ArrayList<String>();
+		sortList = new ArrayList<String>();
+		sortList.add("Sort by:");
 		list.add("Choose a Category");
 		for(Category ca : cat){
 			String lo = ca.getCategoryName();
 			System.out.println(lo);
 			Log.d("Category: ", lo);
 			list.add(lo);
+			sortList.add(lo);
 		}
 		//Populate Categories spinner
 		addItemsOnSpinner();
 		addListenerOnButton();
-		//adapter.notifyDataSetChanged();
-		//addListenerOnSpinnerItemSelection();	
-		//adapter.notifyDataSetChanged();
+		addListenerOnList();
 	}
 	
-	private void addListenerOnSpinnerItemSelection() {
+	private void addListenerOnList() {
 		// TODO Auto-generated method stub
-		spinner = (Spinner)findViewById(R.id.spinner1);
-		spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-		
+
+		theVList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				Toast.makeText(arg0.getContext(), 
+						"OnItemSelectedListener : " + arg0.getItemAtPosition(arg2).toString(),
+						Toast.LENGTH_SHORT).show();
+				Intent i = new Intent(getApplicationContext(), ViewQuestionActivity.class);
+				CHOs ch = new CHOs(getApplicationContext());
+				i.putExtra("ChoName", ch.getCHO(qs.get(arg2).getChoId()).getFullname());
+				i.putExtra("Question", qs.get(arg2).getContent());
+				i.putExtra("datetime", qs.get(arg2).getDate());
+				i.putExtra("category", cat.get(arg2).getCategoryName());
+				startActivity(i);
+			}		
+		});
 	}
 
 	private void addListenerOnButton() {
@@ -99,14 +117,14 @@ public class KnowledgeActivity extends Activity implements OnClickListener{
 		@Override
 		public void onClick(View v){
 			if(spinner.getSelectedItemPosition() < 1){
-				Toast.makeText(KnowledgeActivity.this, "Please choose a category " 
+				Toast.makeText(PostQuestionActivity.this, "Please choose a category " 
 						, Toast.LENGTH_SHORT).show();
 			}else if(question.getText().toString() == "" || spinner.getSelectedItemPosition() < 1){
-				Toast.makeText(KnowledgeActivity.this, "Please type a question " 
+				Toast.makeText(PostQuestionActivity.this, "Please type a question " 
 						, Toast.LENGTH_SHORT).show();
 			}else{
 				postQuestion();
-				Toast.makeText(KnowledgeActivity.this, "Your question has submitted under " + cat.get(spinner.getSelectedItemPosition()).getCategoryName(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(PostQuestionActivity.this, "Your question has submitted under " + cat.get(spinner.getSelectedItemPosition()).getCategoryName(), Toast.LENGTH_SHORT).show();
 				refreshData();
 			}
 		}
@@ -118,12 +136,17 @@ public class KnowledgeActivity extends Activity implements OnClickListener{
 	 * Dynamically populate categories spinner
 	 */
 	public void addItemsOnSpinner(){
+		spinner2 = (Spinner)findViewById(R.id.spinner2);
 		spinner = (Spinner)findViewById(R.id.spinner1);
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(dataAdapter);
 		
+		//Sort Drop down
+		ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sortList);
+		dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner2.setAdapter(dataAdapter2);
 	}
 	
 	
@@ -160,7 +183,11 @@ public class KnowledgeActivity extends Activity implements OnClickListener{
 
 	}
 	
-
+	@Override
+	protected void onResume() {
+		refreshData();
+		super.onResume();
+	}
 	
 	
 }

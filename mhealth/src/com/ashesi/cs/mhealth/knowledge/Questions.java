@@ -1,6 +1,9 @@
 package com.ashesi.cs.mhealth.knowledge;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,8 +21,9 @@ public class Questions extends DataClass{
 	public static final String KEY_CONTENT = "q_content";
 	public static final String KEY_CHO_ID = "cho_id";
 	public static final String KEY_CATEGORY_ID = "category_id";
+	public static final String KEY_DATE = "question_date";
 	
-	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID};
+	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE};
 	
 	
 	public Questions(Context context) {
@@ -33,35 +37,42 @@ public class Questions extends DataClass{
 				+ KEY_CONTENT +" text, "
 				+ KEY_CATEGORY_ID +" int, "
 				+ KEY_CHO_ID +" int ,"
-				+ "FOREIGN KEY ("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
+				+ KEY_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
+				+ "FOREIGN KEY( "+ KEY_CATEGORY_ID + ") REFERENCES categories(category_id), "
+				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
 		
 	}
 	
 	public static String getInsert(String content,int choId, int categoryId){
+		Date date = new Date();
+        DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		return "insert into "
 				+ TABLE_NAME_QUESTIONS +" ("
-				+ ", "
 				+ KEY_CONTENT +", "
 				+ KEY_CATEGORY_ID + ", "
-				+ KEY_CHO_ID 
+				+ KEY_CHO_ID + " ," 
+				+ KEY_DATE  
 				+") values("
 			    + ", "
 				+ "'"+ content +"',"
 				+ categoryId + ", "
 				+ choId
-				+") ";
+				+" , " + dt.format(date) + ") ";
 	}
 	
 	public boolean addQuestion(int id,String content,int choId, int categoryId){
 		try
 		{
 			if(!content.isEmpty()){
-				db=getReadableDatabase();
+				Date date = new Date();
+	            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+	          	db=getReadableDatabase();
 				ContentValues values=new ContentValues();
 				//values.put(KEY_ID, id);
 				values.put(KEY_CONTENT, content);
 				values.put(KEY_CATEGORY_ID, categoryId);
 				values.put(KEY_CHO_ID, choId);
+				values.put(KEY_DATE, dt.format(date));
 				db.insertWithOnConflict(TABLE_NAME_QUESTIONS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 				return true;
 			}else{
@@ -92,7 +103,9 @@ public class Questions extends DataClass{
 			int choId=cursor.getInt(index);
 			index=cursor.getColumnIndex(KEY_CATEGORY_ID);
 			int catId=cursor.getInt(index);
-			Question q=new Question(id,content,choId,catId);
+			index = cursor.getColumnIndex(KEY_DATE);
+			String theDate = cursor.getString(index);
+			Question q=new Question(id,content,choId,catId, theDate);
 			cursor.moveToNext();
 			return q;
 		}catch(Exception ex){
@@ -174,19 +187,18 @@ public class Questions extends DataClass{
 			int id;
 			int choId;
 			int catId;
+			//String aDate;
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);
 				content=obj.getString("q_content");
 				id=obj.getInt("q_id");
 				catId=obj.getInt(KEY_CATEGORY_ID);
 				choId = obj.getInt(KEY_CHO_ID);
+				//aDate = obj.getString(KEY_DATE);
 				addQuestion(id,content,choId, catId);
 			}
 		}catch(Exception ex){
 			return;
 		}
 	}
-	
-	
-
 }

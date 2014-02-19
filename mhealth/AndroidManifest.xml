@@ -62,7 +62,7 @@
         </activity>
         
             <activity
-            android:name="com.ashesi.cs.mhealth.KnowledgeActivity"
+            android:name="com.ashesi.cs.mhealth.PostQuestionActivity"
             android:label="@string/title_activity_knowledge" >
             <intent-filter>
                 <action android:name="android.intent.action.KNOWLEDGE" />
@@ -71,6 +71,15 @@
             </intent-filter>
         </activity>
         
+            <activity
+            android:name="com.ashesi.cs.mhealth.ViewQuestionActivity"
+            android:label="@string/viewPost">"
+            <intent-filter>
+                <action android:name="android.intent.action.VIEWQUESTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         
     </application>
 
