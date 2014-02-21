@@ -113,7 +113,14 @@ public class Notes extends DataClass {
 			Log.e("Notes.SaveNote","Exception "+ex.getMessage());
 			return 0;
 		}
+	}
+	
+	public int deleteNote(int note_id){
+		db=getWritableDatabase();
 		
+		int numRowsAffected = db.delete(TABLE_NAME_NOTES, "NOTE_ID = note_id", null);
+		close();
+		return numRowsAffected;
 	}
 	
 	public int getNextId(){
@@ -148,7 +155,7 @@ public class Notes extends DataClass {
 			}
 			
 			int index=cursor.getColumnIndex(NOTE_ID);
-			int choId=cursor.getInt(index);
+			int noteId=cursor.getInt(index);
 			
 			index=cursor.getColumnIndex(NOTE);
 			String theNote = cursor.getString(index);
@@ -162,8 +169,7 @@ public class Notes extends DataClass {
 			index=cursor.getColumnIndex(CHO_ID);
 			int cho_id = cursor.getInt(index);
 			
-			 
-			Note note=new Note(theNote,date,comm_ID,cho_id);
+			Note note=new Note(noteId,theNote,date,comm_ID,cho_id);
 			
 			cursor.moveToNext();
 			return note;

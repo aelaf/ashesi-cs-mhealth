@@ -29,6 +29,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,11 +39,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -190,7 +194,7 @@ public class NotesActivity extends FragmentActivity implements
 			case 0:
 				return getString(R.string.takenote).toUpperCase(l);
 			case 1:
-				return getString(R.string.recent_notes).toUpperCase(l);
+				return getString(R.string.title_activity_show_notes).toUpperCase(l);
 		}
 			return null;
 	}
@@ -288,20 +292,35 @@ public class NotesActivity extends FragmentActivity implements
 	        			//CHOs chos=new CHOs(getActivity().getApplicationContext());
 	        			//currentCHO = chos.getCHO(choId);
 	        			
-	        			//int sel_Community = selectedCommunity.getId();
+	        			Community selectedCommunity = (Community)s.getSelectedItem();
+	        			
+	        			//int sel_Community = selectedCommunity.getId(); remember to uncomment
 	        			int sel_Community = 88;
 	        			
 	        			Note newNote = new Note(theNote, noteDate, sel_Community,choId);
 	        			myNotes.add(newNote);
 	        			
 	        			Notes noteDb = new Notes(getActivity().getApplicationContext());
-	        			noteDb.saveNote(sel_Community, choId, date, theNote);
+	        			int noteId = noteDb.saveNote(sel_Community, choId, date, theNote);
+	        			newNote.setNoteId(noteId);
 	        			
 	        			Toast.makeText(getActivity().getApplicationContext(),"Note has been saved successfully",Toast.LENGTH_SHORT).show();
 	        			txtAreaNote.setText("");
 					}else{
 						Toast.makeText(getActivity().getApplicationContext(),"Please Write Something in the textfield!",Toast.LENGTH_SHORT).show();
 					}
+				}
+	        	
+	        });
+	        
+	        Button btnClear = (Button)rootView.findViewById(R.id.btnClear);
+	        btnClear.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					txtAreaNote = (EditText)rootView.findViewById(R.id.multEditText);
+					txtAreaNote.setText("");;
 				}
 	        	
 	        });
@@ -313,9 +332,58 @@ public class NotesActivity extends FragmentActivity implements
 	        		txtAreaNote.setText(myNotes.get(position).toString());
 	        	}
 			});
+	        
 	        registerForContextMenu(rec_Notes);
 			return rootView;
 		}
+		
+		//@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getActivity().getMenuInflater().inflate(R.menu.edit_note, menu);
+			return true;
+		}
+		
+		int note_id_Focused;
+		@Override
+		public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo){
+			super.onCreateContextMenu(menu, v, menuInfo);
+			
+			      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+			      String somestr = (myNotes.get(aInfo.position).toString());
+			      
+			      System.out.println(myNotes.get(aInfo.position).getNoteId());
+			      
+			      note_id_Focused = myNotes.get(aInfo.position).getNoteId();
+			      
+			      menu.setHeaderTitle("Do You Want to Delete editNOte frag?");
+			      
+			      //menu.
+			      menu.add(1, 1, 1, "Delete");
+			      menu.add(1, 2, 2, "Cancel");
+			      
+			      
+		} 
+		
+		@Override
+		public boolean onContextItemSelected(MenuItem item){
+			//System.out.println(item.getItemId()+" is the item chosen");
+			int itemSelected =  item.getItemId();
+			
+			switch(itemSelected){
+				case 1:
+					//do Delete here!
+					System.out.println("I deleted Note with Id "+note_id_Focused);
+				break;
+				
+				case 2:
+					//do Cancel here!
+				break;
+			
+			}
+			return false;
+		}
+
 	}
 	
 	public static class ShowNotesFragment extends Fragment{
@@ -327,35 +395,100 @@ public class NotesActivity extends FragmentActivity implements
 		 
 		        View rootView = inflater.inflate(R.layout.activity_show_notes, container, false);
 		        ListView lstViewNotes = (ListView)rootView.findViewById(R.id.lstSavedNotes);
-				ArrayList<Note> myNotes = getAllNotes();
+				//ArrayList<Note> myNotes = getAllNotes();
+				listNotes = getAllNotes();
 				
 				//for (int i=0;i<listNotes.size();i++){
 					//System.out.println(listNotes.get(i).toString());
 				//}
-				ArrayAdapter<Note> noteAdapter=new ArrayAdapter<Note>(this.getActivity().getApplicationContext(),android.R.layout.simple_list_item_1 ,listNotes);
+				ArrayAdapter<String> noteAdapter=
+						new ArrayAdapter<String>
+				(this.getActivity(),android.R.layout.simple_list_item_1);
 				
 				lstViewNotes.setAdapter(noteAdapter);
 				
+				for (int i=0;i<listNotes.size();i++){
+					noteAdapter.add(listNotes.get(i).toString());
+				}
+				
+				lstViewNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int arg2, long arg3) {
+						// TODO Auto-generated method stub
+                       //PopupWindow myWin = new PopupWindow();
+						
+					}
+					
+				});
+				registerForContextMenu(lstViewNotes);
 		        return rootView;
 		    }
 		 
-		 public ArrayList<Note> getAllNotes(){
-				if(notes==null){
-					notes=new Notes(this.getActivity().getApplicationContext());
+		//@Override
+				public boolean onCreateOptionsMenu(Menu menu) {
+					// Inflate the menu; this adds items to the action bar if it is present.
+					getActivity().getMenuInflater().inflate(R.menu.edit_note, menu);
+					return true;
 				}
-				//int communityId=getSelectedCommunityId();
 				
-				boolean notesGot = notes.getAllNotes();
-				//if(!notesGot){
-					//listNotes.clear();
-				//}else{
-				System.out.println(notesGot);
+				int noteIdFocused;
+				@Override
+				public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo){
+					super.onCreateContextMenu(menu, v, menuInfo);
+					
+					      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+					      String somestr = (listNotes.get(aInfo.position).toString());
+					      System.out.println(listNotes.get(aInfo.position).getNoteId());
+					      noteIdFocused = listNotes.get(aInfo.position).getNoteId();
+					      
+					      menu.setHeaderTitle("Do You Want to Delete?");
+					      
+					      //menu.
+					      menu.add(2, 3, 1, "Delete");
+					      menu.add(2, 4, 2, "Cancel");
+      
+				} 
 				
-				listNotes = notes.getArrayList();
-				notes.close();
-				
-				return listNotes;
+				@Override
+				public boolean onContextItemSelected(MenuItem item){
+					//System.out.println(item.getItemId()+" is the item chosen");
+					int itemSelected =  item.getItemId();
+					
+					switch(itemSelected){
+						case 3:
+							//do Delete here!
+							System.out.println("I deleted note (Shownotes fragment) with id "+noteIdFocused);
+							
+						break;
+						
+						case 4:
+							//do Cancel here!
+						break;
+					
+					}
+					return false;
+				}
+		
+		 public ArrayList<Note> getAllNotes(){
+			if(notes==null){
+				notes=new Notes(this.getActivity().getApplicationContext());
 			}
+			//int communityId=getSelectedCommunityId();
+			
+			boolean notesGot = notes.getAllNotes();
+			if(!notesGot){
+				listNotes.clear();
+			}else{
+			//System.out.println(notesGot);
+			
+			listNotes = notes.getArrayList();
+			notes.close();
+			
+			return listNotes;
+			}
+		return null;
+		}
 	}
-
 }
