@@ -4,10 +4,51 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+    <TextView
+        android:id="@+id/choName1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="23sp"
+        android:layout_marginLeft="30sp"
+        android:paddingTop="30sp" >
+    </TextView>
+    
+    <View
+        android:id="@+id/divid"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+         android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/question1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginLeft="30sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/date1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginLeft="30sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#FF0000"
+        android:layout_marginLeft="30sp">
+    </TextView>
+    
+     <View
+        android:id="@+id/space"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:text="@string/viewPost" >
+    </View>
 
 </LinearLayout>

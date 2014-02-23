@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,7 +52,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener{
 		question = (EditText)findViewById(R.id.question);
 		//Get the list of questions
 		theVList = (ListView)findViewById(R.id.listView1);
-		
+		theVList.setBackgroundResource(R.drawable.listview_roundcorner_item);
 		//Load the spinner details
 		db = new Questions(this);
 		db1 = new Categories(this);

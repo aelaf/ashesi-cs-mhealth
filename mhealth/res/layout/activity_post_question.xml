@@ -2,14 +2,13 @@
     android:id="@+id/RelativeLayout01"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-	
-    
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"> 
-        
+        android:paddingTop="10dp" >
+
         <EditText
             android:id="@+id/question"
             android:layout_width="fill_parent"
@@ -35,29 +34,52 @@
         android:layout_marginRight="14dp"
         android:text="@string/postQ"
         android:textColor="#000" />
-    
+
     <View
         android:id="@+id/spacer"
-	    android:layout_width="1dp"
-		android:layout_height="30dp"
-		android:layout_below="@+id/spinner1">
-        
-        
-	</View>
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/spinner1" >
+    </View>
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spinner2" >
+        android:layout_below="@+id/divider"
+        android:background="@drawable/listview_roundcorner_item"
+        android:divider="@color/teal" 
+        android:dividerHeight="1.0sp"
+        android:layout_margin="5dp" >
     </ListView>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinner2"
+        android:background="@color/teal"
+        android:shadowColor="#008080"
+        android:shadowRadius="5"
+        android:text="@string/recentpost"
+        android:textColor="@color/white"
+        android:textSize="17sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/textView1"
+        android:background="@color/teal" />
 
     <Spinner
         android:id="@+id/spinner2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/save_btn"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/spacer"
+        android:layout_marginTop="27dp"
         android:layout_toRightOf="@+id/spinner1"
         android:prompt="@string/sortLabel" />
 

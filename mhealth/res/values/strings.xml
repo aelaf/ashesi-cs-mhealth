@@ -76,11 +76,12 @@
     <string name="lab">Lab</string>
     <string name="title_activity_knowledge">mHealth Knowledge</string>
     <string name="questionTag">"What is your question?"</string>
-    <string name="postQ">Submit Question</string>
+    <string name="postQ">Post Question</string>
     <string name="sortLabel">"Sort by: "</string>
     <string name="SortBy">Sort By:</string>
     <string name="recentPosts">Recent Posts</string>
     <string name="viewPost">View Question</string>
+    <string name="recentpost">Recent Posts</string>
    
     
 
