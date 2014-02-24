@@ -119,6 +119,26 @@ public class Questions extends DataClass{
 			cursor=db.query(TABLE_NAME_QUESTIONS, columns, null, null, null, null, null, null);
 			Question q=fetch();
 			ArrayList<Question> list=new ArrayList<Question>();
+			
+			System.out.println(q.toString());
+			while(q!=null){
+				list.add(q);
+				q=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
+	public ArrayList<Question> getQuestionsby(String filter){
+		try{
+			db=getReadableDatabase();
+			cursor=db.query(TABLE_NAME_QUESTIONS, columns, filter, null, null, null, null, null);
+			Question q=fetch();
+			ArrayList<Question> list=new ArrayList<Question>();
 			while(q!=null){
 				list.add(q);
 				q=fetch();
