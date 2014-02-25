@@ -322,7 +322,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		public void onItemSelected(AdapterView<?> arg0, View v, int arg2, long arg3) {
+			
+			computeBirthdate();
 			
 		}
 
@@ -435,6 +437,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,units);
 			spinnerAgeUnit.setAdapter(adapter);
 			
+			spinnerAgeUnit.setOnItemSelectedListener(this);
+			
 		}
 
 		public boolean fillCommunitiesSpinner(int selectedId){
@@ -458,27 +462,34 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		public void computeBirthdate(){
-			java.util.Calendar date=java.util.Calendar.getInstance();
-			
-			String temp=editAge.getText().toString();
-			if(temp.isEmpty()){
+			try
+			{
+				java.util.Calendar date=java.util.Calendar.getInstance();
+
+				String temp=editAge.getText().toString();
+				if(temp.isEmpty()){
+					return;
+				}
+
+				int age=Integer.parseInt(temp);
+				int unit=spinnerAgeUnit.getSelectedItemPosition();
+				if(unit==1){
+					date.add(java.util.Calendar.MONTH,(-1)*age);
+					date.set(Calendar.DAY_OF_MONTH, 1);
+				}else{
+					date.add(java.util.Calendar.YEAR,(-1)*age);
+					date.set(Calendar.DAY_OF_MONTH, 1);
+					date.set(Calendar.MONTH, Calendar.JANUARY);
+				}
+
+				
+				
+				SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+				String str=dateFormat.format(date.getTime());
+				editBirthdate.setText(str);
+			}catch(Exception ex){
 				return;
 			}
-			
-			int age=Integer.parseInt(temp);
-			int unit=spinnerAgeUnit.getSelectedItemPosition();
-			if(unit==1){
-				date.add(java.util.Calendar.MONTH,(-1)*age);
-			}else{
-				date.add(java.util.Calendar.YEAR,(-1)*age);
-			}
-			
-			date.set(Calendar.DAY_OF_MONTH, 1);
-			date.set(Calendar.MONTH, Calendar.JANUARY);
-			SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
-			String str=dateFormat.format(date.getTime());
-			editBirthdate.setText(str);
-				
 			
 		}
 
@@ -841,7 +852,12 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		protected void recordOPDCase(){
 			
 			if(communityMemberId==0){
-				return;
+				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+				communityMemberId=a.getCommunityMemberId();
+				if(communityMemberId==0){
+					return;
+				}
+				
 			}
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerOPDCases);
 			if(spinner.getSelectedItemPosition()<=0){

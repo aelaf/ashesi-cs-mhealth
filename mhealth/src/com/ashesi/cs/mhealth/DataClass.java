@@ -473,6 +473,9 @@ public class DataClass extends SQLiteOpenHelper {
 			setDataVersion(db,CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS,0);
 			db.execSQL(OPDCases.getCreateSQLString());
 			
+			db.execSQL(Communities.getInsertSQL(15, "Berekuso", 1));
+			db.execSQL(Communities.getInsertSQL(1, "Yaw Duodu", 2));
+			
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
 			/*this cases are added just for testing 
 			 * The complete OPD case list should be downloaded using synch
@@ -498,6 +501,8 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getInsert(4,"Theresa",2));
 			db.execSQL(CHOs.getInsert(5,"Sandra",2));
 			db.execSQL(CHOs.getInsert(6,"Dorthy",2));
+			
+			
 			
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
