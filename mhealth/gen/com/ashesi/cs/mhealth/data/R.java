@@ -335,6 +335,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int TopicFilter=0x7f07000c;
         public static final int action_settings=0x7f070001;
         public static final int addCommunityMember=0x7f07001c;
+        public static final int answered=0x7f070053;
         public static final int app_name=0x7f070000;
         public static final int backup=0x7f070043;
         public static final int birthdate=0x7f070018;
@@ -362,6 +363,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int local=0x7f070045;
         public static final int male=0x7f07001e;
         public static final int months=0x7f070017;
+        public static final int myPost=0x7f070052;
         public static final int next=0x7f070048;
         public static final int nhisExpiryDate=0x7f070041;
         public static final int nhisIDNumber=0x7f070040;
@@ -369,27 +371,27 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int open=0x7f070030;
         public static final int postQ=0x7f07004c;
         public static final int posts=0x7f07000d;
-        public static final int pref_default_display_name=0x7f070057;
-        public static final int pref_description_social_recommendations=0x7f070055;
+        public static final int pref_default_display_name=0x7f07005a;
+        public static final int pref_description_social_recommendations=0x7f070058;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f070059;
+        public static final int pref_header_data_sync=0x7f07005c;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f070053;
+        public static final int pref_header_general=0x7f070056;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f07005c;
-        public static final int pref_ringtone_silent=0x7f07005f;
-        public static final int pref_title_add_friends_to_messages=0x7f070058;
-        public static final int pref_title_display_name=0x7f070056;
-        public static final int pref_title_new_message_notifications=0x7f07005d;
-        public static final int pref_title_ringtone=0x7f07005e;
-        public static final int pref_title_social_recommendations=0x7f070054;
-        public static final int pref_title_sync_frequency=0x7f07005a;
-        public static final int pref_title_system_sync_settings=0x7f07005b;
-        public static final int pref_title_vibrate=0x7f070060;
+        public static final int pref_header_notifications=0x7f07005f;
+        public static final int pref_ringtone_silent=0x7f070062;
+        public static final int pref_title_add_friends_to_messages=0x7f07005b;
+        public static final int pref_title_display_name=0x7f070059;
+        public static final int pref_title_new_message_notifications=0x7f070060;
+        public static final int pref_title_ringtone=0x7f070061;
+        public static final int pref_title_social_recommendations=0x7f070057;
+        public static final int pref_title_sync_frequency=0x7f07005d;
+        public static final int pref_title_system_sync_settings=0x7f07005e;
+        public static final int pref_title_vibrate=0x7f070063;
         public static final int questionTag=0x7f07004b;
         public static final int recentPosts=0x7f07004f;
         public static final int recentpost=0x7f070051;
@@ -413,7 +415,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_knowledge=0x7f07004a;
         public static final int title_activity_opdcase=0x7f070010;
         public static final int title_activity_report=0x7f070027;
-        public static final int title_activity_settings=0x7f070052;
+        public static final int title_activity_settings=0x7f070055;
         public static final int title_activity_synch=0x7f070038;
         public static final int title_activity_topics=0x7f070009;
         public static final int title_cm_record_main=0x7f070028;
@@ -423,6 +425,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_report_next=0x7f07002e;
         public static final int title_report_opdsection=0x7f07002b;
         public static final int title_report_other=0x7f07002d;
+        public static final int unanswered=0x7f070054;
         public static final int updateCommunityData=0x7f070039;
         public static final int updateOpdCases=0x7f07003a;
         public static final int upload=0x7f070032;

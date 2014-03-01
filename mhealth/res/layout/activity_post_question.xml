@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/RelativeLayout01"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:animateLayoutChanges="true" >
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -42,16 +43,23 @@
         android:layout_below="@+id/spinner1" >
     </View>
 
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+    </RadioGroup>
+
     <ListView
         android:id="@+id/listView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/divider"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/listview_roundcorner_item"
-        android:divider="@color/teal" 
-        android:dividerHeight="1.0sp"
-        android:layout_margin="5dp" >
+        android:divider="@color/teal"
+        android:dividerHeight="1.0sp" >
     </ListView>
 
     <TextView
@@ -82,5 +90,18 @@
         android:layout_marginTop="27dp"
         android:layout_toRightOf="@+id/spinner1"
         android:prompt="@string/sortLabel" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/spinner2"
+        android:layout_toRightOf="@+id/textView1"
+        android:background="@android:color/transparent"
+        android:shadowColor="#008080"
+        android:shadowRadius="5"
+        android:text="@string/myPost"
+        android:textColor="@color/black"
+        android:textSize="17sp" />
 
 </RelativeLayout>

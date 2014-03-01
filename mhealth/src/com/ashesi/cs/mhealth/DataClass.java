@@ -54,8 +54,8 @@ public class DataClass extends SQLiteOpenHelper {
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
-	protected String mServerUrl="http://192.168.56.2/mHealth/";
-	
+	//protected String mServerUrl="http://192.168.56.2/mHealth/";
+	protected String mServerUrl="http://10.10.32.136/mHealth/";
 	Context context;
 	
 	public  static final String DATABASE_NAME="mhealth";
@@ -109,7 +109,7 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		
 		HttpURLConnection connection;
-				
+		System.out.println("The Address" + urlAddress);
 		try{
 			URL url=new URL(urlAddress);
 			connection=(HttpURLConnection)url.openConnection();
@@ -247,6 +247,8 @@ public class DataClass extends SQLiteOpenHelper {
 	public  HttpResponse postRequest(String urlAddress, List<NameValuePair> nameValuePairs){
 		urlAddress=mServerUrl+urlAddress;
 		
+		System.out.println(urlAddress);
+		
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(urlAddress);
@@ -283,6 +285,7 @@ public class DataClass extends SQLiteOpenHelper {
 	     		readLength=reader.read(buffer);
 	     		data=data+(new String(buffer));
 	        }
+	        System.out.println("Getting Data");
 			return data;
 			
 		}

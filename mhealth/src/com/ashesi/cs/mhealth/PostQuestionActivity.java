@@ -2,15 +2,20 @@ package com.ashesi.cs.mhealth;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -66,10 +71,11 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		cat = db1.getAllCategories();
 
 		// Log all questions in the log to see what has already been posted
-		for (Question q : qs) {
-			String log = q.toString();
-			Log.d("Question: ", log);
-		}
+//		if(qs!=null){
+//		for (Question q : qs) {
+//			String log = q.toString();
+//			Log.d("Question: ", log);
+//		}}
 
 		// Instantiate a list for the category list and the sort by list
 		list = new ArrayList<String>();
@@ -111,13 +117,19 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				Toast.makeText(arg0.getContext(), "The question selected is: "
-								+ arg0.getItemAtPosition(arg2).toString(), Toast.LENGTH_SHORT).show();
-				Intent i = new Intent(getApplicationContext(), ViewQuestionActivity.class);
-				
-				//Put details of the question in Extra and start the activity View Question
+				Toast.makeText(
+						arg0.getContext(),
+						"The question selected is: "
+								+ arg0.getItemAtPosition(arg2).toString(),
+						Toast.LENGTH_SHORT).show();
+				Intent i = new Intent(getApplicationContext(),
+						ViewQuestionActivity.class);
+
+				// Put details of the question in Extra and start the activity
+				// View Question
 				CHOs ch = new CHOs(getApplicationContext());
-				i.putExtra("ChoName", ch.getCHO(qs.get(arg2).getChoId()).getFullname());
+				i.putExtra("ChoName", ch.getCHO(qs.get(arg2).getChoId())
+						.getFullname());
 				i.putExtra("Question", qs.get(arg2).getContent());
 				i.putExtra("datetime", qs.get(arg2).getDate());
 				i.putExtra("category", cat.get(arg2).getCategoryName());
@@ -127,11 +139,12 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * This method adds a listener to the Post Question Button to enable 
+	 * This method adds a listener to the Post Question Button to enable
 	 */
 	private void addListenerOnButton() {
 		// TODO Auto-generated method stub
-		//Retrieve the spinner for choose category and the button for post question
+		// Retrieve the spinner for choose category and the button for post
+		// question
 		spinner = (Spinner) findViewById(R.id.spinner1);
 		spinner.setPrompt("Choose a Category");
 		btn = (Button) findViewById(R.id.save_btn);
@@ -140,17 +153,34 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				System.out.println(spinner.getSelectedItemPosition());
-				if (spinner.getSelectedItemPosition() < 1) {   //Prevent the submitting of empty strings
+				if (spinner.getSelectedItemPosition() < 1) { // Prevent the
+																// submitting of
+																// empty strings
 					Toast.makeText(PostQuestionActivity.this,
 							"Please choose a category ", Toast.LENGTH_SHORT)
 							.show();
-				} else if (question.getText().toString().trim().equals("")) {	//Prevent the submitting of a question without a category
+				} else if (question.getText().toString().trim().equals("")) { // Prevent
+																				// the
+																				// submitting
+																				// of
+																				// a
+																				// question
+																				// without
+																				// a
+																				// category
 					Toast.makeText(PostQuestionActivity.this,
 							"Please type a question ", Toast.LENGTH_SHORT)
 							.show();
-				} else if (spinner.getSelectedItemPosition() > 0 && !question.getText().toString().trim().equals("")) {	//If everything is okay then submit.
+				} else if (spinner.getSelectedItemPosition() > 0
+						&& !question.getText().toString().trim().equals("")) { // If
+																				// everything
+																				// is
+																				// okay
+																				// then
+																				// submit.
 					postQuestion();
 					refreshData();
+					//synch();
 				}
 			}
 
@@ -161,6 +191,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	 * Dynamically populate categories spinner
 	 */
 	public void addItemsOnSpinner() {
+		// Retrieve spinners
 		spinner2 = (Spinner) findViewById(R.id.spinner2);
 		spinner = (Spinner) findViewById(R.id.spinner1);
 
@@ -182,9 +213,8 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				// TODO Auto-generated method stub
-				if(arg2 > 0){	//If the 
-					Toast.makeText(
-							PostQuestionActivity.this,
+				if (arg2 > 0) { // If the sort dropdown has been selected i.e. not "Sort By:"
+					Toast.makeText(	PostQuestionActivity.this,
 							"Your are sorting by - "
 									+ cat.get(arg2 - 1).getCategoryName(),
 							Toast.LENGTH_SHORT).show();
@@ -206,39 +236,23 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	 */
 	private void refreshData() {
 		CHOs ch = new CHOs(getApplicationContext());
-		System.out.println("The selected index is: "
-				+ spinner2.getSelectedItemPosition());
-		if (spinner2.getSelectedItemPosition() > 0) {
 
-			System.out.println("The category id is : "
-					+ cat.get(spinner2.getSelectedItemPosition() - 1).getID());
-			qs = db.getQuestionsby("category_id="
-					+ cat.get(spinner2.getSelectedItemPosition() - 1).getID());
-			if (qs.size() > 0) {
-				System.out.println("From DB the cat Id is: "
-						+ cat.get(qs.get(0).getCategoryId()).getCategoryName());
-			}
+		if (spinner2.getSelectedItemPosition() > 0) {
+			qs = db.getQuestionsby("category_id=" + cat.get(spinner2.getSelectedItemPosition() - 1).getID());
 		} else {
 
 			qs = db.getAllQuestions();
 		}
 		if (qs != null) {
 			String[] qstn = new String[qs.size()];
-			
 			for (int i = 0; i < qs.size(); i++) {
 				String temp = ch.getCHO(qs.get(i).getChoId()).getFullname();
 				temp += " - " + qs.get(i).getContent();
-				temp += " - "
-						+ db1.getCategory((qs.get(i).getCategoryId()))
-								.getCategoryName();
-				System.out.println("To SOrt is: "
-						+ db1.getCategory((qs.get(i).getCategoryId()))
-								.getCategoryName());
+				temp += " - " + db1.getCategory((qs.get(i).getCategoryId())).getCategoryName();
+				temp += " on \t" + qs.get(i).getDate();
 				qstn[i] = temp;
 			}
-			adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, android.R.id.text1,
-					qstn);
+			adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1,qstn);
 			theVList.setAdapter(adapter);
 		}
 	}
@@ -247,28 +261,81 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	 * Submit the question to the database
 	 */
 	private void postQuestion() {
-		Category selectedCat = cat.get(spinner.getSelectedItemPosition()-1);
-		System.out.println("category selected is : " + spinner.getSelectedItemPosition());
-		db.addQuestion(1, question.getText().toString(), currentCHO.getId(),
-				selectedCat.getID());// question.getText();
-		Toast.makeText(
-				PostQuestionActivity.this,
-				"Your question has submitted under "
-						+ selectedCat.getCategoryName(),
-				Toast.LENGTH_SHORT).show();
+		Category selectedCat = cat.get(spinner.getSelectedItemPosition() - 1);
+		db.addQuestion(1, question.getText().toString(), currentCHO.getId(), selectedCat.getID());
+		Toast.makeText(PostQuestionActivity.this,"Your question has submitted under "
+						+ selectedCat.getCategoryName(), Toast.LENGTH_SHORT).show();
+		
+		//Reset the spinner and question
 		spinner.setSelection(0);
 		question.setText("");
-	}
-
-	@Override
-	public void onClick(View v) {
-
+		new Synchronize().execute();	
+		
 	}
 
 	@Override
 	protected void onResume() {
 		refreshData();
 		super.onResume();
+	}
+
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private class Synchronize extends AsyncTask<String, Integer, Double>{
+		@Override
+		protected Double doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			JSONArray jArr = new JSONArray();
+			try {
+				ArrayList<Question> q = db.getAllQuestions();
+				for (int i = 0; i < q.size(); i++) {
+					JSONObject jObj = new JSONObject();
+					jObj.put("q_id",q.get(i).getId());
+					jObj.put("cho_id", q.get(i).getChoId());
+					jObj.put("q_content", q.get(i).getContent());
+					jObj.put("category_id",q.get(i).getCategoryId());
+					jObj.put("question_date", q.get(i).getDate());
+					jArr.put(jObj);
+					Log.d("Question ID", "" + q.get(i).getId());
+				}
+				System.out.println("There are " + q.size() + " questions in the Database");
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		
+ 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+ 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
+		      nameValuePairs.add(new BasicNameValuePair("questionid",
+		          jArr.toString()));
+			String response = db.request(db.postRequest("http://192.168.0.104/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));
+			
+	        try{
+	        JSONArray jArray = new JSONArray(response);
+	        JSONObject json_data=null;
+	         
+	        for(int i=0;i<jArray.length();i++){
+	                json_data = jArray.getJSONObject(i);
+	               Log.d("q_id", "" + json_data.getInt("q_id"));
+	               Log.d("q_content", json_data.getString("q_content"));
+	               Log.d("category_id", "" + json_data.getInt("category_id"));
+	               Log.d("cho_id", "" + json_data.getInt("cho_id"));
+	               Log.d("question_date", json_data.getString("question_date"));
+	             }
+	        }catch(Exception e){
+	        	System.out.println("Couldn't get it");
+	        }
+	        return null;
+		}
+		
+		
+		
 	}
 
 }

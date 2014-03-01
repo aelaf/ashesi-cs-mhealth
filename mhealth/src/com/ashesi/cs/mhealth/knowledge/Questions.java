@@ -1,5 +1,6 @@
 package com.ashesi.cs.mhealth.knowledge;
 
+import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,7 +117,7 @@ public class Questions extends DataClass{
 	public ArrayList<Question> getAllQuestions(){
 		try{
 			db=getReadableDatabase();
-			cursor=db.query(TABLE_NAME_QUESTIONS, columns, null, null, null, null, null, null);
+			cursor=db.query(TABLE_NAME_QUESTIONS, columns, null, null, null, null, KEY_DATE + " DESC", null);
 			Question q=fetch();
 			ArrayList<Question> list=new ArrayList<Question>();
 			
@@ -136,7 +137,7 @@ public class Questions extends DataClass{
 	public ArrayList<Question> getQuestionsby(String filter){
 		try{
 			db=getReadableDatabase();
-			cursor=db.query(TABLE_NAME_QUESTIONS, columns, filter, null, null, null, null, null);
+			cursor=db.query(TABLE_NAME_QUESTIONS, columns, filter, null, null, null, KEY_DATE + " DESC", null);
 			Question q=fetch();
 			ArrayList<Question> list=new ArrayList<Question>();
 			while(q!=null){
@@ -175,6 +176,8 @@ public class Questions extends DataClass{
 	        }
 		}).start();
 	}
+	
+	//customize this for the question
 	/**
 	 * downloads Question data from server 
 	 */
