@@ -8,11 +8,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,11 +33,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.knowledge.Answer;
+import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Category;
 import com.ashesi.cs.mhealth.knowledge.Question;
@@ -37,13 +51,19 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	private Spinner spinner, spinner2;
 	private Questions db;
 	private Categories db1;
+	private Answers ansDb;
 	ArrayList<Question> qs;
 	ArrayList<Category> cat;
+	ArrayList<Answer> answers;
 	private List<String> list, sortList;
 	private Button btn;
 	private EditText question;
 	private ListView theVList;
 	private ArrayAdapter<String> adapter;
+	private Switch answered;
+	private boolean onlyAnswered;
+	private boolean isListEmpty;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +74,26 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		int choId = intent.getIntExtra("choId", 0);
 		CHOs chos = new CHOs(getApplicationContext());
 		currentCHO = chos.getCHO(choId);
-
+		
+		//Style actionBar
+		ActionBar ab = getActionBar();
+		ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#428bca"));
+		ab.setBackgroundDrawable(colorDrawable);
+		ab.setDisplayHomeAsUpEnabled(true);
+		
 		// Question TextBox;
 		question = (EditText) findViewById(R.id.question);
 
 		// Get the list view for the questions
 		theVList = (ListView) findViewById(R.id.listView1);
 		theVList.setBackgroundResource(R.drawable.listview_roundcorner_item);
+		isListEmpty = true;
+		
+		// Get switch for answered question
+		onlyAnswered = false;
+		ansDb = new Answers(this);
+		answers = ansDb.getAllAnswers();	
+		setSwitchListener();
 
 		// Load the spinner details
 		db = new Questions(this);
@@ -71,11 +104,11 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		cat = db1.getAllCategories();
 
 		// Log all questions in the log to see what has already been posted
-//		if(qs!=null){
-//		for (Question q : qs) {
-//			String log = q.toString();
-//			Log.d("Question: ", log);
-//		}}
+		//		if(qs!=null){
+		//		for (Question q : qs) {
+		//			String log = q.toString();
+		//			Log.d("Question: ", log);
+		//		}}
 
 		// Instantiate a list for the category list and the sort by list
 		list = new ArrayList<String>();
@@ -85,8 +118,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		sortList.add("Sort by:");
 		list.add("Choose a Category");
 
-		// Populate the lists (SortList and Choose Category List) with the
-		// category names from the Category database
+		// Populate the lists (SortList and Choose Category List) with the category names from the Category database
 		for (Category ca : cat) {
 			String lo = ca.getCategoryName();
 			list.add(lo);
@@ -102,6 +134,31 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		// Add a listener to the sort By spinner
 		addListenerOnList();
 	}
+	
+	/**
+	 * Add an OnClicklistener for the Switch. i.e. Show (only Answered questions/ All questions)
+	 */
+	private void setSwitchListener() {
+		// TODO Auto-generated method stub
+		answered = (Switch)findViewById(R.id.switch1);
+		answered.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if(answered.isChecked()){//;answered.getText().toString().trim().equals("Answered")){
+					System.out.println("Answered only");
+					onlyAnswered = true;
+					refreshData(onlyAnswered);	
+				}else if(!answered.isChecked()){
+					System.out.println("All");
+					onlyAnswered = false;
+					refreshData(onlyAnswered);
+					
+				}
+			}
+			
+		});
+	}
 
 	/**
 	 * This method will add a listener to the list of posted questions This will
@@ -114,26 +171,26 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		// theVList is ListView for the questions
 		theVList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				Toast.makeText(
-						arg0.getContext(),
-						"The question selected is: "
-								+ arg0.getItemAtPosition(arg2).toString(),
-						Toast.LENGTH_SHORT).show();
-				Intent i = new Intent(getApplicationContext(),
-						ViewQuestionActivity.class);
-
-				// Put details of the question in Extra and start the activity
-				// View Question
-				CHOs ch = new CHOs(getApplicationContext());
-				i.putExtra("ChoName", ch.getCHO(qs.get(arg2).getChoId())
-						.getFullname());
-				i.putExtra("Question", qs.get(arg2).getContent());
-				i.putExtra("datetime", qs.get(arg2).getDate());
-				i.putExtra("category", cat.get(arg2).getCategoryName());
-				startActivity(i);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				
+				if(isListEmpty){ //If question list is currently Empty show nothing. 
+					Toast.makeText(arg0.getContext(),"Sorry! The list is currently Empty",Toast.LENGTH_SHORT).show();
+				}else{	// Put details of the question in Extra and start the activity
+				
+					//Give feedback to the user
+					Toast.makeText(arg0.getContext(),"The question selected is: "+ arg0.getItemAtPosition(arg2).toString(),
+							Toast.LENGTH_SHORT).show();
+					Intent i = new Intent(getApplicationContext(), ViewQuestionActivity.class);	
+					
+					// View Question
+					CHOs ch = new CHOs(getApplicationContext());
+					i.putExtra("ChoName", ch.getCHO(qs.get(arg2).getChoId())
+							.getFullname());
+					i.putExtra("Question", qs.get(arg2).getContent());
+					i.putExtra("datetime", qs.get(arg2).getDate());
+					i.putExtra("category", cat.get(arg2).getCategoryName());
+					startActivity(i);
+				}
 			}
 		});
 	}
@@ -152,7 +209,6 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				System.out.println(spinner.getSelectedItemPosition());
 				if (spinner.getSelectedItemPosition() < 1) { // Prevent the
 																// submitting of
 																// empty strings
@@ -179,7 +235,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 																				// then
 																				// submit.
 					postQuestion();
-					refreshData();
+					refreshData(onlyAnswered);
 					//synch();
 				}
 			}
@@ -219,7 +275,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 									+ cat.get(arg2 - 1).getCategoryName(),
 							Toast.LENGTH_SHORT).show();
 				}
-				refreshData();
+				refreshData(onlyAnswered);
 			}
 
 			@Override
@@ -232,29 +288,48 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	}
 
 	/**
-	 * Refresh data from database
+	 * Refresh list of questions
+	 * If the toggle says onlyAnswered then display only answered questions.
+	 * @param onlyAnswered
 	 */
-	private void refreshData() {
+	private void refreshData(boolean onlyAnswered) {
 		CHOs ch = new CHOs(getApplicationContext());
-
+		String[] qstn = new String[]{"The list is currently empty."};
+		
+		//Filter questions based on the criterion selected by the user.
 		if (spinner2.getSelectedItemPosition() > 0) {
 			qs = db.getQuestionsby("category_id=" + cat.get(spinner2.getSelectedItemPosition() - 1).getID());
 		} else {
-
 			qs = db.getAllQuestions();
 		}
-		if (qs != null) {
-			String[] qstn = new String[qs.size()];
+		
+		if(onlyAnswered && answers.isEmpty()){
+			qstn = new String[]{"There are no answered questions."};
+			isListEmpty = true;		
+		}else if (qs != null ) {
+			isListEmpty = false;
+			qstn = new String[qs.size()];
 			for (int i = 0; i < qs.size(); i++) {
-				String temp = ch.getCHO(qs.get(i).getChoId()).getFullname();
-				temp += " - " + qs.get(i).getContent();
-				temp += " - " + db1.getCategory((qs.get(i).getCategoryId())).getCategoryName();
-				temp += " on \t" + qs.get(i).getDate();
-				qstn[i] = temp;
+				if(onlyAnswered){
+					//if a question's id exists in the answers DB then add it to the list
+					if(!ansDb.getByQuestion(qs.get(i).getId()).equals(null)){			 
+						String temp = ch.getCHO(qs.get(i).getChoId()).getFullname();
+						temp += " - " + qs.get(i).getContent();
+						temp += " - " + db1.getCategory((qs.get(i).getCategoryId())).getCategoryName();
+						temp += " on \t" + qs.get(i).getDate();
+						qstn[i] = temp;
+					}
+				}else {
+					String temp = ch.getCHO(qs.get(i).getChoId()).getFullname();
+					temp += " - " + qs.get(i).getContent();
+					temp += " - " + db1.getCategory((qs.get(i).getCategoryId())).getCategoryName();
+					temp += " on \t" + qs.get(i).getDate();
+					qstn[i] = temp;
+				}
 			}
-			adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1,qstn);
-			theVList.setAdapter(adapter);
 		}
+		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1,qstn);
+		theVList.setAdapter(adapter);
 	}
 
 	/**
@@ -262,20 +337,21 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 	 */
 	private void postQuestion() {
 		Category selectedCat = cat.get(spinner.getSelectedItemPosition() - 1);
-		db.addQuestion(1, question.getText().toString(), currentCHO.getId(), selectedCat.getID());
-		Toast.makeText(PostQuestionActivity.this,"Your question has submitted under "
+		db.addQuestion(1, question.getText().toString(), currentCHO.getId(), selectedCat.getID(), "", "");
+		Toast.makeText(PostQuestionActivity.this,selectedCat.getID() + " Your question has submitted under "
 						+ selectedCat.getCategoryName(), Toast.LENGTH_SHORT).show();
 		
 		//Reset the spinner and question
+		refreshData(onlyAnswered);
 		spinner.setSelection(0);
 		question.setText("");
-		new Synchronize().execute();	
+		//new Synchronize().execute();	
 		
 	}
 
 	@Override
 	protected void onResume() {
-		refreshData();
+		refreshData(onlyAnswered);
 		super.onResume();
 	}
 
@@ -285,6 +361,11 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		
 	}
 	
+	/**
+	 * This is to update the data for the application
+	 * @author Daniel
+	 *
+	 */
 	private class Synchronize extends AsyncTask<String, Integer, Double>{
 		@Override
 		protected Double doInBackground(String... params) {
@@ -299,8 +380,8 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 					jObj.put("q_content", q.get(i).getContent());
 					jObj.put("category_id",q.get(i).getCategoryId());
 					jObj.put("question_date", q.get(i).getDate());
+					jObj.put("guid", q.get(i).getGuid());
 					jArr.put(jObj);
-					Log.d("Question ID", "" + q.get(i).getId());
 				}
 				System.out.println("There are " + q.size() + " questions in the Database");
 				
@@ -309,27 +390,31 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 
-		
- 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
- 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
-		      nameValuePairs.add(new BasicNameValuePair("questionid",
-		          jArr.toString()));
-			String response = db.request(db.postRequest("http://192.168.0.104/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));
-			
-	        try{
-	        JSONArray jArray = new JSONArray(response);
-	        JSONObject json_data=null;
-	         
-	        for(int i=0;i<jArray.length();i++){
-	                json_data = jArray.getJSONObject(i);
-	               Log.d("q_id", "" + json_data.getInt("q_id"));
-	               Log.d("q_content", json_data.getString("q_content"));
-	               Log.d("category_id", "" + json_data.getInt("category_id"));
-	               Log.d("cho_id", "" + json_data.getInt("cho_id"));
-	               Log.d("question_date", json_data.getString("question_date"));
-	             }
-	        }catch(Exception e){
-	        	System.out.println("Couldn't get it");
+			if(isConnected()){
+	 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
+			      nameValuePairs.add(new BasicNameValuePair("questionid",
+			          jArr.toString()));
+				String response = db.request(db.postRequest("http://10.10.32.136/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
+				
+				//This is to get a response from the request with the current list of answers 
+		        try{
+		        JSONArray jArray = new JSONArray(response);
+		        JSONObject json_data=null;
+		         
+		        for(int i=0;i<jArray.length();i++){
+		                json_data = jArray.getJSONObject(i);
+		               Log.d("q_id", "" + json_data.getInt("q_id"));
+		               Log.d("q_content", json_data.getString("q_content"));
+		               Log.d("category_id", "" + json_data.getInt("category_id"));
+		               Log.d("cho_id", "" + json_data.getInt("cho_id"));
+		               Log.d("question_date", json_data.getString("question_date"));
+		               Log.d("guid", json_data.getString("guid"));
+		             }
+		        
+		        }catch(Exception e){
+		        	System.out.println(e.toString());
+		        }
 	        }
 	        return null;
 		}
@@ -337,5 +422,45 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		
 		
 	}
+	
+	public boolean isConnected(){
+		Log.d("mHealth", "Posting questions Checking connectivity ...");
+		ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		 
+		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+	    return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+	}
 
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.question_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()){
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				break;
+			case R.id.synch_q:
+				if(isConnected() && !(db.connect("http://10.10.32.136/mHealth") == null)){
+					Toast.makeText(this, "Synching Data", Toast.LENGTH_LONG).show();
+					new Synchronize().execute();
+				}else{
+					Toast.makeText(this, "Sorry the network is down. Try again later!", Toast.LENGTH_LONG).show();
+				}
+				break;
+		}
+			//return true;			
+	return super.onOptionsItemSelected(item);
+	}
+	
 }

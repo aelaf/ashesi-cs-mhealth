@@ -1,10 +1,10 @@
 package com.ashesi.cs.mhealth.knowledge;
 
-import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
 
@@ -23,8 +24,10 @@ public class Questions extends DataClass{
 	public static final String KEY_CHO_ID = "cho_id";
 	public static final String KEY_CATEGORY_ID = "category_id";
 	public static final String KEY_DATE = "question_date";
+	public static final String KEY_GUID = "quid";
 	
-	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE};
+	
+	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE, KEY_GUID};
 	
 	
 	public Questions(Context context) {
@@ -39,12 +42,13 @@ public class Questions extends DataClass{
 				+ KEY_CATEGORY_ID +" int, "
 				+ KEY_CHO_ID +" int ,"
 				+ KEY_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
+				+ KEY_GUID + " BLOB, "
 				+ "FOREIGN KEY( "+ KEY_CATEGORY_ID + ") REFERENCES categories(category_id), "
 				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
 		
 	}
 	
-	public static String getInsert(String content,int choId, int categoryId){
+	public static String getInsert(String content,int choId, int categoryId, UUID guid){
 		Date date = new Date();
         DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 		return "insert into "
@@ -52,28 +56,40 @@ public class Questions extends DataClass{
 				+ KEY_CONTENT +", "
 				+ KEY_CATEGORY_ID + ", "
 				+ KEY_CHO_ID + " ," 
-				+ KEY_DATE  
+				+ KEY_DATE 
+				+ KEY_GUID 
 				+") values("
 			    + ", "
 				+ "'"+ content +"',"
 				+ categoryId + ", "
 				+ choId
-				+" , " + dt.format(date) + ") ";
+				+" , " + dt.format(date) + ", "
+				+ guid + ") ";
+		
 	}
 	
-	public boolean addQuestion(int id,String content,int choId, int categoryId){
+	public boolean addQuestion(int id,String content,int choId, int categoryId, String date, String guid){
 		try
 		{
 			if(!content.isEmpty()){
-				Date date = new Date();
-	            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-	          	db=getReadableDatabase();
+				db=getReadableDatabase();
 				ContentValues values=new ContentValues();
-				//values.put(KEY_ID, id);
 				values.put(KEY_CONTENT, content);
 				values.put(KEY_CATEGORY_ID, categoryId);
 				values.put(KEY_CHO_ID, choId);
-				values.put(KEY_DATE, dt.format(date));
+				if(date ==  ""){		//if the question generated locally then generate a time stamp for it.
+					Date date1 = new Date();		            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+					values.put(KEY_DATE, dt.format(date1));
+				}else{ 
+					values.put(KEY_DATE, date);
+				}
+				UUID g_uid = null;
+				if(guid == ""){	//If a guid is not provided
+					g_uid = UUID.randomUUID();
+					values.put(KEY_GUID, g_uid.toString());
+				}else{
+					values.put(KEY_GUID, guid);
+				}				
 				db.insertWithOnConflict(TABLE_NAME_QUESTIONS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 				return true;
 			}else{
@@ -106,7 +122,11 @@ public class Questions extends DataClass{
 			int catId=cursor.getInt(index);
 			index = cursor.getColumnIndex(KEY_DATE);
 			String theDate = cursor.getString(index);
-			Question q=new Question(id,content,choId,catId, theDate);
+			index= cursor.getColumnIndex(KEY_GUID);
+			String guid = cursor.getString(index);
+			
+	
+			Question q=new Question(id,content,choId,catId, theDate, guid);
 			cursor.moveToNext();
 			return q;
 		}catch(Exception ex){
@@ -183,7 +203,7 @@ public class Questions extends DataClass{
 	 */
 	public void download(){
 		final int deviceId=mDeviceId;
-		String url="choAction?cmd=2&deviceId"+deviceId;
+		String url="knowledgeAction?cmd=5&deviceId"+deviceId;
 		String data=request(url);
 		try{
 			JSONObject obj=new JSONObject(data);
@@ -210,15 +230,17 @@ public class Questions extends DataClass{
 			int id;
 			int choId;
 			int catId;
-			//String aDate;
+			String aDate;
+			String guid;
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);
 				content=obj.getString("q_content");
 				id=obj.getInt("q_id");
 				catId=obj.getInt(KEY_CATEGORY_ID);
 				choId = obj.getInt(KEY_CHO_ID);
-				//aDate = obj.getString(KEY_DATE);
-				addQuestion(id,content,choId, catId);
+				aDate = obj.getString(KEY_DATE);
+				guid = obj.getString(KEY_GUID);
+				addQuestion(id,content,choId, catId, aDate, guid);
 			}
 		}catch(Exception ex){
 			return;

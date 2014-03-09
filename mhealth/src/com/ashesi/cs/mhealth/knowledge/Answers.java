@@ -130,6 +130,20 @@ public class Answers extends DataClass {
 		}
 	}
 	
+	public Answer getByQuestion(int qID){
+		try{
+			db=getReadableDatabase();
+			String selection=KEY_QUESTION_ID +"="+qID;
+			cursor=db.query(TABLE_NAME_ANSWERS, columns, selection, null, null, null, null, null);
+			Answer ans=fetch();
+			close();
+			return ans;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
 	/**
 	 * calls download from a thread
 	 */

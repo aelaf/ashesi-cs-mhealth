@@ -6,14 +6,16 @@ public class Question {
 	private int choId;
 	private int categoryId;
 	private String date;
+	private String guid;
 	
-	public Question(int id, String content, int choId, int catId, String theDate) {
+	public Question(int id, String content, int choId, int catId, String theDate, String g_uid) {
 		// TODO Auto-generated constructor stub
 		qId = id;
 		qContent = content;
 		this.choId = choId;
 		categoryId = catId;
 		date = theDate;
+		guid = g_uid;
 	}
 	
 	public int getId(){
@@ -38,6 +40,10 @@ public class Question {
 	
 	public String getDate(){
 		return date;
+	}
+	
+	public String getGuid(){
+		return guid;
 	}
 
 }

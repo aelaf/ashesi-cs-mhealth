@@ -109,7 +109,7 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		
 		HttpURLConnection connection;
-		System.out.println("The Address" + urlAddress);
+		System.out.println("The Address " + urlAddress);
 		try{
 			URL url=new URL(urlAddress);
 			connection=(HttpURLConnection)url.openConnection();

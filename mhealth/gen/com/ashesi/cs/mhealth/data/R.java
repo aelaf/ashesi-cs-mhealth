@@ -166,6 +166,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int Yellow=0x7f050015;
         public static final int YellowGreen=0x7f050062;
         public static final int aqua=0x7f05000b;
+        public static final int background=0x7f05009e;
         public static final int black=0x7f050011;
         public static final int black_overlay=0x7f050000;
         public static final int blue=0x7f05000f;
@@ -196,34 +197,35 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
-        public static final int listview_roundcorner_item=0x7f020001;
+        public static final int ic_synch=0x7f020001;
+        public static final int listview_roundcorner_item=0x7f020002;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f0b0024;
         public static final int RelativeLayout01=0x7f0b002f;
         public static final int TableLayout1=0x7f0b000b;
-        public static final int action_settings=0x7f0b0057;
-        public static final int answer=0x7f0b0045;
+        public static final int action_settings=0x7f0b0058;
+        public static final int answer=0x7f0b0046;
         public static final int buttonAddCommunityMember=0x7f0b0023;
-        public static final int buttonAddVaccine=0x7f0b0052;
+        public static final int buttonAddVaccine=0x7f0b0053;
         public static final int buttonCommunityAddMember=0x7f0b0004;
         public static final int buttonCommunityFind=0x7f0b0006;
-        public static final int buttonCommunityMemberRecordOPDCase=0x7f0b004f;
+        public static final int buttonCommunityMemberRecordOPDCase=0x7f0b0050;
         public static final int buttonCommunityNext=0x7f0b0009;
         public static final int buttonGetAll=0x7f0b0008;
         public static final int buttonMainKnowledge=0x7f0b0029;
         public static final int buttonMainLoginStart=0x7f0b0027;
         public static final int buttonMainOpenRecord=0x7f0b0028;
-        public static final int buttonSynchBackup=0x7f0b003f;
-        public static final int buttonSynchCancel=0x7f0b0040;
-        public static final int buttonSynchCommunities=0x7f0b003a;
-        public static final int buttonSynchOPDCases=0x7f0b003b;
-        public static final int cbLab=0x7f0b004e;
-        public static final int choName1=0x7f0b0041;
-        public static final int date1=0x7f0b0044;
-        public static final int divid=0x7f0b0042;
+        public static final int buttonSynchBackup=0x7f0b0040;
+        public static final int buttonSynchCancel=0x7f0b0041;
+        public static final int buttonSynchCommunities=0x7f0b003b;
+        public static final int buttonSynchOPDCases=0x7f0b003c;
+        public static final int cbLab=0x7f0b004f;
+        public static final int choName1=0x7f0b0042;
+        public static final int date1=0x7f0b0045;
+        public static final int divid=0x7f0b0043;
         public static final int divider=0x7f0b0036;
-        public static final int editBirthdate=0x7f0b004a;
+        public static final int editBirthdate=0x7f0b004b;
         public static final int editCardNo=0x7f0b001b;
         public static final int editCommunityMemberAge=0x7f0b0014;
         public static final int editCommunityMemberName=0x7f0b002c;
@@ -232,48 +234,50 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int editFullname=0x7f0b000f;
         public static final int editNHISExpiryDate=0x7f0b0021;
         public static final int editNHISId=0x7f0b001e;
-        public static final int gridView1=0x7f0b0056;
-        public static final int item1=0x7f0b005d;
-        public static final int item2=0x7f0b005e;
-        public static final int itemCommunityReport=0x7f0b0058;
-        public static final int itemCommunityUpload=0x7f0b0059;
-        public static final int itemMainActionBarSynch=0x7f0b005b;
-        public static final int itemOPDCases=0x7f0b005a;
-        public static final int itemRemoveRecord=0x7f0b005c;
+        public static final int gridView1=0x7f0b0057;
+        public static final int item1=0x7f0b005e;
+        public static final int item2=0x7f0b005f;
+        public static final int itemCommunityReport=0x7f0b0059;
+        public static final int itemCommunityUpload=0x7f0b005a;
+        public static final int itemMainActionBarSynch=0x7f0b005c;
+        public static final int itemOPDCases=0x7f0b005b;
+        public static final int itemRemoveRecord=0x7f0b005d;
         public static final int layoutButtons=0x7f0b0007;
         public static final int linearLayout1=0x7f0b0030;
-        public static final int list=0x7f0b0050;
+        public static final int list=0x7f0b0051;
         public static final int listCommunityMembers=0x7f0b000a;
         public static final int listOPDCaseRecord=0x7f0b002e;
         public static final int listView1=0x7f0b0035;
-        public static final int opdCasesSynch=0x7f0b005f;
+        public static final int opdCasesSynch=0x7f0b0060;
         public static final int pager=0x7f0b0000;
         public static final int progressBarCommunity=0x7f0b0002;
-        public static final int progressBarSynchCommunity=0x7f0b0039;
+        public static final int progressBarSynchCommunity=0x7f0b003a;
         public static final int question=0x7f0b0031;
-        public static final int question1=0x7f0b0043;
+        public static final int question1=0x7f0b0044;
         public static final int radioCommunityMemberFemale=0x7f0b0018;
         public static final int radioCommunityMemberRecordMale=0x7f0b0017;
-        public static final int radioGroup1=0x7f0b003c;
+        public static final int radioGroup1=0x7f0b003d;
         public static final int radioGroup2=0x7f0b0016;
-        public static final int radioMonth=0x7f0b0049;
-        public static final int radioSynchBackupToServer=0x7f0b003d;
-        public static final int radioSynchLocalBackup=0x7f0b003e;
-        public static final int radioYear=0x7f0b0048;
+        public static final int radioMonth=0x7f0b004a;
+        public static final int radioSynchBackupToServer=0x7f0b003e;
+        public static final int radioSynchLocalBackup=0x7f0b003f;
+        public static final int radioYear=0x7f0b0049;
         public static final int save_btn=0x7f0b0033;
-        public static final int section_label=0x7f0b0053;
-        public static final int space=0x7f0b0046;
+        public static final int section_label=0x7f0b0054;
+        public static final int space=0x7f0b0047;
         public static final int spacer=0x7f0b0034;
         public static final int spinner1=0x7f0b0032;
         public static final int spinner2=0x7f0b0037;
         public static final int spinnerCommunities=0x7f0b0003;
-        public static final int spinnerOPDCaseCategories=0x7f0b004d;
+        public static final int spinnerOPDCaseCategories=0x7f0b004e;
         public static final int spinnerOPDCases=0x7f0b002d;
-        public static final int spinnerOPDReportAgeGroup=0x7f0b0054;
-        public static final int spinnerRecordVaccinVaccines=0x7f0b0051;
-        public static final int spinnerReportMonth=0x7f0b0055;
+        public static final int spinnerOPDReportAgeGroup=0x7f0b0055;
+        public static final int spinnerRecordVaccinVaccines=0x7f0b0052;
+        public static final int spinnerReportMonth=0x7f0b0056;
         public static final int spinnerSelectCHO=0x7f0b0026;
-        public static final int statsBar=0x7f0b004c;
+        public static final int statsBar=0x7f0b004d;
+        public static final int switch1=0x7f0b0038;
+        public static final int synch_q=0x7f0b0061;
         public static final int tableRow1=0x7f0b000c;
         public static final int tableRow2=0x7f0b000d;
         public static final int tableRow3=0x7f0b0010;
@@ -289,12 +293,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int textCommunityStatus=0x7f0b0001;
         public static final int textFullname=0x7f0b000e;
         public static final int textStatus=0x7f0b0025;
-        public static final int textStatusData=0x7f0b004b;
-        public static final int textSynchStatus=0x7f0b0038;
+        public static final int textStatusData=0x7f0b004c;
+        public static final int textSynchStatus=0x7f0b0039;
         public static final int textView1=0x7f0b001d;
         public static final int textView2=0x7f0b0020;
         public static final int textViewOpdCaseStatus=0x7f0b002a;
-        public static final int txtAgeLabel=0x7f0b0047;
+        public static final int txtAgeLabel=0x7f0b0048;
     }
     public static final class layout {
         public static final int activity_community_member_record=0x7f030000;
@@ -321,8 +325,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int menu_community_members_record_context=0x7f0a0004;
         public static final int menu_topic_source_options=0x7f0a0005;
         public static final int opdcase=0x7f0a0006;
-        public static final int report=0x7f0a0007;
-        public static final int synch=0x7f0a0008;
+        public static final int question_menu=0x7f0a0007;
+        public static final int report=0x7f0a0008;
+        public static final int synch=0x7f0a0009;
     }
     public static final class string {
         public static final int Age=0x7f070015;
@@ -371,27 +376,27 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int open=0x7f070030;
         public static final int postQ=0x7f07004c;
         public static final int posts=0x7f07000d;
-        public static final int pref_default_display_name=0x7f07005a;
-        public static final int pref_description_social_recommendations=0x7f070058;
+        public static final int pref_default_display_name=0x7f070059;
+        public static final int pref_description_social_recommendations=0x7f070057;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f07005c;
+        public static final int pref_header_data_sync=0x7f07005b;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f070056;
+        public static final int pref_header_general=0x7f070055;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f07005f;
-        public static final int pref_ringtone_silent=0x7f070062;
-        public static final int pref_title_add_friends_to_messages=0x7f07005b;
-        public static final int pref_title_display_name=0x7f070059;
-        public static final int pref_title_new_message_notifications=0x7f070060;
-        public static final int pref_title_ringtone=0x7f070061;
-        public static final int pref_title_social_recommendations=0x7f070057;
-        public static final int pref_title_sync_frequency=0x7f07005d;
-        public static final int pref_title_system_sync_settings=0x7f07005e;
-        public static final int pref_title_vibrate=0x7f070063;
+        public static final int pref_header_notifications=0x7f07005e;
+        public static final int pref_ringtone_silent=0x7f070061;
+        public static final int pref_title_add_friends_to_messages=0x7f07005a;
+        public static final int pref_title_display_name=0x7f070058;
+        public static final int pref_title_new_message_notifications=0x7f07005f;
+        public static final int pref_title_ringtone=0x7f070060;
+        public static final int pref_title_social_recommendations=0x7f070056;
+        public static final int pref_title_sync_frequency=0x7f07005c;
+        public static final int pref_title_system_sync_settings=0x7f07005d;
+        public static final int pref_title_vibrate=0x7f070062;
         public static final int questionTag=0x7f07004b;
         public static final int recentPosts=0x7f07004f;
         public static final int recentpost=0x7f070051;
@@ -415,7 +420,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_knowledge=0x7f07004a;
         public static final int title_activity_opdcase=0x7f070010;
         public static final int title_activity_report=0x7f070027;
-        public static final int title_activity_settings=0x7f070055;
+        public static final int title_activity_settings=0x7f070054;
         public static final int title_activity_synch=0x7f070038;
         public static final int title_activity_topics=0x7f070009;
         public static final int title_cm_record_main=0x7f070028;
@@ -425,7 +430,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_report_next=0x7f07002e;
         public static final int title_report_opdsection=0x7f07002b;
         public static final int title_report_other=0x7f07002d;
-        public static final int unanswered=0x7f070054;
         public static final int updateCommunityData=0x7f070039;
         public static final int updateOpdCases=0x7f07003a;
         public static final int upload=0x7f070032;
@@ -465,8 +469,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int AppTheme=0x7f090001;
         public static final int ButtonBar=0x7f090003;
         public static final int ButtonBarButton=0x7f090004;
-        public static final int FullscreenActionBarStyle=0x7f090006;
+        public static final int FullscreenActionBarStyle=0x7f090007;
         public static final int FullscreenTheme=0x7f090002;
+        public static final int Theme_KnowledgeTheme=0x7f090006;
         public static final int clickable=0x7f090005;
     }
     public static final class xml {

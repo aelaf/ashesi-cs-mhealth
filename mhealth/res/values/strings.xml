@@ -81,10 +81,9 @@
     <string name="SortBy">Sort By:</string>
     <string name="recentPosts">Recent Posts</string>
     <string name="viewPost">View Question</string>
-    <string name="recentpost">Recent Posts</string>
+    <string name="recentpost">All Posts</string>
     <string name="myPost">My Post</string>
-    <string name="answered">Answered</string>
-    <string name="unanswered">All</string>
+    <string name="answered">Show: </string>
    
     
 
