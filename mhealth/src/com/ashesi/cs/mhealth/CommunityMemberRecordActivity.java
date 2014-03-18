@@ -1163,6 +1163,46 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 	}
 	
+	public static class FamilyPlanFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
+		
+		int communityMemberId=0;
+		
+		public FamilyPlanFragment(){
+			
+		}
+		
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_community_member_record_vaccine, container,false);
+			return rootView;
+		}
+		
+		@Override
+		public void onResume(){
+			super.onResume();
+			CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+			communityMemberId=a.getCommunityMemberId();
+		}
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
 	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
 		

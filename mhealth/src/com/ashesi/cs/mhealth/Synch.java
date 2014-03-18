@@ -324,7 +324,7 @@ public class Synch extends Activity implements OnClickListener {
 			
 		}
 		
-		 protected void onProgressUpdate(Integer... progress) {
+		protected void onProgressUpdate(Integer... progress) {
 			
 			 if(progress==null){
 				 return;

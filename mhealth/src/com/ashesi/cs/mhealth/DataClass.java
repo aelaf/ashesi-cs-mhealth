@@ -131,6 +131,36 @@ public class DataClass extends SQLiteOpenHelper {
 	}
 	
 	/**
+	 * Read server stream until #SUCCESS# keyword is seen and return the string without keyword
+	 */
+	
+	public String readStream(InputStream stream){
+		try
+		{
+			char[] buffer=new char[1024];
+			String data="";
+			boolean stop=false;
+			int readLength=0;
+			Reader reader=new InputStreamReader(stream,"UTF-8");
+			while(!stop){
+				readLength=reader.read(buffer);
+				if(readLength>0){
+					data=data+(new String(buffer,0,readLength));
+				}
+					if(data.contains("#SUCCESS#")){
+					stop=true;
+				}
+			}
+			int end=data.lastIndexOf("#SUCCESS#");
+		
+			
+			return data.substring(0, end);
+		}catch(Exception ex){
+			Log.d("DataClass.request","Exception" + ex.getMessage());
+			return "{\"result\":0,\"message\":\"error connecting\"}";
+		}
+	}
+	/**
 	 * Using InputStream it reads data from connection 
 	 * @param connection open connection
 	 * @return
@@ -138,30 +168,16 @@ public class DataClass extends SQLiteOpenHelper {
 	public String request(HttpURLConnection connection){
 
 		
-		char buffer[]=new char[256];
-		
-		String data="";
-		
-		try{
-			
-			
+		try
+		{
 			InputStream stream=connection.getInputStream();
 			Log.d("DataClass.request","stream");
-			Reader reader=new InputStreamReader(stream,"UTF-8");
-			
-			int readLength=256;
-			while(readLength==256){
-				readLength=reader.read(buffer);
-				data=data+(new String(buffer));
-			}
-
-			return data;
-			
-		}
-		catch(IOException ex){
+			return readStream(stream);
+		}catch(Exception ex){
 			Log.d("DataClass.request","Exception" + ex.getMessage());
 			return "{\"result\":0,\"message\":\"error connecting\"}";
 		}
+			
 	}
 	
 	/**
@@ -211,10 +227,7 @@ public class DataClass extends SQLiteOpenHelper {
 	public String request(String urlAddress,String postData){
 
 		urlAddress=mServerUrl+urlAddress;
-		char buffer[]=new char[1024];
-		
-		String data="";
-		
+			
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(urlAddress);
@@ -225,13 +238,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        HttpResponse response = httpclient.execute(httppost);
 	        HttpEntity entity=response.getEntity();
 	        InputStream stream=entity.getContent();
-	        Reader reader=new InputStreamReader(stream,"UTF-8");
-	        int readLength=1024;
-	        while(readLength==1024){
-	     		readLength=reader.read(buffer);
-	     		data=data+(new String(buffer));
-	        }
-			return data;
+	        return readStream(stream);
 			
 		}
 		catch(IOException ex){
@@ -273,20 +280,10 @@ public class DataClass extends SQLiteOpenHelper {
 	 */
 	public  String request(HttpResponse response){
 		
-		char buffer[]=new char[1024];
-		
-		String data="";
-		
 		try{
 			HttpEntity entity=response.getEntity();
 	        InputStream stream=entity.getContent();
-	        Reader reader=new InputStreamReader(stream,"UTF-8");
-	        int readLength=1024;
-	        while(readLength==1024){
-	     		readLength=reader.read(buffer);
-	     		data=data+(new String(buffer));
-	        }
-			return data;
+	        return readStream(stream);
 			
 		}
 		catch(IOException ex){
@@ -300,9 +297,7 @@ public class DataClass extends SQLiteOpenHelper {
 	
 	public String uploadFile(String urlAddress, File fileToUpload){
 		urlAddress=mServerUrl+urlAddress;
-		char buffer[]=new char[1024];
 		
-		String data="";
 		
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
@@ -317,14 +312,7 @@ public class DataClass extends SQLiteOpenHelper {
 	      
 	        HttpResponse response = httpclient.execute(httppost);
 	        InputStream stream=response.getEntity().getContent();
-	        Reader reader=new InputStreamReader(stream,"UTF-8");
-	        int readLength=1024;
-	        while(readLength==1024){
-	     		readLength=reader.read(buffer);
-	     		data=data+(new String(buffer));
-	        }
-			return data;
-			
+	        return readStream(stream);			
 		}
 		catch(Exception ex){
 			Log.d("DataClass.uploadFile","Exception" + ex.getMessage());
