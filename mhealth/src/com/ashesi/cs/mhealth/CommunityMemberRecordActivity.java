@@ -49,6 +49,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -256,7 +257,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	/**
 	 * A main fragment representing a section the main view client
 	 */
-	public static class MainSectionFragment extends Fragment implements OnClickListener, OnItemSelectedListener,OnFocusChangeListener {
+	public static class MainSectionFragment extends Fragment implements OnDateChangedListener, OnClickListener, OnItemSelectedListener,OnFocusChangeListener {
 		
 		ArrayList<Community> listCommunities;
 		
@@ -264,11 +265,11 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private int communityMemberId=0;
 		
 		private EditText editAge;
-		private EditText editBirthdate;
+		private DatePicker dpBirthdate;
 		private EditText editFullname;
 		private EditText editCardNo;
 		private EditText editNHISId;
-		private EditText editNHISExpiryDate;
+		private DatePicker dpNHISExpiryDate;
 		private Spinner spinnerCommunities;
 		private Spinner spinnerAgeUnit;
 
@@ -344,6 +345,12 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 		}
 		
+		@Override
+		public void onDateChanged(DatePicker dp, int year, int month, int day) {
+			computeAge();
+			
+		}
+		
 		public CommunityMemberRecordActivity getHostActivity(){
 			return(CommunityMemberRecordActivity)getActivity();
 		}
@@ -395,12 +402,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			
 			editFullname=(EditText)rootView.findViewById(R.id.editFullname);
-			editBirthdate=(EditText)rootView.findViewById(R.id.editCommunityMemberRecordBirthdate);
+			dpBirthdate=(DatePicker)rootView.findViewById(R.id.dpBirthDate);
 			editCardNo=(EditText)rootView.findViewById(R.id.editCardNo);
 			editNHISId=(EditText)rootView.findViewById(R.id.editNHISId);
-			editNHISExpiryDate=(EditText)rootView.findViewById(R.id.editNHISExpiryDate);
+			dpNHISExpiryDate=(DatePicker)rootView.findViewById(R.id.dpNhisExpiryDate);
 			spinnerCommunities=(Spinner)rootView.findViewById(R.id.spinnerCommunities);
 			spinnerAgeUnit=(Spinner)rootView.findViewById(R.id.spinnerCommunityMemberAgeUnits);
+			
+			//initialize datepicker
+			Calendar c=Calendar.getInstance();
+			dpBirthdate.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),this);
 			
 			fillAgeUnitSpinner();
 			
@@ -411,12 +422,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
 				CommunityMember cm=members.getCommunityMember(communityMemberId);
 				editFullname.setText(cm.getFullname());
-				editBirthdate.setText(cm.getFormatedBirthdate());
 				
+				setBirthdate(cm.getBirthdateDate());
 				computeAge();
+				
 				editCardNo.setText(cm.getCardNo());
 				editNHISId.setText(cm.getNHISId());
-				editNHISExpiryDate.setText(cm.getFormatedNHISExpiryDate());
+				setNHISExpiryDate(cm.getNHISExpiryDateDate());
 				setGender(cm.getGender());
 				fillCommunitiesSpinner(cm.getCommunityID());
 				
@@ -464,7 +476,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public void computeBirthdate(){
 			try
 			{
-				java.util.Calendar date=java.util.Calendar.getInstance();
+				java.util.Calendar c=java.util.Calendar.getInstance();
 
 				String temp=editAge.getText().toString();
 				if(temp.isEmpty()){
@@ -474,19 +486,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				int age=Integer.parseInt(temp);
 				int unit=spinnerAgeUnit.getSelectedItemPosition();
 				if(unit==1){
-					date.add(java.util.Calendar.MONTH,(-1)*age);
-					date.set(Calendar.DAY_OF_MONTH, 1);
+					c.add(java.util.Calendar.MONTH,(-1)*age);
+					c.set(Calendar.DAY_OF_MONTH, 1);
 				}else{
-					date.add(java.util.Calendar.YEAR,(-1)*age);
-					date.set(Calendar.DAY_OF_MONTH, 1);
-					date.set(Calendar.MONTH, Calendar.JANUARY);
+					c.add(java.util.Calendar.YEAR,(-1)*age);
+					c.set(Calendar.DAY_OF_MONTH, 1);
+					c.set(Calendar.MONTH, Calendar.JANUARY);
 				}
 
+				setBirthdate(c.getTime());
 				
-				
-				SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
-				String str=dateFormat.format(date.getTime());
-				editBirthdate.setText(str);
 			}catch(Exception ex){
 				return;
 			}
@@ -501,12 +510,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 			Calendar c=Calendar.getInstance();
 			
-			//int thisYear=c.get(Calendar.YEAR);
-			//int thisMonth=c.get(Calendar.YEAR);
+
 			long thisTime=c.getTimeInMillis();
 			c.setTime(date);
-			//int birthYear=c.get(Calendar.YEAR);
-			//int birthMonth=c.get(Calendar.MONTH);
 			long birthTime=c.getTimeInMillis();
 			long ym= 31622400000L; 
 			int age=(int)((thisTime-birthTime)/ym); 
@@ -540,6 +546,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			//get fullname
 			EditText editFullname=(EditText)rootView.findViewById(R.id.editFullname);
 			String name=editFullname.getText().toString();
+			
+			if(name.length()<=0){
+				return;
+			}
 			//get birthdate
 			java.util.Date birthdate=getBirthdate();
 			if(birthdate==null){
@@ -609,20 +619,29 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			return community.getId();
 		}
 		
+		protected void setBirthdate(java.util.Date date){
+			Calendar c=Calendar.getInstance();
+			c.setTime(date);
+			dpBirthdate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
+			
+		}
+		
 		protected java.util.Date getBirthdate(){
-			EditText editBirthdate=(EditText)rootView.findViewById(R.id.editCommunityMemberRecordBirthdate);
-			String strDate=editBirthdate.getText().toString();
-
+			
 			try
 			{
-				SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
-				return dateFormat.parse(strDate);
+				int year=dpBirthdate.getYear();
+				int month=dpBirthdate.getMonth();
+				int day=dpBirthdate.getDayOfMonth();
+				
+				Calendar c=Calendar.getInstance();
+				c.set(year, month, day);
+				return c.getTime();
+
 			}
 			catch(Exception ex){
 				return null;
 			}
-			
-			
 		}
 		
 		protected void stateAction(){
@@ -636,14 +655,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				case STATE_RECORD:
 					//existing member, record
 					editFullname.setEnabled(false);
-					editBirthdate.setEnabled(false);
+					dpBirthdate.setEnabled(false);
 					editAge.setEnabled(false);
 					spinnerCommunities.setEnabled(false);
 					radioMale.setEnabled(false);
 					radioFemale.setEnabled(false);
 					editCardNo.setEnabled(false);
 					editNHISId.setEnabled(false);
-					editNHISExpiryDate.setEnabled(false);
+					dpNHISExpiryDate.setEnabled(false);
 					spinnerAgeUnit.setEnabled(false);
 					button.setText(R.string.editClient);
 					break;
@@ -651,14 +670,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					//new member
 					//client personal record fields
 					editFullname.setEnabled(true);
-					editBirthdate.setEnabled(true);
+					dpBirthdate.setEnabled(true);
 					editAge.setEnabled(true);
 					spinnerCommunities.setEnabled(true);
 					radioMale.setEnabled(true);
 					radioFemale.setEnabled(true);
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
-					editNHISExpiryDate.setEnabled(true);
+					dpNHISExpiryDate.setEnabled(true);
 					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.addCommunityMember);
 					break;
@@ -666,14 +685,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					//edit
 					//client personal record fields
 					editFullname.setEnabled(true);
-					editBirthdate.setEnabled(true);
+					dpBirthdate.setEnabled(true);
 					editAge.setEnabled(true);
 					spinnerCommunities.setEnabled(true);
 					radioMale.setEnabled(true);
 					radioFemale.setEnabled(true);
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
-					editNHISExpiryDate.setEnabled(true);
+					dpNHISExpiryDate.setEnabled(true);
 					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.saveCommunityMember);
 					
@@ -699,17 +718,21 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			currentCHO=chos.getCHO(choId);
 		}
 
-		protected java.util.Date getNHISExpiryDate(){
+		protected void setNHISExpiryDate(java.util.Date date){
+			Calendar c=Calendar.getInstance();
+			c.setTime(date);
+			dpNHISExpiryDate.updateDate(c.get(Calendar.YEAR), c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
 			
-			String strDate=editNHISExpiryDate.getText().toString();
-			if(strDate.length()<=0){
-				return null;
-			}
+		}
+		
+		protected java.util.Date getNHISExpiryDate(){
 
 			try
 			{
-				SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
-				return dateFormat.parse(strDate);
+				Calendar c=Calendar.getInstance();
+				c.set(dpNHISExpiryDate.getYear(), dpNHISExpiryDate.getMonth(),dpNHISExpiryDate.getDayOfMonth());
+				
+				return c.getTime();
 			}
 			catch(Exception ex){
 				return null;
@@ -717,6 +740,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			
 		}
+
+		
 
 	}
 	
@@ -822,7 +847,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		public boolean fillOPDCaseCategoriesSpinner(){
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerOPDCaseCategories);
-			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,opdCaseCategories);
+			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,opdCaseCategories);
 			spinner.setAdapter(adapter);
 			spinner.setOnItemSelectedListener(this);
 			return true;

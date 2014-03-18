@@ -171,6 +171,18 @@ public class CommunityMember {
 		return nhisExpiryDate;
 	}
 	
+	public java.util.Date getNHISExpiryDateDate(){
+		try
+		{
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			return dateFormat.parse(nhisExpiryDate);
+		}
+		catch(Exception ex){
+			return null;
+		}
+		
+	}
+	
 	public String getFormatedNHISExpiryDate(){
 		try
 		{
@@ -183,6 +195,7 @@ public class CommunityMember {
 			return "";
 		}
 	}
+	
 	public int getRecState(){
 		return recState;
 	}
