@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/com/ashesi/cs/mhealth/PostQuestionActivity.java" />
+    </issue>
+</lint>

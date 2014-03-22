@@ -285,7 +285,6 @@ public class DataClass extends SQLiteOpenHelper {
 	     		readLength=reader.read(buffer);
 	     		data=data+(new String(buffer));
 	        }
-	        System.out.println("Getting Data");
 			return data;
 			
 		}

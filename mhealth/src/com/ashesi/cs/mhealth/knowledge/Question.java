@@ -7,8 +7,9 @@ public class Question {
 	private int categoryId;
 	private String date;
 	private String guid;
+	private int rec_state;
 	
-	public Question(int id, String content, int choId, int catId, String theDate, String g_uid) {
+	public Question(int id, String content, int choId, int catId, String theDate, String g_uid, int recstate) {
 		// TODO Auto-generated constructor stub
 		qId = id;
 		qContent = content;
@@ -16,6 +17,7 @@ public class Question {
 		categoryId = catId;
 		date = theDate;
 		guid = g_uid;
+		rec_state = recstate;
 	}
 	
 	public int getId(){
@@ -44,6 +46,10 @@ public class Question {
 	
 	public String getGuid(){
 		return guid;
+	}
+	
+	public int getRecState(){
+		return rec_state;
 	}
 
 }

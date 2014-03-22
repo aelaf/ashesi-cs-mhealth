@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.json.JSONArray;
@@ -27,7 +28,7 @@ public class Questions extends DataClass{
 	public static final String KEY_GUID = "quid";
 	
 	
-	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE, KEY_GUID};
+	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE, KEY_GUID, DataClass.REC_STATE};
 	
 	
 	public Questions(Context context) {
@@ -43,6 +44,7 @@ public class Questions extends DataClass{
 				+ KEY_CHO_ID +" int ,"
 				+ KEY_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
 				+ KEY_GUID + " BLOB, "
+				+ DataClass.REC_STATE+" integer, "
 				+ "FOREIGN KEY( "+ KEY_CATEGORY_ID + ") REFERENCES categories(category_id), "
 				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
 		
@@ -50,25 +52,26 @@ public class Questions extends DataClass{
 	
 	public static String getInsert(String content,int choId, int categoryId, UUID guid){
 		Date date = new Date();
-        DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
 		return "insert into "
 				+ TABLE_NAME_QUESTIONS +" ("
 				+ KEY_CONTENT +", "
 				+ KEY_CATEGORY_ID + ", "
 				+ KEY_CHO_ID + " ," 
-				+ KEY_DATE 
-				+ KEY_GUID 
-				+") values("
+				+ KEY_DATE + ", " 
+				+ KEY_GUID + ", "  
+				+ DataClass.REC_STATE
+				+ ") values("
 			    + ", "
 				+ "'"+ content +"',"
 				+ categoryId + ", "
 				+ choId
 				+" , " + dt.format(date) + ", "
-				+ guid + ") ";
+				+ guid + "," + DataClass.REC_STATE_NEW + ") ";
 		
 	}
 	
-	public boolean addQuestion(int id,String content,int choId, int categoryId, String date, String guid){
+	public boolean addQuestion(int id,String content,int choId, int categoryId, String date, String guid, int rec_state){
 		try
 		{
 			if(!content.isEmpty()){
@@ -89,7 +92,8 @@ public class Questions extends DataClass{
 					values.put(KEY_GUID, g_uid.toString());
 				}else{
 					values.put(KEY_GUID, guid);
-				}				
+				}		
+				values.put(DataClass.REC_STATE, rec_state);
 				db.insertWithOnConflict(TABLE_NAME_QUESTIONS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 				return true;
 			}else{
@@ -124,9 +128,11 @@ public class Questions extends DataClass{
 			String theDate = cursor.getString(index);
 			index= cursor.getColumnIndex(KEY_GUID);
 			String guid = cursor.getString(index);
+			index = cursor.getColumnIndex(DataClass.REC_STATE);
+			int rec_st = cursor.getInt(index);
 			
 	
-			Question q=new Question(id,content,choId,catId, theDate, guid);
+			Question q=new Question(id,content,choId,catId, theDate, guid, rec_st);
 			cursor.moveToNext();
 			return q;
 		}catch(Exception ex){
@@ -230,6 +236,7 @@ public class Questions extends DataClass{
 			int id;
 			int choId;
 			int catId;
+			int recState;
 			String aDate;
 			String guid;
 			for(int i=0;i<jsonArray.length();i++){
@@ -240,7 +247,8 @@ public class Questions extends DataClass{
 				choId = obj.getInt(KEY_CHO_ID);
 				aDate = obj.getString(KEY_DATE);
 				guid = obj.getString(KEY_GUID);
-				addQuestion(id,content,choId, catId, aDate, guid);
+				recState = obj.getInt(DataClass.REC_STATE);
+				addQuestion(id,content,choId, catId, aDate, guid, recState);
 			}
 		}catch(Exception ex){
 			return;

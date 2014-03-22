@@ -9,8 +9,19 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.wifi.direct"
+        android:required="true" />
+    
+    
 
     <application
         android:allowBackup="true"
@@ -61,29 +72,42 @@
             android:name="com.ashesi.cs.mhealth.CommunityMemberRecordActivity"
             android:label="@string/title_activity_community_member_record" >
         </activity>
-        
-            <activity
+        <activity
             android:name="com.ashesi.cs.mhealth.PostQuestionActivity"
             android:label="@string/title_activity_knowledge"
-            android:parentActivityName = "com.ashesi.cs.mhealth.MainActivity" >
+            android:parentActivityName="com.ashesi.cs.mhealth.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.KNOWLEDGE" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-            <activity
+        <activity
             android:name="com.ashesi.cs.mhealth.ViewQuestionActivity"
             android:label="@string/viewPost"
-            android:parentActivityName = "com.ashesi.cs.mhealth.PostQuestionActivity">
+            android:parentActivityName="com.ashesi.cs.mhealth.PostQuestionActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEWQUESTION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
+        <activity
+            android:name="com.ashesi.cs.mhealth.KSettingsActivity"
+            android:label="@string/knowledgeSettings"
+            android:parentActivityName="com.ashesi.cs.mhealth.PostQuestionActivity" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.WiFiDirectActivity"
+            android:label="@string/device_synch"
+            android:parentActivityName="com.ashesi.cs.mhealth.PostQuestionActivity" >
+            
+        </activity>
+
+        <!-- Used for transferring files  after a successful connection -->
+        <service
+            android:name=".FileTransferService"
+            android:enabled="true" />
     </application>
 
 </manifest>
