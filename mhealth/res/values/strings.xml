@@ -104,6 +104,7 @@
     <string name="label_peers">PEERS</string>
     <string name="device_synch">Device Synch</string>
     <string name="other_owner_text">Am I the other Device? </string>
+    <string name="knowledgeBtn">Knowledge</string>
     
     
 

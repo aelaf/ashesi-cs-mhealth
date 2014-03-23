@@ -231,7 +231,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int btn_connect=0x7f0b004b;
         public static final int btn_disconnect=0x7f0b004c;
         public static final int btn_start_client=0x7f0b004d;
-        public static final int button1=0x7f0b0039;
         public static final int button2=0x7f0b003a;
         public static final int buttonAddCommunityMember=0x7f0b0023;
         public static final int buttonAddVaccine=0x7f0b0064;
@@ -279,6 +278,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int itemMainActionBarSynch=0x7f0b0077;
         public static final int itemOPDCases=0x7f0b0076;
         public static final int itemRemoveRecord=0x7f0b0078;
+        public static final int knowledgeBtn=0x7f0b0039;
         public static final int layoutButtons=0x7f0b0007;
         public static final int linearLay=0x7f0b0036;
         public static final int linearLayout1=0x7f0b0030;
@@ -353,23 +353,26 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_community_member_record=0x7f030000;
         public static final int activity_community_members=0x7f030001;
         public static final int activity_community_members_record=0x7f030002;
-        public static final int activity_main=0x7f030003;
-        public static final int activity_opdcase=0x7f030004;
-        public static final int activity_post_question=0x7f030005;
-        public static final int activity_report=0x7f030006;
-        public static final int activity_synch=0x7f030007;
-        public static final int activity_view_question=0x7f030008;
-        public static final int device_detail=0x7f030009;
-        public static final int device_list=0x7f03000a;
-        public static final int dialog_age_birthdate=0x7f03000b;
-        public static final int dialog_synch_data=0x7f03000c;
-        public static final int fragment_community_member_record_other=0x7f03000d;
-        public static final int fragment_community_member_record_vaccine=0x7f03000e;
-        public static final int fragment_report_opd=0x7f03000f;
-        public static final int list_row=0x7f030010;
-        public static final int main=0x7f030011;
-        public static final int row_devices=0x7f030012;
-        public static final int test=0x7f030013;
+        public static final int activity_knowledge=0x7f030003;
+        public static final int activity_main=0x7f030004;
+        public static final int activity_opdcase=0x7f030005;
+        public static final int activity_post_question=0x7f030006;
+        public static final int activity_questions=0x7f030007;
+        public static final int activity_report=0x7f030008;
+        public static final int activity_synch=0x7f030009;
+        public static final int activity_view_question=0x7f03000a;
+        public static final int device_detail=0x7f03000b;
+        public static final int device_list=0x7f03000c;
+        public static final int dialog_age_birthdate=0x7f03000d;
+        public static final int dialog_synch_data=0x7f03000e;
+        public static final int fragment_community_member_record_other=0x7f03000f;
+        public static final int fragment_community_member_record_vaccine=0x7f030010;
+        public static final int fragment_report_opd=0x7f030011;
+        public static final int fragment_resource=0x7f030012;
+        public static final int list_row=0x7f030013;
+        public static final int main=0x7f030014;
+        public static final int row_devices=0x7f030015;
+        public static final int test=0x7f030016;
     }
     public static final class menu {
         public static final int community=0x7f0a0000;
@@ -430,6 +433,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int hintLastnameFirstname=0x7f070020;
         public static final int hintNumber=0x7f07003f;
         public static final int knowledge=0x7f070031;
+        public static final int knowledgeBtn=0x7f070068;
         public static final int knowledgeSettings=0x7f070057;
         public static final int lab=0x7f070049;
         public static final int label_me=0x7f070064;
@@ -448,27 +452,27 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int p2p_off_warning=0x7f070062;
         public static final int postQ=0x7f07004c;
         public static final int posts=0x7f07000d;
-        public static final int pref_default_display_name=0x7f07006d;
-        public static final int pref_description_social_recommendations=0x7f07006b;
+        public static final int pref_default_display_name=0x7f07006e;
+        public static final int pref_description_social_recommendations=0x7f07006c;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f07006f;
+        public static final int pref_header_data_sync=0x7f070070;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f070069;
+        public static final int pref_header_general=0x7f07006a;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f070072;
-        public static final int pref_ringtone_silent=0x7f070075;
-        public static final int pref_title_add_friends_to_messages=0x7f07006e;
-        public static final int pref_title_display_name=0x7f07006c;
-        public static final int pref_title_new_message_notifications=0x7f070073;
-        public static final int pref_title_ringtone=0x7f070074;
-        public static final int pref_title_social_recommendations=0x7f07006a;
-        public static final int pref_title_sync_frequency=0x7f070070;
-        public static final int pref_title_system_sync_settings=0x7f070071;
-        public static final int pref_title_vibrate=0x7f070076;
+        public static final int pref_header_notifications=0x7f070073;
+        public static final int pref_ringtone_silent=0x7f070076;
+        public static final int pref_title_add_friends_to_messages=0x7f07006f;
+        public static final int pref_title_display_name=0x7f07006d;
+        public static final int pref_title_new_message_notifications=0x7f070074;
+        public static final int pref_title_ringtone=0x7f070075;
+        public static final int pref_title_social_recommendations=0x7f07006b;
+        public static final int pref_title_sync_frequency=0x7f070071;
+        public static final int pref_title_system_sync_settings=0x7f070072;
+        public static final int pref_title_vibrate=0x7f070077;
         public static final int question=0x7f070056;
         public static final int questionTag=0x7f07004b;
         public static final int recentPosts=0x7f07004f;
@@ -493,7 +497,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int title_activity_knowledge=0x7f07004a;
         public static final int title_activity_opdcase=0x7f070010;
         public static final int title_activity_report=0x7f070027;
-        public static final int title_activity_settings=0x7f070068;
+        public static final int title_activity_settings=0x7f070069;
         public static final int title_activity_synch=0x7f070038;
         public static final int title_activity_topics=0x7f070009;
         public static final int title_cm_record_main=0x7f070028;

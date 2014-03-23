@@ -187,7 +187,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		
 		//Inflate buttons for changing between user's posts and all posts. 
 		btnAllPost = (Button)findViewById(R.id.button2);
-		btnMyPost = (Button)findViewById(R.id.button1);
+		btnMyPost = (Button)findViewById(R.id.knowledgeBtn);
 		inflatePostBtns();
 		btnMyPost.setSelected(true);
 		onlyMyPost = true;

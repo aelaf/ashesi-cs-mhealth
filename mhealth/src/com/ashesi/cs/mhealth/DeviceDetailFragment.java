@@ -136,19 +136,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         Uri uri = data.getData();
         TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
         statusText.setText("Sending: " + uri);
-//        Log.d(WiFiDirectActivity.TAG, "Intent----------- " + uri);
-//        Intent serviceIntent = new Intent(getActivity(), FileTransferService.class);
-//        serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
-//        serviceIntent.putExtra(FileTransferService.EXTRAS_FILE_PATH, uri.toString());
-//        if (info.groupFormed && info.isGroupOwner) {
-//        	serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS, otherAddress);
-//        	serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);   
-//            //Log.d(WiFiDirectActivity.TAG, getAddress());
-//        }else{
-//        	serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS,
-//	                info.groupOwnerAddress.getHostAddress());
-//	        serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
-//        }
         Log.d("URI", uri.toString());
         filePath = uri.toString();
     }
@@ -201,7 +188,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					e.printStackTrace();
 				}
                 new ServerTask().execute();
-				//new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text)).execute();
         } else if (info.groupFormed) {
             // The other device acts as the client. In this case, we enable the
             // get file button.
@@ -210,7 +196,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     .getString(R.string.client_text));
             socket = new Socket();
             new ClientTask().execute();
-            //new FileClientAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text),info).execute();
         }
 
         // hide the connect button
@@ -251,9 +236,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 		protected Void doInBackground(Void... params) {
 			// TODO Auto-generated method stub
 			try {
-			  File directory = Environment.getExternalStorageDirectory();
-			  // assumes that a file article.rss is available on the SD card
-			  File file = new File(directory + "/Pictures/Hello.jpg");
+			    File directory = Environment.getExternalStorageDirectory();
+			    // assumes that a file article.rss is available on the SD card
+			    File file = new File(directory + "/Pictures/Hello.jpg");
 			  
 				socket = new Socket(getInfo().groupOwnerAddress, 8988);
 				TCPClient client = new TCPClient(socket);
@@ -264,8 +249,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-            
+			}           
 			return null;
 		}
     	

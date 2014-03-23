@@ -62,11 +62,10 @@ public class MainActivity extends Activity implements OnClickListener {
 				loginAndStart();
 				break;
 			case R.id.buttonMainKnowledge:
-				Intent knowledge = new Intent(this,PostQuestionActivity.class);
+				Intent knowledge = new Intent(this,KnowledgeActivity.class);
 				knowledge.putExtra("choId", currentCHO.getId());
 				startActivity(knowledge);
 				break;
-				
 		}
 	}
 	
