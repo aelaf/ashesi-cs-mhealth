@@ -748,7 +748,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	public static class OtherFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
 		ArrayList<OPDCase> listOPDCases;
-		String[] opdCaseCategories={"ALL","CI","CNI","NID","MHC","SC","OGC","RTD","AI","OT"}; 
+		String[] opdCaseCategories={"ALL","CI","CNI","NCD","MHC","SC","OGC","IO","REF","OC"}; 
 		
 		View rootView;
 		int communityMemberId=0;
