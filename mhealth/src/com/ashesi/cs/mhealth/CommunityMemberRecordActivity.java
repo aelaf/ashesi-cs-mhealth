@@ -219,6 +219,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				fragment=new OtherFragment();
 			}else if(position==2){
 				fragment=new VaccineFragment();
+			}else if(position==3){
+				fragment=new FamilyPlanFragment();
 			}else{
 				fragment= new MainSectionFragment(); //default
 			}
@@ -236,19 +238,21 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		@Override
 		public int getCount() {
 			// Show 3 total pages.
-			return 3;
+			return 4;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			switch (position) {
-			case 0:
-				return getString(R.string.title_cm_record_main).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_cm_record_other).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_cm_record_vaccine).toUpperCase(l);
+				case 0:
+					return getString(R.string.title_cm_record_main).toUpperCase(l);
+				case 1:
+					return getString(R.string.title_cm_record_other).toUpperCase(l);
+				case 2:
+					return getString(R.string.title_cm_record_vaccine).toUpperCase(l);
+				case 3:
+					return "Family Planning";
 			}
 			return null;
 		}
@@ -748,7 +752,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	public static class OtherFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
 		ArrayList<OPDCase> listOPDCases;
-		String[] opdCaseCategories={"ALL","CI","CNI","NCD","MHC","SC","OGC","IO","REF","OC"}; 
+		String[] opdCaseCategories={"ALL","CI","CNI","NCD","MHC","SC","OGC","RETD","IO","REF","OTH"}; 
 		
 		View rootView;
 		int communityMemberId=0;
