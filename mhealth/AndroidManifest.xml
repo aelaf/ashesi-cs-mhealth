@@ -85,7 +85,7 @@
         <activity
             android:name="com.ashesi.cs.mhealth.ViewQuestionActivity"
             android:label="@string/viewPost"
-            android:parentActivityName="com.ashesi.cs.mhealth.QuestionsFragment" >
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEWQUESTION" />
 
@@ -99,16 +99,13 @@
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.WiFiDirectActivity"
-            android:label="@string/device_synch"
-            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity" >
-            
+            android:label="@string/device_synch">         
         </activity>
         
         <activity 
             android:name="com.ashesi.cs.mhealth.KnowledgeActivity"
             android:label="@string/knowledge"
-            android:parentActivityName="com.ashesi.cs.mhealth.MainActivity">
-            
+            android:parentActivityName="com.ashesi.cs.mhealth.MainActivity">           
         </activity>
     </application>
 

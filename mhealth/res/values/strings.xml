@@ -105,6 +105,9 @@
     <string name="device_synch">Device Synch</string>
     <string name="other_owner_text">Am I the other Device? </string>
     <string name="knowledgeBtn">Knowledge</string>
+    <string name="resourceMaterial">Resource Material</string>
+    <string name="categories">Category</string>
+    <string name="resourceType">Resource Type</string>
     
     
 

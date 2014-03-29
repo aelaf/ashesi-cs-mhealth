@@ -93,7 +93,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 		ab.setDisplayHomeAsUpEnabled(true);
 		
 		// Question TextBox;
-		question = (EditText) findViewById(R.id.question);
+		question = (EditText) findViewById(R.id.resource_material);
 		
 		// Get the list view for the questions
 		theVList = (ListView) findViewById(R.id.listView1);

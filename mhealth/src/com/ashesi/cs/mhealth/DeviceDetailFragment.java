@@ -30,18 +30,21 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.DeviceListFragment.DeviceActionListener;
-import com.ashesi.cs.mhealth.data.FileTransferService;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TCPClient;
 import com.ashesi.cs.mhealth.data.TCPServer;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,8 +72,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
-    private String hostAddress;
-	private String otherAddress = null;
+    private String otherAddress = null;
 	private ServerSocket serverSock;
 	private Socket socket;
 	private String filePath;
@@ -109,19 +111,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                     @Override
                     public void onClick(View v) {
                         ((DeviceActionListener) getActivity()).disconnect();
-                    }
-                });
-
-        mContentView.findViewById(R.id.btn_start_client).setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        // Allow user to pick an image from Gallery or other
-                        // registered apps
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("image/*");
-                        startActivityForResult(intent, CHOOSE_FILE_RESULT_CODE);
                     }
                 });
 
@@ -178,10 +167,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         // server. The file server is single threaded, single connection server
         // socket.
         if (info.groupFormed && info.isGroupOwner) {
-        	mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
-            ((TextView) mContentView.findViewById(R.id.status_text)).setText(getResources()
-                    .getString(R.string.other_owner_text));
-            	try {
+        	   	try {
 					serverSock = new ServerSocket(8988);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -191,11 +177,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         } else if (info.groupFormed) {
             // The other device acts as the client. In this case, we enable the
             // get file button.
-            mContentView.findViewById(R.id.btn_start_client).setVisibility(View.VISIBLE);
-            ((TextView) mContentView.findViewById(R.id.status_text)).setText(getResources()
-                    .getString(R.string.client_text));
             socket = new Socket();
-            new ClientTask().execute();
+            new ClientTask().execute();          
         }
 
         // hide the connect button
@@ -203,55 +186,190 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         Log.d("P2p", "starting server and client servers");
     }
     
+    public ProgressDialog getDialog(){
+    	return progressDialog;
+    }
+    
     class ServerTask extends AsyncTask<Void, Void, Void> {
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+    	
+    	ProgressDialog diag = getDialog();
+    	
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			diag = new ProgressDialog(getActivity());
+			diag.setMessage("Please wait...");
+			diag.setTitle("Synchronization in progress");
+			diag.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			diag.setCancelable(false);
+			diag.show();
+			
+		}
 
+		
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			// TODO Auto-generated method stub
 			 try {
-				 File directory = Environment.getExternalStorageDirectory();
-				  // assumes that a file article.rss is available on the SD card
-				  File file = new File(directory + "/Pictures/Hello.jpg");
-					ServerSocket sock = serSocket();
-					TCPServer server = new TCPServer(sock.accept());
-					try {
+				ResourceMaterials resourceMat = new ResourceMaterials(getActivity());
+				
+				ServerSocket sock = serSocket();
+				TCPServer server = new TCPServer(resourceMat, sock.accept());
+				try {
+					//Establish the right of way i.e. who will be sending files.
+					Log.d("Server Version", String.valueOf(resourceMat.getMaxID()));
+					String rightOfWay = server.checkRightOfWay(resourceMat.getMaxID());
+					String [] result = rightOfWay.split("[|]");
+					System.out.println(result[0]);
 						
-						server.receiveFile(file);
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					//Initiate sending or receiving.
+					if(result[0].equals("server")){  //send
+						System.out.println("Starting send");
+						int countUp = Integer.parseInt(result[1]) + 1;  //Get starting point of sending process
+						int maxId = resourceMat.getMaxID();
+						int duration = (maxId - countUp) + 1; 
+						diag.setMax(duration);
+						while(countUp <= maxId){
+							diag.incrementProgressBy(1);
+							server.resetSock(sock.accept());
+							File file = new File(resourceMat.getMaterial(countUp).getContent());
+							server.sendFile(file, resourceMat.getMaterial(countUp));
+							countUp++;
+							System.out.println(countUp);
+						}
+					}else{
+						int countDown = Integer.parseInt(result[1]);
+						int maxId = resourceMat.getMaxID();
+						int duration = countDown - maxId;
+						diag.setMax(duration);
+						while(countDown > maxId){
+							diag.incrementProgressBy(1);
+							server.resetSock(sock.accept());
+							server.receiveFile();
+							countDown--;
+							System.out.println(countDown);
+						}
 					}
-				} catch (IOException e) {
+					sock.close();
+				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}           
-			return null;
-		}
-    	
-    }
-    
-    class ClientTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			try {
-			    File directory = Environment.getExternalStorageDirectory();
-			    // assumes that a file article.rss is available on the SD card
-			    File file = new File(directory + "/Pictures/Hello.jpg");
-			  
-				socket = new Socket(getInfo().groupOwnerAddress, 8988);
-				TCPClient client = new TCPClient(socket);
-				client.sendFile(file);
+				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}           
 			return null;
 		}
+
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if (diag != null && diag.isShowing()) {
+	            diag.dismiss();
+	        }
+			Toast.makeText(getActivity(), "Synchronization complete", Toast.LENGTH_LONG).show();
+		}
+		
+		
+    	
+    }
+    
+    class ClientTask extends AsyncTask<Void, Void, Void> {
+
+    	ProgressDialog diag = getDialog();
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			diag = new ProgressDialog(getActivity());
+			diag.setMessage("Please wait...");
+			diag.setTitle("Synchronization in progress");
+			diag.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			diag.setCancelable(false);
+			diag.show();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			try {
+				ResourceMaterials resMat = new ResourceMaterials(getActivity());
+			  
+				Socket sock = getSock();
+				sock = new Socket(getInfo().groupOwnerAddress, 8988);
+				TCPClient client = new TCPClient(sock, resMat);
+				
+				Log.d("Client Version", String.valueOf(resMat.getMaxID()));
+				String rightOfWay = client.checkRightOfWay(resMat.getMaxID(), sock);
+				
+				String [] result = rightOfWay.split("[|]");
+				System.out.println(rightOfWay);
+				
+				//Initiate sending or receiving.
+				if(result[0].equals("server")){ //recieve
+					int countDown = Integer.parseInt(result[1]);
+					int maxId = resMat.getMaxID();
+					int duration = countDown - maxId;
+					diag.setMax(duration);
+					while(countDown >  maxId){
+						diag.incrementProgressBy(1);
+						sock = new Socket(getInfo().groupOwnerAddress, 8988);
+						client.resetSocket(sock);
+						client.receiveFile();
+						countDown--;
+						System.out.println(countDown);
+					}
+				}else{
+					System.out.println("Starting send to the server");
+					int countUp = Integer.parseInt(result[1]) + 1;  //Get starting point of sending process
+					int maxId = resMat.getMaxID();
+					int duration = (maxId - countUp) + 1; //Message to the user about the progress of synch
+					diag.setMax(duration);
+					while(countUp <= maxId){   //send
+						diag.incrementProgressBy(1);
+						sock = new Socket(getInfo().groupOwnerAddress, 8988);
+						client.resetSocket(sock);
+						File file = new File(resMat.getMaterial(countUp).getContent());
+						client.sendFile(file, resMat.getMaterial(countUp));
+						countUp++;
+						System.out.println(countUp);
+					}
+				}
+				sock.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}           
+			return null;
+		}
+
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if (diag != null && diag.isShowing()) {
+	            diag.dismiss();
+	        }
+			Toast.makeText(getActivity(), "Synchronization complete", Toast.LENGTH_LONG).show();
+
+		}
+		
+		
     	
     }
 
@@ -293,24 +411,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     
     public String getAddress(){
     	return otherAddress;
-    }
-  
-
-    public static boolean copyFile(InputStream inputStream, OutputStream out) {
-        byte buf[] = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                out.write(buf, 0, len);
-
-            }
-            out.close();
-            inputStream.close();
-        } catch (IOException e) {
-            Log.d(WiFiDirectActivity.TAG, e.toString());
-            return false;
-        }
-        return true;
     }
     
 }

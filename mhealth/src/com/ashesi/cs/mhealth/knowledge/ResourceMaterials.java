@@ -17,9 +17,10 @@ public class ResourceMaterials extends DataClass {
 	public static final String KEY_ID = "resource_id";
 	public static final String KEY_TYPE = "resource_type";
 	public static final String KEY_CATEGORY_ID = "category_id";
+	public static final String KEY_DESC = "description";
 	public static final String KEY_CONTENT = "content";
 
-	String[] columns = { KEY_ID, KEY_TYPE, KEY_CATEGORY_ID, KEY_CONTENT };
+	String[] columns = { KEY_ID, KEY_TYPE, KEY_CATEGORY_ID, KEY_DESC, KEY_CONTENT };
 
 	public ResourceMaterials(Context context) {
 		super(context);
@@ -30,28 +31,31 @@ public class ResourceMaterials extends DataClass {
 		return "create table " + TABLE_RESOURCE_MATERIALS + " (" + KEY_ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TYPE + " int, "
 				+ KEY_CATEGORY_ID + " int, " + KEY_CONTENT + " text, "
+				+ KEY_DESC + " text, "
 				+ "FOREIGN KEY( " + KEY_CATEGORY_ID
 				+ ") REFERENCES categories(category_id))";
 	}
 
-	public static String getInsert(int type, int catId, String content) {
+	public static String getInsert(int id, int type, int catId, String content, String desc) {
 
-		return "insert into " + TABLE_RESOURCE_MATERIALS + " (" + KEY_TYPE + ", "
-				+ KEY_CATEGORY_ID + ", " + KEY_CONTENT + ") values(" + type + "," + catId
-				+ "'" + content + "'" + ")";
+		return "insert into " + TABLE_RESOURCE_MATERIALS + " (" + KEY_ID + "," + KEY_TYPE + ", "
+				+ KEY_CATEGORY_ID + ", " + KEY_CONTENT + "," + KEY_DESC + ") values(" + id + ", " + type + "," + catId
+				+ "'" + content + "'" + "'" + desc +  "'" + ")";
+		
 	}
 	
 
-	public boolean addResMat(int type, int catId, String content){
+	public boolean addResMat(int id, int type, int catId, String content, String desc){
 		try
 		{
 			if(!content.isEmpty()){
 				db=getReadableDatabase();
 				ContentValues values=new ContentValues();
-				values.put(KEY_ID, "");
+				values.put(KEY_ID, id);
 				values.put(KEY_TYPE, type);
 				values.put(KEY_CATEGORY_ID, catId);
 				values.put(KEY_CONTENT, content);
+				values.put(KEY_DESC, desc);
 				db.insertWithOnConflict(TABLE_RESOURCE_MATERIALS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 				return true;
 			}else{
@@ -82,7 +86,9 @@ public class ResourceMaterials extends DataClass {
 			int type=cursor.getInt(index);
 			index = cursor.getColumnIndex(KEY_CATEGORY_ID);
 			int catId = cursor.getInt(index);
-			ResourceMaterial resMat=new ResourceMaterial(id,type,catId, content);
+			index = cursor.getColumnIndex(KEY_DESC);
+			String desc = cursor.getString(index);
+			ResourceMaterial resMat=new ResourceMaterial(id,type,catId, content, desc);
 			cursor.moveToNext();
 			return resMat;
 		}catch(Exception ex){
@@ -91,7 +97,7 @@ public class ResourceMaterials extends DataClass {
 	 }
 	
 
-	public ArrayList<ResourceMaterial> getAllLinks(){
+	public ArrayList<ResourceMaterial> getAllMaterials(){
 		try{
 			db=getReadableDatabase();
 			cursor=db.query(TABLE_RESOURCE_MATERIALS, columns, null, null, null, null, null, null);
@@ -110,10 +116,10 @@ public class ResourceMaterials extends DataClass {
 	}
 	
 
-	public ResourceMaterial getMaterial(int linkId){
+	public ResourceMaterial getMaterial(int matId){
 		try{
 			db=getReadableDatabase();
-			String selection=KEY_ID +"="+linkId;
+			String selection=KEY_ID +"="+matId;
 			cursor=db.query(TABLE_RESOURCE_MATERIALS, columns, selection, null, null, null, null, null);
 			ResourceMaterial res=fetch();
 			close();
@@ -124,7 +130,28 @@ public class ResourceMaterials extends DataClass {
 		}
 	}
 	
-
+	/**
+	 * Return the current max id
+	 * @return
+	 */
+	public int getMaxID(){
+		try{
+			db = getReadableDatabase();
+			cursor = db.rawQuery("select MAX(" + KEY_ID + ") as max_id from " + TABLE_RESOURCE_MATERIALS , null);
+			cursor.getColumnIndex("maxId");
+			int id = 0;     
+		    if (cursor.moveToFirst())
+		    {
+		        do
+		        {           
+		            id = cursor.getInt(0);                  
+		        } while(cursor.moveToNext());           
+		    }
+		    return id;
+		}catch(Exception e){
+			return 0;
+		}
+	}
 
 	/**
 	 * calls download from a thread
@@ -167,7 +194,7 @@ public class ResourceMaterials extends DataClass {
 	private void processDownloadData(JSONArray jsonArray){
 		try{
 			JSONObject obj;
-			String content;
+			String content, desc;
 			int id;
 			int type, catId;
 			//String aDate;
@@ -177,7 +204,8 @@ public class ResourceMaterials extends DataClass {
 				id=obj.getInt("resource_id");
 				type=obj.getInt(KEY_TYPE);
 				catId = obj.getInt(KEY_CATEGORY_ID);
-				addResMat(type, catId, content);
+				desc = obj.getString(KEY_DESC);
+				addResMat(id, type, catId, content, desc);
 			}
 		}catch(Exception ex){
 			return;

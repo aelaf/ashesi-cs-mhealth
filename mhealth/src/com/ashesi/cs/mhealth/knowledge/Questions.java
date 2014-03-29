@@ -13,8 +13,6 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import com.ashesi.cs.mhealth.DataClass;
 
 public class Questions extends DataClass{

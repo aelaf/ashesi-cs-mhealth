@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TabsPagerAdapter;
+import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Question;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 
@@ -42,6 +43,8 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	private Questions db;
+	private MenuItem refreshMenuItem;
+	private Categories db1;
 	
 	private String [] tabs = {"Questions", "Resources"};
 	
@@ -54,13 +57,17 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_knowledge);
 		
+		// Load the spinner details
+		db = new Questions(this);
+		db1 = new Categories(this);
+		
 		//Initialization
 		viewPager = (ViewPager)findViewById(R.id.pager);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 		
 		viewPager.setAdapter(mAdapter);
-		actionBar.setHomeButtonEnabled(false);
+		//actionBar.setHomeButtonEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
 		//Style actionBar
@@ -70,9 +77,9 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		
 		//Adding Tabs
 		for(String tab_name: tabs){
-			actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
+			actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));	
 		}
-		
+				
 		/*
 		 * Change respective tab to the selected upon swipe
 		 */
@@ -96,6 +103,7 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 				
 			}
 		});
+		
 	}
 
 	@Override
@@ -125,6 +133,7 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 				break;
 			case R.id.synch_q:
 				if(isConnected()){// && !(db.connect("http://10.10.32.136/mHealth") == null)){
+					refreshMenuItem = item;
 					Toast.makeText(this, "Synching Data", Toast.LENGTH_LONG).show();
 					new Synchronize().execute();
 				}else{
@@ -152,19 +161,33 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 	    return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 	}
 	
-	
+	public Questions getQuestions(){
+		return db;
+	}
 	/**
 	 * This is to update the data for the application
 	 * @author Daniel
 	 */
 	private class Synchronize extends AsyncTask<String, Void, String>{
+		
+		@Override
+		protected void onPreExecute(){
+			refreshMenuItem.setActionView(R.layout.action_progressbar);
+			
+			refreshMenuItem.expandActionView();
+		}
 		@Override
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			
 			JSONArray jArr = new JSONArray();
 			try {
-				ArrayList<Question> q = db.getAllQuestions();
+				
+				ArrayList<Question> q = new ArrayList<Question>();
+				q = getQuestions().getAllQuestions();
+				if(q==null || q.isEmpty()){
+					return "empty";
+				}
 				for (int i = getlastSaved("lastIDs"); i < q.size(); i++) {
 					JSONObject jObj = new JSONObject();
 					jObj.put("q_id",q.get(i).getId());
@@ -212,14 +235,22 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 				}
 				System.out.println(String.valueOf(getlastSaved("lastIDs")));
 				System.out.println("There are " + q.size() + " questions in the Database");
-				
+				return "Done";
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			//saveLastUpdated("lastID", 0);
 	        return null;
-		}		
+		}	
+		
+		@Override
+		protected void onPostExecute(String result){
+			refreshMenuItem.collapseActionView();
+			
+			refreshMenuItem.setActionView(null);
+			Toast.makeText(getApplicationContext(), "Synch complete" , Toast.LENGTH_LONG).show();
+		}
 		
 	}
 	

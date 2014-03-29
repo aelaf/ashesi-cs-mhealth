@@ -58,7 +58,7 @@ public class QuestionListAdapter extends BaseAdapter{
 		username.setText(ch.getCHO(q.getChoId()).getFullname()  + " - " + cat.getCategory(q.getCategoryId()).getCategoryName());
 		TextView date = (TextView)convertView.findViewById(R.id.q_date);
 		date.setText(q.getDate());
-		TextView question = (TextView)convertView.findViewById(R.id.question);
+		TextView question = (TextView)convertView.findViewById(R.id.resource_material);
 		question.setText(q.getContent());
 		return convertView;
 	}

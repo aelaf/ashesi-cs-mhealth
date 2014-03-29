@@ -80,7 +80,7 @@ public class QuestionsFragment extends Fragment{
 			currentCHO = chos.getCHO(choId);
 			
 			// Question TextBox;
-			question = (EditText) getActivity().findViewById(R.id.question);
+			question = (EditText) getActivity().findViewById(R.id.resource_material);
 			
 			// Get the list view for the questions
 			theVList = (ListView) getActivity().findViewById(R.id.listView1);
@@ -105,12 +105,11 @@ public class QuestionsFragment extends Fragment{
 					}else{
 						CheckEnable();
 					}
-				}
-				
+				}				
 			});
 			
 			//Increase count for more questions.
-			maxQuestions = 5;
+			maxQuestions = 15;
 			counter = 0;
 			btn_next.setOnClickListener(new OnClickListener(){
 				@Override
@@ -179,7 +178,6 @@ public class QuestionsFragment extends Fragment{
 			btnMyPost.setSelected(true);
 			onlyMyPost = true;
 			CheckEnable();
-			Toast.makeText(getActivity(), "The Current CHO is: " + currentCHO.getFullname(), Toast.LENGTH_LONG).show();
 			
 		}
 
@@ -317,8 +315,7 @@ public class QuestionsFragment extends Fragment{
 
 			ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(),
 					android.R.layout.simple_spinner_item, list);
-			dataAdapter
-					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner.setAdapter(dataAdapter);
 			
 			// Sort Drop down
@@ -450,6 +447,7 @@ public class QuestionsFragment extends Fragment{
 		@Override
 		public void onResume() {
 			refreshData(onlyAnswered);
+			//Toast.makeText(getActivity(), "The Current CHO is: " + currentCHO.getFullname(), Toast.LENGTH_LONG).show();
 			super.onResume();
 		}
 		

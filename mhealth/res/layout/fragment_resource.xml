@@ -2,15 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="#17df0d">
-    
-    <TextView android:layout_width="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/resourceLabel"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
         android:gravity="center"
-        android:text="Design Movies Screen"
-        android:textSize="20dp"
-        android:layout_centerInParent="true"/>
-    
+        android:text="@string/resourceMaterial"
+        android:textColor="@color/background"
+        android:textSize="20sp" />
+
+    <ListView
+        android:id="@+id/resourceList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filterSpin"
+        android:padding="10dp" >
+
+    </ListView>
+
+    <Spinner
+        android:id="@+id/filterSpin"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/resourceLabel"
+        android:gravity="right" />
 
 </RelativeLayout>

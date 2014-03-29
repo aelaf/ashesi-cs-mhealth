@@ -1,13 +1,19 @@
 package com.ashesi.cs.mhealth;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
+
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -20,10 +26,12 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 	CHO currentCHO;
 	Menu menu;
+	ResourceMaterials resMaterials;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,14 @@ public class MainActivity extends Activity implements OnClickListener {
 		loadSpinner();
 		textStatus.setText("application ready");
 		
+		//Create Folder for Resource materials
+		File folder = new File(Environment.getExternalStorageDirectory() + "/mHealth");
+				
+		if(!folder.exists()){
+			folder.mkdir();
+		}
+		
+		loadResources();
 	}
 	
 	@Override
@@ -146,10 +162,34 @@ public class MainActivity extends Activity implements OnClickListener {
 		spinner.setAdapter(adapter); 
 	}
 	
+	/**
+	 * Upload all the added files to the Database
+	 */
+	private void loadResources(){
+		File upload = new File(Environment.getExternalStorageDirectory() + "/mHealth/resourceslist.txt");
+		resMaterials = new ResourceMaterials(this);
+		try {
+			if(upload.exists()){
+				Scanner scan = new Scanner(upload);
+				String fileDetails;
+				String delimit = "[,]";
+				while(scan.hasNext()){
+					fileDetails = scan.nextLine();
+					String [] results = fileDetails.split(delimit);
+					Toast.makeText(getApplicationContext(),results[0], Toast.LENGTH_LONG).show();
+					resMaterials.addResMat(Integer.parseInt(results[0]), 
+							               Integer.parseInt(results[1]), 
+							               Integer.parseInt(results[2]), 
+							               (Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]), 
+							               results[4]);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
-	
-
-
 }
 
 
