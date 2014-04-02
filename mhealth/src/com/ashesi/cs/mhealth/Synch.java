@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.layout;
@@ -86,7 +87,8 @@ public class Synch extends Activity implements OnClickListener {
 				backupData();
 				break;
 			case R.id.buttonSynchVaccine:
-				downloadVaccine();
+				downloadFamilyPlanningServices();
+				//downloadVaccine();
 				break;
 			case R.id.buttonSynchCancel:
 				cancel();
@@ -127,6 +129,18 @@ public class Synch extends Activity implements OnClickListener {
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={3};	//vaccine
+		download.execute(n);
+		
+	}
+	
+	public void downloadFamilyPlanningServices(){
+		if(task!=null){
+			cancel();
+		}
+		textStatus.setText("downloading family planning services list...");
+		disableButtons();
+		DownloadCommunities download=new DownloadCommunities();
+		Integer[] n={4};	//services
 		download.execute(n);
 		
 	}
@@ -287,6 +301,9 @@ public class Synch extends Activity implements OnClickListener {
 						break;
 					case 3:
 						obj=new Vaccines(getApplicationContext());
+						break;
+					case 4:
+						obj=new FamilyPlanningServices(getApplicationContext());
 						break;
 					default:
 						return 0;

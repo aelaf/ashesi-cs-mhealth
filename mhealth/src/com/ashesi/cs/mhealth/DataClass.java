@@ -26,6 +26,8 @@ import org.apache.http.message.BasicNameValuePair;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
+import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
@@ -50,8 +52,11 @@ public class DataClass extends SQLiteOpenHelper {
 	 * vaccine record table is added
 	 * DATABASE VERSION 4
 	 * community member view and community member opd record view has been changed to compute age using julianday 
+	 * * DATABASE VERSION 5
+	 * family planning table and view
 	 */
-	protected static final int DATABASE_VERSION=4; 
+	
+	protected static final int DATABASE_VERSION=5; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -489,6 +494,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getInsert(4,"Theresa",2));
 			db.execSQL(CHOs.getInsert(5,"Sandra",2));
 			db.execSQL(CHOs.getInsert(6,"Dorthy",2));
+			db.execSQL(CHOs.getInsert(7,"Pokrum",2));
 			
 			
 			
@@ -517,9 +523,17 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			Log.d("DataClass.onCreate", "data base created");
 			
-			//add in version 4, it should not be included in upgraded
-			db.execSQL(Communities.getInsertSQL(15, "Berekuso", 1));	//don't include in upgrade
-			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version			
+			
+			//add in version 5:
+			db.execSQL(FamilyPlanningServices.getCreateSQLString());
+			
+			db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
+			db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
+			
+			db.execSQL(FamilyPlanningRecords.getCreateSQLString());
+			db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+			
+			setDataVersion(db,DATABASE_NAME,5); 			//note down the data base version			
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
@@ -531,7 +545,7 @@ public class DataClass extends SQLiteOpenHelper {
 		try
 		{
 			if(oldVersion==1 && newVersion==2){
-				//add lab colunm to table
+				//add lab column to table
 				upgradeToVersion2(db);
 			}
 						
@@ -541,6 +555,10 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			if(oldVersion==3 && newVersion==4){
 				upgradeToVersion4(db);
+			}
+			
+			if(oldVersion==4 && newVersion==5){
+				upgradeToVersion5(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
@@ -602,6 +620,24 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		
 		setDataVersion(db,DATABASE_NAME,4); 			//note down the database version
+	}
+	
+	/**
+	 * upgrade the database from version 4 to 5
+	 * @param db
+	 */
+	private void upgradeToVersion5(SQLiteDatabase db){
+		
+
+		db.execSQL(FamilyPlanningServices.getCreateSQLString());
+		
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
+		
+		db.execSQL(FamilyPlanningRecords.getCreateSQLString());
+		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		
+		setDataVersion(db,DATABASE_NAME,5); 			//note down the database version
 	}
 	
 	public String getDataFilePath(){
