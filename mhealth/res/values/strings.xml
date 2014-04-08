@@ -77,6 +77,25 @@
     <string name="updateVaccineData">Update Vaccine Data</string>
     <string name="vaccine_view_schedule">schedule</string>
     <string name="vaccine_view_record">record</string>
+    <string name="add_community">Add Community</string>
+    <string name="title_add_community">Add Community</string>
+    <string name="add_health_promotion">Add Health Promotion</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="set_location">Set Location</string>
+    <string name="add_population">Population</string>
+    <string name="add_household">Household</string>
+    <string name="add_community_name">Community Name</string>
+    <string name="add_subdistrict">Subdistrict Name</string>
+    <string name="venue">Venue</string>
+    <string name="remarks">Remarks</string>
+    <string name="topic">Topic</string>
+    <string name="method">Method</string>
+    <string name="target_audience">Target Audience</string>
+    <string name="number_of_audience">Audience Number</string>
+    <string name="month">Month:</string>
+    <string name="image">Image Upload</string>
+    <string name="date">Date</string>
     
 
 </resources>

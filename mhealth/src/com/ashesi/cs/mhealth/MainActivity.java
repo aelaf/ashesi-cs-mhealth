@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
-import com.ashesi.cs.mhealth.data.Communities;
-import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
 import android.os.Bundle;
 import android.app.Activity;
@@ -17,14 +15,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener, OnItemSelectedListener {
 
 	CHO currentCHO;
 	Menu menu;
+	private DataClass dc;
+	private Spinner spinner;
+	public static String choId;
+	public static String subdistrictId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,18 @@ public class MainActivity extends Activity implements OnClickListener {
 				
 		TextView textStatus=(TextView)findViewById(R.id.textStatus);
 		//make sure database is created
-		DataClass dc=new DataClass(getApplicationContext());
+		dc=new DataClass(getApplicationContext());
+	
 		
 		View buttonOpenClose=findViewById(R.id.buttonMainLoginStart);
 		buttonOpenClose.setOnClickListener(this);
+		
 		View buttonOpenRecord=findViewById(R.id.buttonMainOpenRecord);
 		buttonOpenRecord.setOnClickListener(this);
+		
+
+		View buttonAddHealthPromotion=findViewById(R.id.buttonHealthPromotions);
+		buttonAddHealthPromotion.setOnClickListener(this);
 
 		
 		loadSpinner();
@@ -51,7 +61,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		
 		switch(v.getId()){
-		// TODO Auto-generated method stub
+		
 				
 			case R.id.buttonMainOpenRecord:
 				Intent intent=new Intent(this,CommunityActivity.class);
@@ -62,15 +72,25 @@ public class MainActivity extends Activity implements OnClickListener {
 				loginAndStart();
 				break;
 				
+			case R.id.buttonHealthPromotions:
+				Intent intent1=new Intent(this,HealthPromotionsActivity.class);
+				startActivity(intent1);
+				
 		}
 	}
 	
 	public void loginAndStart(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSelectCHO);
 		currentCHO=(CHO)spinner.getSelectedItem();
+		String cho=currentCHO.getAll();
+		String[] choSplit=cho.split("-");
+		choId=choSplit[2];
+		subdistrictId=choSplit[1];
+		System.out.println(choSplit[1]);
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(true);
 		findViewById(R.id.buttonMainKnowledge).setEnabled(true);
-	
+		findViewById(R.id.buttonHealthPromotions).setEnabled(true);
+		findViewById(R.id.buttonAddCommunity).setEnabled(true);
 	}
 	
 	@Override
@@ -136,11 +156,25 @@ public class MainActivity extends Activity implements OnClickListener {
 	 * load CHO list into spinner
 	 */
 	private void loadSpinner(){
-		Spinner spinner=(Spinner)findViewById(R.id.spinnerSelectCHO);
+		 spinner=(Spinner)findViewById(R.id.spinnerSelectCHO);
+		spinner.setOnItemSelectedListener(this);
 		CHOs chos=new CHOs(getApplicationContext());
 		ArrayList<CHO> list=chos.getAllCHOs();
+		System.out.println(list);
 		ArrayAdapter<CHO> adapter=new ArrayAdapter<CHO>(getApplicationContext(),android.R.layout.simple_spinner_item,list);
 		spinner.setAdapter(adapter); 
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> view, View view1, int position, long arg3) {
+		
+		
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> view) {
+		
+		
 	}
 	
 	

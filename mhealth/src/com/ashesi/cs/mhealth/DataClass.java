@@ -26,6 +26,7 @@ import org.apache.http.message.BasicNameValuePair;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.HealthPromotions;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
