@@ -114,7 +114,9 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
-		case R.id.save_btn:
+		case R.id.save_btn:	
+			//create a method for this part of the switch, and call it
+			//date has to be written in yyyy-mm-dd format 
 			String date=date_txt.getText().toString();
 			String venue=venue_txt.getText().toString();
 			String topic=topic_txt.getText().toString();

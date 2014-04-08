@@ -466,6 +466,10 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Communities.getInsertSQL(1, "Yaw Duodu", 2));
 			
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
+			
+			db.execSQL(HealthPromotions.getCreateSQLString());
+			setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
+			
 			/*this cases are added just for testing 
 			 * The complete OPD case list should be downloaded using synch
 			 * */
@@ -491,8 +495,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getInsert(5,"Sandra",2));
 			db.execSQL(CHOs.getInsert(6,"Dorthy",2));
 			
-			
-			
+	
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
 			
@@ -519,8 +522,9 @@ public class DataClass extends SQLiteOpenHelper {
 			Log.d("DataClass.onCreate", "data base created");
 			
 			//add in version 4, it should not be included in upgraded
-			db.execSQL(Communities.getInsertSQL(15, "Berekuso", 1));	//don't include in upgrade
-			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version			
+			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version	
+			
+			db.execSQL(HealthPromotions.getCreateSQLString());
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
