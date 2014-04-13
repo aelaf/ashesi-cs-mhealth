@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import com.ashesi.cs.mhealth.data.CommunityMember;
+import com.ashesi.cs.mhealth.data.FamilyPlanningReport;
+import com.ashesi.cs.mhealth.data.FamilyPlanningReport.FamilyPlanningReportRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.id;
@@ -141,7 +143,7 @@ public class ReportActivity extends FragmentActivity implements
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -153,7 +155,7 @@ public class ReportActivity extends FragmentActivity implements
 			case 1:
 				return getString(R.string.title_report_vaccine).toUpperCase(l);
 			case 2:
-				return getString(R.string.title_report_next).toUpperCase(l);
+				return "Family Planning";
 			}
 			return null;
 		}
@@ -171,7 +173,8 @@ public class ReportActivity extends FragmentActivity implements
 		int sectionNumber=0;
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private String[] ageGroups={"Total","U 1","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
-		private String[] vaccineAgeGroups={"Total","U 1","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
+		private String[] vaccineAgeGroups={"Total","U 12","12-23","above 23"};
+		private String[] familyPlanningAgeGroups={"Total","U 10","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
 		private String[] months={"this month","whole year","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 
 		public DummySectionFragment() {
@@ -212,6 +215,10 @@ public class ReportActivity extends FragmentActivity implements
 			case 1:
 				reportTitle.setText("Vaccination report");
 				loadVaccinationReportData(rootView);
+				break;
+			case 2:
+				reportTitle.setText("Family Planning Report");
+				loadFamilyPlanningReportData(rootView);
 				break;
 			default:
 				reportTitle.setText("OPD Cases");
@@ -267,6 +274,31 @@ public class ReportActivity extends FragmentActivity implements
 				gridView.setAdapter(adapter);
 			}
 		}
+		
+		private void loadFamilyPlanningReportData(View rootView){
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
+			
+			int ageGroup=getSelectedAgeGroup();
+			int month=getSelectedMonth();
+			int year=getSelectedYear();
+			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
+			String[] headers={"Service","","no cases"};
+			FamilyPlanningReport familyPlanningReport=new FamilyPlanningReport(this.getActivity().getApplicationContext());
+			ArrayList<FamilyPlanningReportRecord> listRecord=familyPlanningReport.getMonthlyFamilyPlanningReport(month,year,ageGroup,null);
+			
+					
+			if(listRecord==null){
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+				gridView.setAdapter(adapter);
+			}else{
+				ArrayList<String> list=familyPlanningReport.getMonthlyFamilyReportStringList(listRecord);
+				list.add(0,headers[2]);
+				list.add(0,headers[1]);
+				list.add(0,headers[0]);
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+				gridView.setAdapter(adapter);
+			}
+		}
 
 		@Override
 		public void onClick(View v) {
@@ -292,6 +324,8 @@ public class ReportActivity extends FragmentActivity implements
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
 			}else if(sectionNumber==1){
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,vaccineAgeGroups);
+			}else if(sectionNumber==2){
+				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,familyPlanningAgeGroups);
 			}else{
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
 			}
