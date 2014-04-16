@@ -55,6 +55,20 @@ public class QuestionsFragment extends Fragment{
 	private ArrayAdapter<String> adapter;
 	private Switch answered;
 	private boolean onlyAnswered;
+	/**
+	 * @return the onlyAnswered
+	 */
+	public boolean isOnlyAnswered() {
+		return onlyAnswered;
+	}
+
+	/**
+	 * @param onlyAnswered the onlyAnswered to set
+	 */
+	public void setOnlyAnswered(boolean onlyAnswered) {
+		this.onlyAnswered = onlyAnswered;
+	}
+
 	private boolean isListEmpty, onlyMyPost;
 	private int maxQuestions, counter, choId;
 	private LinearLayout ln;
@@ -357,7 +371,7 @@ public class QuestionsFragment extends Fragment{
 		 * If the toggle says onlyAnswered then display only answered questions.
 		 * @param onlyAnswered
 		 */
-		private void refreshData(boolean onlyAnswered) {
+		public void refreshData(boolean onlyAnswered) {
 			String[] qstn = new String[]{"The list is currently empty."};
 			
 			//Filter questions based on the criterion selected by the user.

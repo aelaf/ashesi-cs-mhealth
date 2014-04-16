@@ -5,17 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.ashesi.cs.mhealth.data.CHO;
-import com.ashesi.cs.mhealth.data.CHOs;
-import com.ashesi.cs.mhealth.data.Communities;
-import com.ashesi.cs.mhealth.data.OPDCases;
-import com.ashesi.cs.mhealth.data.R;
-import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
-
-import android.os.Bundle;
-import android.os.Environment;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -27,6 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
+import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 public class MainActivity extends Activity implements OnClickListener {
 	CHO currentCHO;

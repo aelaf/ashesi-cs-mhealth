@@ -234,11 +234,15 @@ public class ResourceFragment extends Fragment{
 				if(isListEmpty){
 					Toast.makeText(arg0.getContext(), "Sorry! The List is currently Empty", Toast.LENGTH_LONG).show();
 				}else{
-					Toast.makeText(arg0.getContext(), "The resource selected is: " + arg0.getItemAtPosition(arg2) + "with a path: " + currentList(resourcesM).get(arg2).getContent(), Toast.LENGTH_LONG).show();
+					Toast.makeText(arg0.getContext(), "The resource selected is: " +
+				                   arg0.getItemAtPosition(arg2) + 
+				                   "with a path: " + currentList(resourcesM).get(arg2).getContent(), 
+				                    Toast.LENGTH_LONG).show();
 					Intent intent = new Intent();
 	                intent.setAction(android.content.Intent.ACTION_VIEW);
 					File file = new File(currentList(resourcesM).get(arg2).getContent());
-	                intent.setDataAndType(Uri.parse("file://" + file.getAbsolutePath()), mediaList[currentList(resourcesM).get(arg2).getType()-1]);
+	                intent.setDataAndType(Uri.parse("file://" + file.getAbsolutePath()), 
+	                		               mediaList[currentList(resourcesM).get(arg2).getType()-1]);
 	                startActivity(intent);
 				}
 			}

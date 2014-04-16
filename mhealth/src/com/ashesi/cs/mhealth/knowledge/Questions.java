@@ -23,7 +23,7 @@ public class Questions extends DataClass{
 	public static final String KEY_CHO_ID = "cho_id";
 	public static final String KEY_CATEGORY_ID = "category_id";
 	public static final String KEY_DATE = "question_date";
-	public static final String KEY_GUID = "quid";
+	public static final String KEY_GUID = "guid";
 	
 	
 	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE, KEY_GUID, DataClass.REC_STATE};
@@ -41,7 +41,7 @@ public class Questions extends DataClass{
 				+ KEY_CATEGORY_ID +" int, "
 				+ KEY_CHO_ID +" int ,"
 				+ KEY_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, "
-				+ KEY_GUID + " BLOB, "
+				+ KEY_GUID + " BLOB UNIQUE, "
 				+ DataClass.REC_STATE+" integer, "
 				+ "FOREIGN KEY( "+ KEY_CATEGORY_ID + ") REFERENCES categories(category_id), "
 				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
@@ -206,16 +206,17 @@ public class Questions extends DataClass{
 	 * downloads Question data from server 
 	 */
 	public void download(){
-		final int deviceId=mDeviceId;
-		String url="knowledgeAction?cmd=5&deviceId"+deviceId;
+		//final int deviceId=mDeviceId;
+		String url="http://10.10.32.108/mHealth/checkLogin/knowledgeAction.php?cmd=5";//&deviceId"+deviceId;
 		String data=request(url);
+		System.out.println(data);
 		try{
 			JSONObject obj=new JSONObject(data);
 			int result=obj.getInt("result");
 			if(result==0){	//error 
 				return;
 			}
-			
+			System.out.println(obj.getJSONArray("questions").toString());
 			processDownloadData(obj.getJSONArray("questions"));
 			
 		}catch(Exception ex){
@@ -231,7 +232,6 @@ public class Questions extends DataClass{
 		try{
 			JSONObject obj;
 			String content;
-			int id;
 			int choId;
 			int catId;
 			int recState;
@@ -239,14 +239,13 @@ public class Questions extends DataClass{
 			String guid;
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);
+				guid = obj.getString(KEY_GUID);
 				content=obj.getString("q_content");
-				id=obj.getInt("q_id");
 				catId=obj.getInt(KEY_CATEGORY_ID);
 				choId = obj.getInt(KEY_CHO_ID);
 				aDate = obj.getString(KEY_DATE);
-				guid = obj.getString(KEY_GUID);
 				recState = obj.getInt(DataClass.REC_STATE);
-				addQuestion(id,content,choId, catId, aDate, guid, recState);
+				addQuestion(0, content,choId, catId, aDate, guid, recState);
 			}
 		}catch(Exception ex){
 			return;

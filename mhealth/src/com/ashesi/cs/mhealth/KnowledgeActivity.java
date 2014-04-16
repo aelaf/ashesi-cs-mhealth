@@ -108,8 +108,7 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 
 	@Override
 	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
 
 	@Override
@@ -180,6 +179,11 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		protected String doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			
+			//Retrieve answers from the database
+			Questions temp = new Questions(getApplicationContext());
+			temp.download();
+			//Toast.makeText(getApplicationContext(), "Questions have been updated!", Toast.LENGTH_LONG).show() ;
+			
 			JSONArray jArr = new JSONArray();
 			try {
 				
@@ -206,35 +210,11 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
 					      nameValuePairs.add(new BasicNameValuePair("questionid",
 					          jObj.toString()));
-						String response = db.request(db.postRequest("http://10.10.32.136/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
-										
-						//This is to get a response from the request with the current list of answers 
-						if(!(response== null)){
-					        try{
-						        JSONArray jArray = new JSONArray(response);
-						        JSONObject json_data= null;
-						        
-						         
-						        for(int j=0;j<jArray.length();j++){
-						                json_data = jArray.getJSONObject(j);
-						                 if((json_data.getString("message") == "")){
-						                	 System.out.println("We are here");
-						                	 saveLastUpdated("lastIDs", String.valueOf(i));
-						                	 System.out.println(json_data.getString("message") + getlastSaved("lastID"));
-						                 }else{
-						                	 System.out.println(getlastSaved("lastID"));
-						                	 break;
-						                 }
-						        }					        
-					        }catch(Exception e){
-					        	System.out.println(e.toString());
-					        }
-				        }
-						//Toast.makeText(getApplicationContext(), String.valueOf(getlastSaved("lastIDs")) + "", Toast.LENGTH_LONG).show() ;
+						db.request(db.postRequest("http://10.10.32.108/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
 			        }
 				}
-				System.out.println(String.valueOf(getlastSaved("lastIDs")));
-				System.out.println("There are " + q.size() + " questions in the Database");
+				//System.out.println(String.valueOf(getlastSaved("lastIDs")));
+				//System.out.println("There are " + q.size() + " questions in the Database");
 				return "Done";
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -247,13 +227,23 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		@Override
 		protected void onPostExecute(String result){
 			refreshMenuItem.collapseActionView();
-			
 			refreshMenuItem.setActionView(null);
 			Toast.makeText(getApplicationContext(), "Synch complete" , Toast.LENGTH_LONG).show();
+			QuestionsFragment temp = (QuestionsFragment) getSupportFragmentManager().findFragmentById(R.id.questionFrag);
+			//temp.refreshData(temp.isOnlyAnswered());
 		}
 		
 	}
 	
+	private class GetAnswers extends AsyncTask<String, Void, String>{
+
+		@Override
+		protected String doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
 	private int getlastSaved(String key){
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		Integer result = Integer.parseInt(sharedPreferences.getString(key, "0"));

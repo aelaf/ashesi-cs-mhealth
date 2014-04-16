@@ -241,7 +241,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 							countUp++;
 							System.out.println(countUp);
 						}
-					}else{
+					}
+					else{
 						int countDown = Integer.parseInt(result[1]);
 						int maxId = resourceMat.getMaxID();
 						int duration = countDown - maxId;

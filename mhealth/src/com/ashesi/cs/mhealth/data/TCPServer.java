@@ -127,7 +127,8 @@ public class TCPServer {
         String version = in.readLine();
 		System.out.println("from client version is: " + version);
 		
-		if(Integer.parseInt(version) < myVersion){
+		//If the servers version is greater than the client's version
+		if(Integer.parseInt(version) < myVersion){  
 			rightOfWay = true;
 			out.println("receive|" + myVersion);
 
