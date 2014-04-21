@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TabsPagerAdapter;
+import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Question;
 import com.ashesi.cs.mhealth.knowledge.Questions;
@@ -182,6 +183,9 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			//Retrieve answers from the database
 			Questions temp = new Questions(getApplicationContext());
 			temp.download();
+			
+			Answers tempAns = new Answers(getApplicationContext());
+			tempAns.download();
 			//Toast.makeText(getApplicationContext(), "Questions have been updated!", Toast.LENGTH_LONG).show() ;
 			
 			JSONArray jArr = new JSONArray();
@@ -210,8 +214,10 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
 					      nameValuePairs.add(new BasicNameValuePair("questionid",
 					          jObj.toString()));
-						db.request(db.postRequest("http://10.10.32.108/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
-			        }
+						db.request(db.postRequest("http://192.168.43.252/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
+						Questions temp1 = new Questions(getApplicationContext());
+						temp1.changeStatus(q.get(i).getGuid(), 1);
+					}
 				}
 				//System.out.println(String.valueOf(getlastSaved("lastIDs")));
 				//System.out.println("There are " + q.size() + " questions in the Database");
@@ -229,8 +235,6 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			refreshMenuItem.collapseActionView();
 			refreshMenuItem.setActionView(null);
 			Toast.makeText(getApplicationContext(), "Synch complete" , Toast.LENGTH_LONG).show();
-			QuestionsFragment temp = (QuestionsFragment) getSupportFragmentManager().findFragmentById(R.id.questionFrag);
-			//temp.refreshData(temp.isOnlyAnswered());
 		}
 		
 	}

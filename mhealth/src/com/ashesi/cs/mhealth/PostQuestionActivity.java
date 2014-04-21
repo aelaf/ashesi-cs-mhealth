@@ -416,7 +416,7 @@ public class PostQuestionActivity extends Activity implements OnClickListener {
 					for (int i = 0; i < qs.size(); i++) {
 						if(onlyAnswered){
 							//if a question's id exists in the answers DB then add it to the list
-							if(!ansDb.getByQuestion(qs.get(i).getId()).equals(null)){			 
+							if(!ansDb.getByQuestion(qs.get(i).getGuid()).equals(null)){			 
 								q.add(qs.get(i));
 							}
 						}
