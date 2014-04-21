@@ -56,7 +56,7 @@ public class DataClass extends SQLiteOpenHelper {
 	protected int mDeviceId;
 	//protected String mServerUrl="http://192.168.56.2/mHealth/";
 	protected String mServerUrl="http://10.10.32.108/mHealth/";
-	Context context;
+	private Context context;
 	
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
@@ -89,7 +89,7 @@ public class DataClass extends SQLiteOpenHelper {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
 		db=getWritableDatabase();
 		db.close();
-		this.context=context;
+		this.setContext(context);
 		getDeviceId();
 		getServerUrl();
 
@@ -572,7 +572,7 @@ public class DataClass extends SQLiteOpenHelper {
 	
 	public String getServerUrl(){
 		try{
-			mServerUrl=PreferenceManager.getDefaultSharedPreferences(context).getString("synch_url", "");
+			mServerUrl=PreferenceManager.getDefaultSharedPreferences(getContext()).getString("synch_url", "");
 			
 		}catch(Exception ex){
 			mServerUrl=SERVER_URL;
@@ -582,13 +582,21 @@ public class DataClass extends SQLiteOpenHelper {
 	
 	public int getDeviceId(){
 		try{
-			String str=PreferenceManager.getDefaultSharedPreferences(context).getString("device_id", "0");
+			String str=PreferenceManager.getDefaultSharedPreferences(getContext()).getString("device_id", "0");
 			mDeviceId=Integer.parseInt(str);
 		}catch(Exception ex){
 			mDeviceId=0;
 		}
 		return mDeviceId;
 		
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 	
 	

@@ -1,6 +1,8 @@
 package com.ashesi.cs.mhealth;
 
 import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.knowledge.Answer;
+import com.ashesi.cs.mhealth.knowledge.Answers;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -26,14 +28,14 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		ActionBar ab = getActionBar();
 		ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#428bca"));
 		ab.setBackgroundDrawable(colorDrawable);
-		ab.setDisplayHomeAsUpEnabled(true);
-		
+				
 		Intent intent=getIntent();
 		
 		String choName=intent.getStringExtra("ChoName");
 		String question = intent.getStringExtra("Question");
 		String date = intent.getStringExtra("datetime");
 		String cat = intent.getStringExtra("category");
+		String qID = intent.getStringExtra("guid");
 		
 		TextView choN = (TextView)findViewById(R.id.choName1);
 		choN.setText(choName + " - " + cat);
@@ -42,9 +44,16 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		TextView date1 = (TextView)findViewById(R.id.date1);
 		date1.setText("Posted on - " + date);
 		
+		Answers ansDB = new Answers(getApplicationContext());
+		Answer answer = ansDB.getByQuestion(qID);
+
 		TextView ans = (TextView)findViewById(R.id.answer);
-		ans.setText("Answer still pending.");
-		
+		if(answer == (null)){
+			ans.setText("Answer still pending.");
+		}else{
+			ans.setText( "Answer: "+ answer.getAnswer() + " \n " + 
+					"Answered on: " + answer.getDate());
+		}
 	}
 	@Override
 	public void onClick(View arg0) {

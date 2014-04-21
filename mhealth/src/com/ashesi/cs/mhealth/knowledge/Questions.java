@@ -176,6 +176,19 @@ public class Questions extends DataClass{
 		}
 	}
 	
+	public void changeStatus(String id, int status){
+		try{
+			db=getReadableDatabase();
+			ContentValues initialValues = new ContentValues();
+	        initialValues.put(DataClass.REC_STATE, status);
+	        System.out.println(id + "jdkfalj;d" + id);
+	        db.update(TABLE_NAME_QUESTIONS, initialValues, KEY_GUID + "=" + "'" + id + "'", null);
+	        db.close();
+		}catch(Exception e){
+			db.close();
+		}
+	}
+	
 	public Question getQuestion(int qId){
 		try{
 			db=getReadableDatabase();
@@ -207,7 +220,7 @@ public class Questions extends DataClass{
 	 */
 	public void download(){
 		//final int deviceId=mDeviceId;
-		String url="http://10.10.32.108/mHealth/checkLogin/knowledgeAction.php?cmd=5";//&deviceId"+deviceId;
+		String url="http://192.168.43.252/mHealth/checkLogin/knowledgeAction.php?cmd=5";//&deviceId"+deviceId;
 		String data=request(url);
 		System.out.println(data);
 		try{

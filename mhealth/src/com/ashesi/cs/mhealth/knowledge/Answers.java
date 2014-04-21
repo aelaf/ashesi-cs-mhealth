@@ -1,15 +1,21 @@
 package com.ashesi.cs.mhealth.knowledge;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.KnowledgeActivity;
 
 public class Answers extends DataClass {
 	public static final String TABLE_NAME_ANSWERS = "answers";
@@ -30,11 +36,11 @@ public class Answers extends DataClass {
 	public static String getCreateQuery() {
 		return "create table " + TABLE_NAME_ANSWERS + " (" + KEY_ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_CONTENT
-				+ " text, " + KEY_USER_ID + " int," + KEY_QUESTION_ID + " int,"
+				+ " text, " + KEY_USER_ID + " int," + KEY_QUESTION_ID + " BLOB UNIQUE,"
 				+ KEY_ANSWER_DATE + " DATETIME, " + "FOREIGN KEY ("
 				+ KEY_USER_ID + ") REFERENCES users(user_id), "
 				+ "FOREIGN KEY (" + KEY_QUESTION_ID
-				+ ") REFERENCES questions(q_id))";
+				+ ") REFERENCES questions(guid))";
 
 	}
 
@@ -46,7 +52,7 @@ public class Answers extends DataClass {
 				+ ", " + questionID + " , NOW()) ";
 	}
 
-	public boolean addAnswer(int id, String answer, int userId, int questionID) {
+	public boolean addAnswer(int id, String answer, int userId, String questionID, String date) {
 		try {
 			if (!answer.isEmpty()) {
 				db = getReadableDatabase();
@@ -55,7 +61,12 @@ public class Answers extends DataClass {
 				values.put(KEY_CONTENT, answer);
 				values.put(KEY_USER_ID, userId);
 				values.put(KEY_QUESTION_ID, questionID);
-				values.put(KEY_ANSWER_DATE, "NOW()");
+				if(date ==  ""){		//if the question generated locally then generate a time stamp for it.
+					Date date1 = new Date();		            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+					values.put(KEY_ANSWER_DATE, dt.format(date1));
+				}else{ 
+					values.put(KEY_ANSWER_DATE, date);
+				}
 				db.insertWithOnConflict(TABLE_NAME_ANSWERS, null, values,
 						SQLiteDatabase.CONFLICT_REPLACE);
 				return true;
@@ -87,7 +98,7 @@ public class Answers extends DataClass {
 			index=cursor.getColumnIndex(KEY_USER_ID);
 			int userId=cursor.getInt(index);
 			index=cursor.getColumnIndex(KEY_QUESTION_ID);
-			int qID=cursor.getInt(index);
+			String qID=cursor.getString(index);
 			index = cursor.getColumnIndex(KEY_ANSWER_DATE);
 			String theDate = cursor.getString(index);
 			Answer ans =new Answer(id,content,userId, qID, theDate);
@@ -130,15 +141,34 @@ public class Answers extends DataClass {
 		}
 	}
 	
-	public Answer getByQuestion(int qID){
+	public boolean checkIfExists(String qID){
+		System.out.println(qID);
+		try{
+			db=getReadableDatabase();		
+			String Query = "Select * from " + TABLE_NAME_ANSWERS + " where " + KEY_QUESTION_ID + "=" + qID;
+		    cursor = db.rawQuery(Query, null);
+		    System.out.println(cursor.getCount());
+            if(cursor.getCount()<=0){
+            	close();
+            	return false;
+           }
+           close();
+		   return true;
+		}catch(Exception ex){
+			close();
+			return false;
+		}
+	}
+	public Answer getByQuestion(String qID){
+		System.out.println(qID);
 		try{
 			db=getReadableDatabase();
-			String selection=KEY_QUESTION_ID +"="+qID;
-			cursor=db.query(TABLE_NAME_ANSWERS, columns, selection, null, null, null, null, null);
-			Answer ans=fetch();
+			String Query = "Select * from " + TABLE_NAME_ANSWERS + " where " + KEY_QUESTION_ID + "=" + qID;
+		    cursor = db.rawQuery(Query, null);
+		    Answer ans=fetch();
+		    Log.d("Current Answer",ans.toString());
 			close();
-			return ans;
-			
+			return ans;			
 		}catch(Exception ex){
 			return null;
 		}
@@ -161,8 +191,10 @@ public class Answers extends DataClass {
 	 */
 	public void download(){
 		final int deviceId=mDeviceId;
-		String url="choAction?cmd=2&deviceId"+deviceId;
+
+		String url="http://192.168.43.252/mHealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
 		String data=request(url);
+		System.out.println(data);
 		try{
 			JSONObject obj=new JSONObject(data);
 			int result=obj.getInt("result");
@@ -184,20 +216,23 @@ public class Answers extends DataClass {
 	 */
 	private void processDownloadData(JSONArray jsonArray){
 		try{
+			Questions qs = new Questions(getContext());
+			
 			JSONObject obj;
 			String answer;
 			int id;
 			int userId;
-			int questionId;
-			//String aDate;
+			String questionId;
+			String aDate;
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);
 				answer=obj.getString("answer");
 				id=obj.getInt("answer_id");
 				userId=obj.getInt(KEY_USER_ID);
-				questionId = obj.getInt(KEY_QUESTION_ID);
-				//aDate = obj.getString(KEY_ANSWER_DATE);
-				addAnswer(id, answer,userId, questionId);
+				questionId = obj.getString(KEY_QUESTION_ID);
+				aDate = obj.getString(KEY_ANSWER_DATE);
+				qs.changeStatus(questionId, 2);
+				addAnswer(id, answer,userId, questionId, aDate);
 			}
 		}catch(Exception ex){
 			return;

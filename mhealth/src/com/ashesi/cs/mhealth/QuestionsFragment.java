@@ -281,6 +281,7 @@ public class QuestionsFragment extends Fragment{
 						i.putExtra("Question", qs.get(arg2).getContent());
 						i.putExtra("datetime", qs.get(arg2).getDate());
 						i.putExtra("category", db1.getCategory(qs.get(arg2).getCategoryId()).getCategoryName());
+						i.putExtra("guid", qs.get(arg2).getGuid());
 						startActivity(i);
 					}
 				}
@@ -411,15 +412,16 @@ public class QuestionsFragment extends Fragment{
 						theVList.setAdapter(qListAdapter);
 					}else{				
 						ArrayList<Question> q = new ArrayList<Question>();
+						
 						for (int i = 0; i < qs.size(); i++) {
 							if(onlyAnswered){
 								//if a question's id exists in the answers DB then add it to the list
-								if(!ansDb.getByQuestion(qs.get(i).getId()).equals(null)){			 
+								if(qs.get(i).getRecState() == 2){			 
 									q.add(qs.get(i));
 								}
 							}
 						}
-						QuestionListAdapter qListAdapter = new QuestionListAdapter(getActivity(), currentList(qs));
+						QuestionListAdapter qListAdapter = new QuestionListAdapter(getActivity(), currentList(q));
 						theVList.setAdapter(qListAdapter);
 					}
 					
@@ -460,9 +462,10 @@ public class QuestionsFragment extends Fragment{
 
 		@Override
 		public void onResume() {
-			refreshData(onlyAnswered);
 			//Toast.makeText(getActivity(), "The Current CHO is: " + currentCHO.getFullname(), Toast.LENGTH_LONG).show();
 			super.onResume();
+
+			refreshData(onlyAnswered);
 		}
 		
 		/**

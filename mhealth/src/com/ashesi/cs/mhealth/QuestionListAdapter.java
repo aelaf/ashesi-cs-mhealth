@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class QuestionListAdapter extends BaseAdapter{
@@ -60,6 +61,17 @@ public class QuestionListAdapter extends BaseAdapter{
 		date.setText(q.getDate());
 		TextView question = (TextView)convertView.findViewById(R.id.resource_material);
 		question.setText(q.getContent());
+		ImageView img = (ImageView)convertView.findViewById(R.id.checkImage);
+		int result = q.getRecState();
+		if( result == 1){
+			img.setVisibility(View.VISIBLE);
+			img.setImageResource(R.drawable.checkmarkk);
+		}else if(result == 2){
+			img.setVisibility(View.VISIBLE);
+			img.setImageResource(R.drawable.doublecheckmark);
+		}else{
+				img.setVisibility(View.GONE);
+		}
 		return convertView;
 	}
 

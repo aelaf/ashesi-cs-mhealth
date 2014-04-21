@@ -4,10 +4,10 @@ public class Answer {
 	private int answerId;
 	private String answer;
 	private int userId;
-	private int qID;
+	private String qID;
 	private String date;
 	
-	public Answer(int id, String content, int userId, int qId, String theDate) {
+	public Answer(int id, String content, int userId, String qId, String theDate) {
 		// TODO Auto-generated constructor stub
 		answerId = id;
 		answer = content;
@@ -16,7 +16,7 @@ public class Answer {
 		date = theDate;
 	}
 	
-	public int getId(){
+	public String getId(){
 		return qID;
 	}
 	
