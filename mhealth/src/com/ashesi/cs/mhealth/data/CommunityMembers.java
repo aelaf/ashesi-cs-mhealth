@@ -15,9 +15,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-
-
-
 public class CommunityMembers extends DataClass {
 	public static final String TABLE_NAME_COMMUNITY_MEMBERS="comunity_members";
 	public static final String COMMUNITY_MEMBER_ID="community_member_id";
@@ -41,13 +38,13 @@ public class CommunityMembers extends DataClass {
 	public CommunityMembers(Context context){
 		super(context);
 	}
-	
 	/**
 	 * gets all community members in a community 
 	 * @param communityId
 	 * @return
 	 */
-	public boolean getAllCommunityMember(int communityId){
+	public ArrayList<CommunityMember> getAllCommunityMember(int communityId){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
 			String selector=null;
 			if(communityId!=0){
@@ -55,13 +52,52 @@ public class CommunityMembers extends DataClass {
 			}
 			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			db=getReadableDatabase();
-			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, null);
 			
-			return true;
+			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, null );
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+
+			return list;
 		}catch(Exception ex){
 			Log.e("CommunityMembers.getAllCommunityMember(int)","Exception "+ex.getMessage());
 			close();
-			return false;
+			return list;
+		}
+	}
+	
+	/**
+	 * gets all community members in a community 
+	 * @param communityId
+	 * @return
+	 */
+	public ArrayList<CommunityMember> getAllCommunityMember(int communityId, int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			String selector=null;
+			if(communityId!=0){
+				selector=COMMUNITY_ID+"="+communityId;
+			}
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			db=getReadableDatabase();
+			page=page*15;
+			String limit=page +",15";
+			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, null,limit);
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+
+			return list;
+		}catch(Exception ex){
+			Log.e("CommunityMembers.getAllCommunityMember(int)","Exception "+ex.getMessage());
+			close();
+			return list;
 		}
 	}
 	
@@ -229,6 +265,182 @@ public class CommunityMembers extends DataClass {
 		}catch(Exception ex){
 			Log.e("CommunityMembers.findCommunityMember(int)","Exception "+ex.getMessage());
 			close();
+			return list;
+		}
+	}
+	
+	/**
+	 * finds a community member in the selected community
+	 * @param communityID if 0, it searches in all communities
+	 * @param communityMemberName like operator is used to search
+	 * @return true if successful
+	 */
+	public ArrayList<CommunityMember> findCommunityMember(int communityID,String communityMemberName, int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String selector=COMMUNITY_MEMBER_NAME +" LIKE '%"+ communityMemberName +"%' ";
+			if(communityID!=0){
+				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
+			}
+			
+			String limit=null;
+			if(page>=0){
+				page=page*15;
+				limit=page +",15";
+			}
+			
+			db=getReadableDatabase();
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null,limit);
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			Log.e("CommunityMembers.findCommunityMember(int)","Exception "+ex.getMessage());
+			close();
+			return list;
+		}
+	}
+	
+	/**
+	 * finds a community member in the selected community
+	 * @param communityID if 0, it searches in all communities
+	 * @param communityMemberName like operator is used to search
+	 * @return true if successful
+	 */
+	public ArrayList<CommunityMember> findCommunityMemberInsuranceExpiring(int communityID,int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			
+			
+			
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			
+			String selector=CommunityMembers.NHIS_EXPIRY_DATE +"<= date('now','+3 month') ";
+			
+			if(communityID!=0){
+				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
+			}
+			
+			
+			String limit=null;
+			if(page>=0){
+				page=page*15;
+				limit=page +",15";
+			}
+			
+			db=getReadableDatabase();
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null,limit);
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			Log.e("CommunityMembers.findCommunityMember(int)","Exception "+ex.getMessage());
+			close();
+			return list;
+		}
+	}
+	
+	public ArrayList<CommunityMember> findCommunityMemberWithRecord(int communityID,int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		String strQuery="select "
+							+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +"."+COMMUNITY_MEMBER_ID
+							+","+COMMUNITY_ID
+							+","+Communities.COMMUNITY_NAME
+							+","+COMMUNITY_MEMBER_NAME
+							+","+BIRTHDATE
+							+","+GENDER
+							+","+CARD_NO
+							+","+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS +"."+REC_STATE
+							+","+NHIS_ID
+							+","+NHIS_EXPIRY_DATE
+							+" from " 
+							+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES 
+							+" left join "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+							+" using (" +CommunityMembers.COMMUNITY_MEMBER_ID + ")"
+							+" where " +OPDCaseRecords.REC_DATE +">=date('now','-30 day')";
+		
+		if(communityID!=0){
+			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
+		}
+		
+		String limit="";
+		if(page>=0){
+			page=page*15;
+			limit=" limit " +page +",15";
+		}
+		strQuery=strQuery +limit;
+		try{
+			db=getReadableDatabase();
+			cursor=db.rawQuery(strQuery, null);
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+	}
+	
+	public ArrayList<CommunityMember> findCommunityMemberWithScheduled(int communityID,int scheduledIn, int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		String strQuery="select distinct "
+							+ Vaccines.VIEW_PENDING_VACCINES +"."+COMMUNITY_MEMBER_ID +" as "+ COMMUNITY_MEMBER_ID
+							+","+COMMUNITY_ID
+							+","+Communities.COMMUNITY_NAME
+							+","+COMMUNITY_MEMBER_NAME
+							+","+BIRTHDATE
+							+","+GENDER
+							+","+CARD_NO
+							+","+REC_STATE
+							+","+NHIS_ID
+							+","+NHIS_EXPIRY_DATE
+							+" from " 
+							+ Vaccines.VIEW_PENDING_VACCINES
+							+" inner join "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+							+" using (" + CommunityMembers.COMMUNITY_MEMBER_ID +")"
+							+" where  ("
+							+ Vaccines.SCHEDULED_ON +" < " +scheduledIn
+							+" AND "+Vaccines.SCHEDULED_ON +"> -" +scheduledIn +")"; 
+		
+		if(communityID!=0){
+			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
+		}
+		
+		String limit="";
+		if(page>=0){
+			page=page*15;
+			limit=" limit " +page +",15";
+		}
+		strQuery=strQuery +limit;
+		try{
+			db=getReadableDatabase();
+			cursor=db.rawQuery(strQuery, null);
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
 			return list;
 		}
 	}
@@ -593,25 +805,38 @@ public class CommunityMembers extends DataClass {
 	 * @return
 	 */
 	public boolean correctBirthdate(){
-		if(!getAllCommunityMember(0)){
+		try
+		{
+			
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+
+			
+			db=getReadableDatabase();
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,null,null, null, null, null);
+			
+			java.util.Date birthdate;
+			ContentValues cv=new ContentValues();
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			SQLiteDatabase dbw=getWritableDatabase();
+			CommunityMember obj=fetch();
+			String whereClause="";
+			int u;
+			while(obj!=null){
+				birthdate=obj.getBirthdateDate();
+				cv.put(BIRTHDATE, dateFormat.format(birthdate));
+				whereClause=CommunityMembers.COMMUNITY_MEMBER_ID+"="+obj.getId();
+				u=dbw.update(TABLE_NAME_COMMUNITY_MEMBERS, cv, whereClause, null);
+				obj=fetch();
+			}
+			dbw.close();
+			close();
+			return true;
+		}catch(Exception ex){
+			Log.d("CommunityMembers.correctBirthdate", "Exception :"+ex.getMessage());
 			return false;
 		}
-		java.util.Date birthdate;
-		ContentValues cv=new ContentValues();
-		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
-		SQLiteDatabase dbw=getWritableDatabase();
-		CommunityMember obj=fetch();
-		String whereClause="";
-		int u;
-		while(obj!=null){
-			birthdate=obj.getBirthdateDate();
-			cv.put(BIRTHDATE, dateFormat.format(birthdate));
-			whereClause=CommunityMembers.COMMUNITY_MEMBER_ID+"="+obj.getId();
-			u=dbw.update(TABLE_NAME_COMMUNITY_MEMBERS, cv, whereClause, null);
-			obj=fetch();
-		}
-		dbw.close();
-		close();
-		return true;
+		
+		
 	}
+
 }

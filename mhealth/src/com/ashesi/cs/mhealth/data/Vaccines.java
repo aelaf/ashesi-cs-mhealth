@@ -17,6 +17,8 @@ public class Vaccines extends DataClass {
 	public final static String VACCINE_NAME="vaccine_name";
 	public final static String VACCINE_SCHEDULE="vaccine_schedule";
 	public final static String TABLE_NAME_VACCINES="vaccines";
+	public final static String VIEW_PENDING_VACCINES="view_pending_vaccines";
+	public final static String SCHEDULED_ON="scheduled_on";
 	
 	public Vaccines(Context context){
 		super(context);
@@ -29,6 +31,17 @@ public class Vaccines extends DataClass {
 				+VACCINE_SCHEDULE+ " integer "
 				+")";
 		
+	}
+	 
+	public static String getCreateViewPendingVaccinesSQLString(){
+		return "create view "+ VIEW_PENDING_VACCINES +" as " 
+				+ "	select " +CommunityMembers.COMMUNITY_MEMBER_ID 
+				+ " , " +VACCINE_ID
+				+ ", (julianday('now')-julianday("+ CommunityMembers.BIRTHDATE + "))-" 
+				+ VACCINE_SCHEDULE +" as "+ SCHEDULED_ON
+				+ " from " 
+				+ CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +"," +TABLE_NAME_VACCINES
+				+ " where " + VACCINE_SCHEDULE+">=0";
 	}
 	
 	public static String getInsertSQLString(int id,String vaccineName,int vaccineSchedule){

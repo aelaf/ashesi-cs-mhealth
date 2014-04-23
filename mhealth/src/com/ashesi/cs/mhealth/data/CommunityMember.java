@@ -170,6 +170,22 @@ public class CommunityMember {
 	public String getNHISExpiryDate(){
 		return nhisExpiryDate;
 	}
+	/**
+	 * is the insurance expiring
+	 * @param limit in months
+	 * @return
+	 */
+	public boolean IsNHISExpiring(int limit){
+		java.util.Date d=getNHISExpiryDateDate();
+		if(d==null){
+			return false;
+		}
+		Calendar c=Calendar.getInstance();
+		c.add(Calendar.MONTH,limit);
+		Calendar nhis=Calendar.getInstance();
+		nhis.setTime(d);
+		return nhis.before(c);
+	}
 	
 	public java.util.Date getNHISExpiryDateDate(){
 		try

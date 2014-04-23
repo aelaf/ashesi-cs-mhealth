@@ -25,6 +25,11 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="0.60" />
+	    <Button
+            android:id="@+id/buttonGetAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getAllinCommunity" />
 
 	    <Button
 	        android:id="@+id/buttonCommunityAddMember"
@@ -41,13 +46,18 @@
 
         <EditText
             android:id="@+id/editCommunityMemberSearchName"
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_weight="0.36"
             android:hint="@string/hintEnterNameAndClickFind" >
 
             <requestFocus />
         </EditText>
+
+        <Spinner
+            android:id="@+id/spinnerSearchType"
+            android:layout_width="229dp"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/buttonCommunityFind"
@@ -64,10 +74,12 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/buttonGetAll"
+            android:id="@+id/buttonCommunityPrev"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/getAllinCommunity" />
+            android:layout_weight="0.01"
+            android:text="@string/prev" />
 
         <Space
             android:layout_width="wrap_content"
@@ -76,6 +88,7 @@
 
         <Button
             android:id="@+id/buttonCommunityNext"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             
@@ -87,7 +100,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@android:layout/simple_list_item_1"
-        android:background="#0000ff"
         >
 
     </ListView>
