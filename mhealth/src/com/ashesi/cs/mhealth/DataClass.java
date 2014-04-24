@@ -467,8 +467,6 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
 			
-			db.execSQL(HealthPromotions.getCreateSQLString());
-			setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
 			
 			/*this cases are added just for testing 
 			 * The complete OPD case list should be downloaded using synch
@@ -525,6 +523,7 @@ public class DataClass extends SQLiteOpenHelper {
 			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version	
 			
 			db.execSQL(HealthPromotions.getCreateSQLString());
+			setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());

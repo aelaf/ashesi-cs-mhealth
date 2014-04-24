@@ -280,7 +280,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private CHO currentCHO;
 		private int communityId;
 		
-		
+		boolean disableDateUpdate=false;
 		
 		private View rootView;
 		/**
@@ -328,8 +328,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View v, int arg2, long arg3) {
-			
-			computeBirthdate();
+			if(arg0.getId()==R.id.spinnerCommunityMemberAgeUnits){
+				computeBirthdate();
+			}
 			
 		}
 
@@ -416,8 +417,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			//initialize datepicker
 			Calendar c=Calendar.getInstance();
 			dpBirthdate.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),this);
-			
 			fillAgeUnitSpinner();
+			
 			
 			if(state==STATE_NEW_MEMBER){
 				fillCommunitiesSpinner(communityId);
@@ -440,6 +441,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 
 			stateAction();
+			
 		}
 		
 		public void editMember(){
@@ -478,10 +480,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		public void computeBirthdate(){
+			
 			try
 			{
 				java.util.Calendar c=java.util.Calendar.getInstance();
-
+				//if it is not enabled there, that means the user is not editing 
+				if(!spinnerAgeUnit.isEnabled()){ 
+					return;
+				}
 				String temp=editAge.getText().toString();
 				if(temp.isEmpty()){
 					return;
@@ -507,6 +513,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		public void computeAge(){
+						
 			java.util.Date date=getBirthdate();
 			if(date==null){
 				editAge.setText("");
@@ -521,13 +528,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			long ym= 31622400000L; 
 			int age=(int)((thisTime-birthTime)/ym); 
 
+			
 			spinnerAgeUnit.setSelection(0);	//year
 			if(age<1){
 				ym= 2592000000L; 
 				age=(int)((thisTime-birthTime)/ym);
 				spinnerAgeUnit.setSelection(1);	//month
 			}
-			
+
 			editAge.setText(Integer.toString(age));
 			
 		}
