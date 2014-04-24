@@ -336,7 +336,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			
+			// TODO Auto-generated method stub
 			
 		}
 
@@ -832,7 +832,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			
+			// TODO Auto-generated method stub
 			
 		}
 		

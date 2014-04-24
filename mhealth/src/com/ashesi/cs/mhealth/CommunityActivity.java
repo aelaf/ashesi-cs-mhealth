@@ -7,6 +7,7 @@ import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.Community;
 import com.ashesi.cs.mhealth.data.CommunityMember;
+import com.ashesi.cs.mhealth.data.CommunityMemberAdapter;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.R;
 import android.os.AsyncTask;
@@ -38,6 +39,8 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	ArrayList<Community> listCommunities;
 	ArrayList<CommunityMember> listCommunityMembers;
 	int page=0;
+	int queryType=1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +56,9 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		b.setOnClickListener(this);
 		
 		b=(Button)findViewById(R.id.buttonCommunityNext);
+		b.setOnClickListener(this);
+		
+		b=(Button)findViewById(R.id.buttonCommunityPrev);
 		b.setOnClickListener(this);
 		
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerCommunities);
@@ -72,6 +78,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		currentCHO=chos.getCHO(choId);
 		
 		loadCommunitySpinner();
+		loadSearchTypeSpinner();
 	}
 
 	@Override
@@ -84,7 +91,8 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	public void onClick(View v){
 		int id=v.getId();
 		switch(id){
-			case R.id.buttonCommunityFind: 
+			case R.id.buttonCommunityFind:
+				page=0;
 				find();
 				break;
 			case R.id.buttonCommunityAddMember:
@@ -95,9 +103,14 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 			case R.id.buttonCommunityNext:
 				this.getNext();
 				break;
+			case R.id.buttonCommunityPrev:
+				this.getPrev();
+				break;
 			case R.id.buttonGetAll:
+				page=0;
 				this.getAllCommunityMembers();
 				break;
+			
 		}
 	}
 	
@@ -115,37 +128,88 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	}
 	
 	public void getAllCommunityMembers(){
-		if(communityMembers==null){
-			communityMembers=new CommunityMembers(getApplicationContext());
-		}
-		
-		communityMembers.close();
+		queryType=1;
+
 		int communityId=getSelectedCommunityId();
-		if(!communityMembers.getAllCommunityMember(communityId) && listCommunityMembers!=null){
-			listCommunityMembers.clear();
-			
-		}else{
-			listCommunityMembers=communityMembers.getArrayList(0); //get first page
-		}
-		page=0;
-		ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
+		CommunityMembers members=new CommunityMembers(getApplicationContext());
+		listCommunityMembers=members.getAllCommunityMember(communityId,page);	
+		CommunityMemberAdapter adapter=new CommunityMemberAdapter(getApplicationContext(),listCommunityMembers);
+		//ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
 		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
 		listViewCommunityMembers.setAdapter(adapter);
 	
+	}
+	
+	public void find(){
+		queryType=2;
+		EditText txtCommunityName=(EditText)findViewById(R.id.editCommunityMemberSearchName);
+		String communityMemberName=txtCommunityName.getText().toString();
+		CommunityMembers members=new CommunityMembers(getApplicationContext());
+		int communityId=getSelectedCommunityId();
+		int searchType=getSelectedSearchType();
+		//listCommunityMembers=members.findCommunityMember(commmunityId, communityMemberName);
+		switch(searchType){
+			case 0:	//search by name
+				listCommunityMembers=members.findCommunityMember(communityId,communityMemberName, page);
+				break;
+			case 1: //search NHIS expiring
+				listCommunityMembers=members.findCommunityMemberInsuranceExpiring(communityId, page);
+				break;
+			case 2:	//opd in the last 30 days
+				listCommunityMembers=members.findCommunityMemberWithRecord(communityId, page);
+				break;
+			case 3: //vaccine within 7 days
+				listCommunityMembers=members.findCommunityMemberWithScheduled(communityId, 7, page);
+				break;
+			default:
+				listCommunityMembers=members.findCommunityMember(communityId,communityMemberName, page);
+				break;
+				
+		}
+			
+		CommunityMemberAdapter adapter=new CommunityMemberAdapter(getApplicationContext(),listCommunityMembers);
+		//ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
+		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
+		listViewCommunityMembers.setAdapter(adapter);
+		
 	}
 	
 	public void getNext(){
-		if(communityMembers==null){
-			return;
+
+		page=page+1;
+		switch(queryType){		
+			case 1:
+				getAllCommunityMembers();
+				break;
+			case 2:
+				find();
+				break;
+			default:
+				getAllCommunityMembers();
 		}
 		
-		page=page+1;
-		listCommunityMembers=communityMembers.getArrayList(page);
-		ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
-		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
-		listViewCommunityMembers.setAdapter(adapter);
+	}
+	
+	public void getPrev(){
+
+		page=page-1;
+		if(page<0){
+			page=0;
+		}
+
+		switch(queryType){		
+			case 1:
+				getAllCommunityMembers();
+				break;
+			case 2:
+				find();
+				break;
+			default:
+				getAllCommunityMembers();
+		}
 		
 	}
+	
 	public void uploadData(){
 		//OPDCaseRecords records=new OPDCaseRecords(getApplicationContext());
 		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
@@ -169,30 +233,26 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		startActivity(intent);
 	}
 	
-	public void find(){
-		EditText txtCommunityName=(EditText)findViewById(R.id.editCommunityMemberSearchName);
-		String communityMemberName=txtCommunityName.getText().toString();
-		CommunityMembers members=new CommunityMembers(getApplicationContext());
-		int commmunityId=getSelectedCommunityId();
-		listCommunityMembers=members.findCommunityMember( commmunityId, communityMemberName);	
-		ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
-		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
-		listViewCommunityMembers.setAdapter(adapter);
-		
-	}
-	
 	public boolean loadCommunitySpinner(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerCommunities);
 		Communities communities=new Communities(getApplicationContext());
 		Community allCommunity=new Community(0,"All Community");
 		listCommunities=communities.getCommunties(currentCHO.getSubdistrictId());
 		listCommunities.add(0,allCommunity);
-		ArrayAdapter<Community> adapter=new ArrayAdapter<Community>(this,android.R.layout.simple_dropdown_item_1line,listCommunities);
+		ArrayAdapter<Community> adapter=new ArrayAdapter<Community>(this,R.layout.mhealth_simple_spinner,listCommunities);
 
 		spinner.setAdapter(adapter);
 		
 		return true;
 		
+	}
+	
+	public boolean loadSearchTypeSpinner(){
+		String searchTypes[]={"By Name","NHIS expiring","OPD in last 30 days", "Vaccine in a week"};
+		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
+		spinner.setAdapter(adapter);
+		return true;
 	}
 
 	@Override
@@ -246,6 +306,13 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		return community.getId();
 	}
  
+	public int getSelectedSearchType(){
+		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
+		int index=(int)spinner.getSelectedItemId();
+		return index;
+		
+	}
+	
 	private class UploadRecords extends AsyncTask<Integer, Integer, Integer> {
 		
 		@Override
