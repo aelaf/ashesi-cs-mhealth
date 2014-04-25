@@ -52,7 +52,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * DATABASE VERSION 4
 	 * community member view and community member opd record view has been changed to compute age using julianday 
 	 */
-	protected static final int DATABASE_VERSION=4; 
+	protected static final int DATABASE_VERSION=5; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -493,7 +493,10 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(CHOs.getInsert(4,"Theresa",2));
 			db.execSQL(CHOs.getInsert(5,"Sandra",2));
 			db.execSQL(CHOs.getInsert(6,"Dorthy",2));
-			
+			db.execSQL(CHOs.getInsert(7,"Pokrom",2));
+			db.execSQL(CHOs.getInsert(8,"Henrietta",1));
+			db.execSQL(CHOs.getInsert(9,"Kitase",1));
+			db.execSQL(CHOs.getInsert(10,"Aburi",1));
 	
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
@@ -521,13 +524,14 @@ public class DataClass extends SQLiteOpenHelper {
 			Log.d("DataClass.onCreate", "data base created");
 			
 			//add in version 4, it should not be included in upgraded
-			setDataVersion(db,DATABASE_NAME,4); 			//note down the data base version	
+			//in version 4 some of the views were corrected, but there was no object
 			
+			//added in version 5
 			db.execSQL(HealthPromotions.getCreateSQLString());
-			setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
 			setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
 			
 			db.execSQL(Vaccines.getCreateViewPendingVaccinesSQLString());
+			setDataVersion(db,DATABASE_NAME,5); 			//note down the data base version
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
@@ -549,6 +553,10 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			if(oldVersion==3 && newVersion==4){
 				upgradeToVersion4(db);
+			}
+			
+			if(oldVersion==4 && newVersion==5){
+				upgradeToVersion5(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
@@ -610,6 +618,22 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		
 		setDataVersion(db,DATABASE_NAME,4); 			//note down the database version
+	}
+	
+	private void upgradeToVersion5(SQLiteDatabase db){
+		//this is tables are not in DB 4
+		db.execSQL(CHOs.getInsert(7,"Pokrom",2));
+		db.execSQL(CHOs.getInsert(8,"Henrietta",1));
+		db.execSQL(CHOs.getInsert(9,"Kitase",1));
+		db.execSQL(CHOs.getInsert(10,"Aburi",1));
+		
+		
+		db.execSQL(HealthPromotions.getCreateSQLString());
+		setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
+		
+		db.execSQL(Vaccines.getCreateViewPendingVaccinesSQLString());
+		
+		setDataVersion(db,DATABASE_NAME,5); 			//note down the database version
 	}
 	
 	public String getDataFilePath(){
