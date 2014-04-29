@@ -163,10 +163,10 @@ public class Answers extends DataClass {
 		System.out.println(qID);
 		try{
 			db=getReadableDatabase();
-			String Query = "Select * from " + TABLE_NAME_ANSWERS + " where " + KEY_QUESTION_ID + "=" + qID;
+			String Query = "Select * from " + TABLE_NAME_ANSWERS + " where " + KEY_QUESTION_ID + "='" + qID + "'";
 		    cursor = db.rawQuery(Query, null);
 		    Answer ans=fetch();
-		    Log.d("Current Answer",ans.toString());
+		    Log.d("Current Answer", ans.toString());
 			close();
 			return ans;			
 		}catch(Exception ex){
@@ -192,7 +192,7 @@ public class Answers extends DataClass {
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url="http://192.168.43.252/mHealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
+		String url="http://10.0.2.2/mHealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
 		String data=request(url);
 		System.out.println(data);
 		try{
@@ -231,7 +231,7 @@ public class Answers extends DataClass {
 				userId=obj.getInt(KEY_USER_ID);
 				questionId = obj.getString(KEY_QUESTION_ID);
 				aDate = obj.getString(KEY_ANSWER_DATE);
-				qs.changeStatus(questionId, 2);
+				qs.changeStatus(questionId, 3);
 				addAnswer(id, answer,userId, questionId, aDate);
 			}
 		}catch(Exception ex){

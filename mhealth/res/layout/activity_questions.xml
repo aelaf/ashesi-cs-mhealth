@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/questionTag"
             android:inputType="text" 
-            android:paddingBottom="20dp"/>
+            android:paddingBottom="20dp"
+            android:layout_margin="20dp"/>
     </LinearLayout>
 
     <Spinner
@@ -27,7 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout1"
-        android:layout_toLeftOf="@+id/save_btn"/>
+        android:layout_toLeftOf="@+id/save_btn"
+        android:layout_marginLeft="20dp"/>
 
     <Button
         android:id="@+id/save_btn"

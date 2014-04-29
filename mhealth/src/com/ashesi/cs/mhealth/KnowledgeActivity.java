@@ -22,7 +22,6 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -45,8 +44,6 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 	private ActionBar actionBar;
 	private Questions db;
 	private MenuItem refreshMenuItem;
-	private Categories db1;
-	
 	private String [] tabs = {"Questions", "Resources"};
 	
 	/* (non-Javadoc)
@@ -60,7 +57,7 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		
 		// Load the spinner details
 		db = new Questions(this);
-		db1 = new Categories(this);
+		new Categories(this);
 		
 		//Initialization
 		viewPager = (ViewPager)findViewById(R.id.pager);
@@ -214,9 +211,9 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
 					      nameValuePairs.add(new BasicNameValuePair("questionid",
 					          jObj.toString()));
-						db.request(db.postRequest("http://192.168.43.252/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
+						db.request(db.postRequest("http://10.0.2.2/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
 						Questions temp1 = new Questions(getApplicationContext());
-						temp1.changeStatus(q.get(i).getGuid(), 1);
+						temp1.changeStatus(q.get(i).getGuid(), 2);
 					}
 				}
 				//System.out.println(String.valueOf(getlastSaved("lastIDs")));
@@ -239,26 +236,10 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		
 	}
 	
-	private class GetAnswers extends AsyncTask<String, Void, String>{
-
-		@Override
-		protected String doInBackground(String... arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}
 	private int getlastSaved(String key){
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		Integer result = Integer.parseInt(sharedPreferences.getString(key, "0"));
 		return result.intValue();		
-	}
-	
-	private void saveLastUpdated(String key, String value){
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		Editor editor = sharedPreferences.edit();
-		editor.putString(key, value);
-		editor.apply();
 	}
 	
 	@Override

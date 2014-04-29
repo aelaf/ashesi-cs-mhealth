@@ -36,7 +36,7 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		String date = intent.getStringExtra("datetime");
 		String cat = intent.getStringExtra("category");
 		String qID = intent.getStringExtra("guid");
-		
+		System.out.println("the question id is: " + qID);
 		TextView choN = (TextView)findViewById(R.id.choName1);
 		choN.setText(choName + " - " + cat);
 		TextView question1 = (TextView)findViewById(R.id.question1);
@@ -46,11 +46,16 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		
 		Answers ansDB = new Answers(getApplicationContext());
 		Answer answer = ansDB.getByQuestion(qID);
+		
+		
+		
 
 		TextView ans = (TextView)findViewById(R.id.answer);
 		if(answer == (null)){
+			
 			ans.setText("Answer still pending.");
 		}else{
+			System.out.println("The answer is:" + answer.getAnswer());
 			ans.setText( "Answer: "+ answer.getAnswer() + " \n " + 
 					"Answered on: " + answer.getDate());
 		}
