@@ -211,7 +211,7 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
 					      nameValuePairs.add(new BasicNameValuePair("questionid",
 					          jObj.toString()));
-						db.request(db.postRequest("http://10.0.2.2/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
+						db.request(db.postRequest("http://50.63.128.135/~csashesi/class2014/daniel-ankomah/projects/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
 						Questions temp1 = new Questions(getApplicationContext());
 						temp1.changeStatus(q.get(i).getGuid(), 2);
 					}
