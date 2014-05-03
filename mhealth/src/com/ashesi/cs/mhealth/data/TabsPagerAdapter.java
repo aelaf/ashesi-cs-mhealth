@@ -19,7 +19,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		switch (index) {
 		case 0:
 			// Top Rated fragment activity
-			return new QuestionsFragment();
+			QuestionsFragment q = new QuestionsFragment();
+			q.setHasOptionsMenu(true);
+			return q;
 		case 1:
 			// Games fragment activity
 			return new ResourceFragment();

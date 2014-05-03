@@ -192,7 +192,8 @@ public class Answers extends DataClass {
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url="http://50.63.128.135/~csashesi/class2014/daniel-ankomah/projects/mHealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
+		//String url="http://50.63.128.135/~csashesi/class2014/daniel-ankomah/projects/mHealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
+		String url="http://10.0.2.2/mHealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
 		String data=request(url);
 		System.out.println(data);
 		try{

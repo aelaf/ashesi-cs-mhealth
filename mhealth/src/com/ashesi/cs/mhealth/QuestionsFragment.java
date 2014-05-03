@@ -3,6 +3,12 @@ package com.ashesi.cs.mhealth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
@@ -14,15 +20,20 @@ import com.ashesi.cs.mhealth.knowledge.Category;
 import com.ashesi.cs.mhealth.knowledge.Question;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +66,8 @@ public class QuestionsFragment extends Fragment{
 	private ArrayAdapter<String> adapter;
 	private Switch answered;
 	private boolean onlyAnswered;
+
+	private MenuItem refreshMenuItem;
 	/**
 	 * @return the onlyAnswered
 	 */
@@ -429,6 +442,110 @@ public class QuestionsFragment extends Fragment{
 			}
 		}
 		
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// TODO Auto-generated method stub
+			switch (item.getItemId()){
+			case R.id.synch_q:
+				if(isConnected()){// && !(db.connect("http://10.10.32.136/mHealth") == null)){
+					refreshMenuItem = item;
+					Toast.makeText(getActivity(), "Synching Data", Toast.LENGTH_LONG).show();
+					new Synchronize().execute();
+				}else{
+					Toast.makeText(getActivity(), "Sorry the network is down. Try again later!", Toast.LENGTH_LONG).show();
+				}
+				break;
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(getActivity());
+				break;
+			}			
+			return super.onOptionsItemSelected(item);
+		}
+		
+		public boolean isConnected(){
+			Log.d("mHealth", "Posting questions Checking connectivity ...");
+			ConnectivityManager cm = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+			 
+			NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		    return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+		}
+		
+		/**
+		 * This is to update the data for the application
+		 * @author Daniel
+		 */
+		private class Synchronize extends AsyncTask<String, Void, String>{
+			
+			@Override
+			protected void onPreExecute(){
+				refreshMenuItem.setActionView(R.layout.action_progressbar);
+				
+				refreshMenuItem.expandActionView();
+			}
+			@Override
+			protected String doInBackground(String... params) {
+				// TODO Auto-generated method stub
+				
+				//Retrieve answers from the database
+				Questions temp = new Questions(getActivity());
+				temp.download();
+				
+				Answers tempAns = new Answers(getActivity());
+				tempAns.download();
+				//Toast.makeText(getApplicationContext(), "Questions have been updated!", Toast.LENGTH_LONG).show() ;
+				
+				JSONArray jArr = new JSONArray();
+				try {
+					
+					ArrayList<Question> q = new ArrayList<Question>();
+					q = getQuestions().getAllQuestions();
+					if(q==null || q.isEmpty()){
+						return "empty";
+					}
+					for (int i = getlastSaved("lastIDs"); i < q.size(); i++) {
+						JSONObject jObj = new JSONObject();
+						jObj.put("q_id",q.get(i).getId());
+						jObj.put("cho_id", q.get(i).getChoId());
+						jObj.put("q_content", q.get(i).getContent());
+						jObj.put("category_id",q.get(i).getCategoryId());
+						jObj.put("question_date", q.get(i).getDate());
+						jObj.put("guid", q.get(i).getGuid());
+						jObj.put(DataClass.REC_STATE, q.get(i).getRecState());
+						jArr.put(jObj);
+						
+						Log.d("Current Question", q.get(i).getContent());
+						
+						if(isConnected()){
+				 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+				 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
+						      nameValuePairs.add(new BasicNameValuePair("questionid",
+						          jObj.toString()));
+							db.request(db.postRequest("http://10.0.2.2/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
+							Questions temp1 = new Questions(getActivity());
+							temp1.changeStatus(q.get(i).getGuid(), 2);
+						}
+					}
+					//System.out.println(String.valueOf(getlastSaved("lastIDs")));
+					//System.out.println("There are " + q.size() + " questions in the Database");
+					return "Done";
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				//saveLastUpdated("lastID", 0);
+		        return null;
+			}	
+			
+			@Override
+			protected void onPostExecute(String result){
+				refreshMenuItem.collapseActionView();
+				refreshMenuItem.setActionView(null);
+				Toast.makeText(getActivity(), "Synch complete" , Toast.LENGTH_LONG).show();
+				refreshData(isOnlyAnswered());
+			}
+			
+		}
+		
 		/**
 		 * Return the current List of questions (aList) to be shown based on the page number
 		 * @param aList
@@ -488,5 +605,15 @@ public class QuestionsFragment extends Fragment{
 	        	btn_prev.setEnabled(true);
 	        }
 	    }
+	    
+	    public Questions getQuestions(){
+			return db;
+		}
+	    
+	    private int getlastSaved(String key){
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+			Integer result = Integer.parseInt(sharedPreferences.getString(key, "0"));
+			return result.intValue();		
+		}
 
 }
