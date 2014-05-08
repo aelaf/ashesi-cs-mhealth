@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
@@ -41,6 +43,7 @@ public class Synch extends Activity implements OnClickListener {
 	Button buttonSynchVaccine;
 	Button buttonSynchBackup;
 	Button buttonSynchCancel;
+	Button buttonSynchRestore;
 	AsyncTask task;
 	
 	@Override
@@ -65,6 +68,8 @@ public class Synch extends Activity implements OnClickListener {
 		buttonSynchBackup.setOnClickListener(this);
 		buttonSynchVaccine=(Button)findViewById(R.id.buttonSynchVaccine);
 		buttonSynchVaccine.setOnClickListener(this);
+		buttonSynchRestore=(Button)findViewById(R.id.buttonSynchRestore);
+		buttonSynchRestore.setOnClickListener(this);
 		task=null;
 		
 	}
@@ -93,6 +98,9 @@ public class Synch extends Activity implements OnClickListener {
 				break;
 			case R.id.buttonSynchVaccine:
 				downloadVaccine();
+				break;
+			case R.id.buttonSynchRestore:
+				confirmRestore();
 				break;
 			case R.id.buttonSynchCancel:
 				cancel();
@@ -221,8 +229,9 @@ public class Synch extends Activity implements OnClickListener {
 		
 	}
 	
-	public void localRestor(){
+	public void localRestore(){
 		try{
+			localBackup();
 			progressBar.setMax(5);
 			progressBar.setProgress(0);
 			textStatus.setText("starting...");
@@ -251,12 +260,32 @@ public class Synch extends Activity implements OnClickListener {
 			fos.close();
 			fis.close();
 			progressBar.setProgress(5);
-			textStatus.setText("local backup complete");
-			correctBirthdate();	
+			textStatus.setText("local resotre complete");
+		
 		}catch(Exception ex){
-			textStatus.setText("local backup fialed");
+			textStatus.setText("restore was not successful");
 		}
 		
+	}
+	
+	private boolean confirmRestore(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("The current data will be replaced by your backup file. Before restoring the current data will be backedup. Do you want to continue?" );
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   localRestore();
+		        	   dialog.dismiss();
+		           }
+		       });
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   dialog.dismiss();
+		           }
+		       });
+		
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		return true;
 	}
 	/**
 	 * this method runs once only to correct birth dates stored in the wrong format

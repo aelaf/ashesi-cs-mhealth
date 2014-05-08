@@ -69,6 +69,7 @@
     <string name="nhisExpiryDate">Expiry Date</string>
     <string name="save">Save</string>
     <string name="backup">Backup Data</string>
+    <string name="restore">Restore Data</string>
     <string name="server">Server</string>
     <string name="local">Local</string>
     <string name="selectAtask">select a task</string>
@@ -98,6 +99,8 @@
     <string name="image">Image Upload</string>
     <string name="date">Date</string>
     <string name="prev">previous</string>
+    <string name="ok">OK</string>
+
     
 
 </resources>
