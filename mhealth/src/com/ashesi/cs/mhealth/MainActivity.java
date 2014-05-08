@@ -18,6 +18,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,21 +29,24 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	Menu menu;
 	private DataClass dc;
 	private Spinner spinner;
-	public static String choId;
+	private int choId;
+	private Button buttonOpenClose;
+	
 	public static String subdistrictId;
-
+	public TextView textStatus;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_main);
 				
-		TextView textStatus=(TextView)findViewById(R.id.textStatus);
+		textStatus=(TextView)findViewById(R.id.textStatus);
 		//make sure database is created
 		dc=new DataClass(getApplicationContext());
 	
 		
-		View buttonOpenClose=findViewById(R.id.buttonMainLoginStart);
+		buttonOpenClose=(Button)findViewById(R.id.buttonMainLoginStart);
 		buttonOpenClose.setOnClickListener(this);
 		
 		View buttonOpenRecord=findViewById(R.id.buttonMainOpenRecord);
@@ -50,10 +55,11 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 
 		View buttonAddHealthPromotion=findViewById(R.id.buttonHealthPromotions);
 		buttonAddHealthPromotion.setOnClickListener(this);
-
 		
-		loadSpinner();
-		textStatus.setText("application ready");
+		choId=0;
+		
+		//loadSpinner();
+		textStatus.setText("enter your name and click open");
 		
 	}
 	
@@ -80,17 +86,38 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	}
 	
 	public void loginAndStart(){
-		Spinner spinner=(Spinner)findViewById(R.id.spinnerSelectCHO);
-		currentCHO=(CHO)spinner.getSelectedItem();
-		String cho=currentCHO.getAll();
-		String[] choSplit=cho.split("-");
-		choId=choSplit[2];
-		subdistrictId=choSplit[1];
-		System.out.println(choSplit[1]);
+		if(choId!=0){
+			logout();
+			return;
+		}
+		EditText editCHO=(EditText)findViewById(R.id.editCHOName);
+		if(editCHO.getText().length()==0){
+			textStatus.setText("enter your user name to open");
+			return;
+		}
+		CHOs chos=new CHOs(getApplicationContext());
+		currentCHO=chos.getCHO(editCHO.getText().toString());
+		if(currentCHO==null){
+			textStatus.setText("the name you entred is not found");
+			return;
+		}
+
+		choId=currentCHO.getId();
+		buttonOpenClose.setText(R.string.close);
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(true);
 		findViewById(R.id.buttonMainKnowledge).setEnabled(true);
 		findViewById(R.id.buttonHealthPromotions).setEnabled(true);
 		findViewById(R.id.buttonAddCommunity).setEnabled(true);
+	}
+	
+	private void logout(){
+		currentCHO=null;
+		choId=0;
+		buttonOpenClose.setText(R.string.open);
+		findViewById(R.id.buttonMainOpenRecord).setEnabled(false);
+		findViewById(R.id.buttonMainKnowledge).setEnabled(false);
+		findViewById(R.id.buttonHealthPromotions).setEnabled(false);
+		findViewById(R.id.buttonAddCommunity).setEnabled(false);
 	}
 	
 	@Override
@@ -152,18 +179,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		return true;
 	}
 	
-	/**
-	 * load CHO list into spinner
-	 */
-	private void loadSpinner(){
-		 spinner=(Spinner)findViewById(R.id.spinnerSelectCHO);
-		spinner.setOnItemSelectedListener(this);
-		CHOs chos=new CHOs(getApplicationContext());
-		ArrayList<CHO> list=chos.getAllCHOs();
-		System.out.println(list);
-		ArrayAdapter<CHO> adapter=new ArrayAdapter<CHO>(getApplicationContext(),android.R.layout.simple_spinner_item,list);
-		spinner.setAdapter(adapter); 
-	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> view, View view1, int position, long arg3) {

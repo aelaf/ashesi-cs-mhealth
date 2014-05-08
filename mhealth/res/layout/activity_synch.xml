@@ -23,6 +23,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/radioSynchBackupToServer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/server" />
+
+        <RadioButton
+            android:id="@+id/radioSynchLocalBackup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/local" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/buttonSynchCommunities"
         style="?android:attr/buttonStyleSmall"
@@ -44,44 +64,15 @@
         android:layout_height="wrap_content"
         android:text="@string/updateVaccineData" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
 
-        <RadioGroup
-            android:id="@+id/radioGroup1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
 
-            <RadioButton
-                android:id="@+id/radioSynchBackupToServer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/server" />
-
-            <RadioButton
-                android:id="@+id/radioSynchLocalBackup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/local" />
-	
-         
-        </RadioGroup>
-
-        <Space
-            android:layout_width="20dip"
-            android:layout_height="match_parent"
-             />
-        
-		<Button
+    <Button
             android:id="@+id/buttonSynchBackup"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/backup" />
-    </LinearLayout>
+
 
     <Button
         android:id="@+id/buttonSynchCancel"

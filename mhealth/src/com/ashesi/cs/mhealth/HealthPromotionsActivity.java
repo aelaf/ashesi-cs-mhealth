@@ -59,6 +59,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	private String imagepath;
 	private Bitmap bitmap;
 	private String fileNameValue;
+	private int choId;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -128,7 +129,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 			String latitude_str=latitude_txt.getText().toString();
 			String longitude_str=longitude_txt.getText().toString();
 			String image=image_url_txt.getText().toString();
-			String cho_id=MainActivity.choId;
+			String cho_id=Integer.toString(choId);
 			String subdistrict_id=MainActivity.subdistrictId;
 			
 			

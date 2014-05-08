@@ -9,6 +9,7 @@ import java.util.Calendar;
 
 import org.json.JSONObject;
 
+import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.OPDCases;
@@ -49,8 +50,13 @@ public class Synch extends Activity implements OnClickListener {
 		
 		progressBar=(ProgressBar)findViewById(R.id.progressBarSynchCommunity);
 		textStatus=(TextView)findViewById(R.id.textSynchStatus);
-		buttonSynchCommunities=(Button)findViewById(R.id.buttonSynchCommunities);
-		buttonSynchCommunities.setOnClickListener(this);
+		try
+		{
+			buttonSynchCommunities=(Button)findViewById(R.id.buttonSynchCommunities);
+			buttonSynchCommunities.setOnClickListener(this);
+		}catch(Exception ex){
+			Log.e("Synch", ex.getMessage());
+		}
 		buttonSynchOPDCases=(Button)findViewById(R.id.buttonSynchOPDCases);
 		buttonSynchOPDCases.setOnClickListener(this);
 		buttonSynchCancel=(Button)findViewById(R.id.buttonSynchCancel);
@@ -95,6 +101,12 @@ public class Synch extends Activity implements OnClickListener {
 	}
 	
 	public void downloadCommunities(){
+		RadioButton radioLocalBackup=(RadioButton)findViewById(R.id.radioSynchLocalBackup);
+		if(radioLocalBackup.isChecked()){
+			loadCommuntiesFromFile();
+			return;
+		}
+		//download from server
 		if(task!=null){
 			cancel();
 		}
@@ -105,6 +117,39 @@ public class Synch extends Activity implements OnClickListener {
 		download.execute(n);
 		task=download;
 		
+	}
+	
+	public void loadCommuntiesFromFile()
+	{
+		try{
+			progressBar.setMax(5);
+			progressBar.setProgress(0);
+			textStatus.setText("starting...");
+			
+			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			String communityFilename=downloadPath.getPath() + "/mhealthcommunities"; 
+			FileInputStream fis=new FileInputStream(communityFilename);
+			
+			progressBar.setProgress(2);
+			textStatus.setText("reading community file...");
+			
+			byte[] buffer=new byte[fis.available()];
+			fis.read(buffer);
+			String data=new String(buffer);
+			progressBar.setProgress(4);
+			textStatus.setText("loading...");
+			
+			Communities communities=new Communities(getApplicationContext());
+			communities.processDownloadData(data);
+			
+			CHOs chos=new CHOs(getApplicationContext());
+			chos.processDownloadData(data);
+			
+			progressBar.setProgress(5);
+			textStatus.setText("complete");
+		}catch(Exception ex){
+			textStatus.setText("loading from file failed");
+		}
 	}
 	
 	public void downloadOPDcases(){
@@ -196,6 +241,7 @@ public class Synch extends Activity implements OnClickListener {
 			
 			progressBar.setProgress(2);
 			textStatus.setText("reading backfile file...");
+			//TODO: find other way of coping the file into the database file location, or limit the buffer
 			byte[] buffer=new byte[fis.available()];
 			fis.read(buffer);
 			progressBar.setProgress(4);

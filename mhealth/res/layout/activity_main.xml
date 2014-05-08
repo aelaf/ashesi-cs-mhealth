@@ -26,12 +26,15 @@
                 android:layout_height="wrap_content"
                 >
 
-					<Spinner
-	    				android:id="@+id/spinnerSelectCHO"
-        				android:layout_width="wrap_content"
-       					android:layout_height="wrap_content"
-       					android:background="#0000EE"
-       					android:layout_weight="0.25"/>
+					<EditText
+					    android:id="@+id/editCHOName"
+					    android:layout_width="wrap_content"
+					    android:layout_height="wrap_content"
+					    android:layout_weight="0.25" >
+
+					    <requestFocus />
+					</EditText>
+					
                     <Button
                         android:id="@+id/buttonMainLoginStart"
                         android:layout_width="wrap_content"

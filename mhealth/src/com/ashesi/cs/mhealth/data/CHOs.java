@@ -122,7 +122,21 @@ public class CHOs extends DataClass {
 		}
 	}
 	
-	
+	public CHO getCHO(String choName){
+		try{
+			
+			db=getReadableDatabase();
+			String selection="lower(CHO_NAME)" + "=lower('"+choName +"')";
+			cursor=db.query(TABLE_NAME_CHOS, columns, selection, null, null, null, null, null);
+			CHO cho=fetch();
+			close();
+			return cho;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+
 	/**
 	 * calls download from a thread
 	 */
@@ -160,6 +174,7 @@ public class CHOs extends DataClass {
 	 */
 	private void processDownloadData(JSONArray jsonArray){
 		try{
+			
 			JSONObject obj;
 			String choName;
 			int id;
@@ -167,12 +182,33 @@ public class CHOs extends DataClass {
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);
 				choName=obj.getString("choName");
-				id=obj.getInt("id");
+				id=obj.getInt("choId");
 				subdistrictId=obj.getInt("subdistrictId");
 				addCHO(id,choName,subdistrictId);
 			}
 		}catch(Exception ex){
 			return;
+		}
+	}
+	
+	/**
+	 * processes the data received from server
+	 * @param jsonArray
+	 */
+	public boolean processDownloadData(String data){
+		try{
+			JSONObject obj=new JSONObject(data);
+			int result=obj.getInt("result");
+			if(result==0){	//error 
+				return false;
+			}
+			
+			JSONArray jsonArray=obj.getJSONArray("chos");
+			 processDownloadData(jsonArray);
+			 return true;
+			
+		}catch(Exception ex){
+			return false;
 		}
 	}
 }

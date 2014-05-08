@@ -49,6 +49,7 @@
     <string name="title_report_next">next</string>
     <string name="report">Go to report</string>
     <string name="open">Open</string>
+    <string name="close">Close</string>
     <string name="knowledge">Go to knowledge</string>
     <string name="upload">upload</string>
     <string name="statusSelectYourName">Select your name and click open button</string>
