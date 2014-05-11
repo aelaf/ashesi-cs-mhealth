@@ -28,8 +28,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	CHO currentCHO;
 	Menu menu;
 	private DataClass dc;
-	private Spinner spinner;
-	private int choId;
+	private int choId=0;
 	private Button buttonOpenClose;
 	
 	public static String subdistrictId;
@@ -44,8 +43,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		textStatus=(TextView)findViewById(R.id.textStatus);
 		//make sure database is created
 		dc=new DataClass(getApplicationContext());
-	
-		
+			
 		buttonOpenClose=(Button)findViewById(R.id.buttonMainLoginStart);
 		buttonOpenClose.setOnClickListener(this);
 		
@@ -57,8 +55,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		buttonAddHealthPromotion.setOnClickListener(this);
 		
 		choId=0;
-		
-		//loadSpinner();
 		textStatus.setText("enter your name and click open");
 		
 	}
@@ -93,15 +89,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		EditText editCHO=(EditText)findViewById(R.id.editCHOName);
 		if(editCHO.getText().length()==0){
 			textStatus.setText("enter your user name to open");
+			textStatus.setTextColor(this.getResources().getColor(R.color.text_color_error));
 			return;
 		}
 		CHOs chos=new CHOs(getApplicationContext());
 		currentCHO=chos.getCHO(editCHO.getText().toString());
 		if(currentCHO==null){
 			textStatus.setText("the name you entred is not found");
+			textStatus.setTextColor(this.getResources().getColor(R.color.text_color_error));
 			return;
 		}
-
+		editCHO.setEnabled(false);
 		choId=currentCHO.getId();
 		buttonOpenClose.setText(R.string.close);
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(true);
@@ -113,11 +111,16 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	private void logout(){
 		currentCHO=null;
 		choId=0;
+
 		buttonOpenClose.setText(R.string.open);
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(false);
 		findViewById(R.id.buttonMainKnowledge).setEnabled(false);
 		findViewById(R.id.buttonHealthPromotions).setEnabled(false);
 		findViewById(R.id.buttonAddCommunity).setEnabled(false);
+		
+		EditText editCHO=(EditText)findViewById(R.id.editCHOName);
+		editCHO.setEnabled(true);
+		editCHO.setText("");
 	}
 	
 	@Override
