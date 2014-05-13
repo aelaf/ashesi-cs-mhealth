@@ -84,7 +84,8 @@
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.ViewQuestionActivity"
-            android:label="@string/viewPost" >
+            android:label="@string/viewPost" 
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity">
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.KSettingsActivity"
@@ -93,7 +94,8 @@
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.WiFiDirectActivity"
-            android:label="@string/device_synch">         
+            android:label="@string/device_synch"
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity">         
         </activity>
         
         <activity 

@@ -66,7 +66,6 @@ public class QuestionsFragment extends Fragment{
 	private ArrayAdapter<String> adapter;
 	private Switch answered;
 	private boolean onlyAnswered;
-
 	private MenuItem refreshMenuItem;
 	/**
 	 * @return the onlyAnswered
@@ -447,7 +446,7 @@ public class QuestionsFragment extends Fragment{
 			// TODO Auto-generated method stub
 			switch (item.getItemId()){
 			case R.id.synch_q:
-				if(isConnected()){// && !(db.connect("http://10.10.32.136/mHealth") == null)){
+				if(isConnected()){
 					refreshMenuItem = item;
 					Toast.makeText(getActivity(), "Synching Data", Toast.LENGTH_LONG).show();
 					new Synchronize().execute();
@@ -579,10 +578,8 @@ public class QuestionsFragment extends Fragment{
 
 		@Override
 		public void onResume() {
-			//Toast.makeText(getActivity(), "The Current CHO is: " + currentCHO.getFullname(), Toast.LENGTH_LONG).show();
 			super.onResume();
-
-			refreshData(onlyAnswered);
+			refreshData(isOnlyAnswered());
 		}
 		
 		/**
@@ -615,5 +612,17 @@ public class QuestionsFragment extends Fragment{
 			Integer result = Integer.parseInt(sharedPreferences.getString(key, "0"));
 			return result.intValue();		
 		}
+
+		/* (non-Javadoc)
+		 * @see android.support.v4.app.Fragment#onStart()
+		 */
+		@Override
+		public void onStart() {
+			// TODO Auto-generated method stub
+			super.onStart();
+			refreshData(isOnlyAnswered());
+		}
+	    
+	    
 
 }

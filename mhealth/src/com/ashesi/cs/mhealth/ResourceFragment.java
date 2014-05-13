@@ -4,23 +4,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ashesi.cs.mhealth.data.R;
-import com.ashesi.cs.mhealth.knowledge.Categories;
-import com.ashesi.cs.mhealth.knowledge.Category;
-import com.ashesi.cs.mhealth.knowledge.Question;
-import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
-import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -30,7 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AbsListView.LayoutParams;
+
+import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.Category;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 public class ResourceFragment extends Fragment{
 

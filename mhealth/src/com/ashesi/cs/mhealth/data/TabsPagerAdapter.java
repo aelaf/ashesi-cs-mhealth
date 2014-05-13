@@ -24,7 +24,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return q;
 		case 1:
 			// Games fragment activity
-			return new ResourceFragment();
+			ResourceFragment r = new ResourceFragment();
+			r.setHasOptionsMenu(true);
+			return r;
 		}
 
 		return null;
