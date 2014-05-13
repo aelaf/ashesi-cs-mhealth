@@ -45,6 +45,7 @@ public class Synch extends Activity implements OnClickListener {
 	Button buttonSynchCancel;
 	Button buttonSynchRestore;
 	AsyncTask task;
+	static final String SUPPORT_DATA_FILENAME="/mhealthsupportdata";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,17 +109,28 @@ public class Synch extends Activity implements OnClickListener {
 		}
 	}
 	
+	public void showStatus(String msg){
+		textStatus.setText(msg);
+		textStatus.setTextColor(this.getResources().getColor(R.color.text_color_black));
+		
+	}
+	
+	public void showError(String msg){
+		textStatus.setText(msg);
+		textStatus.setTextColor(this.getResources().getColor(R.color.text_color_error));
+	}
 	public void downloadCommunities(){
+		if(task!=null){
+			cancel();
+		}
 		RadioButton radioLocalBackup=(RadioButton)findViewById(R.id.radioSynchLocalBackup);
 		if(radioLocalBackup.isChecked()){
 			loadCommuntiesFromFile();
 			return;
 		}
+		
 		//download from server
-		if(task!=null){
-			cancel();
-		}
-		textStatus.setText("downloading communities...");
+		showStatus("downloading communities...");
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={1};
@@ -132,20 +144,20 @@ public class Synch extends Activity implements OnClickListener {
 		try{
 			progressBar.setMax(5);
 			progressBar.setProgress(0);
-			textStatus.setText("starting...");
+			showStatus("starting...");
 			
 			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-			String communityFilename=downloadPath.getPath() + "/mhealthcommunities"; 
+			String communityFilename=downloadPath.getPath() + SUPPORT_DATA_FILENAME; 
 			FileInputStream fis=new FileInputStream(communityFilename);
 			
 			progressBar.setProgress(2);
-			textStatus.setText("reading community file...");
+			showStatus("reading data file...");
 			
 			byte[] buffer=new byte[fis.available()];
 			fis.read(buffer);
 			String data=new String(buffer);
 			progressBar.setProgress(4);
-			textStatus.setText("loading...");
+			showStatus("loading...");
 			
 			Communities communities=new Communities(getApplicationContext());
 			communities.processDownloadData(data);
@@ -154,17 +166,27 @@ public class Synch extends Activity implements OnClickListener {
 			chos.processDownloadData(data);
 			
 			progressBar.setProgress(5);
-			textStatus.setText("complete");
+			showStatus("complete");
+			fis.close();
 		}catch(Exception ex){
 			textStatus.setText("loading from file failed");
 		}
 	}
 	
 	public void downloadOPDcases(){
+		
 		if(task!=null){
 			cancel();
 		}
-		textStatus.setText("downloading OPD cases...");
+		
+		RadioButton radioLocalBackup=(RadioButton)findViewById(R.id.radioSynchLocalBackup);
+		if(radioLocalBackup.isChecked()){
+			loadOPDCasesFromFile();
+			return;
+		}
+		
+		
+		showStatus("downloading OPD cases...");
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={2};
@@ -172,16 +194,91 @@ public class Synch extends Activity implements OnClickListener {
 		
 	}
 	
+	public void loadOPDCasesFromFile(){
+		try{
+			progressBar.setMax(5);
+			progressBar.setProgress(0);
+			showStatus("starting...");
+			
+			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			String communityFilename=downloadPath.getPath() + SUPPORT_DATA_FILENAME; 
+			FileInputStream fis=new FileInputStream(communityFilename);
+			
+			progressBar.setProgress(2);
+			showStatus("reading data file...");
+			
+			byte[] buffer=new byte[fis.available()];
+			fis.read(buffer);
+			String data=new String(buffer);
+			progressBar.setProgress(4);
+			showStatus("loading...");
+			
+			OPDCases opdCases=new OPDCases(getApplicationContext());
+			if(!opdCases.processDownloadData(data)){
+				showError("processing data from the file failed");
+				fis.close();
+				return;
+			}
+			
+			progressBar.setProgress(5);
+			showStatus("complete");
+			fis.close();
+		}catch(Exception ex){
+			showError("loading from file failed");
+		}
+	}
+	
 	public void downloadVaccine(){
 		if(task!=null){
 			cancel();
 		}
-		textStatus.setText("downloading vaccine list...");
+		
+		RadioButton radioLocalBackup=(RadioButton)findViewById(R.id.radioSynchLocalBackup);
+		if(radioLocalBackup.isChecked()){
+			loadVaccinesFromFile();
+			return;
+		}
+		
+		showStatus("downloading vaccine list...");
 		disableButtons();
 		DownloadCommunities download=new DownloadCommunities();
 		Integer[] n={3};	//vaccine
 		download.execute(n);
 		
+	}
+	
+	public void loadVaccinesFromFile(){
+		try{
+			progressBar.setMax(5);
+			progressBar.setProgress(0);
+			showStatus("starting...");
+			
+			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			String communityFilename=downloadPath.getPath() + SUPPORT_DATA_FILENAME; 
+			FileInputStream fis=new FileInputStream(communityFilename);
+			
+			progressBar.setProgress(2);
+			showStatus("reading data file...");
+			
+			byte[] buffer=new byte[fis.available()];
+			fis.read(buffer);
+			String data=new String(buffer);
+			progressBar.setProgress(4);
+			showStatus("loading...");
+			
+			OPDCases opdCases=new OPDCases(getApplicationContext());
+			if(!opdCases.processDownloadData(data)){
+				showError("processing data from data file failed");
+				fis.close();
+				return;
+			}
+			
+			progressBar.setProgress(5);
+			showStatus("complete");
+			fis.close();
+		}catch(Exception ex){
+			showError("loading from data file failed");
+		}
 	}
 	
 	public void backupData(){
@@ -211,20 +308,20 @@ public class Synch extends Activity implements OnClickListener {
 			FileOutputStream fos=new FileOutputStream(backupFile);
 			FileInputStream fis=new FileInputStream(dc.getDataFilePath());
 			progressBar.setProgress(2);
-			textStatus.setText("reading data file...");
+			showStatus("reading data file...");
 			//TODO:limit the buffer size to fixed number
 			byte[] buffer=new byte[fis.available()];
 			fis.read(buffer);
 			progressBar.setProgress(4);
-			textStatus.setText("writeing backup file "+backupFile+"...");
+			showStatus("writeing backup file "+backupFile+"...");
 			fos.write(buffer);
 			fos.close();
 			fis.close();
 			progressBar.setProgress(5);
-			textStatus.setText("local backup complete");
+			showStatus("local backup complete");
 			//correctBirthdate(); 					//call  to correct birth dates recorded in yyyy-mm-d form instead of yyyy-mm-dd 	
 		}catch(Exception ex){
-			textStatus.setText("local backup fialed");
+			showError("local backup fialed");
 		}
 		
 	}
@@ -234,7 +331,7 @@ public class Synch extends Activity implements OnClickListener {
 			localBackup();
 			progressBar.setMax(5);
 			progressBar.setProgress(0);
-			textStatus.setText("starting...");
+			showStatus("starting...");
 			DataClass dc=new DataClass(getApplicationContext());
 			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 			String restoreFilename=downloadPath.getPath() + "/mhealthbackup"; 
@@ -249,21 +346,21 @@ public class Synch extends Activity implements OnClickListener {
 			FileOutputStream fos=new FileOutputStream(dbFile,false);
 			
 			progressBar.setProgress(2);
-			textStatus.setText("reading backfile file...");
+			showStatus("reading backfile file...");
 			//TODO: find other way of coping the file into the database file location, or limit the buffer
 			byte[] buffer=new byte[fis.available()];
 			fis.read(buffer);
 			progressBar.setProgress(4);
-			textStatus.setText("restoring...");
+			showStatus("restoring...");
 			
 			fos.write(buffer);
 			fos.close();
 			fis.close();
 			progressBar.setProgress(5);
-			textStatus.setText("local resotre complete");
+			showStatus("local resotre complete");
 		
 		}catch(Exception ex){
-			textStatus.setText("restore was not successful");
+			showError("restore was not successful");
 		}
 		
 	}
@@ -287,9 +384,10 @@ public class Synch extends Activity implements OnClickListener {
 		dialog.show();
 		return true;
 	}
-	/**
-	 * this method runs once only to correct birth dates stored in the wrong format
-	 */
+	/*
+	
+	// this method runs once only to correct birth dates stored in the wrong format
+	 
 	private void correctBirthdate(){
 		int done=0;
 		try{
@@ -312,7 +410,7 @@ public class Synch extends Activity implements OnClickListener {
 		}
 		editor.commit();
 	}
-	
+	*/
 	public void cancel(){
 		if(task==null){
 			return;
@@ -408,11 +506,11 @@ public class Synch extends Activity implements OnClickListener {
 				 return;
 			 }
 			 if(progress[0]==1){
-				 textStatus.setText("connected, downloading...");
+				 showStatus("connected, downloading...");
 			 }else if(progress[0]==3){
-				 textStatus.setText("download complete, updating...");
+				 showStatus("download complete, updating...");
 			 }else if(progress[0]==5){
-				 textStatus.setText("download complete");
+				 showStatus("download complete");
 			 }
 			 progressBar.setProgress(progress[0]);
 	     }
@@ -421,14 +519,14 @@ public class Synch extends Activity implements OnClickListener {
 		protected void onPostExecute(Integer result){
 			
 			if(result==0){
-				textStatus.setText("error downloading");
+				showError("error downloading");
 			}
 			enableButtons();
 		}
 		
 		@Override
 		protected void onCancelled(Integer result){
-			textStatus.setText("cancelled");
+			showStatus("cancelled");
 			enableButtons();
 		}
 		
@@ -467,10 +565,10 @@ public class Synch extends Activity implements OnClickListener {
 		protected void onPostExecute(Integer result){
 			
 			if(result==0){
-				textStatus.setText("error uploading backup data " +strResultMessage);
+				showError("error uploading backup data " +strResultMessage);
 				progressBar.setProgress(5);
 			}else{
-				textStatus.setText("backup completed successfully");
+				showStatus("backup completed successfully");
 				progressBar.setProgress(5);
 			}
 			enableButtons();
@@ -485,11 +583,11 @@ public class Synch extends Activity implements OnClickListener {
 				 return;
 			 }
 			 if(progress[0]==1){
-				 textStatus.setText("checking data file...");
+				 showStatus("checking data file...");
 			 }else if(progress[0]==2){
-				 textStatus.setText("uploading...");
+				 showStatus("uploading...");
 			 }else if(progress[0]==5){
-				 textStatus.setText("backup complete");
+				 showStatus("backup complete");
 			 }
 			 progressBar.setProgress(progress[0]);
 	     }
