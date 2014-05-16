@@ -266,8 +266,8 @@ public class Synch extends Activity implements OnClickListener {
 			progressBar.setProgress(4);
 			showStatus("loading...");
 			
-			OPDCases opdCases=new OPDCases(getApplicationContext());
-			if(!opdCases.processDownloadData(data)){
+			Vaccines vaccines=new Vaccines(getApplicationContext());
+			if(!vaccines.processDownloadData(data)){
 				showError("processing data from data file failed");
 				fis.close();
 				return;
