@@ -243,10 +243,12 @@ public class Categories extends DataClass{
 				")";
 	
 	}
-
-
-
 	
-	
+	public static String getInsert(String cat_name){
+		return "insert into " +
+				TABLE_NAME_CATEGORIES + " ("
+				  + CATEGORY_NAME + 
+				" ) values (" + "'" + cat_name + "' )";
+	}	
 	
 }

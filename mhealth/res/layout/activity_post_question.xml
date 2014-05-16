@@ -1,0 +1,120 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:animateLayoutChanges="true" 
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp" >
+
+        <EditText
+            android:id="@+id/resource_material"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/questionTag"
+            android:inputType="text" 
+            android:paddingBottom="20dp"/>
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_toLeftOf="@+id/save_btn"/>
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/spinner1"
+        android:layout_marginRight="14dp"
+        android:text="@string/postQ"
+        android:textColor="#000" />
+
+    <View
+        android:id="@+id/spacer"
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/spinner1" >
+    </View>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/linearLay"
+        android:layout_toRightOf="@+id/spacer"
+        android:background="@color/teal" />
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLay"
+        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/listview_roundcorner_item"
+        android:divider="@color/teal"
+        android:dividerHeight="1.0sp" >
+    </ListView>
+
+    
+    <LinearLayout 
+         android:id="@+id/linearLay"
+         android:layout_width="fill_parent"
+  		 android:layout_height="wrap_content"
+  		 android:orientation="horizontal"
+  		 android:layout_below="@+id/switch1">
+
+        <Button
+            android:id="@+id/knowledgeBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="100dip"
+            android:layout_height="40dip"
+            android:text="@string/myPost" 
+            android:background="@color/selectedBtn"
+            android:textColor="@color/white"
+            android:shadowColor="@color/LightGrey"/>
+
+        <Button
+            android:id="@+id/button2"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="100dip"
+            android:layout_height="40dip"
+            android:text="@string/recentpost"
+            android:background="@color/white" />
+
+    </LinearLayout>
+    
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/spacer"
+        android:layout_toRightOf="@+id/spacer"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="30dp"
+        android:text="@string/answered"
+        android:textOff="All"
+        android:textOn="Answered" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="120dp"
+        android:layout_height="43dp"
+        android:layout_alignBottom="@+id/linearLay"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:prompt="@string/sortLabel" />
+
+</RelativeLayout>

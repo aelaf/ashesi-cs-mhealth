@@ -11,7 +11,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
+    <uses-feature
+        android:name="android.hardware.wifi.direct"
+        android:required="true" />
+    
     <application
         android:allowBackup="true"
         android:debuggable="true"
@@ -66,7 +76,26 @@
             android:label="@string/title_add_community" >
         </activity>
          <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsActivity"></activity>
-         
+         <activity
+            android:name="com.ashesi.cs.mhealth.ViewQuestionActivity"
+            android:label="@string/viewPost">
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.KSettingsActivity"
+            android:label="@string/knowledgeSettings"
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.WiFiDirectActivity"
+            android:label="@string/device_synch"
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity">         
+        </activity>
+        
+        <activity 
+            android:name="com.ashesi.cs.mhealth.KnowledgeActivity"
+            android:label="@string/atknowledge"
+            android:parentActivityName="com.ashesi.cs.mhealth.MainActivity">           
+        </activity>
     </application>
 
 </manifest>

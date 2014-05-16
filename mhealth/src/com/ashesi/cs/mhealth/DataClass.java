@@ -31,7 +31,11 @@ import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
+import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.Questions;
+import com.ashesi.cs.mhealth.knowledge.ResourceLinks;
+import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -50,7 +54,9 @@ public class DataClass extends SQLiteOpenHelper {
 	 * vaccine table is added
 	 * vaccine record table is added
 	 * DATABASE VERSION 4
-	 * community member view and community member opd record view has been changed to compute age using julianday 
+	 * community member view and community member opd record view has been changed to compute age using julianday
+	 * Database VERSION 6
+	 * Questions, Answers, Categories, ResourceMaterials 
 	 */
 	protected static final int DATABASE_VERSION=5; 
 	protected SQLiteDatabase db;
@@ -193,6 +199,9 @@ public class DataClass extends SQLiteOpenHelper {
 		HttpURLConnection connection;
 		String data="";
 		
+		System.out.println("Making a Post Request");
+		Log.d("URL", urlAddress);
+
 		try{
 			URL url=new URL(urlAddress);
 			connection=(HttpURLConnection)url.openConnection();
@@ -258,6 +267,8 @@ public class DataClass extends SQLiteOpenHelper {
 	public  HttpResponse postRequest(String urlAddress, List<NameValuePair> nameValuePairs){
 		urlAddress=mServerUrl+urlAddress;
 		
+		System.out.println("Making a Post Request");
+		Log.d("URL", urlAddress);
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(urlAddress);
@@ -501,6 +512,7 @@ public class DataClass extends SQLiteOpenHelper {
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
 			
+			
 			//view for opd case records
 			db.execSQL(OPDCaseRecords.getCreateViewString());
 			//view for community members
@@ -533,6 +545,27 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Vaccines.getCreateViewPendingVaccinesSQLString());
 			setDataVersion(db,DATABASE_NAME,5); 			//note down the data base version
 			
+			//added in version 6
+			db.execSQL(Categories.getInsert("Nutrition"));
+			db.execSQL(Categories.getInsert("Pharmaceuticals"));
+			db.execSQL(Categories.getInsert("Administration"));
+			db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
+			db.execSQL(Categories.getInsert("Childcare"));
+			
+			/*Knowledge Section*/
+			//Create the Question table	
+			db.execSQL(Questions.getCreateQuery());				
+			
+			//Create resources materials
+			db.execSQL(ResourceMaterials.getCreateQuery());
+			
+			//Create resource links
+			db.execSQL(ResourceLinks.getCreateQuery());
+			
+			//Create answers table
+			db.execSQL(Answers.getCreateQuery());
+			setDataVersion(db,DATABASE_NAME,6);
+			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
 		}
@@ -557,6 +590,9 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			if(oldVersion==4 && newVersion==5){
 				upgradeToVersion5(db);
+			}
+			if(oldVersion==5 && newVersion==6){
+				upgradeToVersion6(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
@@ -636,6 +672,30 @@ public class DataClass extends SQLiteOpenHelper {
 		setDataVersion(db,DATABASE_NAME,5); 			//note down the database version
 	}
 	
+	private void upgradeToVersion6(SQLiteDatabase db){
+		db.execSQL(Categories.getCreateSqlString());
+		db.execSQL(Categories.getInsert("Nutrition"));
+		db.execSQL(Categories.getInsert("Pharmaceuticals"));
+		db.execSQL(Categories.getInsert("Administration"));
+		db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
+		db.execSQL(Categories.getInsert("Childcare"));
+		
+		/*Knowledge Section*/
+		//Create the Question table	
+		db.execSQL(Questions.getCreateQuery());				
+		
+		//Create resources materials
+		db.execSQL(ResourceMaterials.getCreateQuery());
+		
+		//Create resource links
+		db.execSQL(ResourceLinks.getCreateQuery());
+		
+		//Create answers table
+		db.execSQL(Answers.getCreateQuery());
+
+		setDataVersion(db,DATABASE_NAME,6);
+	}
+	
 	public String getDataFilePath(){
 		db=this.getReadableDatabase();
 		String str=db.getPath();
@@ -662,6 +722,14 @@ public class DataClass extends SQLiteOpenHelper {
 		}
 		return mDeviceId;
 		
+	}
+	
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 	
 	
