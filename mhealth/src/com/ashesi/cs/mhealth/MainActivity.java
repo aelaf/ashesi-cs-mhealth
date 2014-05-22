@@ -74,11 +74,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		if(!folder.exists()){
 			folder.mkdir();
 		}
-		
-		/*Load the current available resources from its text file into the database
-		 * This is a description of the resources.
-		 */
-		loadResources();
+	
 	}
 	
 	@Override
@@ -219,35 +215,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	public void onNothingSelected(AdapterView<?> view) {
 		
 		
-	}
-	
-	
-	/**
-	 * Upload all the added files to the Database
-	 */
-	private void loadResources(){
-		File upload = new File(Environment.getExternalStorageDirectory() + "/mHealth/resourceslist.txt");
-		resMaterials = new ResourceMaterials(this);
-		try {
-			if(upload.exists()){
-				Scanner scan = new Scanner(upload);
-				String fileDetails;
-				String delimit = "[,]";
-				while(scan.hasNext()){
-					fileDetails = scan.nextLine();
-					String [] results = fileDetails.split(delimit);
-					Toast.makeText(getApplicationContext(),results[0], Toast.LENGTH_LONG).show();
-					resMaterials.addResMat(Integer.parseInt(results[0]), 
-							               Integer.parseInt(results[1]), 
-							               Integer.parseInt(results[2]), 
-							               (Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]), 
-							               results[4]);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 

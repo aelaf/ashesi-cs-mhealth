@@ -5,15 +5,15 @@
     android:orientation="vertical"
    	android:background="@drawable/bgpic"  >
 
-    <TextView
-        android:id="@+id/choName1"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/questiontitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="80sp"
-        android:textSize="35sp"
+        android:background="@color/white"
+        android:text="Button"
         android:textColor="@color/background"
-        >
-    </TextView>
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp" />
 
     <View
         android:id="@+id/divid"
@@ -26,22 +26,46 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/background_shadow"
-        android:orientation="vertical">"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/question1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30sp"
-        android:textSize="20sp" >
+        android:textSize="20sp"
+        android:visibility="gone" >
     </TextView>
-
+ 
     <TextView
         android:id="@+id/date1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30sp"
-        android:textSize="20sp" >
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="#10bcc9">
     </TextView>
+    
+       <EditText 
+        android:id="@+id/editquestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30sp"
+        android:visibility="gone"
+        android:inputType="textMultiLine"/>
+       "
+    <Button 
+        android:id="@+id/saveedit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:text="@string/save"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/background"
+        android:layout_margin="15dp"
+        />"
 </LinearLayout>
 <LinearLayout
 	    android:id="@+id/answer_div"
@@ -51,7 +75,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/answer_shadow"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
     <TextView
         android:id="@+id/answer"
         android:layout_width="wrap_content"

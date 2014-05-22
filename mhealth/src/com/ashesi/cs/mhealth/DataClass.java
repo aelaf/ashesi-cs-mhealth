@@ -551,12 +551,16 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Categories.getInsert("Administration"));
 			db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
 			db.execSQL(Categories.getInsert("Childcare"));
+			db.execSQL(Categories.getInsert("General"));
 			
 			/*Knowledge Section*/
 			//Create the Question table	
 			db.execSQL(Questions.getCreateQuery());				
 			
 			//Create resources materials
+			if(getDataVersion(DATABASE_NAME) == 5){
+				db.execSQL("drop table " + ResourceMaterials.TABLE_RESOURCE_MATERIALS);
+			}
 			db.execSQL(ResourceMaterials.getCreateQuery());
 			
 			//Create resource links
@@ -679,9 +683,11 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(Categories.getInsert("Administration"));
 		db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
 		db.execSQL(Categories.getInsert("Childcare"));
+		db.execSQL(Categories.getInsert("General"));
 		
 		/*Knowledge Section*/
 		//Create the Question table	
+		db.execSQL("Drop table questions");
 		db.execSQL(Questions.getCreateQuery());				
 		
 		//Create resources materials

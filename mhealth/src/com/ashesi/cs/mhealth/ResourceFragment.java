@@ -1,15 +1,20 @@
 package com.ashesi.cs.mhealth;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -45,6 +50,7 @@ public class ResourceFragment extends Fragment{
 	private Categories db1;
 	private ArrayList<Category> cat;
 	private String [] mediaList;
+	private MenuItem refreshMenuItem;
 
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -64,6 +70,7 @@ public class ResourceFragment extends Fragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		mediaList = new String[]{"image/*", "video/*"};
 		sortList = new ArrayList<String>();
 		db1 = new Categories(getActivity());
 		cat = db1.getAllCategories();
@@ -129,7 +136,6 @@ public class ResourceFragment extends Fragment{
 		ln.addView(btn_next);
 		ln.setGravity(Gravity.CENTER);
 		resList.addFooterView(ln);
-		mediaList = new String[]{"image/*", "video/*"};
 		addListenerOnList();
 		addItemsOnSpinner();
 	}
@@ -233,19 +239,67 @@ public class ResourceFragment extends Fragment{
 					Toast.makeText(arg0.getContext(), "Sorry! The List is currently Empty", Toast.LENGTH_LONG).show();
 				}else{
 					Toast.makeText(arg0.getContext(), "The resource selected is: " +
-				                   arg0.getItemAtPosition(arg2) + 
-				                   "with a path: " + currentList(resourcesM).get(arg2).getContent(), 
-				                    Toast.LENGTH_LONG).show();
-					Intent intent = new Intent();
-	                intent.setAction(android.content.Intent.ACTION_VIEW);
+			                   arg0.getItemAtPosition(arg2) + 
+			                   "with a path: " + currentList(resourcesM).get(arg2).getContent(), 
+			                    Toast.LENGTH_LONG).show();
+					Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
 					File file = new File(currentList(resourcesM).get(arg2).getContent());
-	                intent.setDataAndType(Uri.parse("file://" + file.getAbsolutePath()), 
+	                intent.setDataAndType(Uri.parse( file.getAbsolutePath()), 
 	                		               mediaList[currentList(resourcesM).get(arg2).getType()-1]);
 	                startActivity(intent);
 				}
 			}
 			
 		});
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		switch (item.getItemId()){
+		case R.id.synch_q:
+			refreshMenuItem = item;
+			loadResources();
+			break;
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(getActivity());
+			break;
+		}			
+		return super.onOptionsItemSelected(item);
+	}
+	
+	/**
+	 * Upload all the added files to the Database
+	 */
+	private void loadResources(){
+		File upload = new File(Environment.getExternalStorageDirectory() + "/mHealth/resourceslist.txt");
+		try {
+			if(upload.exists()){
+				Scanner scan = new Scanner(upload);
+				String fileDetails;
+				String delimit = "[,]";
+				refreshMenuItem.setActionView(R.layout.action_progressbar);				
+				refreshMenuItem.expandActionView();
+				while(scan.hasNext()){
+					fileDetails = scan.nextLine();
+					String [] results = fileDetails.split(delimit);
+					Toast.makeText(getActivity().getApplicationContext(),results[0], Toast.LENGTH_LONG).show();
+					resMat.addResMat(Integer.parseInt(results[0]), 
+					                 Integer.parseInt(results[1]), 
+					                 Integer.parseInt(results[2]), 
+					                 (Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]), 
+					                 results[4], results[5]);
+					System.out.println((Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]));
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		refreshData();
+		refreshMenuItem.collapseActionView();
+		refreshMenuItem.setActionView(null);
+		Toast.makeText(getActivity(), "Synch complete" , Toast.LENGTH_LONG).show();
 	}
 	
 }

@@ -63,14 +63,14 @@ public class QuestionListAdapter extends BaseAdapter{
 		question.setText(q.getContent());
 		ImageView img = (ImageView)convertView.findViewById(R.id.checkImage);
 		int result = q.getRecState();
-		if( result == 2){
+		if( result == 1){
 			img.setVisibility(View.VISIBLE);
 			img.setImageResource(R.drawable.checkmarkk);
-		}else if(result == 3){
+		}else if(result == 2){
 			img.setVisibility(View.VISIBLE);
 			img.setImageResource(R.drawable.doublecheckmark);
 		}else{
-				img.setVisibility(View.GONE);
+			img.setVisibility(View.INVISIBLE);
 		}
 		return convertView;
 	}

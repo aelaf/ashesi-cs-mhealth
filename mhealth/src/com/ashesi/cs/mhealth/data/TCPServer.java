@@ -58,9 +58,10 @@ public class TCPServer {
 	        int catId = Integer.parseInt(result[2]);
 	        int type = Integer.parseInt(result[3]);
 	        String desc = result[4];
-	        int fileLength = Integer.parseInt(result[5]);
+	        String tag = result[5];
+	        int fileLength = Integer.parseInt(result[6]);
 	        
-	        resMat.addResMat(fileId, type, catId, fileName, desc);
+	        resMat.addResMat(fileId, type, catId, fileName, desc, tag);
 	        
 	        byte[] b = new byte[1024];
 	        int len = 0;
@@ -94,7 +95,8 @@ public class TCPServer {
 	     //If the server has the rightOfway then allow it to send a file    	        
 	        out.println(resrc.getId() + "|" + file.getAbsolutePath() + "|" +
 	                    resrc.getCatId() + "|" + resrc.getType() + "|" + 
-	        		    resrc.getDescription() + "|" + file.length());
+	        		    resrc.getDescription() + "|" +
+	                    resrc.getTag() + "|" + file.length());
 	        System.out.println("Sending the file");
 	        
 	        byte[] buf = new byte[1024];

@@ -3,6 +3,7 @@ package com.ashesi.cs.mhealth;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.knowledge.Answer;
 import com.ashesi.cs.mhealth.knowledge.Answers;
+import com.ashesi.cs.mhealth.knowledge.Questions;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -15,10 +16,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class ViewQuestionActivity extends Activity implements OnClickListener{
 
+	private String date, question, choName, qID;
+	private EditText editTxt;
+	private int choID, catID, status;
+	private Button label;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -30,34 +39,59 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		ab.setBackgroundDrawable(colorDrawable);
 				
 		Intent intent=getIntent();
-		
-		String choName=intent.getStringExtra("ChoName");
-		String question = intent.getStringExtra("Question");
-		String date = intent.getStringExtra("datetime");
+		status = intent.getIntExtra("status", 0);
+		choName=intent.getStringExtra("ChoName");
+		question = intent.getStringExtra("Question");
+		date = intent.getStringExtra("datetime");
 		String cat = intent.getStringExtra("category");
-		String qID = intent.getStringExtra("guid");
-		System.out.println("the question id is: " + qID);
-		TextView choN = (TextView)findViewById(R.id.choName1);
-		choN.setText(choName + " - " + cat);
-		TextView question1 = (TextView)findViewById(R.id.question1);
-		question1.setText(question);
+		qID = intent.getStringExtra("guid");
+		choID = intent.getIntExtra("choId", 0);
+		catID = intent.getIntExtra("catID", 0);
+		
+		label = (Button)findViewById(R.id.questiontitle);
+		label.setText(choName + " - " + cat);
 		TextView date1 = (TextView)findViewById(R.id.date1);
 		date1.setText("Posted on - " + date);
 		
-		Answers ansDB = new Answers(getApplicationContext());
-		Answer answer = ansDB.getByQuestion(qID);
-		
-		
-		
-
-		TextView ans = (TextView)findViewById(R.id.answer);
-		if(answer == (null)){
+		if(status>=1){
+			System.out.println("the question id is: " + qID);
+			TextView question1 = (TextView)findViewById(R.id.question1);
+			question1.setVisibility(View.VISIBLE);
+			question1.setText(question);
 			
-			ans.setText("Answer still pending.");
-		}else{
-			System.out.println("The answer is:" + answer.getAnswer());
-			ans.setText( "Answer: "+ answer.getAnswer() + " \n " + 
-					"Answered on: " + answer.getDate());
+			Answers ansDB = new Answers(getApplicationContext());
+			Answer answer = ansDB.getByQuestion(qID);
+			
+			if(status >=2){
+				LinearLayout ln = (LinearLayout)findViewById(R.id.answer_div);
+				ln.setVisibility(View.VISIBLE);
+				TextView ans = (TextView)findViewById(R.id.answer);
+				if(answer == (null)){
+					
+					ans.setText("Answer still pending.");
+				}else{
+					System.out.println("The answer is:" + answer.getAnswer());
+					ans.setText( "Answer: "+ answer.getAnswer() + " \n " + 
+							"Answered on: " + answer.getDate());
+				}
+			}
+		}else if(status == 0){
+			editTxt = (EditText)findViewById(R.id.editquestion);
+			editTxt.setVisibility(View.VISIBLE);
+			editTxt.setText(question);
+			
+			Button saveBtn = (Button)findViewById(R.id.saveedit);
+			saveBtn.setVisibility(View.VISIBLE);
+			saveBtn.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					Questions qs = new Questions(getApplicationContext());
+					qs.addQuestion(0, editTxt.getText().toString(), choID, catID, date, qID, status);
+					finish();
+				}			
+			});
 		}
 	}
 	@Override

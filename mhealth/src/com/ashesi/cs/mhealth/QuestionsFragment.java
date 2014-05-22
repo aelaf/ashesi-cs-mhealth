@@ -294,6 +294,9 @@ public class QuestionsFragment extends Fragment{
 						i.putExtra("datetime", qs.get(arg2).getDate());
 						i.putExtra("category", db1.getCategory(qs.get(arg2).getCategoryId()).getCategoryName());
 						i.putExtra("guid", qs.get(arg2).getGuid());
+						i.putExtra("status", qs.get(arg2).getRecState());
+						i.putExtra("choId", qs.get(arg2).getChoId());
+						i.putExtra("catID", qs.get(arg2).getCategoryId());
 						startActivity(i);
 					}
 				}
@@ -503,25 +506,30 @@ public class QuestionsFragment extends Fragment{
 					}
 					for (int i = 0; i < q.size(); i++) {
 						if(q.get(i).getRecState() < 1){
-							JSONObject jObj = new JSONObject();
-							jObj.put("q_id",q.get(i).getId());
-							jObj.put("cho_id", q.get(i).getChoId());
-							jObj.put("q_content", q.get(i).getContent());
-							jObj.put("category_id",q.get(i).getCategoryId());
-							jObj.put("question_date", q.get(i).getDate());
-							jObj.put("guid", q.get(i).getGuid());
-							jObj.put(DataClass.REC_STATE, q.get(i).getRecState());
-							jArr.put(jObj);
-							Log.d("Current Question", q.get(i).getContent());
-							
 							if(isConnected()){
+								JSONObject jObj = new JSONObject();
+								jObj.put("q_id",q.get(i).getId());
+								jObj.put("cho_id", q.get(i).getChoId());
+								jObj.put("q_content", q.get(i).getContent());
+								jObj.put("category_id",q.get(i).getCategoryId());
+								jObj.put("question_date", q.get(i).getDate());
+								jObj.put("guid", q.get(i).getGuid());
+								jObj.put(DataClass.REC_STATE, 1);
+								jArr.put(jObj);
+								Log.d("Current Question", q.get(i).getContent());
+								
 					 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 					 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
 							      nameValuePairs.add(new BasicNameValuePair("questionid",
 							          jObj.toString()));
-								db.request(db.postRequest("http://10.0.2.2/mHealth/checkLogin/knowledgeAction.php", nameValuePairs));			
-								Questions temp1 = new Questions(getActivity());
-								temp1.changeStatus(q.get(i).getGuid(), 2);
+								String data = db.request(db.postRequest("http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php", nameValuePairs));			
+								JSONArray resultArr = new JSONArray(data);
+								int result = resultArr.getJSONObject(1).getInt("result");  //if the upload was successful then update the status of the question to 1
+								if(result == 1){
+									Questions temp1 = new Questions(getActivity());
+									System.out.println(q.get(i).getContent());
+									temp1.changeStatus(q.get(i).getGuid(), 1);
+								}
 							}
 						}
 					}

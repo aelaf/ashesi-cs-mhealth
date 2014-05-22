@@ -18,9 +18,10 @@ public class ResourceMaterials extends DataClass {
 	public static final String KEY_TYPE = "resource_type";
 	public static final String KEY_CATEGORY_ID = "category_id";
 	public static final String KEY_DESC = "description";
-	public static final String KEY_CONTENT = "content";
+	public static final String KEY_CONTENT = "content";	
+	public static final String KEY_TAG = "tag";         //This is the topic that the resource material fall under
 
-	String[] columns = { KEY_ID, KEY_TYPE, KEY_CATEGORY_ID, KEY_DESC, KEY_CONTENT };
+	String[] columns = { KEY_ID, KEY_TYPE, KEY_CATEGORY_ID, KEY_DESC, KEY_CONTENT, KEY_TAG };
 
 	public ResourceMaterials(Context context) {
 		super(context);
@@ -32,20 +33,22 @@ public class ResourceMaterials extends DataClass {
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TYPE + " int, "
 				+ KEY_CATEGORY_ID + " int, " + KEY_CONTENT + " text, "
 				+ KEY_DESC + " text, "
+				+ KEY_TAG + " text,"
 				+ "FOREIGN KEY( " + KEY_CATEGORY_ID
 				+ ") REFERENCES categories(category_id))";
 	}
 
-	public static String getInsert(int id, int type, int catId, String content, String desc) {
+	public static String getInsert(int id, int type, int catId, String content, String desc, String tag) {
 
 		return "insert into " + TABLE_RESOURCE_MATERIALS + " (" + KEY_ID + "," + KEY_TYPE + ", "
-				+ KEY_CATEGORY_ID + ", " + KEY_CONTENT + "," + KEY_DESC + ") values(" + id + ", " + type + "," + catId
-				+ "'" + content + "'" + "'" + desc +  "'" + ")";
+				+ KEY_CATEGORY_ID + ", " + KEY_CONTENT + "," + KEY_DESC + ", " + KEY_TAG + ") " +
+						"values(" + id + ", " + type + "," + catId
+				+ "'" + content + "'" + "'" + desc +  "'" + "'" + tag + "'" + ")";
 		
 	}
 	
 
-	public boolean addResMat(int id, int type, int catId, String content, String desc){
+	public boolean addResMat(int id, int type, int catId, String content, String desc, String tag){
 		try
 		{
 			if(!content.isEmpty()){
@@ -56,6 +59,7 @@ public class ResourceMaterials extends DataClass {
 				values.put(KEY_CATEGORY_ID, catId);
 				values.put(KEY_CONTENT, content);
 				values.put(KEY_DESC, desc);
+				values.put(KEY_TAG, tag);
 				db.insertWithOnConflict(TABLE_RESOURCE_MATERIALS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 				return true;
 			}else{
@@ -88,7 +92,9 @@ public class ResourceMaterials extends DataClass {
 			int catId = cursor.getInt(index);
 			index = cursor.getColumnIndex(KEY_DESC);
 			String desc = cursor.getString(index);
-			ResourceMaterial resMat=new ResourceMaterial(id,type,catId, content, desc);
+			index = cursor.getColumnIndex(KEY_TAG);
+			String tag = cursor.getString(index);
+			ResourceMaterial resMat=new ResourceMaterial(id,type,catId, content, desc, tag);
 			cursor.moveToNext();
 			return resMat;
 		}catch(Exception ex){
@@ -194,7 +200,7 @@ public class ResourceMaterials extends DataClass {
 	private void processDownloadData(JSONArray jsonArray){
 		try{
 			JSONObject obj;
-			String content, desc;
+			String content, desc, tag;
 			int id;
 			int type, catId;
 			//String aDate;
@@ -205,7 +211,8 @@ public class ResourceMaterials extends DataClass {
 				type=obj.getInt(KEY_TYPE);
 				catId = obj.getInt(KEY_CATEGORY_ID);
 				desc = obj.getString(KEY_DESC);
-				addResMat(id, type, catId, content, desc);
+				tag = obj.getString(KEY_TAG);
+				addResMat(id, type, catId, content, desc, tag);
 			}
 		}catch(Exception ex){
 			return;
