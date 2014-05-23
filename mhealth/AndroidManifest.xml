@@ -14,7 +14,6 @@
 
     <application
         android:allowBackup="true"
-        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -66,6 +65,8 @@
             android:label="@string/title_add_community" >
         </activity>
          <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsActivity"></activity>
+         <activity android:name="com.ashesi.cs.mhealth.Health_promo_report"></activity>
+         <activity android:name="HealthPromotionReport"></activity>
          
     </application>
 
