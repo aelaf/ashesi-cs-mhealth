@@ -13,7 +13,7 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/section_label2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
@@ -119,18 +119,18 @@
                 android:text="@string/venue"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <EditText
+                android:id="@+id/venue_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/venue_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10" />
 
         </TableRow>
 
@@ -146,18 +146,18 @@
                 android:text="@string/topic"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <EditText
+                android:id="@+id/topic_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/topic_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10" />
 
         </TableRow>
 
@@ -173,18 +173,18 @@
                 android:text="@string/method"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <EditText
+                android:id="@+id/method"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/method"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10" />
 
         </TableRow>
 
@@ -200,18 +200,18 @@
                 android:text="@string/target_audience"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
+            <EditText
+                android:id="@+id/target_audienc_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/target_audienc_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10" />
 
         </TableRow>
 
@@ -227,19 +227,19 @@
                 android:text="@string/number_of_audience"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
             <EditText
                 android:id="@+id/audience_number_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="number" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
         </TableRow>
 
@@ -255,19 +255,19 @@
                 android:text="@string/remarks"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow17"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
             <EditText
                 android:id="@+id/remarks_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textMultiLine" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
         </TableRow>
 
@@ -283,13 +283,6 @@
                 android:text="@string/image"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
             <EditText
                 android:id="@+id/image_url_txt"
                 android:layout_width="wrap_content"
@@ -301,6 +294,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_action_photo" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
         </TableRow>
 

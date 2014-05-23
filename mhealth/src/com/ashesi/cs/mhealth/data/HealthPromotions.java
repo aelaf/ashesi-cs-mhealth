@@ -2,6 +2,11 @@ package com.ashesi.cs.mhealth.data;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+
 import com.ashesi.cs.mhealth.DataClass;
 
 import android.content.ContentValues;
@@ -162,6 +167,58 @@ public class HealthPromotions extends DataClass {
 		}catch(Exception ex){
 			return null;
 		}
+		
+	}
+	public ArrayList<HealthPromotion> getArrayList(){
+		ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();
+		HealthPromotion healthPromotion=fetch();
+		while(healthPromotion!=null){
+			list.add(healthPromotion);
+			healthPromotion=fetch();
+		}
+		close();
+		return list;
+	}
+	
+	public ArrayList<String> getReport(){
+	
+		//query report for the age range, period grouped by gender and OPD case
+		try
+		{
+			db=getReadableDatabase();
+			
+			String strQuery="select "+HealthPromotions.REC_DATE
+								+"," +HealthPromotions.REC_TOPIC
+								+","+HealthPromotions.REC_VENUE
+								+" from "+HealthPromotions.TABLE_NAME_HEALTH_PROMOTION;
+			
+			cursor=db.rawQuery(strQuery, null);
+			ArrayList<String> list=new ArrayList<String>();		
+			
+			cursor.moveToFirst();
+			
+			int indexHealthPromoDate=cursor.getColumnIndex(HealthPromotions.REC_DATE);
+			int indexHealthPromoTopic=cursor.getColumnIndex(HealthPromotions.REC_TOPIC);
+			int indexHealthPromoVenue=cursor.getColumnIndex(HealthPromotions.REC_VENUE);
+			String str="";
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexHealthPromoDate);
+				list.add(str);
+				str=cursor.getString(indexHealthPromoTopic);
+				list.add(str);
+				str=cursor.getString(indexHealthPromoVenue);
+				list.add(str);
+				
+				cursor.moveToNext();
+				
+			}
+			
+			close();
+			return list;
+		}catch(Exception ex){
+			return null;
+		}
+		
 		
 	}
 	

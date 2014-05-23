@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 @SuppressLint("SimpleDateFormat") 
@@ -78,7 +79,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	    save_btn.setOnClickListener(this);
 	    
 	    date_txt=(TextView) findViewById(R.id.date_txt);
-	    date_txt.setTextColor(Color.CYAN);
+	    date_txt.setTextColor(Color.BLACK);
 	    date_txt.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
 	    final Calendar c = Calendar.getInstance();
 	    year = c.get(Calendar.YEAR);
@@ -87,7 +88,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	    date_txt.setText(year+"/"+month+"/"+day);
 	    
 	    month_txt=(TextView) findViewById(R.id.month_txt);
-	    month_txt.setTextColor(Color.CYAN);
+	    month_txt.setTextColor(Color.BLACK);
 	    month_txt.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
 	    java.text.SimpleDateFormat df3 = new java.text.SimpleDateFormat("MMMM");
 		month_txt.setText(df3.format(c.getTime()));
@@ -133,6 +134,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 			
 			
 			HealthPromo.addHealthPromotion(date, venue, topic, method_txt, target, number, remarks, month, latitude_str, longitude_str, image, cho_id, subdistrict_id);
+			 Toast.makeText(getApplicationContext(), "Health Promotion Added", Toast.LENGTH_LONG).show();
 			break;
 		
 		case R.id.location_btn:
