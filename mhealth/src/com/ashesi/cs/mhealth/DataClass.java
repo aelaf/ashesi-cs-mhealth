@@ -58,7 +58,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * Database VERSION 6
 	 * Questions, Answers, Categories, ResourceMaterials 
 	 */
-	protected static final int DATABASE_VERSION=5; 
+	protected static final int DATABASE_VERSION=6; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
