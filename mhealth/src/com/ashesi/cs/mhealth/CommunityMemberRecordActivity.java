@@ -23,10 +23,12 @@ import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,8 +57,10 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CommunityMemberRecordActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -261,7 +265,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	/**
 	 * A main fragment representing a section the main view client
 	 */
-	public static class MainSectionFragment extends Fragment implements OnDateChangedListener, OnClickListener, OnItemSelectedListener,OnFocusChangeListener {
+	public static class MainSectionFragment extends Fragment implements OnDateChangedListener,  OnClickListener, OnItemSelectedListener,OnFocusChangeListener {
 		
 		ArrayList<Community> listCommunities;
 		
@@ -276,6 +280,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private DatePicker dpNHISExpiryDate;
 		private Spinner spinnerCommunities;
 		private Spinner spinnerAgeUnit;
+		private CheckBox useAge;
+		private TextView textStatus;
 
 		private CHO currentCHO;
 		private int communityId;
@@ -317,7 +323,6 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			create();
 			
 		}
-
 		
 		@Override
 		public void onFocusChange(View v, boolean focus) {
@@ -347,13 +352,18 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				case R.id.buttonAddCommunityMember:
 					buttonClicked();
 					break;
+				case R.id.checkUseAge:
+					useAgeClicked();
+					break;
+					
 			}
 		}
 		
 		@Override
 		public void onDateChanged(DatePicker dp, int year, int month, int day) {
-			computeAge();
-			
+			if(!useAge.isChecked()){
+				computeAge();
+			}
 		}
 		
 		public CommunityMemberRecordActivity getHostActivity(){
@@ -364,8 +374,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
 			return activity.getState();
 		}
-	
-		
+			
 		public int getCommunityMemberId(){
 			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
 			return activity.getCommunityMemberId();
@@ -394,17 +403,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		public void create(){
 			
-			
-			Button button=(Button)rootView.findViewById(R.id.buttonAddCommunityMember);
-			button.setOnClickListener(this);
-			
-			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
-			editAge.setOnFocusChangeListener(this);
-			
+			textStatus=(TextView)rootView.findViewById(R.id.textAddCommunityStatus);
 			
 			int choId=getArguments().getInt("choId");
 			getCurrentCHO(choId);
 			
+			Button button=(Button)rootView.findViewById(R.id.buttonAddCommunityMember);
+			button.setOnClickListener(this);
+			
+			useAge=(CheckBox)rootView.findViewById(R.id.checkUseAge);
+			useAge.setOnClickListener(this);
 			
 			editFullname=(EditText)rootView.findViewById(R.id.editFullname);
 			dpBirthdate=(DatePicker)rootView.findViewById(R.id.dpBirthDate);
@@ -413,6 +421,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			dpNHISExpiryDate=(DatePicker)rootView.findViewById(R.id.dpNhisExpiryDate);
 			spinnerCommunities=(Spinner)rootView.findViewById(R.id.spinnerCommunities);
 			spinnerAgeUnit=(Spinner)rootView.findViewById(R.id.spinnerCommunityMemberAgeUnits);
+			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
+			
+			editAge.setOnFocusChangeListener(this);
 			
 			//initialize datepicker
 			Calendar c=Calendar.getInstance();
@@ -444,6 +455,47 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 		}
 		
+		public void useAgeClicked(){
+			if(state!=STATE_EDIT_MEMBER && state!=STATE_NEW_MEMBER){
+				return;
+			}
+			if(useAge.isChecked()){
+				confirmUseAge();
+			}else{
+				editAge.setEnabled(false);
+				spinnerAgeUnit.setEnabled(false);
+				dpBirthdate.setEnabled(true);
+			}
+		}
+		
+		public void useAge(){
+			//alert user that using age is not advisable
+			editAge.setEnabled(true);
+			spinnerAgeUnit.setEnabled(true);
+			dpBirthdate.setEnabled(false);
+		}
+		
+		private boolean confirmUseAge(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			builder.setMessage(R.string.confirmUseAge);
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   useAge();
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   useAge.setChecked(false);
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return true;
+		}
+		
 		public void editMember(){
 			state=STATE_EDIT_MEMBER;
 			stateAction();
@@ -460,7 +512,6 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		public boolean fillCommunitiesSpinner(int selectedId){
-
 			
 			Communities communities=new Communities(getActivity().getApplicationContext());
 			listCommunities=communities.getCommunties(currentCHO.getSubdistrictId());
@@ -484,8 +535,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			try
 			{
 				java.util.Calendar c=java.util.Calendar.getInstance();
-				//if it is not enabled there, that means the user is not editing 
-				if(!spinnerAgeUnit.isEnabled()){ 
+				//if the user has decided to use age, then use age to get birth date 
+				if(!useAge.isChecked()){ 
 					return;
 				}
 				String temp=editAge.getText().toString();
@@ -519,6 +570,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				editAge.setText("");
 				return;
 			}
+			
 			Calendar c=Calendar.getInstance();
 			
 
@@ -560,22 +612,30 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			String name=editFullname.getText().toString();
 			
 			if(name.length()<=0){
+				showError("enter the patients name");
 				return;
+			}
+			
+			if(useAge.isChecked()){
+				computeBirthdate();
 			}
 			//get birthdate
 			java.util.Date birthdate=getBirthdate();
 			if(birthdate==null){
+				showError("enter the patients birth date");
 				return;
 			}
 			communityId=getCommunityId();
 			if(communityId==0){
+				showError("select the patients community number");
 				return;
 			}
-			String gender=CommunityMember.MALE;
-			RadioButton radio=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
-			if(radio.isChecked()){
-				gender=CommunityMember.FEMALE;
+			String gender=getSelectedGender();
+			if(gender==null){
+				showError("select the patients gender");
+				return;
 			}
+
 			EditText editCardNo=(EditText)rootView.findViewById(R.id.editCardNo);	
 			String cardNo=editCardNo.getText().toString();
 			if(cardNo.length()<=0){
@@ -620,7 +680,22 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			computeAge();
 
 		}
-				
+		
+		protected String getSelectedGender(){
+			
+			RadioButton radioMale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
+			RadioButton radioFemale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberRecordMale);
+			
+			if(radioFemale.isChecked()){
+				return CommunityMember.FEMALE;
+			}else if(radioMale.isChecked()){
+				return CommunityMember.MALE;
+			}else{
+				return null;
+			}
+			
+		}
+		
 		protected int getCommunityId(){
 
 			int index=spinnerCommunities.getSelectedItemPosition();
@@ -662,51 +737,52 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			Button button=(Button)rootView.findViewById(R.id.buttonAddCommunityMember);
 			RadioButton radioMale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberRecordMale);
 			RadioButton radioFemale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
+			editAge.setEnabled(false);
+			spinnerAgeUnit.setEnabled(false);
+			useAge.setChecked(false);
 			
 			switch(state){
 				case STATE_RECORD:
 					//existing member, record
 					editFullname.setEnabled(false);
 					dpBirthdate.setEnabled(false);
-					editAge.setEnabled(false);
 					spinnerCommunities.setEnabled(false);
 					radioMale.setEnabled(false);
 					radioFemale.setEnabled(false);
 					editCardNo.setEnabled(false);
 					editNHISId.setEnabled(false);
 					dpNHISExpiryDate.setEnabled(false);
-					spinnerAgeUnit.setEnabled(false);
 					button.setText(R.string.editClient);
+					useAge.setEnabled(true);
 					break;
 				case STATE_NEW_MEMBER:
 					//new member
 					//client personal record fields
 					editFullname.setEnabled(true);
 					dpBirthdate.setEnabled(true);
-					editAge.setEnabled(true);
 					spinnerCommunities.setEnabled(true);
 					radioMale.setEnabled(true);
 					radioFemale.setEnabled(true);
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
 					dpNHISExpiryDate.setEnabled(true);
-					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.addCommunityMember);
+					useAge.setEnabled(true);
 					break;
 				case STATE_EDIT_MEMBER:
 					//edit
 					//client personal record fields
 					editFullname.setEnabled(true);
 					dpBirthdate.setEnabled(true);
-					editAge.setEnabled(true);
 					spinnerCommunities.setEnabled(true);
 					radioMale.setEnabled(true);
 					radioFemale.setEnabled(true);
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
 					dpNHISExpiryDate.setEnabled(true);
-					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.saveCommunityMember);
+					useAge.setEnabled(true);
+					break;
 					
 			}
 		}
@@ -751,6 +827,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 			
 			
+		}
+
+		protected void showError(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_error));
+		}
+		
+		protected void showStatus(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
 		}
 
 		

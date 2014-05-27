@@ -134,5 +134,6 @@
     <string name="resourceMaterial">Resource Material</string>
     <string name="categories">Category</string>
     <string name="resourceType">Resource Type</string>
+    <string name="confirmUseAge">Birth date record is important for immunization. Age has to be used if birth date is absolutely unknown. Do you want to continue using age?</string>
    
 </resources>
