@@ -558,9 +558,6 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Questions.getCreateQuery());				
 			
 			//Create resources materials
-			if(getDataVersion(DATABASE_NAME) == 5){
-				db.execSQL("drop table " + ResourceMaterials.TABLE_RESOURCE_MATERIALS);
-			}
 			db.execSQL(ResourceMaterials.getCreateQuery());
 			
 			//Create resource links
