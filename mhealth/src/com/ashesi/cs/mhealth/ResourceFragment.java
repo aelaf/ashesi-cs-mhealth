@@ -3,6 +3,7 @@ package com.ashesi.cs.mhealth;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,6 +25,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -37,10 +40,10 @@ import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 public class ResourceFragment extends Fragment{
 
-	private ListView resList;
+	private ExpandableListView resList;
 	private ResourceMaterials resMat;
 	private ArrayList<ResourceMaterial> resourcesM;
-	private ResourceListAdapter adapter;
+	private ExpandableResourceAdapter adapter;
 	private Button btn_next, btn_prev;
 	private int maxQuestions, counter;
 	private boolean isListEmpty;
@@ -51,6 +54,8 @@ public class ResourceFragment extends Fragment{
 	private ArrayList<Category> cat;
 	private String [] mediaList;
 	private MenuItem refreshMenuItem;
+	private List<String> listDataHeader;
+	private HashMap<String, List<ResourceMaterial>> listDataChild;
 
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -84,58 +89,12 @@ public class ResourceFragment extends Fragment{
 		
 		//Populate the resource list
 		resMat = new ResourceMaterials(getActivity());		
-		resList = (ListView)getActivity().findViewById(R.id.resourceList);
-		resList.setBackgroundResource(R.drawable.listview_roundcorner_item);
+		resList = (ExpandableListView)getActivity().findViewById(R.id.resourceList);
 		resourcesM = resMat.getAllMaterials();
 		
 		isListEmpty = true;
-		btn_prev = new Button(getActivity());
-		btn_prev.setText("Prev");
-		btn_prev.setHeight(LayoutParams.WRAP_CONTENT);
-		btn_prev.setWidth(LayoutParams.WRAP_CONTENT);
-		btn_next = new Button(getActivity());
-		btn_next.setText("Next");
 		
-		btn_prev.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if(counter > 0){
-					counter--;
-					refreshData();
-					CheckEnable();
-				}else{
-					CheckEnable();
-				}
-			}				
-		});
-		
-		//Increase count for more questions.
-		maxQuestions = 15;
-		counter = 0;
-		btn_next.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				if(((counter + 1) * maxQuestions) < resourcesM.size()){
-					counter++;
-					refreshData();
-					CheckEnable(); //Check if the next button should be enabled
-				}else{
-					Toast.makeText(getActivity(), "There are no additional questions", Toast.LENGTH_LONG).show();
-					CheckEnable();
-				}
-			}			
-		});
-		btn_next.setHeight(LayoutParams.WRAP_CONTENT);
-		btn_next.setWidth(LayoutParams.WRAP_CONTENT);
-		//Add button to the listView at the footer
-		ln =new LinearLayout(getActivity());
-		ln.addView(btn_prev);
-		ln.addView(btn_next);
-		ln.setGravity(Gravity.CENTER);
-		resList.addFooterView(ln);
+		refreshData();
 		addListenerOnList();
 		addItemsOnSpinner();
 	}
@@ -160,7 +119,7 @@ public class ResourceFragment extends Fragment{
 							Toast.LENGTH_SHORT).show();
 				}
 				refreshData();
-				CheckEnable();
+				//CheckEnable();
 			}
 
 			@Override
@@ -172,18 +131,27 @@ public class ResourceFragment extends Fragment{
 		});
 	}
 	
-	public void refreshData(){
-		resourcesM = resMat.getAllMaterials();
+	public void refreshData(){		
+		listDataHeader = resMat.getTags();
+		listDataChild = new HashMap<String, List<ResourceMaterial>>();
 		
-		if(resourcesM.isEmpty() || resourcesM == (null)){
-			String [] list = new String[]{"There are no resource materials available."};
-			isListEmpty = true;	
-			 ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1, list);	
-			resList.setAdapter(adapter1);
-		}else{
-		    isListEmpty = false;
-			adapter = new ResourceListAdapter(getActivity(), currentList(resourcesM));
+		if(!listDataHeader.isEmpty()){
+			for(int i =0; i<listDataHeader.size(); i++){
+				String curTag = listDataHeader.get(i);
+				listDataChild.put(curTag, resMat.getResourcebyTag(curTag));
+			}
+			isListEmpty = false;
+			adapter = new ExpandableResourceAdapter(getActivity(), listDataHeader, listDataChild);
 			resList.setAdapter(adapter);
+			resList.setEnabled(true);
+		}else{
+			isListEmpty = true;
+			listDataHeader = new ArrayList<String>();
+			listDataHeader.add("Sorry there are currently no resource materails");
+			listDataChild.put(listDataHeader.get(0), null);
+			adapter = new ExpandableResourceAdapter(getActivity(), listDataHeader, listDataChild);
+			resList.setAdapter(adapter);
+			resList.setEnabled(false);
 		}
 	}
 	
@@ -192,61 +160,26 @@ public class ResourceFragment extends Fragment{
 		refreshData();
 		super.onResume();
 	}
-	
-	/**
-     * Method for enabling and disabling Next and Previous
-     */
-    private void CheckEnable()
-    {
-    	if(resourcesM == null){
-    		btn_prev.setEnabled(false);
-    		btn_next.setEnabled(false);
-    	}else if(((counter + 1) * maxQuestions) > resourcesM.size()){
-            btn_next.setEnabled(false);
-        }else{
-        	btn_next.setEnabled(true);
-        }
-        if(counter == 0)
-        {
-            btn_prev.setEnabled(false);
-        }else{
-        	btn_prev.setEnabled(true);
-        }
-    }
-    
-    /**
-	 * Return the current List of resources (aList) to be shown based on the page number
-	 * @param resourcesM2
-	 * @return
-	 */
-	private ArrayList<ResourceMaterial> currentList(ArrayList<ResourceMaterial> resourcesM2){
-		ArrayList<ResourceMaterial> theList = new ArrayList<ResourceMaterial>();
-		
-		for(int i=counter*maxQuestions; i<maxQuestions * (counter + 1) && (i<resourcesM2.size()); i++){
-			theList.add(resourcesM2.get(i));
-		}
-		return theList;
-	}
-	
+ 
 	private void addListenerOnList(){
-		resList.setOnItemClickListener(new OnItemClickListener(){
+		resList.setOnChildClickListener(new OnChildClickListener(){
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
 				// TODO Auto-generated method stub
 				if(isListEmpty){
-					Toast.makeText(arg0.getContext(), "Sorry! The List is currently Empty", Toast.LENGTH_LONG).show();
+					return false;
 				}else{
-					Toast.makeText(arg0.getContext(), "The resource selected is: " +
-			                   arg0.getItemAtPosition(arg2) + 
-			                   "with a path: " + currentList(resourcesM).get(arg2).getContent(), 
-			                    Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity().getApplicationContext(), "You have selected: " + 
+					               listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getDescription(), 
+					               Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-					File file = new File(currentList(resourcesM).get(arg2).getContent());
+					File file = new File(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getContent());
 	                intent.setDataAndType(Uri.parse( file.getAbsolutePath()), 
-	                		               mediaList[currentList(resourcesM).get(arg2).getType()-1]);
+	                		               mediaList[listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getType()-1]);
 	                startActivity(intent);
+					return true;
 				}
 			}
 			
@@ -291,12 +224,12 @@ public class ResourceFragment extends Fragment{
 					                 results[4], results[5]);
 					System.out.println((Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]));
 				}
+				refreshData();
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		refreshData();
 		refreshMenuItem.collapseActionView();
 		refreshMenuItem.setActionView(null);
 		Toast.makeText(getActivity(), "Synch complete" , Toast.LENGTH_LONG).show();

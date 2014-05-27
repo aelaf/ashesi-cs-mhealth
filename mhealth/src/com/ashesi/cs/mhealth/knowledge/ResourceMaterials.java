@@ -1,6 +1,7 @@
 package com.ashesi.cs.mhealth.knowledge;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
 
@@ -102,7 +104,54 @@ public class ResourceMaterials extends DataClass {
 		}	
 	 }
 	
-
+	public List<String> getTags(){
+		try{
+			db=getReadableDatabase();
+			String Query = "Select tag from " + TABLE_RESOURCE_MATERIALS + " group by tag";
+		    cursor = db.rawQuery(Query, null);
+		    
+		    List<String> resultTags = new ArrayList<String>();
+		    String curTag = null;
+		    do{
+			    if(cursor.isAfterLast()){
+			    	curTag = null;
+			    	break;
+			    }else{
+			    	cursor.moveToFirst();
+			    }
+			    int index  = cursor.getColumnIndex(KEY_TAG);
+			    curTag = cursor.getString(index);
+			    resultTags.add(curTag);
+			    Log.d("Current Tag is", curTag);
+			    cursor.moveToNext();
+		    } while(curTag !=null);
+			close();
+			return resultTags;			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
+	public ArrayList<ResourceMaterial> getResourcebyTag(String tag){
+		try{
+			db=getReadableDatabase();
+			String selection = KEY_TAG + "='" + tag + "'";
+			cursor=db.query(TABLE_RESOURCE_MATERIALS, columns,selection , null, null, null,null, null);
+			ResourceMaterial r=fetch();
+			ArrayList<ResourceMaterial> list=new ArrayList<ResourceMaterial>();
+			while(r!=null){
+				list.add(r);
+				r=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
+	
 	public ArrayList<ResourceMaterial> getAllMaterials(){
 		try{
 			db=getReadableDatabase();
@@ -135,6 +184,8 @@ public class ResourceMaterials extends DataClass {
 			return null;
 		}
 	}
+	
+	
 	
 	/**
 	 * Return the current max id

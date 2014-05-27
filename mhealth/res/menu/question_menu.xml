@@ -17,5 +17,9 @@
         android:orderInCategory="100"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/device_synch"/>
-
+    <item
+        android:id="@+id/bluetooth_backup"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/bluetoohSynch"/>
 </menu>

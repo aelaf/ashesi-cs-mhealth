@@ -17,14 +17,14 @@
         android:textColor="@color/background"
         android:textSize="20sp" />
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/resourceList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/filterSpin"
         android:padding="10dp" >
 
-    </ListView>
+    </ExpandableListView>
 
     <Spinner
         android:id="@+id/filterSpin"
