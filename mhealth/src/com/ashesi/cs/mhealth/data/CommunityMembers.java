@@ -26,18 +26,23 @@ public class CommunityMembers extends DataClass {
 	public static final String CARD_NO="card_no";
 	public static final String SERIAL_NO="serial_no";
     public static final String NHIS_ID="nhis_id";
+    public static final String IS_BIRTHDATE_CONFIRMED="is_birthdate_confirmed";
     public static final String NHIS_EXPIRY_DATE="nhis_expiry_date";
+    public static final String BIRTHDATE_CONFIRMED="1";
+    public static final String BIRTHDATE_NOT_CONFIRMED="0";
+    		
     
     public static final int PAGE_SIZE=10;
 	
 	public static final String VIEW_NAME_COMMUNITY_MEMBERS="view_community_members";
 	
-	String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+	String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 	
 	
 	public CommunityMembers(Context context){
 		super(context);
 	}
+	
 	/**
 	 * gets all community members in a community 
 	 * @param communityId
@@ -50,7 +55,7 @@ public class CommunityMembers extends DataClass {
 			if(communityId!=0){
 				selector=COMMUNITY_ID+"="+communityId;
 			}
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			db=getReadableDatabase();
 			
 			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, null );
@@ -81,7 +86,7 @@ public class CommunityMembers extends DataClass {
 			if(communityId!=0){
 				selector=COMMUNITY_ID+"="+communityId;
 			}
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			db=getReadableDatabase();
 			page=page*15;
 			String limit=page +",15";
@@ -122,7 +127,7 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 
-	public int addCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
+	public int addCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
 		try
 		{
 			
@@ -139,6 +144,7 @@ public class CommunityMembers extends DataClass {
 			cv.put(COMMUNITY_MEMBER_NAME, communityMemberName);
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			cv.put(BIRTHDATE, dateFormat.format(birthdate));
+			cv.put(IS_BIRTHDATE_CONFIRMED, isBirthDateConfirmed ? BIRTHDATE_CONFIRMED : BIRTHDATE_NOT_CONFIRMED);
 			cv.put(GENDER,gender);
 			cv.put(CARD_NO,cardNo);
 			cv.put(NHIS_ID,nhisId);
@@ -167,7 +173,7 @@ public class CommunityMembers extends DataClass {
 	 * @param cardNo
 	 * @return
 	 */
-	public int updateCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
+	public int updateCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
 		try
 		{
 			CommunityMember cm=getCommunityMember(id);
@@ -181,6 +187,7 @@ public class CommunityMembers extends DataClass {
 			cv.put(COMMUNITY_MEMBER_NAME, communityMemberName);
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			cv.put(BIRTHDATE, dateFormat.format(birthdate));
+			cv.put(IS_BIRTHDATE_CONFIRMED, isBirthDateConfirmed ? BIRTHDATE_CONFIRMED : BIRTHDATE_NOT_CONFIRMED);
 			cv.put(GENDER,gender);
 			cv.put(CARD_NO,cardNo);
 			cv.put(NHIS_ID,nhisId);
@@ -772,6 +779,7 @@ public class CommunityMembers extends DataClass {
 				+COMMUNITY_ID +" integer,"
 				+COMMUNITY_MEMBER_NAME +" text, "
 				+BIRTHDATE +" text, "
+				+IS_BIRTHDATE_CONFIRMED +" integer, "
 				+GENDER +" text, "
 				+CARD_NO +" text, "
 				+NHIS_ID+" text, "
@@ -789,6 +797,7 @@ public class CommunityMembers extends DataClass {
 				+CommunityMembers.COMMUNITY_MEMBER_NAME+", "
 				+CommunityMembers.GENDER+", "
 				+CommunityMembers.BIRTHDATE+", "
+				+CommunityMembers.IS_BIRTHDATE_CONFIRMED+", "
 				+CommunityMembers.CARD_NO+", "
 				+NHIS_ID+", "
 				+NHIS_EXPIRY_DATE+", "
@@ -798,45 +807,6 @@ public class CommunityMembers extends DataClass {
 				+" from "+ CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
 				+ " left join "+ Communities.TABLE_COMMUNITIES
 				+ " on " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+CommunityMembers.COMMUNITY_ID+"="+Communities.TABLE_COMMUNITIES+"."+Communities.COMMUNITY_ID;
-	}
-	/**
-	 * this method is added to correct issue with birth dates. In earlier versions in some cases birth date was 
-	 * stored in a database as yyyy-mm-d instead of yyyy-mm-dd. This method corrects it. 
-	 * @return
-	 */
-	public boolean correctBirthdate(){
-		try
-		{
-			
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
-
-			
-			db=getReadableDatabase();
-			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,null,null, null, null, null);
-			
-			java.util.Date birthdate;
-			ContentValues cv=new ContentValues();
-			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
-			SQLiteDatabase dbw=getWritableDatabase();
-			CommunityMember obj=fetch();
-			String whereClause="";
-			int u;
-			while(obj!=null){
-				birthdate=obj.getBirthdateDate();
-				cv.put(BIRTHDATE, dateFormat.format(birthdate));
-				whereClause=CommunityMembers.COMMUNITY_MEMBER_ID+"="+obj.getId();
-				u=dbw.update(TABLE_NAME_COMMUNITY_MEMBERS, cv, whereClause, null);
-				obj=fetch();
-			}
-			dbw.close();
-			close();
-			return true;
-		}catch(Exception ex){
-			Log.d("CommunityMembers.correctBirthdate", "Exception :"+ex.getMessage());
-			return false;
-		}
-		
-		
 	}
 
 }

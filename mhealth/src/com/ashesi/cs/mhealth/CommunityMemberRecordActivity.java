@@ -285,6 +285,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 		private CHO currentCHO;
 		private int communityId;
+		private boolean birthDateNotConfirmed=true;
 		
 		boolean disableDateUpdate=false;
 		
@@ -319,8 +320,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			//if a new community is added get the id 
 			state=this.getState();
 			communityMemberId=this.getCommunityMemberId();
-			communityId=this.getActivityCommunityId();
-			create();
+			
 			
 		}
 		
@@ -363,6 +363,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public void onDateChanged(DatePicker dp, int year, int month, int day) {
 			if(!useAge.isChecked()){
 				computeAge();
+				this.birthDateConfirmed();	//the birth date set is assumed correct
 			}
 		}
 		
@@ -433,12 +434,18 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			if(state==STATE_NEW_MEMBER){
 				fillCommunitiesSpinner(communityId);
+				this.birthDateNotConfirmed();
 			}else{
 				//load client information
 				CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
 				CommunityMember cm=members.getCommunityMember(communityMemberId);
 				editFullname.setText(cm.getFullname());
-				
+				//if the birthdate is not confirmed, the user can confirm it;
+				if(!cm.IsBirthDateConfirmed()){
+					this.birthDateNotConfirmed();
+				}else{
+					this.birthDateConfirmed();
+				}
 				setBirthdate(cm.getBirthdateDate());
 				computeAge();
 				
@@ -539,6 +546,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				if(!useAge.isChecked()){ 
 					return;
 				}
+				//if birth date is computed from age, then it is considered not confirmed
+				birthDateNotConfirmed();
 				String temp=editAge.getText().toString();
 				if(temp.isEmpty()){
 					return;
@@ -617,6 +626,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 			
 			if(useAge.isChecked()){
+				//if age is used then, the birthdate is not confirmed 
 				computeBirthdate();
 			}
 			//get birthdate
@@ -653,8 +663,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
 			
+			boolean confirmed=(!birthDateNotConfirmed);
+			
 			if(state==STATE_NEW_MEMBER){
-				int id=members.addCommunityMember(0, communityId, name, birthdate, gender,cardNo,nhisId,nhisExpiryDate);
+				int id=members.addCommunityMember(0, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate);
 				if(id!=0){
 					communityMemberId=id;
 					setCommunityMemberId(id); //make the new id available to the other fragments through the activity
@@ -666,7 +678,11 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				}
 				
 			}else if(state==STATE_EDIT_MEMBER){
-				int id=members.updateCommunityMember(communityMemberId, communityId, name, birthdate, gender,cardNo,nhisId,nhisExpiryDate);
+				//isBirthDateConfirmed tells us that when editing age was not used;
+				//birthDateNotConfimed if true tells us that original birth date was not confirmed and there was no attempt to confirm
+				//if false, it tells the original was not confirmed 
+				
+				int id=members.updateCommunityMember(communityMemberId, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate);
 				if(id!=0){
 					state=STATE_RECORD;
 					stateAction();
@@ -839,7 +855,15 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
 		}
 
+		protected void birthDateConfirmed(){
+			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.Green));
+			this.birthDateNotConfirmed=false;
+		}
 		
+		protected void birthDateNotConfirmed(){
+			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.Red));
+			this.birthDateNotConfirmed=true;
+		}
 
 	}
 	
