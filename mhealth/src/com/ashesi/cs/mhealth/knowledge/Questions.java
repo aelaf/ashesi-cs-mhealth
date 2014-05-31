@@ -24,11 +24,9 @@ public class Questions extends DataClass{
 	public static final String KEY_CATEGORY_ID = "category_id";
 	public static final String KEY_DATE = "question_date";
 	public static final String KEY_GUID = "guid";
-	
-	
+		
 	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE, KEY_GUID, DataClass.REC_STATE};
-	
-	
+		
 	public Questions(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -44,8 +42,7 @@ public class Questions extends DataClass{
 				+ KEY_GUID + " BLOB UNIQUE, "
 				+ DataClass.REC_STATE+" integer, "
 				+ "FOREIGN KEY( "+ KEY_CATEGORY_ID + ") REFERENCES categories(category_id), "
-				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
-		
+				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";		
 	}
 	
 	public static String getInsert(String content,int choId, int categoryId, UUID guid){
@@ -65,8 +62,7 @@ public class Questions extends DataClass{
 				+ categoryId + ", "
 				+ choId
 				+" , " + dt.format(date) + ", "
-				+ guid + "," + DataClass.REC_STATE_NEW + ") ";
-		
+				+ guid + "," + DataClass.REC_STATE_NEW + ") ";		
 	}
 	
 	public boolean addQuestion(int id,String content,int choId, int categoryId, String date, String guid, int rec_state){
@@ -79,7 +75,8 @@ public class Questions extends DataClass{
 				values.put(KEY_CATEGORY_ID, categoryId);
 				values.put(KEY_CHO_ID, choId);
 				if(date ==  ""){		//if the question generated locally then generate a time stamp for it.
-					Date date1 = new Date();		            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+					Date date1 = new Date();		            
+					DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 					values.put(KEY_DATE, dt.format(date1));
 				}else{ 
 					values.put(KEY_DATE, date);
@@ -162,6 +159,25 @@ public class Questions extends DataClass{
 		try{
 			db=getReadableDatabase();
 			cursor=db.query(TABLE_NAME_QUESTIONS, columns, filter, null, null, null, KEY_DATE + " DESC", null);
+			Question q=fetch();
+			ArrayList<Question> list=new ArrayList<Question>();
+			while(q!=null){
+				list.add(q);
+				q=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
+	public ArrayList<Question> getAllNewQuestions(){
+		try{
+			db=getReadableDatabase();
+			String selection = DataClass.REC_STATE + "=" + 0;
+			cursor=db.query(TABLE_NAME_QUESTIONS, columns, selection , null, null, null,null, null);
 			Question q=fetch();
 			ArrayList<Question> list=new ArrayList<Question>();
 			while(q!=null){

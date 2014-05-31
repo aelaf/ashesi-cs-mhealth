@@ -22,25 +22,27 @@ import com.ashesi.cs.mhealth.knowledge.Questions;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnDragListener;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -245,19 +247,19 @@ public class QuestionsFragment extends Fragment{
 		private void setSwitchListener() {
 			// TODO Auto-generated method stub
 			answered = (Switch)getActivity().findViewById(R.id.switch1);
-			answered.setOnClickListener(new OnClickListener(){
+			answered.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+
 				@Override
-				public void onClick(View arg0) {
+				public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
 					// TODO Auto-generated method stub
-					if(answered.isChecked()){//;answered.getText().toString().trim().equals("Answered")){
+					if(arg1){
 						System.out.println("Answered only");
 						onlyAnswered = true;
 						refreshData(onlyAnswered);	
 					}else if(!answered.isChecked()){
 						System.out.println("All");
 						onlyAnswered = false;
-						refreshData(onlyAnswered);
-						
+						refreshData(onlyAnswered);						
 					}
 				}
 				
@@ -500,7 +502,7 @@ public class QuestionsFragment extends Fragment{
 				try {
 					//Post new questions to the server
 					ArrayList<Question> q = new ArrayList<Question>();
-					q = getQuestions().getAllQuestions();
+					q = getQuestions().getAllNewQuestions();
 					if(q==null || q.isEmpty()){
 						return "empty";
 					}
@@ -614,11 +616,6 @@ public class QuestionsFragment extends Fragment{
 			return db;
 		}
 	    
-	    private int getlastSaved(String key){
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-			Integer result = Integer.parseInt(sharedPreferences.getString(key, "0"));
-			return result.intValue();		
-		}
 
 		/* (non-Javadoc)
 		 * @see android.support.v4.app.Fragment#onStart()

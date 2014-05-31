@@ -88,8 +88,7 @@
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.WiFiDirectActivity"
-            android:label="@string/device_synch"
-            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity">         
+            android:label="@string/device_synch">       
         </activity>
         
         <activity 

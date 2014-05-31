@@ -27,12 +27,24 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 	private EditText editTxt;
 	private int choID, catID, status;
 	private Button label;
+	private int onStartCount = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_question);
 		
+		//Transition between screens
+		onStartCount = 1;
+        if (savedInstanceState == null) // 1st time
+        {
+        	this.overridePendingTransition(R.anim.anim_slide_in_left,
+                    R.anim.anim_slide_out_left);
+        } else // already created so reverse animation
+        { 
+            onStartCount = 2;
+        }
+        
 		//Style actionBar
 		ActionBar ab = getActionBar();
 		ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#428bca"));
@@ -53,7 +65,7 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		TextView date1 = (TextView)findViewById(R.id.date1);
 		date1.setText("Posted on - " + date);
 		
-		if(status>=1){
+		if(status>=1){    //This question yet to be uploaded to the server hence should not be editable
 			System.out.println("the question id is: " + qID);
 			TextView question1 = (TextView)findViewById(R.id.question1);
 			question1.setVisibility(View.VISIBLE);
@@ -75,7 +87,7 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 							"Answered on: " + answer.getDate());
 				}
 			}
-		}else if(status == 0){
+		}else if(status == 0){  //The question is yet to be uploaded hence should be editable
 			editTxt = (EditText)findViewById(R.id.editquestion);
 			editTxt.setVisibility(View.VISIBLE);
 			editTxt.setText(question);
@@ -119,6 +131,18 @@ public class ViewQuestionActivity extends Activity implements OnClickListener{
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        if (onStartCount > 1) {
+        	 this.overridePendingTransition(R.anim.anim_slide_in_right,
+                     R.anim.anim_slide_out_right);                	 
+        } else if (onStartCount == 1) {
+            onStartCount++;
+        }
+    }
 	
 	
 

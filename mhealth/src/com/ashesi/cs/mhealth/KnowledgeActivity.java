@@ -30,6 +30,7 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 	private ActionBar actionBar;
 	private Questions db;
 	private String [] tabs = {"Questions", "Resources"};
+	private int onStartCount = 0;
 	
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -40,6 +41,15 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_knowledge);
 		
+		onStartCount = 1;
+	        if (savedInstanceState == null) // 1st time
+	        {
+	        	this.overridePendingTransition(R.anim.anim_slide_in_left,
+	                    R.anim.anim_slide_out_left);
+	        } else // already created so reverse animation
+	        { 
+	            onStartCount = 2;
+	        }
 		// Load the spinner details
 		db = new Questions(this);
 		new Categories(this);
@@ -149,6 +159,19 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		inflater.inflate(R.menu.question_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	@Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        if (onStartCount > 1) {
+        	 this.overridePendingTransition(R.anim.anim_slide_in_right,
+                     R.anim.anim_slide_out_right);                	 
+        } else if (onStartCount == 1) {
+            onStartCount++;
+        }
+    }
+
 
 
 }

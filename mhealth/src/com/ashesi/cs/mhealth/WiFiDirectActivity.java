@@ -59,6 +59,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     private final IntentFilter intentFilter = new IntentFilter();
     private Channel channel;
     private BroadcastReceiver receiver = null;
+	private int onStartCount = 0;
 
     /**
      * @param isWifiP2pEnabled the isWifiP2pEnabled to set
@@ -72,6 +73,17 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+      //Transition between screens
+		onStartCount = 1;
+	      if (savedInstanceState == null) // 1st time
+	      {
+	      	this.overridePendingTransition(R.anim.anim_slide_in_left,
+	                  R.anim.anim_slide_out_left);
+	      } else // already created so reverse animation
+	      { 
+	          onStartCount = 2;
+	      }
+              
       //Style actionBar
   		ActionBar ab = getActionBar();
   		ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#428bca"));
@@ -271,5 +283,17 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             }
         }
 
+    }
+    
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        if (onStartCount > 1) {
+        	 this.overridePendingTransition(R.anim.anim_slide_in_right,
+                     R.anim.anim_slide_out_right);                	 
+        } else if (onStartCount == 1) {
+            onStartCount++;
+        }
     }
 }

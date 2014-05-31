@@ -208,21 +208,30 @@ public class ResourceFragment extends Fragment{
 		File upload = new File(Environment.getExternalStorageDirectory() + "/mHealth/resourceslist.txt");
 		try {
 			if(upload.exists()){
+				int maxId = resMat.getMaxID(), count=0;				
 				Scanner scan = new Scanner(upload);
 				String fileDetails;
 				String delimit = "[,]";
 				refreshMenuItem.setActionView(R.layout.action_progressbar);				
 				refreshMenuItem.expandActionView();
 				while(scan.hasNext()){
-					fileDetails = scan.nextLine();
-					String [] results = fileDetails.split(delimit);
-					Toast.makeText(getActivity().getApplicationContext(),results[0], Toast.LENGTH_LONG).show();
-					resMat.addResMat(Integer.parseInt(results[0]), 
-					                 Integer.parseInt(results[1]), 
-					                 Integer.parseInt(results[2]), 
-					                 (Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]), 
-					                 results[4], results[5]);
-					System.out.println((Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]));
+					while(scan.hasNextLine() && count<=maxId ){  //progress till you get to the current index in the resource list
+						scan.nextLine();
+						count++;
+					}
+					if(scan.hasNextLine()){
+						fileDetails = scan.nextLine();
+						String [] results = fileDetails.split(delimit);
+						Toast.makeText(getActivity().getApplicationContext(),results[0], Toast.LENGTH_LONG).show();
+						resMat.addResMat(Integer.parseInt(results[0]), 
+						                 Integer.parseInt(results[1]), 
+						                 Integer.parseInt(results[2]), 
+						                 (Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]), 
+						                 results[4], results[5]);
+						System.out.println((Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]));
+					}else{
+						break;
+					}
 				}
 				refreshData();
 			}

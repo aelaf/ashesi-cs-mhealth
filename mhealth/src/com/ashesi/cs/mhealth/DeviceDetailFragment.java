@@ -205,9 +205,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 			diag.setMessage("Please wait...");
 			diag.setTitle("Synchronization in progress");
 			diag.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			diag.setCancelable(true);
-			diag.show();
-			
+			diag.setCancelable(false);
+			diag.show(); 			
 		}
 
 		
@@ -298,7 +297,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 			diag.setMessage("Please wait...");
 			diag.setTitle("Synchronization in progress");
 			diag.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-			diag.setCancelable(true);
+			diag.setCancelable(false);
 			diag.show();
 		}
 
