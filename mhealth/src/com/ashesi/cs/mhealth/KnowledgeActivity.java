@@ -2,6 +2,7 @@ package com.ashesi.cs.mhealth;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -19,19 +20,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.ashesi.cs.mhealth.ConfirmDelete.ConfirmDeleteListener;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TabsPagerAdapter;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 
-public class KnowledgeActivity extends FragmentActivity implements ActionBar.TabListener{
+public class KnowledgeActivity extends FragmentActivity implements ActionBar.TabListener, ConfirmDeleteListener{
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	private Questions db;
 	private String [] tabs = {"Questions", "Resources"};
 	private int onStartCount = 0;
-	
+	private String deleteGuid = "";
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
 	 */
@@ -172,6 +174,34 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
         }
     }
 
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
 
+	}
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setGuid(String aGuid) {
+		// TODO Auto-generated method stub	
+		deleteGuid = aGuid;
+		db.deleteQuestion(deleteGuid);
+		
+		QuestionsFragment qfrag = (QuestionsFragment)mAdapter.getItem(0);
+		if(qfrag != null){
+			qfrag.refreshData(qfrag.isOnlyAnswered());
+			Toast.makeText(getApplicationContext(), "The question has been deleted!", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	@Override
+	public String getGuid() {
+		// TODO Auto-generated method stub
+		return deleteGuid;
+	}
 
 }

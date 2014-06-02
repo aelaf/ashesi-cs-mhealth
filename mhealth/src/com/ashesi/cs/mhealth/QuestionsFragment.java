@@ -9,17 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ashesi.cs.mhealth.data.CHO;
-import com.ashesi.cs.mhealth.data.CHOs;
-import com.ashesi.cs.mhealth.data.R;
-import com.ashesi.cs.mhealth.data.R.color;
-import com.ashesi.cs.mhealth.knowledge.Answer;
-import com.ashesi.cs.mhealth.knowledge.Answers;
-import com.ashesi.cs.mhealth.knowledge.Categories;
-import com.ashesi.cs.mhealth.knowledge.Category;
-import com.ashesi.cs.mhealth.knowledge.Question;
-import com.ashesi.cs.mhealth.knowledge.Questions;
-
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,15 +21,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnDragListener;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -49,8 +41,18 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.AdapterView.OnItemSelectedListener;
+
+import com.ashesi.cs.mhealth.ConfirmDelete.ConfirmDeleteListener;
+import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
+import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.data.R.color;
+import com.ashesi.cs.mhealth.knowledge.Answer;
+import com.ashesi.cs.mhealth.knowledge.Answers;
+import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.Category;
+import com.ashesi.cs.mhealth.knowledge.Question;
+import com.ashesi.cs.mhealth.knowledge.Questions;
 
 public class QuestionsFragment extends Fragment{
 	private CHO currentCHO;
@@ -69,6 +71,9 @@ public class QuestionsFragment extends Fragment{
 	private Switch answered;
 	private boolean onlyAnswered;
 	private MenuItem refreshMenuItem;
+	private int selectedquestion;
+	
+	
 	/**
 	 * @return the onlyAnswered
 	 */
@@ -102,6 +107,7 @@ public class QuestionsFragment extends Fragment{
 		public void onActivityCreated(Bundle savedInstanceState) {
 			// TODO Auto-generated method stub
 			super.onActivityCreated(savedInstanceState);
+			selectedquestion = 0;
 			Intent intent = this.getActivity().getIntent();
 			choId = intent.getIntExtra("choId", 0);
 			CHOs chos = new CHOs(getActivity());
@@ -303,6 +309,24 @@ public class QuestionsFragment extends Fragment{
 					}
 				}
 			});
+			theVList.setOnItemLongClickListener(new OnItemLongClickListener(){
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					// TODO Auto-generated method stub
+					if(qs.get(arg2).getRecState() < 1){  //Check if the question has been uploaded to the server, if not allow delete
+						ConfirmDelete confirm = new ConfirmDelete(qs.get(selectedquestion).getGuid());
+						confirm.show(getActivity().getFragmentManager(), "QuestionFragment");
+						selectedquestion = arg2;						
+					    
+					}else{
+						Toast.makeText(getActivity(), "This question cannot be deleted.", Toast.LENGTH_SHORT).show();
+					}
+					return false;
+				}
+				
+			});
 		}
 
 		/**
@@ -390,6 +414,7 @@ public class QuestionsFragment extends Fragment{
 		 * @param onlyAnswered
 		 */
 		public void refreshData(boolean onlyAnswered) {
+			System.out.println("Refreshing questions list");
 			String[] qstn = new String[]{"The list is currently empty."};
 			
 			//Filter questions based on the criterion selected by the user.
@@ -625,8 +650,6 @@ public class QuestionsFragment extends Fragment{
 			// TODO Auto-generated method stub
 			super.onStart();
 			refreshData(isOnlyAnswered());
-		}
-	    
-	    
+		}  	    
 
 }

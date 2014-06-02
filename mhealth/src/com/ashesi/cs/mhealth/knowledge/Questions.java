@@ -173,6 +173,17 @@ public class Questions extends DataClass{
 		}
 	}
 	
+	public boolean deleteQuestion (String qId){
+		try{
+			db = getReadableDatabase();			
+			db.delete(TABLE_NAME_QUESTIONS, KEY_GUID + "='" + qId + "'", null);
+			db.close();
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+	}
+	
 	public ArrayList<Question> getAllNewQuestions(){
 		try{
 			db=getReadableDatabase();
