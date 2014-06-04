@@ -441,13 +441,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				CommunityMember cm=members.getCommunityMember(communityMemberId);
 				editFullname.setText(cm.getFullname());
 				//if the birthdate is not confirmed, the user can confirm it;
+				
+				setBirthdate(cm.getBirthdateDate());
 				if(!cm.IsBirthDateConfirmed()){
 					this.birthDateNotConfirmed();
 				}else{
 					this.birthDateConfirmed();
 				}
-				setBirthdate(cm.getBirthdateDate());
-				computeAge();
+				//computeAge();
 				
 				editCardNo.setText(cm.getCardNo());
 				editNHISId.setText(cm.getNHISId());
@@ -699,8 +700,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		protected String getSelectedGender(){
 			
-			RadioButton radioMale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
-			RadioButton radioFemale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberRecordMale);
+			RadioButton radioMale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberRecordMale);
+			RadioButton radioFemale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
 			
 			if(radioFemale.isChecked()){
 				return CommunityMember.FEMALE;
@@ -769,7 +770,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					editNHISId.setEnabled(false);
 					dpNHISExpiryDate.setEnabled(false);
 					button.setText(R.string.editClient);
-					useAge.setEnabled(true);
+					useAge.setEnabled(false);
 					break;
 				case STATE_NEW_MEMBER:
 					//new member
@@ -856,12 +857,12 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		protected void birthDateConfirmed(){
-			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.Green));
+			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.LightGreen));
 			this.birthDateNotConfirmed=false;
 		}
 		
 		protected void birthDateNotConfirmed(){
-			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.Red));
+			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.OrangeRed));
 			this.birthDateNotConfirmed=true;
 		}
 

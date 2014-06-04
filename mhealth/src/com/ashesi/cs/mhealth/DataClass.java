@@ -478,17 +478,14 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			setDataVersion(db, OPDCases.TABLE_NAME_OPD_CASES,0);
 			
-			
-			
+						
 			/*this cases are added just for testing 
 			 * The complete OPD case list should be downloaded using synch
 			 * */
 			
 			db.execSQL(OPDCases.getInsertSQLString(1, "AFP(Polio)",1));
 			db.execSQL(OPDCases.getInsertSQLString(10, "U Malaria Lab",2));
-			db.execSQL(OPDCases.getInsertSQLString(11, "U Malaria",2));
-			db.execSQL(OPDCases.getInsertSQLString(31, "Malnutrition",3));
-			db.execSQL(OPDCases.getInsertSQLString(34, "Hypertension",3));
+
 			
 			db.execSQL(Categories.getCreateSqlString());
 
@@ -498,16 +495,8 @@ public class DataClass extends SQLiteOpenHelper {
 			setDataVersion(db,OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES,0);
 			
 			db.execSQL(CHOs.getCreateQuery());
-			db.execSQL(CHOs.getInsert(1, "Eric",1));
-			db.execSQL(CHOs.getInsert(2,"Salome",2));
-			db.execSQL(CHOs.getInsert(3, "Peace",2));
-			db.execSQL(CHOs.getInsert(4,"Theresa",2));
-			db.execSQL(CHOs.getInsert(5,"Sandra",2));
-			db.execSQL(CHOs.getInsert(6,"Dorthy",2));
-			db.execSQL(CHOs.getInsert(7,"Pokrom",2));
-			db.execSQL(CHOs.getInsert(8,"Henrietta",1));
-			db.execSQL(CHOs.getInsert(9,"Kitase",1));
-			db.execSQL(CHOs.getInsert(10,"Aburi",1));
+			db.execSQL(CHOs.getInsert(1, "Admin",1));
+			
 	
 			setDataVersion(db,CHOs.TABLE_NAME_CHOS,0);
 			
@@ -524,8 +513,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			db.execSQL(Vaccines.getInsertSQLString(1, "BCG", 0));
 			db.execSQL(Vaccines.getInsertSQLString(2, "Hepatitis B", 0));
-			db.execSQL(Vaccines.getInsertSQLString(3, "OPV-0", 0));
-			db.execSQL(Vaccines.getInsertSQLString(4, "OPV-1", 70));
+			
 			
 			db.execSQL(VaccineRecords.getCreateSQLString());
 			setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORDS,0);
@@ -626,21 +614,12 @@ public class DataClass extends SQLiteOpenHelper {
 		//this is tables are not in DB 2
 		db.execSQL(Vaccines.getCreateSQLString());
 		setDataVersion(db,Vaccines.TABLE_NAME_VACCINES,0);
-		
-		db.execSQL(Vaccines.getInsertSQLString(1, "BCG", 0));
-		db.execSQL(Vaccines.getInsertSQLString(2, "Hepatitis B", 0));
-		db.execSQL(Vaccines.getInsertSQLString(3, "OPV-0", 0));
-		db.execSQL(Vaccines.getInsertSQLString(4, "OPV-1", 70));
-		
+				
 		db.execSQL(VaccineRecords.getCreateSQLString());
 		setDataVersion(db,VaccineRecords.TABLE_NAME_VACCINE_RECORDS,0);
 		
 		db.execSQL(VaccineRecords.getCreateViewSQLString());
 		
-		//add more CHOs
-		db.execSQL(CHOs.getInsert(3, "Peace",2));
-		db.execSQL(CHOs.getInsert(4,"Theresa",2));
-		db.execSQL(CHOs.getInsert(5,"Sandra",2));
 		setDataVersion(db,DATABASE_NAME,3); 			//note down the database version
 	}
 	
@@ -661,13 +640,7 @@ public class DataClass extends SQLiteOpenHelper {
 	}
 	
 	private void upgradeToVersion5(SQLiteDatabase db){
-		//this is tables are not in DB 4
-		db.execSQL(CHOs.getInsert(7,"Pokrom",2));
-		db.execSQL(CHOs.getInsert(8,"Henrietta",1));
-		db.execSQL(CHOs.getInsert(9,"Kitase",1));
-		db.execSQL(CHOs.getInsert(10,"Aburi",1));
-		
-		
+				
 		db.execSQL(HealthPromotions.getCreateSQLString());
 		setDataVersion(db,HealthPromotions.TABLE_NAME_HEALTH_PROMOTION,0);
 		
@@ -698,7 +671,14 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		//Create answers table
 		db.execSQL(Answers.getCreateQuery());
-
+		
+		//add confirm birthdate column in community members table
+		db.execSQL("alter table"+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" add column "+CommunityMembers.IS_BIRTHDATE_CONFIRMED +" integer default "+CommunityMembers.BIRTHDATE_NOT_CONFIRMED);
+		
+		//recreate community member view with IS_BIRTHDATE_CONFIRM column
+		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
+		db.execSQL(CommunityMembers.getViewCreateSQLString());
+		
 		setDataVersion(db,DATABASE_NAME,6);
 	}
 	

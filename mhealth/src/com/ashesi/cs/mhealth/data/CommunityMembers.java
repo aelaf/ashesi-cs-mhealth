@@ -252,7 +252,7 @@ public class CommunityMembers extends DataClass {
 	public ArrayList<CommunityMember> findCommunityMember(int communityID,String communityMemberName){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			String selector=COMMUNITY_MEMBER_NAME +" LIKE '%"+ communityMemberName +"%' ";
 			if(communityID!=0){
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
@@ -285,7 +285,7 @@ public class CommunityMembers extends DataClass {
 	public ArrayList<CommunityMember> findCommunityMember(int communityID,String communityMemberName, int page){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			String selector=COMMUNITY_MEMBER_NAME +" LIKE '%"+ communityMemberName +"%' ";
 			if(communityID!=0){
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
@@ -327,7 +327,7 @@ public class CommunityMembers extends DataClass {
 			
 			
 			
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			
 			String selector=CommunityMembers.NHIS_EXPIRY_DATE +"<= date('now','+3 month') ";
 			
@@ -368,6 +368,7 @@ public class CommunityMembers extends DataClass {
 							+","+Communities.COMMUNITY_NAME
 							+","+COMMUNITY_MEMBER_NAME
 							+","+BIRTHDATE
+							+","+IS_BIRTHDATE_CONFIRMED
 							+","+GENDER
 							+","+CARD_NO
 							+","+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS +"."+REC_STATE
@@ -413,6 +414,7 @@ public class CommunityMembers extends DataClass {
 							+","+Communities.COMMUNITY_NAME
 							+","+COMMUNITY_MEMBER_NAME
 							+","+BIRTHDATE
+							+","+IS_BIRTHDATE_CONFIRMED
 							+","+GENDER
 							+","+CARD_NO
 							+","+REC_STATE
@@ -572,7 +574,7 @@ public class CommunityMembers extends DataClass {
 	
 	public CommunityMember getCommunityMember(int id){
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			String selector= COMMUNITY_MEMBER_ID+"="+id; 
 			db=getReadableDatabase();
 			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null);
@@ -611,6 +613,9 @@ public class CommunityMembers extends DataClass {
 			index=cursor.getColumnIndex(BIRTHDATE);
 			String birthdate=cursor.getString(index);
 			
+			index=cursor.getColumnIndex(IS_BIRTHDATE_CONFIRMED);
+			int isBirthDateConfirmed=cursor.getInt(index);
+			
 			index=cursor.getColumnIndex(GENDER);
 			String gender=cursor.getString(index);
 			
@@ -632,8 +637,7 @@ public class CommunityMembers extends DataClass {
 				communityName=cursor.getString(index);
 			}
 			
-			
-			CommunityMember c=new CommunityMember(id,communityID,name,birthdate,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate);
+			CommunityMember c=new CommunityMember(id,communityID,name,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate);
 			cursor.moveToNext();
 			return c;
 		}
@@ -779,7 +783,7 @@ public class CommunityMembers extends DataClass {
 				+COMMUNITY_ID +" integer,"
 				+COMMUNITY_MEMBER_NAME +" text, "
 				+BIRTHDATE +" text, "
-				+IS_BIRTHDATE_CONFIRMED +" integer, "
+				+IS_BIRTHDATE_CONFIRMED +" integer default "+ BIRTHDATE_NOT_CONFIRMED +", "
 				+GENDER +" text, "
 				+CARD_NO +" text, "
 				+NHIS_ID+" text, "

@@ -22,7 +22,7 @@ public class CommunityMember {
 	private boolean isBirthDateConfirmed;
 	
 
-	CommunityMember(int id,int communityId,String fullname,String birthdate,boolean isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName){
+	CommunityMember(int id,int communityId,String fullname,String birthdate,boolean isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
 		this.id=id;
 		this.communityId=communityId;
 		this.fullname=fullname;
@@ -34,9 +34,11 @@ public class CommunityMember {
 		this.nhisId="none";
 		this.nhisExpiryDate="";
 		this.isBirthDateConfirmed=true;
+		this.nhisId=nhisId;
+		this.nhisExpiryDate=nhisExpiryDate;
 	}
 	
-	CommunityMember(int id,int communityId,String fullname,String birthdate,int isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName){
+	CommunityMember(int id,int communityId,String fullname,String birthdate,int isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
 		this.id=id;
 		this.communityId=communityId;
 		this.fullname=fullname;
@@ -52,6 +54,8 @@ public class CommunityMember {
 		}else{
 			this.isBirthDateConfirmed=false;
 		}
+		this.nhisId=nhisId;
+		this.nhisExpiryDate=nhisExpiryDate;
 		
 	}
 	
