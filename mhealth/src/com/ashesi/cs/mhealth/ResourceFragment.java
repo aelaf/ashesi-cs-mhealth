@@ -2,10 +2,16 @@ package com.ashesi.cs.mhealth;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+
+import org.json.JSONObject;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -32,14 +38,17 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Category;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 public class ResourceFragment extends Fragment{
-
+	private CHO currentCHO;
 	private ExpandableListView resList;
 	private ResourceMaterials resMat;
 	private ArrayList<ResourceMaterial> resourcesM;
@@ -56,6 +65,7 @@ public class ResourceFragment extends Fragment{
 	private MenuItem refreshMenuItem;
 	private List<String> listDataHeader;
 	private HashMap<String, List<ResourceMaterial>> listDataChild;
+	private LogData log;
 
 	/* (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -75,6 +85,12 @@ public class ResourceFragment extends Fragment{
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		Intent intent = getActivity().getIntent();
+		int choId = intent.getIntExtra("choId", 0);
+		CHOs chos = new CHOs(getActivity());
+		currentCHO = chos.getCHO(choId);
+		
+		log = new LogData(getActivity());
 		mediaList = new String[]{"image/*", "video/*"};
 		sortList = new ArrayList<String>();
 		db1 = new Categories(getActivity());
@@ -235,9 +251,14 @@ public class ResourceFragment extends Fragment{
 				}
 				refreshData();
 			}
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//Log the synchronize event
+			Date date1 = new Date();		            
+			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+			log.addLog(0301, dt.format(date1), currentCHO.getFullname(), 
+		    this.getClass().getName() + ": Method->loadResources()", "Loading new resources. \n" + e.getMessage());
+
 		}
 		refreshMenuItem.collapseActionView();
 		refreshMenuItem.setActionView(null);

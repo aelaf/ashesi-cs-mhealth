@@ -33,6 +33,7 @@ import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
 import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 import com.ashesi.cs.mhealth.knowledge.ResourceLinks;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
@@ -549,7 +550,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Categories.getInsert("Nutrition"));
 			db.execSQL(Categories.getInsert("Pharmaceuticals"));
 			db.execSQL(Categories.getInsert("Administration"));
-			db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
+			db.execSQL(Categories.getInsert("Diagnosis and Treatment"));
 			db.execSQL(Categories.getInsert("Childcare"));
 			db.execSQL(Categories.getInsert("General"));
 			
@@ -568,6 +569,9 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			//Create answers table
 			db.execSQL(Answers.getCreateQuery());
+			
+			//Create Log table
+			db.execSQL(LogData.getCreateQuery());
 			setDataVersion(db,DATABASE_NAME,6);
 			
 		}catch(Exception ex){

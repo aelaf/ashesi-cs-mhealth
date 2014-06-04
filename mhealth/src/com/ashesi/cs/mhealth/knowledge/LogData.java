@@ -2,6 +2,9 @@ package com.ashesi.cs.mhealth.knowledge;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -113,6 +116,51 @@ public class LogData extends DataClass{
 			return null;
 		}
 	}
+
+	/**
+	 * downloads LogData data from server 
+	 */
+	public void download(){
+		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
+		String data=request(url);
+		System.out.println(data);
+		try{
+			JSONObject obj=new JSONObject(data);
+			int result=obj.getInt("result");
+			if(result==0){	//error 
+				return;
+			}		
+			processDownloadData(obj.getJSONArray("mlog"));			
+		}catch(Exception ex){
+			return;
+		}
+	}
 	
+
+	/**
+	 * processes the data received from server
+	 * @param jsonArray
+	 * 
+	 */
+	private void processDownloadData(JSONArray jsonArray){
+		try{	
+			JSONObject obj;
+			int id, log_code;
+			String date, username, source,msg;
+			
+			for(int i=0;i<jsonArray.length();i++){
+				obj=jsonArray.getJSONObject(i);
+				id = obj.getInt(KEY_ID);
+				date=obj.getString(KEY_DATE);
+				username=obj.getString(KEY_USERNAME);
+				msg = obj.getString(KEY_MSG);
+				source = obj.getString(KEY_SOURCE);
+				log_code = obj.getInt(KEY_LOG_CODE);
+				addLog(log_code, date, username, source, msg);
+			}
+		}catch(Exception ex){
+			return;
+		}
+	}
 
 }

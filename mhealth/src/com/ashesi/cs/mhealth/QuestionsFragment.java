@@ -1,7 +1,11 @@
 package com.ashesi.cs.mhealth;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -9,8 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -42,7 +44,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.ashesi.cs.mhealth.ConfirmDelete.ConfirmDeleteListener;
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
@@ -51,6 +52,7 @@ import com.ashesi.cs.mhealth.knowledge.Answer;
 import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Category;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.Question;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 
@@ -72,6 +74,7 @@ public class QuestionsFragment extends Fragment{
 	private boolean onlyAnswered;
 	private MenuItem refreshMenuItem;
 	private int selectedquestion;
+	private LogData log;
 	
 	
 	/**
@@ -107,6 +110,9 @@ public class QuestionsFragment extends Fragment{
 		public void onActivityCreated(Bundle savedInstanceState) {
 			// TODO Auto-generated method stub
 			super.onActivityCreated(savedInstanceState);
+
+			log = new LogData(getActivity());
+			
 			selectedquestion = 0;
 			Intent intent = this.getActivity().getIntent();
 			choId = intent.getIntExtra("choId", 0);
@@ -214,14 +220,16 @@ public class QuestionsFragment extends Fragment{
 			CheckEnable();
 			
 		}
-
+		
+		/*
+		 * Alternate colors for when the user selects all posts verses my posts.
+		 */
 		private void inflatePostBtns(){
 			btnMyPost.setOnClickListener(new OnClickListener(){
 				@Override
 				public void onClick(View arg0) {
 					// TODO Auto-generated method stub
-					btnMyPost.setBackgroundColor(color.selectedBtn);
-					btnMyPost.setTextColor(color.white);
+					btnMyPost.setBackgroundColor(color.background);
 					btnAllPost.setBackgroundColor(Color.TRANSPARENT);
 					btnAllPost.setTextColor(color.Black);
 					onlyMyPost =true;
@@ -235,8 +243,8 @@ public class QuestionsFragment extends Fragment{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					btnAllPost.setBackgroundColor(color.selectedBtn);
-					btnAllPost.setTextColor(color.white);
+					btnAllPost.setBackgroundColor(color.background);
+					btnAllPost.setTextColor(color.White);
 					btnMyPost.setBackgroundColor(Color.TRANSPARENT);
 					btnMyPost.setTextColor(color.Black);
 					onlyMyPost = false;
@@ -306,6 +314,11 @@ public class QuestionsFragment extends Fragment{
 						i.putExtra("choId", qs.get(arg2).getChoId());
 						i.putExtra("catID", qs.get(arg2).getCategoryId());
 						startActivity(i);
+						Date date1 = new Date();		            
+						DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+						log.addLog(0201, dt.format(date1), currentCHO.getFullname(), 
+								this.getClass().getName() + ": Click listener for questions in listview", "Trying to view a question [Parameters->\"guid\":" + qs.get(arg2).getGuid() + "]");
+
 					}
 				}
 			});
@@ -319,7 +332,6 @@ public class QuestionsFragment extends Fragment{
 						ConfirmDelete confirm = new ConfirmDelete(qs.get(selectedquestion).getGuid());
 						confirm.show(getActivity().getFragmentManager(), "QuestionFragment");
 						selectedquestion = arg2;						
-					    
 					}else{
 						Toast.makeText(getActivity(), "This question cannot be deleted.", Toast.LENGTH_SHORT).show();
 					}
@@ -414,61 +426,70 @@ public class QuestionsFragment extends Fragment{
 		 * @param onlyAnswered
 		 */
 		public void refreshData(boolean onlyAnswered) {
-			System.out.println("Refreshing questions list");
-			String[] qstn = new String[]{"The list is currently empty."};
-			
-			//Filter questions based on the criterion selected by the user.
-			if (spinner2.getSelectedItemPosition() > 0) {
-				if(onlyMyPost){
-					qs = db.getQuestionsby("category_id=" + cat.get(spinner2.getSelectedItemPosition() - 1).getID() + " AND cho_id=" + choId);
-				}else{
-					qs = db.getQuestionsby("category_id=" + cat.get(spinner2.getSelectedItemPosition() - 1).getID());
+			try{
+				System.out.println("Refreshing questions list");
+				String[] qstn = new String[]{"The list is currently empty."};
+				
+				//Filter questions based on the criterion selected by the user.
+				if (spinner2.getSelectedItemPosition() > 0) {
+					if(onlyMyPost){
+						qs = db.getQuestionsby("category_id=" + cat.get(spinner2.getSelectedItemPosition() - 1).getID() + " AND cho_id=" + choId);
+					}else{
+						qs = db.getQuestionsby("category_id=" + cat.get(spinner2.getSelectedItemPosition() - 1).getID());
+					}
+				}else {
+					if(onlyMyPost){
+						qs = db.getQuestionsby("cho_id=" + choId);
+					}else{
+						qs = db.getAllQuestions();
+					}
 				}
-			}else {
-				if(onlyMyPost){
-					qs = db.getQuestionsby("cho_id=" + choId);
-				}else{
-					qs = db.getAllQuestions();
-				}
-			}
-			
-			if(onlyAnswered && answers.isEmpty()){	//If the user has selected the onlyAnswered questions
-				qstn = new String[]{"There are no answered questions."};
-				isListEmpty = true;	
-				adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,qstn);	
-				theVList.setAdapter(adapter);
-			}else if(qs != null ) {			
-				isListEmpty = false;
-				if(qs.isEmpty()){
-					qstn = new String[]{"There are no questions under this category."};
+				
+				if(onlyAnswered && answers.isEmpty()){	//If the user has selected the onlyAnswered questions
+					qstn = new String[]{"There are no answered questions."};
 					isListEmpty = true;	
 					adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,qstn);	
 					theVList.setAdapter(adapter);
-				}else if(onlyAnswered && answers.isEmpty()){
-					qstn = new String[]{"There are no answered questions."};
-					isListEmpty = true;		
-				}else if(qs != null ) {
+				}else if(qs != null ) {			
 					isListEmpty = false;
-					if(!onlyAnswered){
-						QuestionListAdapter qListAdapter = new QuestionListAdapter(getActivity(), currentList(qs));
-						theVList.setAdapter(qListAdapter);
-					}else{				
-						ArrayList<Question> q = new ArrayList<Question>();
-						
-						for (int i = 0; i < qs.size(); i++) {
-							if(onlyAnswered){
-								//if a question's id exists in the answers DB then add it to the list
-								if(qs.get(i).getRecState() == 2){			 
-									q.add(qs.get(i));
+					if(qs.isEmpty()){
+						qstn = new String[]{"There are no questions under this category."};
+						isListEmpty = true;	
+						adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, android.R.id.text1,qstn);	
+						theVList.setAdapter(adapter);
+					}else if(onlyAnswered && answers.isEmpty()){
+						qstn = new String[]{"There are no answered questions."};
+						isListEmpty = true;		
+					}else if(qs != null ) {
+						isListEmpty = false;
+						if(!onlyAnswered){
+							QuestionListAdapter qListAdapter = new QuestionListAdapter(getActivity(), currentList(qs));
+							theVList.setAdapter(qListAdapter);
+						}else{				
+							ArrayList<Question> q = new ArrayList<Question>();
+							
+							for (int i = 0; i < qs.size(); i++) {
+								if(onlyAnswered){
+									//if a question's id exists in the answers DB then add it to the list
+									if(qs.get(i).getRecState() == 2){			 
+										q.add(qs.get(i));
+									}
 								}
 							}
+							QuestionListAdapter qListAdapter = new QuestionListAdapter(getActivity(), currentList(q));
+							theVList.setAdapter(qListAdapter);
 						}
-						QuestionListAdapter qListAdapter = new QuestionListAdapter(getActivity(), currentList(q));
-						theVList.setAdapter(qListAdapter);
-					}
-					
-				}			
+						
+					}			
+				}
+			}catch(Exception ex){
+					//Log the question event
+					Date date1 = new Date();		            
+					DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+					log.addLog(0203, dt.format(date1), currentCHO.getFullname(), 
+				    this.getClass().getName() + ": Method->refreshData()", "Trying to refresh questions.");
 			}
+				
 		}
 		
 		@Override
@@ -560,10 +581,31 @@ public class QuestionsFragment extends Fragment{
 							}
 						}
 					}
+					//Log the synchronize event
+					JSONObject jObj = new JSONObject();
+					
+						jObj.put("cho", currentCHO.getFullname());
+						Date date1 = new Date();		            
+						DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+						log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
+								this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString());
+				
 					return "Done";
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					//Log the synchronize event
+					JSONObject jObj = new JSONObject();
+					try {
+						jObj.put("cho", currentCHO.getFullname());
+					} catch (JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					Date date1 = new Date();		            
+					DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+					log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
+							this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString() + " \n" + e.getMessage());
 				}
 				//saveLastUpdated("lastID", 0);
 		        return null;
@@ -606,7 +648,21 @@ public class QuestionsFragment extends Fragment{
 			refreshData(onlyAnswered);
 			spinner.setSelection(0);
 			question.setText("");
-			//new Synchronize().execute();	
+			
+			//Log the question event
+			JSONObject jObj = new JSONObject();
+			try {
+				jObj.put("question",  question.getText().toString());
+				jObj.put("cho", currentCHO.getFullname());
+				jObj.put("category", selectedCat.getCategoryName());
+				Date date1 = new Date();		            
+				DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+				log.addLog(0202, dt.format(date1), currentCHO.getFullname(), 
+						this.getClass().getName() + ": Method->postQuestion()", "Trying to post a question. \n" + jObj.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 
@@ -650,6 +706,15 @@ public class QuestionsFragment extends Fragment{
 			// TODO Auto-generated method stub
 			super.onStart();
 			refreshData(isOnlyAnswered());
+		}
+
+		/**
+		 * @return the currentCHO
+		 */
+		public CHO getCurrentCHO() {
+			return currentCHO;
 		}  	    
+		
+		
 
 }

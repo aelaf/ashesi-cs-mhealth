@@ -39,7 +39,7 @@
         android:layout_alignTop="@+id/spinner1"
         android:layout_marginRight="14dp"
         android:text="@string/postQ"
-        android:textColor="#000" />
+        android:textColor="@color/background" />
 
     <View
         android:id="@+id/spacer"

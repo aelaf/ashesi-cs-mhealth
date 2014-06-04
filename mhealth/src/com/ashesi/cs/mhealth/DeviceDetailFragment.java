@@ -41,9 +41,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.DeviceListFragment.DeviceActionListener;
+import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TCPClient;
 import com.ashesi.cs.mhealth.data.TCPServer;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 import java.io.File;
@@ -59,8 +62,15 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A fragment that manages a particular peer and allows interaction with device
@@ -76,6 +86,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 	private ServerSocket serverSock;
 	private Socket socket;
 	private String filePath;
+	private LogData log;
+	private CHO currentCHO;
     
     ProgressDialog progressDialog = null;
 
@@ -87,7 +99,10 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	
-    	
+    	Intent intent = this.getActivity().getIntent();
+		int choId = intent.getIntExtra("choId", 0);
+		CHOs chos = new CHOs(getActivity());
+		currentCHO = chos.getCHO(choId);
         mContentView = inflater.inflate(R.layout.device_detail, null);
         mContentView.findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
 
@@ -102,6 +117,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 progressDialog = ProgressDialog.show(getActivity(), "Press back to cancel",
                         "Connecting to :" + device.deviceAddress, true, true);
                 ((DeviceActionListener) getActivity()).connect(config);
+                Date date1 = new Date();		            
+     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+     			log.addLog(0501, dt.format(date1), currentCHO.getFullname(), 
+     		    this.getClass().getName() + " Method: onClick()", "Connection initiated. To device: " +  device.deviceAddress );
+
             }
         });
 
@@ -116,18 +136,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
         return mContentView;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        // User has picked an image. Transfer it to group owner i.e peer using
-        // FileTransferService.
-        Uri uri = data.getData();
-        TextView statusText = (TextView) mContentView.findViewById(R.id.status_text);
-        statusText.setText("Sending: " + uri);
-        Log.d("URI", uri.toString());
-        filePath = uri.toString();
-    }
     
     public WifiP2pInfo getInfo(){
     	return info;
@@ -139,10 +147,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     
     public Socket getSock(){
     	return socket;
-    }
-    
-    public String getFilename(){
-    	return filePath;
     }
 
     @Override
@@ -164,22 +168,32 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         view.setText("Group Owner IP - " + info.groupOwnerAddress.getHostAddress());
 
         // After the group negotiation, we assign the group owner as the file
-        // server. The file server is single threaded, single connection server
-        // socket.
+        // server. The file server is single threaded, single connection server socket.
         if (info.groupFormed && info.isGroupOwner) {
         	   	try {
 					serverSock = new ServerSocket(8988);
+					Date date1 = new Date();		            
+	     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+	     			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
+	     		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", "Connection complete. Server/Group Owner: " +  info.groupOwnerAddress.getHostAddress() );
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					Date date1 = new Date();		            
+	     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+	     			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
+	     		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", e.getMessage() );
 				}
                 new ServerTask().execute();
         } else if (info.groupFormed) {
-            // The other device acts as the client. In this case, we enable the
-            // get file button.
-            socket = new Socket();
-            new ClientTask().execute();          
-        }
+            // The other device acts as the client.
+        	Date date1 = new Date();		            
+ 			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+ 			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
+ 		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", "Connection complete. Client:" + device.deviceAddress );
+        	socket = new Socket();
+            new ClientTask().execute(); 
+         }
 
         // hide the connect button
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
@@ -224,7 +238,15 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					String rightOfWay = server.checkRightOfWay(resourceMat.getMaxID());
 					String [] result = rightOfWay.split("[|]");
 					System.out.println(result[0]);
-						
+					
+					
+					//Log details of synch
+					Date date1 = new Date();		            
+		 			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+		 			log.addLog(0503, dt.format(date1), currentCHO.getFullname(), 
+		 		    this.getClass().getName() + " Method: ServerTask()", "Exchanged version numbers. Server_Version:" +  
+		 		    				String.valueOf(resourceMat.getMaxID()) + " Client_Version: " + result[1]);
+		 
 					//Initiate sending or receiving.
 					if(result[0].equals("server")){  //send
 						System.out.println("Starting send");
@@ -235,6 +257,21 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 						while(countUp <= maxId){
 							diag.incrementProgressBy(1);
 							server.resetSock(sock.accept());
+							
+							//log send of files
+							JSONObject jObj = new JSONObject();
+							try {
+								jObj.put("filename", resourceMat.getMaterial(countUp).getContent());
+								jObj.put("id", resourceMat.getMaterial(countUp).getId());
+								jObj.put("type", resourceMat.getMaterial(countUp).getType());
+								jObj.put("description", resourceMat.getMaterial(countUp).getDescription());
+					 			log.addLog(0503, dt.format(date1), currentCHO.getFullname(), 
+					 		    this.getClass().getName() + " Method: ServerTask()", "Sending a file." + jObj.toString());
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+				 			
 							File file = new File(resourceMat.getMaterial(countUp).getContent());
 							server.sendFile(file, resourceMat.getMaterial(countUp));
 							countUp++;
@@ -317,12 +354,20 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				String [] result = rightOfWay.split("[|]");
 				System.out.println(rightOfWay);
 				
+				//Log details of synch
+				Date date1 = new Date();		            
+	 			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+	 			log.addLog(0504, dt.format(date1), currentCHO.getFullname(), 
+	 		    this.getClass().getName() + " Method: ClientTask()", "Exchanged version numbers. Client_Version:" +  
+	 		    				String.valueOf(resMat.getMaxID()) + " Server_Version: " + result[1]);
+				
 				//Initiate sending or receiving.
 				if(result[0].equals("server")){ //recieve
 					int countDown = Integer.parseInt(result[1]);
 					int maxId = resMat.getMaxID();
 					int duration = countDown - maxId;
 					diag.setMax(duration);
+					
 					while(countDown >  maxId){
 						diag.incrementProgressBy(1);
 						sock = new Socket(getInfo().groupOwnerAddress, 8988);
@@ -338,6 +383,21 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					int duration = (maxId - countUp) + 1; //Message to the user about the progress of synch
 					diag.setMax(duration);
 					while(countUp <= maxId){   //send
+						
+						//log send of files
+						JSONObject jObj = new JSONObject();
+						try {
+							jObj.put("filename", resMat.getMaterial(countUp).getContent());
+							jObj.put("id", resMat.getMaterial(countUp).getId());
+							jObj.put("type", resMat.getMaterial(countUp).getType());
+							jObj.put("description", resMat.getMaterial(countUp).getDescription());
+				 			log.addLog(0504, dt.format(date1), currentCHO.getFullname(), 
+				 		    this.getClass().getName() + " Method: ClientTask()", "Sending a file." + jObj.toString());
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
 						diag.incrementProgressBy(1);
 						sock = new Socket(getInfo().groupOwnerAddress, 8988);
 						client.resetSocket(sock);
@@ -348,9 +408,14 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					}
 				}
 				sock.close();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				//Log details of synch
+				Date date1 = new Date();		            
+	 			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+	 			log.addLog(0504, dt.format(date1), currentCHO.getFullname(), 
+	 		    this.getClass().getName() + " Method: ClientTask()", e.getMessage());				
 			}           
 			return null;
 		}

@@ -79,22 +79,26 @@
          <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsActivity"></activity>
          <activity
             android:name="com.ashesi.cs.mhealth.ViewQuestionActivity"
-            android:label="@string/viewPost">
+            android:label="@string/viewPost"
+             android:theme="@style/Theme.Example">
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.KSettingsActivity"
             android:label="@string/knowledgeSettings"
-            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity" >
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity" 
+             android:theme="@style/Theme.Example">
         </activity>
         <activity
             android:name="com.ashesi.cs.mhealth.WiFiDirectActivity"
-            android:label="@string/device_synch">       
+            android:label="@string/device_synch"
+            android:theme="@style/Theme.Example">       
         </activity>
         
         <activity 
             android:name="com.ashesi.cs.mhealth.KnowledgeActivity"
             android:label="@string/atknowledge"
-            android:parentActivityName="com.ashesi.cs.mhealth.MainActivity">           
+            android:parentActivityName="com.ashesi.cs.mhealth.MainActivity"
+            android:theme="@style/Theme.Example">"
         </activity>
     </application>
 
