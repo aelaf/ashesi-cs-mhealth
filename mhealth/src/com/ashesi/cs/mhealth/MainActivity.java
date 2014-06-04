@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 				break;
 				
 			case R.id.buttonHealthPromotions:
-				Intent intent1=new Intent(this,Health_promo_report.class);
+				Intent intent1=new Intent(this,HealthPromotionsReport.class);
 				startActivity(intent1);
 				
 		}

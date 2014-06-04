@@ -68,7 +68,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Health_promo_report extends FragmentActivity implements
+public class HealthPromotionsReport extends FragmentActivity implements
 		ActionBar.TabListener, OnClickListener {
 
 	/**
