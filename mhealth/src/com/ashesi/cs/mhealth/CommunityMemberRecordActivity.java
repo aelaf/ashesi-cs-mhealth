@@ -423,7 +423,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			spinnerCommunities=(Spinner)rootView.findViewById(R.id.spinnerCommunities);
 			spinnerAgeUnit=(Spinner)rootView.findViewById(R.id.spinnerCommunityMemberAgeUnits);
 			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
-			
+
 			editAge.setOnFocusChangeListener(this);
 			
 			//initialize datepicker
@@ -1053,7 +1053,6 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		
 		VaccineGridAdapter adapter; 
-		
 		View rootView;
 		int communityMemberId=0;
 		
@@ -1067,6 +1066,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			this.rootView=rootView;
 			
 			communityMemberId=getArguments().getInt("id");
+			
 			
 			fillVaccineSpinner();
 			showSchedule();
@@ -1087,6 +1087,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					showSchedule();
 				}
 			});
+			
 			
 			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
 			buttonAddVaccine.setOnClickListener(this);
@@ -1138,7 +1139,20 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
 			communityMemberId=a.getCommunityMemberId();
 		}
-				
+		
+		private void showError(String msg){
+			TextView textViewStatus=(TextView)rootView.findViewById(R.id.textStatus);
+			textViewStatus.setText(msg);
+			textViewStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_error));
+			
+		}
+		
+		private void showStatus(String msg){
+			TextView textViewStatus=(TextView)rootView.findViewById(R.id.textStatus);
+			textViewStatus.setText(msg);
+			textViewStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
+			
+		}
 		private void fillVaccineSpinner(){
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
@@ -1160,6 +1174,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 			CommunityMembers communityMembers=new CommunityMembers(getActivity().getApplicationContext());
 			CommunityMember cm=communityMembers.getCommunityMember(communityMemberId);
+			if(cm.IsBirthDateConfirmed()){
+				showError("birth date of patient is not confirmed birth date");
+			}
 			
 			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
 			ArrayList<Vaccine> listVaccines=vaccines.getScheduledVaccines();

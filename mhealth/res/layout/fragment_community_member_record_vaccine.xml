@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/TableLayout1"
+    android:stretchColumns="*"
+    android:shrinkColumns="*"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+        <TextView 
+            android:id="@+id/textView"
+            android:layout_height="wrap_content"
+            android:layout_span="4"
+            />
+    </TableRow>
 
     <TableRow
         android:id="@id/tableRow3"
@@ -14,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_span="4"
              >
 
             <RadioButton
@@ -41,14 +55,13 @@
 
         <Spinner
             android:id="@+id/spinnerRecordVaccinVaccines"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25" />
+            android:layout_span="3" />
 
         <Button
             android:id="@+id/buttonAddVaccine"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_span="1"
             android:text="@string/record" />
     </TableRow>
 

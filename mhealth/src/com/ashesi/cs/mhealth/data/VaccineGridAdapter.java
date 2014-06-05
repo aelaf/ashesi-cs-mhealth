@@ -133,14 +133,20 @@ public class VaccineGridAdapter extends BaseAdapter {
 	private View getNewView(int position){
 		int columnIndex=position%4;
 		int index=position/4;
+
 		try
 		{
 			
 			if(mMode==SCHEDULE_LIST){
 				if(columnIndex==0){// column 0: vaccine name
 					return (View)getTextView(column0.get(index));
+					
 				}else if(columnIndex==1){ //column 1: vaccine schedule
-					TextView view=getTextView(column1.get(index));
+					String str="---";
+					if(communityMember.IsBirthDateConfirmed()){			//if the birth date is not know, donot schedule
+						str=column1.get(index);
+					}
+					TextView view=getTextView(str);
 					view.setHint("vaccine schedule based on birthdate");
 					return (View)view;
 				}else if(columnIndex==2){
