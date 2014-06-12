@@ -2,10 +2,10 @@ package com.ashesi.cs.mhealth.data;
 
 
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
+
+
 
 import com.ashesi.cs.mhealth.DataClass;
 
@@ -132,9 +132,10 @@ public class HealthPromotions extends DataClass {
 			if(cursor.isBeforeFirst()){
 				cursor.moveToFirst();
 			}
+			int index=cursor.getColumnIndex(REC_NO);
 			
-			
-			int index=cursor.getColumnIndex(REC_DATE);
+			int id=cursor.getInt(index);
+			//index=cursor.getColumnIndex(REC_NO);
 			String date=cursor.getString(index);
 			index=cursor.getColumnIndex(REC_VENUE);
 			String venue=cursor.getString(index);
@@ -160,7 +161,7 @@ public class HealthPromotions extends DataClass {
 			String cho_id=cursor.getString(index);
 			index=cursor.getColumnIndex(REC_SUBDISTRICTID);
 			String subdistrict_id=cursor.getString(index);
-			HealthPromotion healthpromo=new HealthPromotion(date,venue,topic,method,target,number,
+			HealthPromotion healthpromo=new HealthPromotion(id,date,venue,topic,method,target,number,
 					remarks,month,latitude,longitude, image_url, cho_id, subdistrict_id);
 			cursor.moveToNext();
 			return healthpromo;
@@ -180,34 +181,43 @@ public class HealthPromotions extends DataClass {
 		return list;
 	}
 	
-	public ArrayList<String> getReport(){
+	public ArrayList<HealthPromotion> getReport(){
 	
-		//query report for the age range, period grouped by gender and OPD case
+		
 		try
 		{
 			db=getReadableDatabase();
 			
-			String strQuery="select "+HealthPromotions.REC_DATE
+			String strQuery="select "+HealthPromotions.REC_NO
+								+","+HealthPromotions.REC_DATE
 								+"," +HealthPromotions.REC_TOPIC
 								+","+HealthPromotions.REC_VENUE
 								+" from "+HealthPromotions.TABLE_NAME_HEALTH_PROMOTION;
 			
 			cursor=db.rawQuery(strQuery, null);
-			ArrayList<String> list=new ArrayList<String>();		
+			ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();		
 			
 			cursor.moveToFirst();
 			
+			int indexHealthPromoID=cursor.getColumnIndex(HealthPromotions.REC_NO);
 			int indexHealthPromoDate=cursor.getColumnIndex(HealthPromotions.REC_DATE);
 			int indexHealthPromoTopic=cursor.getColumnIndex(HealthPromotions.REC_TOPIC);
 			int indexHealthPromoVenue=cursor.getColumnIndex(HealthPromotions.REC_VENUE);
-			String str="";
+			HealthPromotion record = null ;	
+			HealthPromotion record2 = null ;
+			record2= new HealthPromotion("DATE","TOPIC","VENUE");
+			list.add(record2);
+			int healthPromoId = 0;
+			String healthPromoDate =null;
+			String healthPromoVenue = null;
+			String healthPromoTopic = null;
 			while(!cursor.isAfterLast()){
-				str=cursor.getString(indexHealthPromoDate);
-				list.add(str);
-				str=cursor.getString(indexHealthPromoTopic);
-				list.add(str);
-				str=cursor.getString(indexHealthPromoVenue);
-				list.add(str);
+				record= new HealthPromotion(healthPromoId,healthPromoDate,healthPromoVenue,healthPromoTopic);
+				healthPromoId=cursor.getInt(indexHealthPromoID);
+				healthPromoDate=cursor.getString(indexHealthPromoDate);
+				healthPromoVenue=cursor.getString(indexHealthPromoTopic);
+				healthPromoTopic=cursor.getString(indexHealthPromoVenue);
+				list.add(record);
 				
 				cursor.moveToNext();
 				

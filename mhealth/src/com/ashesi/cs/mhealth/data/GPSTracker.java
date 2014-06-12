@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 public class GPSTracker extends Service implements LocationListener{
 	 private final Context mContext;
@@ -37,12 +39,14 @@ public class GPSTracker extends Service implements LocationListener{
 	 
 	    // Declaring a Location Manager
 	    protected LocationManager locationManager;
+	    
 	 
 	    public GPSTracker(Context context) {
 	        this.mContext = context;
 	        getLocation();
 	    }
-	 
+	
+	    
 	    public Location getLocation() {
 	        try {
 	            locationManager = (LocationManager) mContext
@@ -119,6 +123,7 @@ public class GPSTracker extends Service implements LocationListener{
 	     * */
 	    public double getLatitude(){
 	        if(location != null){
+	        
 	            latitude = location.getLatitude();
 	        }
 	 
@@ -198,5 +203,6 @@ public class GPSTracker extends Service implements LocationListener{
 	    public IBinder onBind(Intent intent) {
 	        return null;
 	    }
+	    
 	 
 }

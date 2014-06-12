@@ -14,9 +14,11 @@ public class HealthPromotion {
 	private String image;
 	private String idcho;
 	private String subdistrict_id;
+	private int id;
 	
-	public HealthPromotion(String date,String venue,String topic,String method,String target_audience,String number_of_audience,
-			String remarks, String month, String latitude, String longitude, String image,String dcho, String subdistrict_id){
+	public HealthPromotion(int id,String date,String venue,String topic,String method,String target_audience,String number_of_audience,
+			String remarks, String month, String latitude, String longitude, String image,String idcho, String subdistrict_id){
+		this.id=id;
 		this.date=date;
 		this.venue=venue;
 		this.topic=topic;
@@ -31,6 +33,25 @@ public class HealthPromotion {
 		this.image=image;
 		this.subdistrict_id=subdistrict_id;
 		
+	}
+	
+	public HealthPromotion(int id,String date,String venue,String topic){
+		this.id=id;
+		this.date=date;
+		this.venue=venue;
+		this.topic=topic;
+		
+		
+	}
+	public HealthPromotion(String date,String venue,String topic){
+		this.date=date;
+		this.venue=venue;
+		this.topic=topic;
+		
+		
+	}
+	public int getId(){
+		return id;
 	}
 	public String getDate(){
 		return date;

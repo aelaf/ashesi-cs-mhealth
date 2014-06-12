@@ -6,30 +6,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import com.ashesi.cs.mhealth.CommunityMemberRecordActivity.DatePickerFragment;
-import com.ashesi.cs.mhealth.CommunityMemberRecordActivity.MainSectionFragment;
-import com.ashesi.cs.mhealth.CommunityMemberRecordActivity.OtherFragment;
-import com.ashesi.cs.mhealth.data.CommunityMember;
-import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.GPSTracker;
+import com.ashesi.cs.mhealth.data.HealthPromotion;
+import com.ashesi.cs.mhealth.data.HealthPromotionGridAdapter;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
-import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.R;
-import com.ashesi.cs.mhealth.data.Vaccine;
-import com.ashesi.cs.mhealth.data.VaccineGridAdapter;
-import com.ashesi.cs.mhealth.data.VaccineRecord;
-import com.ashesi.cs.mhealth.data.VaccineRecords;
-import com.ashesi.cs.mhealth.data.Vaccines;
-import com.ashesi.cs.mhealth.data.R.id;
-import com.ashesi.cs.mhealth.data.R.layout;
-import com.ashesi.cs.mhealth.data.R.menu;
-import com.ashesi.cs.mhealth.data.R.string;
-import com.ashesi.cs.mhealth.data.VaccinationReport.VaccinationReportRecord;
-import com.ashesi.cs.mhealth.data.VaccinationReport;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,34 +21,32 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
-import android.view.ContextMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -223,6 +205,7 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	
 	//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
 	String[] headers={"Date","Topic","Venue"};
+	/*
 	HealthPromotions healthPromos=new HealthPromotions(this.getActivity().getApplicationContext());
 	ArrayList<String> list;
 	list=healthPromos.getReport();
@@ -235,23 +218,31 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 		list.add(0,headers[0]);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
 		gridView.setAdapter(adapter);
-	}
+	}*/
+	HealthPromotions healthPromos=new HealthPromotions(getActivity().getApplicationContext());
+	ArrayList<HealthPromotion> list;
+	//list=healthPromos.addHeader(headers[0], headers[1], headers[2]);
+	list=healthPromos.getReport();
+	System.out.println(list.get(0).toString());
+	HealthPromotionGridAdapter adapter=new HealthPromotionGridAdapter(getActivity().getApplicationContext());
+	adapter.setList(list);
+	gridView.setAdapter(adapter);
 	return rootView2;
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	
@@ -260,7 +251,7 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 
 
 @SuppressLint("SimpleDateFormat") 
-public static class HealthPromotionsFragment extends Fragment implements OnClickListener {
+public static class HealthPromotionsFragment extends Fragment implements OnClickListener, LocationListener {
 
 	private Button set_location_btn;
 	private ImageButton image_upload_btn;
@@ -287,9 +278,12 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	private Uri selectedImageUri;
 	private String imagepath;
 	private Bitmap bitmap;
-	private String fileNameValue;
-	private View rootView;
 	View rootView2;
+	private ImageView image;
+	 private ProgressBar mActivityIndicator;
+	 private LocationManager locationManager;
+	 private String provider;
+	 
 	public HealthPromotionsFragment(){
 		
 	}
@@ -305,8 +299,8 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 			ViewGroup parent = (ViewGroup) rootView2.getParent();
         parent.removeView(rootView2);
 		}
-		   this.rootView=rootView2;
-			create();
+		   create();
+		 //  mActivityIndicator.setVisibility(View.GONE);
 		return rootView2;
 	
 	
@@ -340,35 +334,19 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 			break;
 		
 		case R.id.location_btn:
-			gps = new GPSTracker(getActivity().getApplicationContext());
-            // check if GPS enabled
-            if(gps.canGetLocation()){
-            	
-
-                latitude_double = gps.getLatitude();
-                longitude_double = gps.getLongitude();
-
-                // \n is for new line
-              longitude_txt.setText(String.valueOf(longitude_double));
-              latitude_txt.setText(String.valueOf(latitude_double));
-              //  Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-            }else{
-                // can't get location
-                // GPS or Network is not enabled
-                // Ask user to enable GPS/network in settings
-                gps.showSettingsAlert();
-            }
-			break;
+			
+            
+                        break;
 			
 		case R.id.camera_btn:
 			Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), 1);
+            startActivityForResult(Intent.createChooser(intent, "Pick an image"), 1);
 			break;
 		}
-		
 	}
+	
 	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
          
 	        if (requestCode == 1 && resultCode == RESULT_OK) {
@@ -377,19 +355,19 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	            selectedImageUri = data.getData();
 	            imagepath = getPath(selectedImageUri);
 	            bitmap=BitmapFactory.decodeFile(imagepath);
-	          //  imageview.setImageBitmap(bitmap);
+	         
 	      
 	          List<String> fileArray= new ArrayList<String>(Arrays.asList(imagepath.split("/")));
 	    		//fileArraySplit=imagepath.split("/") ;
 	    		
-	    	//	fileArray{fileArraySplit};
-	          fileNameValue=fileArray.get(fileArray.size()-1);
+	    	fileArray.get(fileArray.size()-1);
+	    	  image.setImageBitmap(bitmap);
 	          image_url_txt.setText(imagepath);
+	        
 	             
 	        }
 	    }
-	         @SuppressWarnings("deprecation")
-			public String getPath(Uri uri) {
+	       public String getPath(Uri uri) {
 	        	 String res = null;
 	        	    String[] proj = { MediaStore.Images.Media.DATA };
 	        	    Cursor cursor = getActivity().getContentResolver().query(uri, proj, null, null, null);
@@ -402,12 +380,10 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	            }
 	         
 	         public void create(){
-	 			
-	 			
 	        	 HealthPromo=new HealthPromotions(getActivity().getApplicationContext());
 	     	    set_location_btn=(Button)rootView2.findViewById(R.id.location_btn);
 	     	    set_location_btn.setOnClickListener(this);	    
-	     	    
+	     	    image=(ImageView)rootView2.findViewById(R.id.imageView1);
 	     	    image_upload_btn=(ImageButton)rootView2.findViewById(R.id.camera_btn);
 	     	    image_upload_btn.setOnClickListener(this);
 	     	    
@@ -435,6 +411,8 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	     		latitude_txt=(EditText)rootView2.findViewById(R.id.latitude_txt);
 	     		latitude_txt.setKeyListener(null);
 	     		
+	     		 mActivityIndicator =(ProgressBar)rootView2.findViewById(R.id.progressBar1);
+	     		
 	     		venue_txt=(EditText)rootView2.findViewById(R.id.venue_txt);
 	     		topic_txt=(EditText)rootView2.findViewById(R.id.topic_txt);
 	     		method=(EditText)rootView2.findViewById(R.id.method);
@@ -445,6 +423,82 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	     		
 
 }
+	         private class PostTask extends AsyncTask<Integer, Integer, Integer> {
+
+	        	 protected void onPreExecute() {
+	        	      super.onPreExecute();
+	        	  	mActivityIndicator.setVisibility(View.VISIBLE);
+	        	   }
+	 			protected Integer doInBackground(Integer ...n){
+	 				try{
+	 					if(n==null){
+	 						return 0;
+	 					}
+	 					if(n.length<=0){
+	 						return 0;
+	 					}
+	 					switch(n[0]){
+	 					/*
+						case 1:
+							//locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+						    // Define the criteria how to select the locatioin provider -> use
+						    // default
+						    Criteria criteria = new Criteria();
+						    provider = locationManager.getBestProvider(criteria, false);
+						    Location location = locationManager.getLastKnownLocation(provider);
+
+						    // Initialize the location fields
+						    if (location != null) {
+						      System.out.println("Provider " + provider + " has been selected.");
+						      onLocationChanged(location);
+						    } else {
+						      latitude_txt.setText("Location not available");
+						      longitude_txt.setText("Location not available");
+						    }
+			 	                break;
+			 	            
+			 	            
+			 				return null;
+			 				*/
+	 					}
+	 			
+	 	    	
+
+	 				}catch(Exception ex){
+	 					Log.e("GPS Tracking error", ex.getMessage());
+	 					return 0;
+	 				
+	 				}
+					return 1;
+}
+	         }
+			@Override
+			public void onLocationChanged(Location location) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+				// TODO Auto-generated method stub
+				
+			}
+
+
+
 }
 
 
