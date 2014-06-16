@@ -211,6 +211,98 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 	
+	public boolean confirmBirthDate(int id,Date birthdate){
+		try
+		{
+			CommunityMember cm=getCommunityMember(id);
+			int currentState=cm.getRecState();
+			
+			db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
+			
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			cv.put(BIRTHDATE, dateFormat.format(birthdate));
+			cv.put(IS_BIRTHDATE_CONFIRMED,  BIRTHDATE_CONFIRMED);
+			
+			if(currentState!=DataClass.REC_STATE_NEW){	//if the record is new, leave it as new 
+				cv.put(DataClass.REC_STATE,DataClass.REC_STATE_DIRTY);
+			}
+			String whereClause=COMMUNITY_MEMBER_ID+"="+id;
+			
+			
+			if(db.update(TABLE_NAME_COMMUNITY_MEMBERS, cv,whereClause,null)<=0){
+				close();
+				return false;
+			}
+			close();
+			
+			return true;
+		}catch(Exception ex){
+			Log.e("CommunityMembers.confirmBirthdate", "Exception "+ex.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean confirmBirthDate(int id){
+		try
+		{
+			CommunityMember cm=getCommunityMember(id);
+			int currentState=cm.getRecState();
+			
+			db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
+			
+			cv.put(IS_BIRTHDATE_CONFIRMED,  BIRTHDATE_CONFIRMED);
+			
+			if(currentState!=DataClass.REC_STATE_NEW){	//if the record is new, leave it as new 
+				cv.put(DataClass.REC_STATE,DataClass.REC_STATE_DIRTY);
+			}
+			String whereClause=COMMUNITY_MEMBER_ID+"="+id;
+			
+			
+			if(db.update(TABLE_NAME_COMMUNITY_MEMBERS, cv,whereClause,null)<=0){
+				close();
+				return false;
+			}
+			close();
+			
+			return true;
+		}catch(Exception ex){
+			Log.e("CommunityMembers.confirmBirthdate", "Exception "+ex.getMessage());
+			return false;
+		}
+	}
+	
+	public boolean unconfirmBirthDate(int id){
+		try
+		{
+			CommunityMember cm=getCommunityMember(id);
+			int currentState=cm.getRecState();
+			
+			db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
+			
+			cv.put(IS_BIRTHDATE_CONFIRMED,  BIRTHDATE_NOT_CONFIRMED);
+			
+			if(currentState!=DataClass.REC_STATE_NEW){	//if the record is new, leave it as new 
+				cv.put(DataClass.REC_STATE,DataClass.REC_STATE_DIRTY);
+			}
+			String whereClause=COMMUNITY_MEMBER_ID+"="+id;
+			
+			
+			if(db.update(TABLE_NAME_COMMUNITY_MEMBERS, cv,whereClause,null)<=0){
+				close();
+				return false;
+			}
+			close();
+			
+			return true;
+		}catch(Exception ex){
+			Log.e("CommunityMembers.confirmBirthdate", "Exception "+ex.getMessage());
+			return false;
+		}
+	}
+	
 	public boolean updateNHISRecord(int id,String nhisID, Date nhisExpiryDate){
 		try
 		{
@@ -812,5 +904,31 @@ public class CommunityMembers extends DataClass {
 				+ " left join "+ Communities.TABLE_COMMUNITIES
 				+ " on " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+CommunityMembers.COMMUNITY_ID+"="+Communities.TABLE_COMMUNITIES+"."+Communities.COMMUNITY_ID;
 	}
-
+	/**
+	 * removes the community member if the community members record is still new and not new 
+	 * @param id
+	 * @return
+	 */
+	public boolean reomveCommunityMember(int id){
+		CommunityMember cm=this.getCommunityMember(id);
+		if(cm.getRecState()!=DataClass.REC_STATE_NEW){
+			return false;
+		}
+		
+		try{
+			db=getReadableDatabase();
+			String whereClause= COMMUNITY_MEMBER_ID+"="+id; 
+			//remove all other client records before removing the client
+			db.delete(OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES, whereClause, null);
+			db.delete(VaccineRecords.TABLE_NAME_VACCINE_RECORDS,whereClause,null);
+			//TODO:remove all other records that might be added in the future like family planning 
+			if(db.delete(TABLE_NAME_COMMUNITY_MEMBERS, whereClause, null)<0){
+				return false;
+			}
+			
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+	}
 }

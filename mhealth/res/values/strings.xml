@@ -37,6 +37,8 @@
     <string name="hintDateformat">dd/mm/yyyy</string>
     <string name="synch">synch data</string>
     <string name="removeRecord">Remove Record</string>
+    <string name="remove">remove</string>
+    <string name="delete">delete</string>
     <string name="editClient">Edit Client</string>
     <string name="cardNo">Card No</string>
     <string name="cardNumber">Card Number</string>
@@ -135,5 +137,4 @@
     <string name="categories">Category</string>
     <string name="resourceType">Resource Type</string>
     <string name="confirmUseAge">Birth date record is important for immunization. Age has to be used if birth date is absolutely unknown. Do you want to continue using age?</string>
-   
 </resources>

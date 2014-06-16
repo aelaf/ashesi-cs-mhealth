@@ -282,6 +282,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private Spinner spinnerAgeUnit;
 		private CheckBox useAge;
 		private TextView textStatus;
+		private Button buttonRemove;
 
 		private CHO currentCHO;
 		private int communityId;
@@ -355,6 +356,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				case R.id.checkUseAge:
 					useAgeClicked();
 					break;
+				case R.id.buttonCommunityMemberRemove:
+					removeButtonClicked();
+					break;
 					
 			}
 		}
@@ -423,8 +427,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			spinnerCommunities=(Spinner)rootView.findViewById(R.id.spinnerCommunities);
 			spinnerAgeUnit=(Spinner)rootView.findViewById(R.id.spinnerCommunityMemberAgeUnits);
 			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
-
+			buttonRemove=(Button)rootView.findViewById(R.id.buttonCommunityMemberRemove);
+			
 			editAge.setOnFocusChangeListener(this);
+			buttonRemove.setOnClickListener(this);
 			
 			//initialize datepicker
 			Calendar c=Calendar.getInstance();
@@ -697,6 +703,58 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			computeAge();
 
 		}
+		public void removeButtonClicked(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage("Are you sure you want to remove community member from your record? All opd and vaccination record of the community member will be removed. Do you want to continue?" );
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   confirmRemove();
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void confirmRemove(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
+			CommunityMember cm=members.getCommunityMember(communityMemberId);
+			builder.setMessage("Confirm remove client "+ cm.getFullname() +"?" );
+			builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   removeCommunityMember();
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void removeCommunityMember(){
+			if(communityMemberId==0){
+				return;
+			}
+			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
+			if(!members.reomveCommunityMember(communityMemberId)){
+				showError("community member could not be removed");
+				return;
+			}
+			this.getActivity().finish();
+		}
 		
 		protected String getSelectedGender(){
 			
@@ -771,6 +829,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					dpNHISExpiryDate.setEnabled(false);
 					button.setText(R.string.editClient);
 					useAge.setEnabled(false);
+					buttonRemove.setEnabled(false);
+					buttonRemove.setVisibility(View.INVISIBLE);
 					break;
 				case STATE_NEW_MEMBER:
 					//new member
@@ -785,6 +845,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					dpNHISExpiryDate.setEnabled(true);
 					button.setText(R.string.addCommunityMember);
 					useAge.setEnabled(true);
+					buttonRemove.setEnabled(false);
+					buttonRemove.setVisibility(View.INVISIBLE);
 					break;
 				case STATE_EDIT_MEMBER:
 					//edit
@@ -799,6 +861,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					dpNHISExpiryDate.setEnabled(true);
 					button.setText(R.string.saveCommunityMember);
 					useAge.setEnabled(true);
+					buttonRemove.setEnabled(true);
+					buttonRemove.setVisibility(View.VISIBLE);
 					break;
 					
 			}
@@ -1174,7 +1238,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 			CommunityMembers communityMembers=new CommunityMembers(getActivity().getApplicationContext());
 			CommunityMember cm=communityMembers.getCommunityMember(communityMemberId);
-			if(cm.IsBirthDateConfirmed()){
+			if(!cm.IsBirthDateConfirmed()){
 				showError("birth date of patient is not confirmed birth date");
 			}
 			

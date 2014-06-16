@@ -196,13 +196,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
          >
+		
     	<Button
         	android:id="@+id/buttonAddCommunityMember"
-        	android:layout_span="3"
+        	android:layout_span="2"
         	android:layout_height="wrap_content"
         	android:layout_gravity="left|top"
         	android:text="@string/addCommunityMember" />
         
+        <Button
+            android:id="@+id/buttonCommunityMemberRemove"
+            android:layout_height="wrap_content"
+            android:layout_span="1"
+            android:visibility="invisible"
+            android:text="@string/remove"
+            />
     </TableRow>
     
     

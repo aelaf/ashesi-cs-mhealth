@@ -543,7 +543,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			/*Knowledge Section*/
 			//Create the Question table	
-			db.execSQL(Questions.getCreateQuery());				
+			//db.execSQL(Questions.getCreateQuery());				
 			
 			//Create resources materials
 			if(getDataVersion(DATABASE_NAME) == 5){
@@ -567,23 +567,23 @@ public class DataClass extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		try
 		{
-			if(oldVersion==1 && newVersion==2){
+			if(oldVersion==1 ){
 				//add lab colunm to table
 				upgradeToVersion2(db);
 			}
 						
-			if(oldVersion==2 && newVersion==3){
+			if(oldVersion<=2){
 				upgradeToVersion3(db);
 			}
 			
-			if(oldVersion==3 && newVersion==4){
+			if(oldVersion<=3 ){
 				upgradeToVersion4(db);
 			}
 			
-			if(oldVersion==4 && newVersion==5){
+			if(oldVersion<=4 ){
 				upgradeToVersion5(db);
 			}
-			if(oldVersion==5 && newVersion==6){
+			if(oldVersion<=5 ){
 				upgradeToVersion6(db);
 			}
 		}catch(Exception ex){
@@ -650,7 +650,7 @@ public class DataClass extends SQLiteOpenHelper {
 	}
 	
 	private void upgradeToVersion6(SQLiteDatabase db){
-		db.execSQL(Categories.getCreateSqlString());
+		//db.execSQL(Categories.getCreateSqlString());
 		db.execSQL(Categories.getInsert("Nutrition"));
 		db.execSQL(Categories.getInsert("Pharmaceuticals"));
 		db.execSQL(Categories.getInsert("Administration"));
@@ -660,7 +660,7 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		/*Knowledge Section*/
 		//Create the Question table	
-		db.execSQL("Drop table questions");
+		//db.execSQL("Drop table questions");
 		db.execSQL(Questions.getCreateQuery());				
 		
 		//Create resources materials
@@ -673,7 +673,7 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(Answers.getCreateQuery());
 		
 		//add confirm birthdate column in community members table
-		db.execSQL("alter table"+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" add column "+CommunityMembers.IS_BIRTHDATE_CONFIRMED +" integer default "+CommunityMembers.BIRTHDATE_NOT_CONFIRMED);
+		db.execSQL("alter table "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" add column "+CommunityMembers.IS_BIRTHDATE_CONFIRMED +" integer default "+CommunityMembers.BIRTHDATE_NOT_CONFIRMED);
 		
 		//recreate community member view with IS_BIRTHDATE_CONFIRM column
 		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
