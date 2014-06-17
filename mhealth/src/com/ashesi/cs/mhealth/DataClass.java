@@ -670,7 +670,7 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(Answers.getCreateQuery());
 		
 		//add confirm birthdate column in community members table
-		//db.execSQL("alter table "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" add column "+CommunityMembers.IS_BIRTHDATE_CONFIRMED +" integer default "+CommunityMembers.BIRTHDATE_NOT_CONFIRMED);
+		db.execSQL("alter table "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" add column "+CommunityMembers.IS_BIRTHDATE_CONFIRMED +" integer default "+CommunityMembers.BIRTHDATE_NOT_CONFIRMED);
 		
 		//recreate community member view with IS_BIRTHDATE_CONFIRM column
 		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
@@ -678,6 +678,8 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		setDataVersion(db,DATABASE_NAME,6);
 	}
+		
+	
 	
 	public String getDataFilePath(){
 		db=this.getReadableDatabase();

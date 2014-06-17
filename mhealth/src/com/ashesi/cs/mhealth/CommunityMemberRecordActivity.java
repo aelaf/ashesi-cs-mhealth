@@ -23,10 +23,12 @@ import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -55,8 +57,10 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CommunityMemberRecordActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -261,7 +265,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	/**
 	 * A main fragment representing a section the main view client
 	 */
-	public static class MainSectionFragment extends Fragment implements OnDateChangedListener, OnClickListener, OnItemSelectedListener,OnFocusChangeListener {
+	public static class MainSectionFragment extends Fragment implements OnDateChangedListener,  OnClickListener, OnItemSelectedListener,OnFocusChangeListener {
 		
 		ArrayList<Community> listCommunities;
 		
@@ -276,9 +280,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		private DatePicker dpNHISExpiryDate;
 		private Spinner spinnerCommunities;
 		private Spinner spinnerAgeUnit;
+		private CheckBox useAge;
+		private TextView textStatus;
+		private Button buttonRemove;
 
 		private CHO currentCHO;
 		private int communityId;
+		private boolean birthDateNotConfirmed=true;
 		
 		boolean disableDateUpdate=false;
 		
@@ -313,11 +321,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			//if a new community is added get the id 
 			state=this.getState();
 			communityMemberId=this.getCommunityMemberId();
-			communityId=this.getActivityCommunityId();
-			create();
+			
 			
 		}
-
 		
 		@Override
 		public void onFocusChange(View v, boolean focus) {
@@ -347,13 +353,22 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				case R.id.buttonAddCommunityMember:
 					buttonClicked();
 					break;
+				case R.id.checkUseAge:
+					useAgeClicked();
+					break;
+				case R.id.buttonCommunityMemberRemove:
+					removeButtonClicked();
+					break;
+					
 			}
 		}
 		
 		@Override
 		public void onDateChanged(DatePicker dp, int year, int month, int day) {
-			computeAge();
-			
+			if(!useAge.isChecked()){
+				computeAge();
+				this.birthDateConfirmed();	//the birth date set is assumed correct
+			}
 		}
 		
 		public CommunityMemberRecordActivity getHostActivity(){
@@ -364,8 +379,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
 			return activity.getState();
 		}
-	
-		
+			
 		public int getCommunityMemberId(){
 			CommunityMemberRecordActivity activity=(CommunityMemberRecordActivity)getActivity();
 			return activity.getCommunityMemberId();
@@ -394,17 +408,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		public void create(){
 			
-			
-			Button button=(Button)rootView.findViewById(R.id.buttonAddCommunityMember);
-			button.setOnClickListener(this);
-			
-			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
-			editAge.setOnFocusChangeListener(this);
-			
+			textStatus=(TextView)rootView.findViewById(R.id.textAddCommunityStatus);
 			
 			int choId=getArguments().getInt("choId");
 			getCurrentCHO(choId);
 			
+			Button button=(Button)rootView.findViewById(R.id.buttonAddCommunityMember);
+			button.setOnClickListener(this);
+			
+			useAge=(CheckBox)rootView.findViewById(R.id.checkUseAge);
+			useAge.setOnClickListener(this);
 			
 			editFullname=(EditText)rootView.findViewById(R.id.editFullname);
 			dpBirthdate=(DatePicker)rootView.findViewById(R.id.dpBirthDate);
@@ -413,6 +426,11 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			dpNHISExpiryDate=(DatePicker)rootView.findViewById(R.id.dpNhisExpiryDate);
 			spinnerCommunities=(Spinner)rootView.findViewById(R.id.spinnerCommunities);
 			spinnerAgeUnit=(Spinner)rootView.findViewById(R.id.spinnerCommunityMemberAgeUnits);
+			editAge=(EditText)rootView.findViewById(R.id.editCommunityMemberAge);
+			buttonRemove=(Button)rootView.findViewById(R.id.buttonCommunityMemberRemove);
+			
+			editAge.setOnFocusChangeListener(this);
+			buttonRemove.setOnClickListener(this);
 			
 			//initialize datepicker
 			Calendar c=Calendar.getInstance();
@@ -422,14 +440,21 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			if(state==STATE_NEW_MEMBER){
 				fillCommunitiesSpinner(communityId);
+				this.birthDateNotConfirmed();
 			}else{
 				//load client information
 				CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
 				CommunityMember cm=members.getCommunityMember(communityMemberId);
 				editFullname.setText(cm.getFullname());
+				//if the birthdate is not confirmed, the user can confirm it;
 				
 				setBirthdate(cm.getBirthdateDate());
-				computeAge();
+				if(!cm.IsBirthDateConfirmed()){
+					this.birthDateNotConfirmed();
+				}else{
+					this.birthDateConfirmed();
+				}
+				//computeAge();
 				
 				editCardNo.setText(cm.getCardNo());
 				editNHISId.setText(cm.getNHISId());
@@ -442,6 +467,47 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 			stateAction();
 			
+		}
+		
+		public void useAgeClicked(){
+			if(state!=STATE_EDIT_MEMBER && state!=STATE_NEW_MEMBER){
+				return;
+			}
+			if(useAge.isChecked()){
+				confirmUseAge();
+			}else{
+				editAge.setEnabled(false);
+				spinnerAgeUnit.setEnabled(false);
+				dpBirthdate.setEnabled(true);
+			}
+		}
+		
+		public void useAge(){
+			//alert user that using age is not advisable
+			editAge.setEnabled(true);
+			spinnerAgeUnit.setEnabled(true);
+			dpBirthdate.setEnabled(false);
+		}
+		
+		private boolean confirmUseAge(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			builder.setMessage(R.string.confirmUseAge);
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   useAge();
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   useAge.setChecked(false);
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return true;
 		}
 		
 		public void editMember(){
@@ -460,7 +526,6 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		public boolean fillCommunitiesSpinner(int selectedId){
-
 			
 			Communities communities=new Communities(getActivity().getApplicationContext());
 			listCommunities=communities.getCommunties(currentCHO.getSubdistrictId());
@@ -484,10 +549,12 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			try
 			{
 				java.util.Calendar c=java.util.Calendar.getInstance();
-				//if it is not enabled there, that means the user is not editing 
-				if(!spinnerAgeUnit.isEnabled()){ 
+				//if the user has decided to use age, then use age to get birth date 
+				if(!useAge.isChecked()){ 
 					return;
 				}
+				//if birth date is computed from age, then it is considered not confirmed
+				birthDateNotConfirmed();
 				String temp=editAge.getText().toString();
 				if(temp.isEmpty()){
 					return;
@@ -519,6 +586,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				editAge.setText("");
 				return;
 			}
+			
 			Calendar c=Calendar.getInstance();
 			
 
@@ -560,22 +628,31 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			String name=editFullname.getText().toString();
 			
 			if(name.length()<=0){
+				showError("enter the patients name");
 				return;
+			}
+			
+			if(useAge.isChecked()){
+				//if age is used then, the birthdate is not confirmed 
+				computeBirthdate();
 			}
 			//get birthdate
 			java.util.Date birthdate=getBirthdate();
 			if(birthdate==null){
+				showError("enter the patients birth date");
 				return;
 			}
 			communityId=getCommunityId();
 			if(communityId==0){
+				showError("select the patients community number");
 				return;
 			}
-			String gender=CommunityMember.MALE;
-			RadioButton radio=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
-			if(radio.isChecked()){
-				gender=CommunityMember.FEMALE;
+			String gender=getSelectedGender();
+			if(gender==null){
+				showError("select the patients gender");
+				return;
 			}
+
 			EditText editCardNo=(EditText)rootView.findViewById(R.id.editCardNo);	
 			String cardNo=editCardNo.getText().toString();
 			if(cardNo.length()<=0){
@@ -593,8 +670,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
 			
+			boolean confirmed=(!birthDateNotConfirmed);
+			
 			if(state==STATE_NEW_MEMBER){
-				int id=members.addCommunityMember(0, communityId, name, birthdate, gender,cardNo,nhisId,nhisExpiryDate);
+				int id=members.addCommunityMember(0, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate);
 				if(id!=0){
 					communityMemberId=id;
 					setCommunityMemberId(id); //make the new id available to the other fragments through the activity
@@ -606,7 +685,11 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				}
 				
 			}else if(state==STATE_EDIT_MEMBER){
-				int id=members.updateCommunityMember(communityMemberId, communityId, name, birthdate, gender,cardNo,nhisId,nhisExpiryDate);
+				//isBirthDateConfirmed tells us that when editing age was not used;
+				//birthDateNotConfimed if true tells us that original birth date was not confirmed and there was no attempt to confirm
+				//if false, it tells the original was not confirmed 
+				
+				int id=members.updateCommunityMember(communityMemberId, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate);
 				if(id!=0){
 					state=STATE_RECORD;
 					stateAction();
@@ -620,7 +703,74 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			computeAge();
 
 		}
-				
+		public void removeButtonClicked(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage("Are you sure you want to remove community member from your record? All opd and vaccination record of the community member will be removed. Do you want to continue?" );
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   confirmRemove();
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void confirmRemove(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
+			CommunityMember cm=members.getCommunityMember(communityMemberId);
+			builder.setMessage("Confirm remove client "+ cm.getFullname() +"?" );
+			builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   removeCommunityMember();
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		public void removeCommunityMember(){
+			if(communityMemberId==0){
+				return;
+			}
+			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
+			if(!members.reomveCommunityMember(communityMemberId)){
+				showError("community member could not be removed");
+				return;
+			}
+			this.getActivity().finish();
+		}
+		
+		protected String getSelectedGender(){
+			
+			RadioButton radioMale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberRecordMale);
+			RadioButton radioFemale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
+			
+			if(radioFemale.isChecked()){
+				return CommunityMember.FEMALE;
+			}else if(radioMale.isChecked()){
+				return CommunityMember.MALE;
+			}else{
+				return null;
+			}
+			
+		}
+		
 		protected int getCommunityId(){
 
 			int index=spinnerCommunities.getSelectedItemPosition();
@@ -662,51 +812,58 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			Button button=(Button)rootView.findViewById(R.id.buttonAddCommunityMember);
 			RadioButton radioMale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberRecordMale);
 			RadioButton radioFemale=(RadioButton)rootView.findViewById(R.id.radioCommunityMemberFemale);
+			editAge.setEnabled(false);
+			spinnerAgeUnit.setEnabled(false);
+			useAge.setChecked(false);
 			
 			switch(state){
 				case STATE_RECORD:
 					//existing member, record
 					editFullname.setEnabled(false);
 					dpBirthdate.setEnabled(false);
-					editAge.setEnabled(false);
 					spinnerCommunities.setEnabled(false);
 					radioMale.setEnabled(false);
 					radioFemale.setEnabled(false);
 					editCardNo.setEnabled(false);
 					editNHISId.setEnabled(false);
 					dpNHISExpiryDate.setEnabled(false);
-					spinnerAgeUnit.setEnabled(false);
 					button.setText(R.string.editClient);
+					useAge.setEnabled(false);
+					buttonRemove.setEnabled(false);
+					buttonRemove.setVisibility(View.INVISIBLE);
 					break;
 				case STATE_NEW_MEMBER:
 					//new member
 					//client personal record fields
 					editFullname.setEnabled(true);
 					dpBirthdate.setEnabled(true);
-					editAge.setEnabled(true);
 					spinnerCommunities.setEnabled(true);
 					radioMale.setEnabled(true);
 					radioFemale.setEnabled(true);
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
 					dpNHISExpiryDate.setEnabled(true);
-					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.addCommunityMember);
+					useAge.setEnabled(true);
+					buttonRemove.setEnabled(false);
+					buttonRemove.setVisibility(View.INVISIBLE);
 					break;
 				case STATE_EDIT_MEMBER:
 					//edit
 					//client personal record fields
 					editFullname.setEnabled(true);
 					dpBirthdate.setEnabled(true);
-					editAge.setEnabled(true);
 					spinnerCommunities.setEnabled(true);
 					radioMale.setEnabled(true);
 					radioFemale.setEnabled(true);
 					editCardNo.setEnabled(true);
 					editNHISId.setEnabled(true);
 					dpNHISExpiryDate.setEnabled(true);
-					spinnerAgeUnit.setEnabled(true);
 					button.setText(R.string.saveCommunityMember);
+					useAge.setEnabled(true);
+					buttonRemove.setEnabled(true);
+					buttonRemove.setVisibility(View.VISIBLE);
+					break;
 					
 			}
 		}
@@ -753,7 +910,25 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 		}
 
+		protected void showError(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_error));
+		}
 		
+		protected void showStatus(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
+		}
+
+		protected void birthDateConfirmed(){
+			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.LightGreen));
+			this.birthDateNotConfirmed=false;
+		}
+		
+		protected void birthDateNotConfirmed(){
+			this.dpBirthdate.setBackgroundColor(this.getResources().getColor(R.color.OrangeRed));
+			this.birthDateNotConfirmed=true;
+		}
 
 	}
 	
@@ -942,7 +1117,6 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		
 		VaccineGridAdapter adapter; 
-		
 		View rootView;
 		int communityMemberId=0;
 		
@@ -956,6 +1130,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			this.rootView=rootView;
 			
 			communityMemberId=getArguments().getInt("id");
+			
 			
 			fillVaccineSpinner();
 			showSchedule();
@@ -976,6 +1151,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					showSchedule();
 				}
 			});
+			
 			
 			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
 			buttonAddVaccine.setOnClickListener(this);
@@ -1027,7 +1203,20 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
 			communityMemberId=a.getCommunityMemberId();
 		}
-				
+		
+		private void showError(String msg){
+			TextView textViewStatus=(TextView)rootView.findViewById(R.id.textStatus);
+			textViewStatus.setText(msg);
+			textViewStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_error));
+			
+		}
+		
+		private void showStatus(String msg){
+			TextView textViewStatus=(TextView)rootView.findViewById(R.id.textStatus);
+			textViewStatus.setText(msg);
+			textViewStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
+			
+		}
 		private void fillVaccineSpinner(){
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
@@ -1049,6 +1238,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 			CommunityMembers communityMembers=new CommunityMembers(getActivity().getApplicationContext());
 			CommunityMember cm=communityMembers.getCommunityMember(communityMemberId);
+			if(!cm.IsBirthDateConfirmed()){
+				showError("birth date of patient is not confirmed birth date");
+			}
 			
 			Vaccines vaccines=new Vaccines(getActivity().getApplicationContext());
 			ArrayList<Vaccine> listVaccines=vaccines.getScheduledVaccines();

@@ -19,8 +19,46 @@ public class CommunityMember {
 	private String communityName;
 	private String nhisId;
 	private String nhisExpiryDate;
+	private boolean isBirthDateConfirmed;
 	
 
+	CommunityMember(int id,int communityId,String fullname,String birthdate,boolean isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
+		this.id=id;
+		this.communityId=communityId;
+		this.fullname=fullname;
+		this.birthdate=birthdate;
+		this.gender=gender;
+		this.cardNo=cardNo;
+		this.recState=recState;
+		this.communityName=communityName;
+		this.nhisId="none";
+		this.nhisExpiryDate="";
+		this.isBirthDateConfirmed=true;
+		this.nhisId=nhisId;
+		this.nhisExpiryDate=nhisExpiryDate;
+	}
+	
+	CommunityMember(int id,int communityId,String fullname,String birthdate,int isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
+		this.id=id;
+		this.communityId=communityId;
+		this.fullname=fullname;
+		this.birthdate=birthdate;
+		this.gender=gender;
+		this.cardNo=cardNo;
+		this.recState=recState;
+		this.communityName=communityName;
+		this.nhisId="none";
+		this.nhisExpiryDate="";
+		if(isBirthDateConfirmed==1){
+			this.isBirthDateConfirmed=true;
+		}else{
+			this.isBirthDateConfirmed=false;
+		}
+		this.nhisId=nhisId;
+		this.nhisExpiryDate=nhisExpiryDate;
+		
+	}
+	
 	CommunityMember(int id,int communityId,String fullname,String birthdate,String gender,String cardNo,int recState,String communityName){
 		this.id=id;
 		this.communityId=communityId;
@@ -81,8 +119,7 @@ public class CommunityMember {
 		this.recState=0;
 		this.communityName="";
 	}
-	
-	
+		
 	public double getAgeAsYear(){
 		try
 		{
@@ -185,6 +222,10 @@ public class CommunityMember {
 		Calendar nhis=Calendar.getInstance();
 		nhis.setTime(d);
 		return nhis.before(c);
+	}
+	
+	public boolean IsBirthDateConfirmed(){
+		return this.isBirthDateConfirmed;
 	}
 	
 	public java.util.Date getNHISExpiryDateDate(){
