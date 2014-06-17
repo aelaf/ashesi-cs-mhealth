@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TabsPagerAdapter;
@@ -119,6 +120,10 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 			case R.id.device_synch:
 				Intent deviceIntent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
 				startActivity(deviceIntent);
+				break;
+			case R.id.bluetooth_backup:
+				Toast.makeText(getApplicationContext(), "Sending data via Bluetooth", Toast.LENGTH_SHORT).show();
+				//MyDiscoveryListener device = new MyDiscoveryListener();
 				break;
 		}
 			//return true;			
