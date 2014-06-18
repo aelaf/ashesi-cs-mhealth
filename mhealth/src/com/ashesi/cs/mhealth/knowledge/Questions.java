@@ -173,6 +173,26 @@ public class Questions extends DataClass{
 		}
 	}
 	
+	public ArrayList<Question> contains(String query){
+		try{
+			db=getReadableDatabase();		
+			String Query = "Select * from " + TABLE_NAME_QUESTIONS + " where " + KEY_CONTENT + 
+					"LIKE ='%" + query + "%'";
+		    cursor = db.rawQuery(Query, null);
+		    Question q = fetch();
+		    ArrayList<Question> list = new ArrayList<Question>();
+		    while(q!=null){
+				list.add(q);
+				q=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
 	public boolean deleteQuestion (String qId){
 		try{
 			db = getReadableDatabase();			
@@ -208,7 +228,7 @@ public class Questions extends DataClass{
 			db=getReadableDatabase();
 	        ContentValues initialValues = new ContentValues();
 	        initialValues.put(DataClass.REC_STATE, status);
-	        db.update(TABLE_NAME_QUESTIONS, initialValues, KEY_GUID + "= ?", new String[] {String.valueOf(status)});
+	        db.update(TABLE_NAME_QUESTIONS, initialValues, KEY_GUID + "= " + id, new String[] {String.valueOf(status)});
 	        db.close();
 		}catch(Exception e){
 			db.close();
@@ -246,7 +266,8 @@ public class Questions extends DataClass{
 	 */
 	public void download(){
 		//final int deviceId=mDeviceId;
-		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=5";
+//		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=5";
+		String url="http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=5";
 		System.out.println("Starting Post request");
 		String data=request(url);
 		System.out.println(data);

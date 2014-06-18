@@ -93,4 +93,15 @@
         android:text="@string/viewPost" >
     </View>
 	</LinearLayout>
+	<LinearLayout 
+	    android:id="@+id/linksdiv"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/LightGrey"
+        android:orientation="vertical">
+	    
+	</LinearLayout>
 </LinearLayout>

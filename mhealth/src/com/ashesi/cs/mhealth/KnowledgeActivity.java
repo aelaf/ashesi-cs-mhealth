@@ -9,6 +9,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,15 +19,18 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.ConfirmDelete.ConfirmDeleteListener;
 import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.TabsPagerAdapter;
 import com.ashesi.cs.mhealth.knowledge.Categories;
@@ -51,6 +55,11 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_knowledge);
+		
+		Intent intent = getIntent();
+		int choId = intent.getIntExtra("choId", 0);
+		CHOs chos = new CHOs(this);
+		currentCHO = chos.getCHO(choId);
 		
 		//Create a log for the questions activity
 		log = new LogData(this);
@@ -111,8 +120,23 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 				
 			}
 		});
+		handleIntent(getIntent());
 		
 	}
+	
+	
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent)
+	 */
+	@Override
+	protected void onNewIntent(Intent intent) {
+		// TODO Auto-generated method stub
+		super.onNewIntent(intent);
+		handleIntent(intent);
+	}
+
+
 
 	@Override
 	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
@@ -176,6 +200,15 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 		// TODO Auto-generated method stub
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.question_menu, menu);
+		
+		//MenuItem searchItem = menu.findItem(R.id.action_search);
+
+	 // Get the SearchView and set the searchable configuration
+	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+	    // Assumes current activity is the searchable activity
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	    searchView.setSubmitButtonEnabled(true);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
@@ -240,6 +273,18 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 	public String getGuid() {
 		// TODO Auto-generated method stub
 		return deleteGuid;
+	}
+	
+	private void handleIntent(Intent intent){
+		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+			String query = intent.getStringExtra(SearchManager.QUERY);
+			QuestionsFragment qfrag = (QuestionsFragment)mAdapter.getItem(0);
+			if(qfrag != null){
+				qfrag.doSearch(query);
+				Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
+			}
+			Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
+		}
 	}
 
 }

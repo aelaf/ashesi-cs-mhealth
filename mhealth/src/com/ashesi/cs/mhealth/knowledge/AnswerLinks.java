@@ -26,9 +26,9 @@ public class AnswerLinks extends DataClass{
 	
 	public static String getCreateQuery(){
 		return "create table " + TABLE_NAME_ANSWERLINKS + "( "
-				+ KEY_ID + " INTEGER PRIMARY AUTOINCREMENT," 
-				+ KEY_LINK + "TEXT,"
-				+ KEY_ANSWER_ID + "TEXT, "
+				+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
+				+ KEY_LINK + " text,"
+				+ KEY_ANSWER_ID + " INTEGER, "
 				+ "FOREIGN KEY (" + KEY_ANSWER_ID + ") REFERENCES answers(" 
 				+  KEY_ANSWER_ID + "))";
 	}	
@@ -121,7 +121,8 @@ public class AnswerLinks extends DataClass{
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
+		//String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=8";//&deviceId"+deviceId;
+		String url="http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=8";
 		String data=request(url);
 		System.out.println(data);
 		try{

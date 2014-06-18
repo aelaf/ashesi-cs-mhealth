@@ -98,7 +98,23 @@
             android:name="com.ashesi.cs.mhealth.KnowledgeActivity"
             android:label="@string/atknowledge"
             android:parentActivityName="com.ashesi.cs.mhealth.MainActivity"
-            android:theme="@style/Theme.Example">"
+            android:theme="@style/Theme.Example"
+            android:launchMode="singleTop">
+            <meta-data android:name="android.app.default_searchable"
+                	   android:value="com.ashesi.cs.mhealth.SearchResultsActivity"/>
+        </activity>
+        
+        <activity 
+            android:name="com.ashesi.cs.mhealth.SearchResultsActivity"
+            android:label="@string/atknowledge"
+            android:theme="@style/Theme.Example"
+            android:launchMode="singleTop"
+            android:parentActivityName="com.ashesi.cs.mhealth.KnowledgeActivity">
+            <meta-data android:name="android.app.searchable"
+                	   android:resource="@xml/searchable"/>
+             <intent-filter >
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
         </activity>
     </application>
 

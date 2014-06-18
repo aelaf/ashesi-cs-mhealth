@@ -31,8 +31,10 @@ import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
+import com.ashesi.cs.mhealth.knowledge.AnswerLinks;
 import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.LocalLinks;
 import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 import com.ashesi.cs.mhealth.knowledge.ResourceLinks;
@@ -273,7 +275,6 @@ public class DataClass extends SQLiteOpenHelper {
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(urlAddress);
-
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        HttpResponse response = httpclient.execute(httppost);
 	        return response;
@@ -572,7 +573,14 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			//Create Log table
 			db.execSQL(LogData.getCreateQuery());
+			
+			//create answer links table
+			db.execSQL(AnswerLinks.getCreateQuery());
+			
+			//create local links table
+			db.execSQL(LocalLinks.getCreateQuery());
 			setDataVersion(db,DATABASE_NAME,6);
+			
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
@@ -702,6 +710,15 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		//Create answers table
 		db.execSQL(Answers.getCreateQuery());
+		
+		//Create Log table
+		db.execSQL(LogData.getCreateQuery());
+		
+		//create answer links table
+		db.execSQL(AnswerLinks.getCreateQuery());
+		
+		//create local links table
+		db.execSQL(LocalLinks.getCreateQuery());
 
 		setDataVersion(db,DATABASE_NAME,6);
 	}

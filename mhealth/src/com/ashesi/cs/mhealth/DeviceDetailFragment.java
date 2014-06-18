@@ -16,12 +16,21 @@
 
 package com.ashesi.cs.mhealth;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -29,10 +38,6 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,29 +54,6 @@ import com.ashesi.cs.mhealth.data.TCPServer;
 import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * A fragment that manages a particular peer and allows interaction with device
  * i.e. setting up network connection and transferring data.
@@ -85,7 +67,6 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     private String otherAddress = null;
 	private ServerSocket serverSock;
 	private Socket socket;
-	private String filePath;
 	private LogData log;
 	private CHO currentCHO;
     

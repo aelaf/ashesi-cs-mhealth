@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,6 +26,8 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,8 +43,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.data.CHO;
@@ -49,9 +55,11 @@ import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.color;
 import com.ashesi.cs.mhealth.knowledge.Answer;
+import com.ashesi.cs.mhealth.knowledge.AnswerLinks;
 import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
 import com.ashesi.cs.mhealth.knowledge.Category;
+import com.ashesi.cs.mhealth.knowledge.LocalLinks;
 import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.Question;
 import com.ashesi.cs.mhealth.knowledge.Questions;
@@ -90,10 +98,13 @@ public class QuestionsFragment extends Fragment{
 	public void setOnlyAnswered(boolean onlyAnswered) {
 		this.onlyAnswered = onlyAnswered;
 	}
-
+	private TextView status;
 	private boolean isListEmpty, onlyMyPost;
 	private int maxQuestions, counter, choId;
 	private LinearLayout ln;
+	private ProgressBar progressbar;
+	private boolean isSearching;
+	private String searchQuery;
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -111,6 +122,11 @@ public class QuestionsFragment extends Fragment{
 			// TODO Auto-generated method stub
 			super.onActivityCreated(savedInstanceState);
 
+			isSearching = false;
+			status = (TextView)getActivity().findViewById(R.id.qstatus);
+			progressbar = (ProgressBar)getActivity().findViewById(R.id.qprogress);
+//			progressbar.setIndeterminate(false);
+			progressbar.setMax(3);
 			log = new LogData(getActivity());
 			
 			selectedquestion = 0;
@@ -131,8 +147,7 @@ public class QuestionsFragment extends Fragment{
 			btn_prev.setHeight(LayoutParams.WRAP_CONTENT);
 			btn_prev.setWidth(LayoutParams.WRAP_CONTENT);
 			btn_next = new Button(getActivity());
-			btn_next.setText("Next");
-			
+			btn_next.setText("Next");			
 			btn_prev.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -492,23 +507,34 @@ public class QuestionsFragment extends Fragment{
 				
 		}
 		
+		public boolean isSearching(){
+			return isSearching;
+		}
+		
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item) {
 			// TODO Auto-generated method stub
 			switch (item.getItemId()){
 			case R.id.synch_q:
 				if(isConnected()){
+					status.setTextColor(getResources().getColor(R.color.green));
+					status.setText("Connected");
 					refreshMenuItem = item;
 					Toast.makeText(getActivity(), "Synching Data", Toast.LENGTH_LONG).show();
+					progressbar.setVisibility(View.VISIBLE);
 					new Synchronize().execute();
 				}else{
+					status.setTextColor(getResources().getColor(R.color.red));
+					status.setText("Sorry. No internet connection");
 					Toast.makeText(getActivity(), "Sorry the network is down. Try again later!", Toast.LENGTH_LONG).show();
 				}
 				break;
 			case android.R.id.home:
 				NavUtils.navigateUpFromSameTask(getActivity());
 				break;
-			}			
+			case R.id.action_search:
+				break;
+			}	
 			return super.onOptionsItemSelected(item);
 		}
 		
@@ -520,105 +546,154 @@ public class QuestionsFragment extends Fragment{
 		    return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 		}
 		
+		
 		/**
 		 * This is to update the data for the application
 		 * @author Daniel
 		 */
-		private class Synchronize extends AsyncTask<String, Void, String>{
+		private class Synchronize extends AsyncTask<String, Integer, String>{
 			
 			@Override
 			protected void onPreExecute(){
 				refreshMenuItem.setActionView(R.layout.action_progressbar);
-				
+				System.out.println("Max" + (2 + getQuestions().getAllNewQuestions().size()));
+				progressbar.setMax(6 + getQuestions().getAllNewQuestions().size());
 				refreshMenuItem.expandActionView();
 			}
+			
 			@Override
 			protected String doInBackground(String... params) {
 				// TODO Auto-generated method stub
 				Log.d("Synching", "Getting the questions & Answers from server");
 				
-				//Retrieve answers from the database
+				publishProgress(1);
+				//Phase 2 Download new questions
 				Questions temp = new Questions(getActivity());
 				temp.download();
+				publishProgress(1);
 				
+				System.out.println("Done with Questions on to Anwsers");
+				//Phase 3 Download new answers
 				Answers tempAns = new Answers(getActivity());
 				tempAns.download();
-			
-				JSONArray jArr = new JSONArray();
-				try {
-					//Post new questions to the server
-					ArrayList<Question> q = new ArrayList<Question>();
-					q = getQuestions().getAllNewQuestions();
-					if(q==null || q.isEmpty()){
-						return "empty";
-					}
-					for (int i = 0; i < q.size(); i++) {
-						if(q.get(i).getRecState() < 1){
-							if(isConnected()){
-								JSONObject jObj = new JSONObject();
-								jObj.put("q_id",q.get(i).getId());
-								jObj.put("cho_id", q.get(i).getChoId());
-								jObj.put("q_content", q.get(i).getContent());
-								jObj.put("category_id",q.get(i).getCategoryId());
-								jObj.put("question_date", q.get(i).getDate());
-								jObj.put("guid", q.get(i).getGuid());
-								jObj.put(DataClass.REC_STATE, 1);
-								jArr.put(jObj);
-								Log.d("Current Question", q.get(i).getContent());
-								
-					 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-					 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
-							      nameValuePairs.add(new BasicNameValuePair("questionid",
-							          jObj.toString()));
-								String data = db.request(db.postRequest("http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php", nameValuePairs));			
-								JSONArray resultArr = new JSONArray(data);
-								int result = resultArr.getJSONObject(1).getInt("result");  //if the upload was successful then update the status of the question to 1
-								if(result == 1){
-									Questions temp1 = new Questions(getActivity());
-									System.out.println(q.get(i).getContent());
-									temp1.changeStatus(q.get(i).getGuid(), 1);
+				publishProgress(1);
+				
+				System.out.println("Done with Answers on to Answerlinks");
+				//Phase 4 Download new Answer Links
+				AnswerLinks ansLinks = new AnswerLinks(getActivity());
+				ansLinks.download();
+				publishProgress(1 );
+				
+				System.out.println("Done with Answerlinks on to local links");
+				//Phase 5 Download new Local links to answers
+				LocalLinks l = new LocalLinks(getActivity());
+				l.download();
+				publishProgress(1);
+			    
+				System.out.println("Done with local links on to uploading questions");
+				if(getQuestions().getAllNewQuestions().isEmpty()){
+					publishProgress(1);
+					return "Done";
+				}else{
+					//Phase 6 Upload new questions to remote server
+					JSONArray jArr = new JSONArray();
+					try {
+						//Post new questions to the server
+						ArrayList<Question> q = new ArrayList<Question>();
+						q = getQuestions().getAllNewQuestions();
+						if(q==null || q.isEmpty()){
+							return null;
+						}
+						for (int i = 0; i < q.size(); i++) {
+							if(q.get(i).getRecState() < 1){
+								if(isConnected()){
+									JSONObject jObj = new JSONObject();
+									jObj.put("q_id",q.get(i).getId());
+									jObj.put("cho_id", q.get(i).getChoId());
+									jObj.put("q_content", q.get(i).getContent());
+									jObj.put("category_id",q.get(i).getCategoryId());
+									jObj.put("question_date", q.get(i).getDate());
+									jObj.put("guid", q.get(i).getGuid());
+									jObj.put(DataClass.REC_STATE, 1);
+									jArr.put(jObj);
+									Log.d("Current Question", q.get(i).getContent());
+									
+						 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+						 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
+								      nameValuePairs.add(new BasicNameValuePair("questionid",
+								          jObj.toString()));
+								      String data;
+								      //"http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php"
+									if((data = db.request(db.postRequest("http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=5", nameValuePairs))) == null){
+										System.out.println(data);
+												
+									}
+									JSONArray resultArr = new JSONArray(data);
+									int result = resultArr.getJSONObject(1).getInt("result");  //if the upload was successful then update the status of the question to 1
+									if(result == 1){
+										Questions temp1 = new Questions(getActivity());
+										System.out.println(q.get(i).getContent());
+										temp1.changeStatus(q.get(i).getGuid(), 1);
+									}
 								}
 							}
+							publishProgress(1);
 						}
-					}
-					//Log the synchronize event
-					JSONObject jObj = new JSONObject();
-					
-						jObj.put("cho", currentCHO.getFullname());
+						//Log the synchronize event
+						JSONObject jObj = new JSONObject();
+						
+							jObj.put("cho", currentCHO.getFullname());
+							Date date1 = new Date();		            
+							DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+							log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
+									this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString());
+							publishProgress(1);  //update progressbar with completed status
+							return "Done";
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						//Log the synchronize event
+						JSONObject jObj = new JSONObject();
+						try {
+							jObj.put("cho", currentCHO.getFullname());
+						} catch (JSONException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						Date date1 = new Date();		            
 						DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
 						log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
-								this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString());
-				
-					return "Done";
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					//Log the synchronize event
-					JSONObject jObj = new JSONObject();
-					try {
-						jObj.put("cho", currentCHO.getFullname());
-					} catch (JSONException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+								this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString() + " \n" + e.getMessage());
 					}
-					Date date1 = new Date();		            
-					DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
-					log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
-							this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString() + " \n" + e.getMessage());
+					publishProgress(1);  //process completed update progressbar
 				}
-				//saveLastUpdated("lastID", 0);
 		        return null;
-			}	
+			}
 			
+			
+			
+			/* (non-Javadoc)
+			 * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+			 */
+			@Override
+			protected void onProgressUpdate(Integer... values) {
+				// TODO Auto-generated method stub
+				System.out.println(values[0]);
+				setProgressPercent(values[0]);
+			}
 			@Override
 			protected void onPostExecute(String result){
 				refreshMenuItem.collapseActionView();
 				refreshMenuItem.setActionView(null);
 				Toast.makeText(getActivity(), "Synch complete" , Toast.LENGTH_LONG).show();
+				progressbar.setVisibility(View.GONE);
 				refreshData(isOnlyAnswered());
 			}
 			
+		}
+		
+		public void setProgressPercent(int progress){
+			progressbar.incrementProgressBy(progress);
 		}
 		
 		/**
@@ -669,7 +744,11 @@ public class QuestionsFragment extends Fragment{
 		@Override
 		public void onResume() {
 			super.onResume();
-			refreshData(isOnlyAnswered());
+			if(isSearching()){
+				searchData(isOnlyAnswered());
+			}else{
+				refreshData(isOnlyAnswered());
+			}
 		}
 		
 		/**
@@ -706,15 +785,22 @@ public class QuestionsFragment extends Fragment{
 			// TODO Auto-generated method stub
 			super.onStart();
 			refreshData(isOnlyAnswered());
-		}
-
+		}		
+		
 		/**
 		 * @return the currentCHO
 		 */
 		public CHO getCurrentCHO() {
 			return currentCHO;
-		}  	    
-		
-		
+		}
+
+		/* (non-Javadoc)
+		 * @see android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu, android.view.MenuInflater)
+		 */
+		@Override
+		public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+			// TODO Auto-generated method stub
+			super.onCreateOptionsMenu(menu, inflater);
+		}  				
 
 }
