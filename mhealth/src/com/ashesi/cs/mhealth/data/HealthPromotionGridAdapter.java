@@ -7,36 +7,34 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.TextView;
 
 public class HealthPromotionGridAdapter extends BaseAdapter{
 	private Context mContext;
-	private HealthPromotion healthPromotion=null;
 	private ArrayList<HealthPromotion> listHealthPromotion;	//list of scheduled vaccines
 	//private ArrayList<HealthPromotion> listDetailsHealthPromotion;
 	
 	//There are 4 columns in GridView of vaccine records. In SCHEDULE_LIST mode these string arrays
 	//will be used as data source. In RECORD_LIST mode, the data comes from listVaccineRecord
-	private ArrayList<String> column0;
-	private ArrayList<String> column1;
-	private ArrayList<String> column2;
-	
+
 	
 	public static final int  PROMOTION_LIST=2;
 	public static final int  DETAIL_LIST=1;
 
 	private int mMode=PROMOTION_LIST;
-	
-	private int textColor;
+	private TextView view;
+	public int healthPromoid;
+
 	
 	public HealthPromotionGridAdapter(Context context){
 		mContext=context;
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
+		
 		
 		if(listHealthPromotion==null){
 			return  0;
@@ -52,7 +50,7 @@ public class HealthPromotionGridAdapter extends BaseAdapter{
 		if(listHealthPromotion==null){
 			return null;
 		}
-		// TODO: in case of RECORD_LIST view, it should return VaccineRecord from listVaccineRecord
+	
 		return listHealthPromotion.get(index);
 	
 	}
@@ -109,11 +107,13 @@ public class HealthPromotionGridAdapter extends BaseAdapter{
 		int index=position/3;
 		try
 		{
-				if(columnIndex==0){// column 0: vaccine name
+				if(columnIndex==0){// column 0: date
 					return (View)getTextView(listHealthPromotion.get(index).getDate());
-				}else if(columnIndex==1){ //column 1: vaccine schedule
-					TextView view=getTextView(listHealthPromotion.get(index).getTopic());
-					//view.setHint("vaccine schedule based on birthdate");
+				}else if(columnIndex==1){ //column 1: topic
+					view=getTextView(listHealthPromotion.get(index).getTopic());
+				 healthPromoid=listHealthPromotion.get(index).getId();
+					view.setTag(Integer.valueOf(position));
+					//view.setHint("venue");
 					return (View)view;
 				}else if(columnIndex==2){
 					TextView view=getTextView(listHealthPromotion.get(index).getVenue());

@@ -34,7 +34,17 @@ public class HealthPromotion {
 		this.subdistrict_id=subdistrict_id;
 		
 	}
-	
+	public HealthPromotion(String date,String venue,String topic,String method,String target_audience,String number_of_audience,
+			String remarks, String image){
+		this.date=date;
+		this.venue=venue;
+		this.topic=topic;
+		this.method=method;
+		this.target_audience=target_audience;
+		this.number_of_audience=number_of_audience;
+		this.remarks=remarks;
+		this.image=image;		
+	}
 	public HealthPromotion(int id,String date,String venue,String topic){
 		this.id=id;
 		this.date=date;

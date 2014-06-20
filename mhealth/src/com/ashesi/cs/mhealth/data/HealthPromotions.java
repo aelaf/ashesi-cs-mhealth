@@ -231,5 +231,74 @@ public class HealthPromotions extends DataClass {
 		
 		
 	}
+public ArrayList<String> getDetails(int id){
+	
+		
+		try
+		{
+			db=getReadableDatabase();
+			
+			String strQuery="select "+HealthPromotions.REC_DATE
+								+","+HealthPromotions.REC_TOPIC
+								+"," +HealthPromotions.REC_VENUE
+								+","+HealthPromotions.REC_REMARKS
+								+","+HealthPromotions.REC_METHOD
+								+","+HealthPromotions.REC_NUMBERAUDIENCE
+								+","+HealthPromotions.REC_TARGETAUDIENCE
+								+","+HealthPromotions.REC_IMAGE
+								+" from "+HealthPromotions.TABLE_NAME_HEALTH_PROMOTION
+								+" where "+HealthPromotions.REC_NO+" = "+id;
+			
+			cursor=db.rawQuery(strQuery, null);
+			ArrayList<String> list=new ArrayList<String>();		
+			
+			cursor.moveToFirst();
+			
+			int indexHealthPromoDate=cursor.getColumnIndex(HealthPromotions.REC_DATE);
+			int indexHealthPromoTopic=cursor.getColumnIndex(HealthPromotions.REC_TOPIC);
+			int indexHealthPromoVenue=cursor.getColumnIndex(HealthPromotions.REC_VENUE);
+			int indexHealthPromoRemarks=cursor.getColumnIndex(HealthPromotions.REC_REMARKS);
+			int indexHealthPromoMethod=cursor.getColumnIndex(HealthPromotions.REC_METHOD);
+			int indexHealthPromoNumAudience=cursor.getColumnIndex(HealthPromotions.REC_NUMBERAUDIENCE);
+			int indexHealthPromoTargetAudience=cursor.getColumnIndex(HealthPromotions.REC_TARGETAUDIENCE);
+			int indexHealthPromoImage=cursor.getColumnIndex(HealthPromotions.REC_IMAGE);
+				
+			String healthPromoDate ="";
+			String healthPromoVenue = null;
+			String healthPromoTopic = null;
+			String healthPromoRemarks=null;
+			String healthPromoMethod= null;
+			String healthPromoNumberAudience=null;
+			String healthPromoTarget=null;
+			String healthPromoImage=null;
+			while(!cursor.isAfterLast()){
+				healthPromoDate=cursor.getString(indexHealthPromoDate);
+				list.add(healthPromoDate);
+				healthPromoTopic=cursor.getString(indexHealthPromoTopic);
+				list.add(healthPromoTopic);
+				healthPromoVenue=cursor.getString(indexHealthPromoVenue);
+				list.add(healthPromoVenue);
+				healthPromoRemarks=cursor.getString(indexHealthPromoRemarks);
+				list.add(healthPromoRemarks);
+				healthPromoMethod=cursor.getString(indexHealthPromoMethod);
+				list.add(healthPromoMethod);
+				healthPromoNumberAudience=cursor.getString(indexHealthPromoNumAudience);
+				list.add(healthPromoNumberAudience);
+				healthPromoTarget=cursor.getString(indexHealthPromoTargetAudience);
+				list.add(healthPromoTarget);
+				healthPromoImage=cursor.getString(indexHealthPromoImage);
+				list.add(healthPromoImage);
+				cursor.moveToNext();
+				
+			}
+			
+			close();
+			return list;
+		}catch(Exception ex){
+			return null;
+		}
+		
+		
+	}
 	
 }

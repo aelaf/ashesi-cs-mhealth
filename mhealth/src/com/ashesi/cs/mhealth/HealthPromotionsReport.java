@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import com.ashesi.cs.mhealth.data.GPSTracker;
 import com.ashesi.cs.mhealth.data.HealthPromotion;
 import com.ashesi.cs.mhealth.data.HealthPromotionGridAdapter;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
@@ -40,12 +39,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -188,10 +190,13 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	View rootView;
 	int communityMemberId=0;
 	View rootView2;
+	private GridView gridView;
 	public static final String ARG_SECTION_NUMBER = "section_number";
+	public int id;	
 	public ReportFragment(){
 		
 	}
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		
 		if(rootView2==null){
@@ -201,10 +206,11 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	        parent.removeView(rootView2);
 		}
 		this.rootView=rootView2;
-	GridView gridView=(GridView)rootView2.findViewById(R.id.gridView1);
+	 gridView=(GridView)rootView2.findViewById(R.id.gridView1);
+	 
 	
 	//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
-	String[] headers={"Date","Topic","Venue"};
+	 
 	/*
 	HealthPromotions healthPromos=new HealthPromotions(this.getActivity().getApplicationContext());
 	ArrayList<String> list;
@@ -221,13 +227,38 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	}*/
 	HealthPromotions healthPromos=new HealthPromotions(getActivity().getApplicationContext());
 	ArrayList<HealthPromotion> list;
-	//list=healthPromos.addHeader(headers[0], headers[1], headers[2]);
 	list=healthPromos.getReport();
-	System.out.println(list.get(0).toString());
-	HealthPromotionGridAdapter adapter=new HealthPromotionGridAdapter(getActivity().getApplicationContext());
+	final HealthPromotionGridAdapter adapter=new HealthPromotionGridAdapter(getActivity().getApplicationContext());
 	adapter.setList(list);
 	gridView.setAdapter(adapter);
+	id=adapter.healthPromoid;
+	gridView.setOnItemClickListener(new OnItemClickListener(){
+						
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							
+							ReportDetailsFragment secFrag = new ReportDetailsFragment();
+							android.support.v4.app.FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
+							                    fragTransaction.replace(R.layout.activity_health_promotion_details,secFrag );
+							                    fragTransaction.addToBackStack(null);
+							                    fragTransaction.commit();
+							
+							
+						}
+					});
 	return rootView2;
+	}
+	public void onResume(){
+		super.onResume();
+		HealthPromotions healthPromos=new HealthPromotions(getActivity().getApplicationContext());
+		ArrayList<HealthPromotion> list;
+		//list=healthPromos.addHeader(headers[0], headers[1], headers[2]);
+		list=healthPromos.getReport();
+		System.out.println(list.get(0).toString());
+		HealthPromotionGridAdapter adapter=new HealthPromotionGridAdapter(getActivity().getApplicationContext());
+		adapter.setList(list);
+		gridView.setAdapter(adapter);
 	}
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -247,7 +278,88 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	}
 	
 	}
+public static class ReportDetailsFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 	
+	//VaccineAdapter adapter; 
+	
+
+	public static final String ARG_SECTION_NUMBER = "section_number";
+	private View rootView2;
+	private View rootView;
+	private TextView topic_txt;
+	private TextView date_txt;
+	private TextView number_txt;
+	private ImageView image;
+	private TextView remarks_txt;
+	private TextView audience_txt;
+	private ListView detailsList;
+	private Bitmap bitmap;
+	private String imagepath;
+	public ReportDetailsFragment(){
+		
+	}
+
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		if(rootView2==null){
+			rootView2 = inflater.inflate(R.layout.activity_health_promotion_details,null,false);
+		}else{
+			ViewGroup parent = (ViewGroup) rootView2.getParent();
+	        parent.removeView(rootView2);
+		}
+		this.rootView=rootView2;
+		topic_txt=(TextView) rootView.findViewById(R.id.txt_topic);
+		detailsList=(ListView) rootView.findViewById(R.id.listView1);
+		date_txt=(TextView) rootView.findViewById(R.id.txt_date);
+		number_txt=(TextView) rootView.findViewById(R.id.txt_number);
+		image=(ImageView) rootView.findViewById(R.id.imageView1);
+		audience_txt=(TextView) rootView.findViewById(R.id.txt_target);
+		remarks_txt=(TextView) rootView.findViewById(R.id.txt_remarks);
+	 
+	ReportFragment report=new ReportFragment();
+	HealthPromotions healthPromos=new HealthPromotions(this.getActivity().getApplicationContext());
+	ArrayList<String> list;
+	list=healthPromos.getDetails(report.id);
+	String[] headers={"--------"};
+
+	if(list==null){
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+		detailsList.setAdapter(adapter);
+		image.setVisibility(View.GONE);
+	}else{
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+		detailsList.setAdapter(adapter);
+		imagepath=list.get(7);
+		 bitmap=BitmapFactory.decodeFile(imagepath);
+		image.setImageBitmap(bitmap);
+		
+	}
+	
+	 
+	return rootView2;
+	}
+	public void onResume(){
+		super.onResume();
+		
+	}
+	@Override
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		
+	}
+	@Override
+	public void onNothingSelected(AdapterView<?> parent) {
+	
+		
+	}
+	@Override
+	public void onClick(View v) {
+		
+		
+	}
+	
+	}
 
 
 @SuppressLint("SimpleDateFormat") 
@@ -270,10 +382,6 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	private EditText audience_number;
 	private EditText remarks_txt;
 	private EditText image_url_txt;
-	private GPSTracker gps;
-	private double latitude_double;
-	private double longitude_double;
-	//private DataClass dc;
 	private HealthPromotions HealthPromo;
 	private Uri selectedImageUri;
 	private String imagepath;
@@ -474,26 +582,26 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 	         }
 			@Override
 			public void onLocationChanged(Location location) {
-				// TODO Auto-generated method stub
+			
 				
 			}
 
 			@Override
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
+			
 				
 			}
 
@@ -505,7 +613,6 @@ public static class HealthPromotionsFragment extends Fragment implements OnClick
 
 @Override
 public void onClick(View v) {
-	// TODO Auto-generated method stub
-	
+
 }
 }
