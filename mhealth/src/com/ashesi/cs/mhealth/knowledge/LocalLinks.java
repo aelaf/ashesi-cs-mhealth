@@ -24,11 +24,11 @@ public class LocalLinks extends DataClass{
 	}
 	
 	public static String getCreateQuery(){
-		return "create table " + TABLE_NAME_LOCALLINKS + "( "
-				+ KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
-				+ KEY_ANSWER_ID + "INTEGER, "
-				+ "FOREIGN KEY (" + KEY_ANSWER_ID + ") REFERENCES resource_materials(resource_id)" 
-				 + "))";
+		return "create table " + TABLE_NAME_LOCALLINKS + " ( "
+				+ KEY_ID + " INTEGER," 
+				+ KEY_ANSWER_ID + " INTEGER, " +
+					"PRIMARY KEY(resourceid, answerid), "
+				+ "FOREIGN KEY (" + KEY_ID + ") REFERENCES resource_materials(resource_id))";
 	}	
 	
 	public static String getInsert(int id, int answerid){

@@ -104,7 +104,6 @@ public class QuestionsFragment extends Fragment{
 	private LinearLayout ln;
 	private ProgressBar progressbar;
 	private boolean isSearching;
-	private String searchQuery;
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
@@ -743,12 +742,8 @@ public class QuestionsFragment extends Fragment{
 
 		@Override
 		public void onResume() {
-			super.onResume();
-			if(isSearching()){
-				searchData(isOnlyAnswered());
-			}else{
-				refreshData(isOnlyAnswered());
-			}
+			super.onResume();		
+			refreshData(isOnlyAnswered());
 		}
 		
 		/**

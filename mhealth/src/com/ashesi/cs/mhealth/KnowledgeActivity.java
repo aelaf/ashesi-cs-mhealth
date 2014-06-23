@@ -278,11 +278,6 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 	private void handleIntent(Intent intent){
 		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			QuestionsFragment qfrag = (QuestionsFragment)mAdapter.getItem(0);
-			if(qfrag != null){
-				qfrag.doSearch(query);
-				Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
-			}
 			Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
 		}
 	}

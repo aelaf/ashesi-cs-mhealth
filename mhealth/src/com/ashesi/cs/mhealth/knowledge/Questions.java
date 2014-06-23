@@ -177,7 +177,7 @@ public class Questions extends DataClass{
 		try{
 			db=getReadableDatabase();		
 			String Query = "Select * from " + TABLE_NAME_QUESTIONS + " where " + KEY_CONTENT + 
-					"LIKE ='%" + query + "%'";
+					" LIKE '%" + query + "%'";
 		    cursor = db.rawQuery(Query, null);
 		    Question q = fetch();
 		    ArrayList<Question> list = new ArrayList<Question>();

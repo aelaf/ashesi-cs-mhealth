@@ -26,6 +26,5 @@
         android:title="@string/searchhint"
         android:icon="@drawable/ic_action_search"
         android:showAsAction="ifRoom|collapseActionView"
-        android:actionViewClass="android.widget.SearchView"
-        android:actionLayout="@layout/activity_search"/>
+        android:actionViewClass="android.widget.SearchView"/>
 </menu>
