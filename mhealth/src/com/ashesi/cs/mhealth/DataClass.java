@@ -535,17 +535,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Vaccines.getCreateViewPendingVaccinesSQLString());
 			setDataVersion(db,DATABASE_NAME,5); 			//note down the data base version
 			
-			//Family Planning
-			//In some of the version distributed family planning services
-			//was added. but in other version it was not 
-			db.execSQL(FamilyPlanningServices.getCreateSQLString());
 			
-			db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
-			db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
-			
-			db.execSQL(FamilyPlanningRecords.getCreateSQLString());
-			db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
-			//end of family planning
 			//added in version 6
 			db.execSQL(Categories.getInsert("Nutrition"));
 			db.execSQL(Categories.getInsert("Pharmaceuticals"));
@@ -567,6 +557,18 @@ public class DataClass extends SQLiteOpenHelper {
 			//Create answers table
 			db.execSQL(Answers.getCreateQuery());
 			
+			//Family Planning
+			//In some of the version distributed family planning services
+			//was added. but in other version it was not 
+			db.execSQL(FamilyPlanningServices.getCreateSQLString());
+			
+			db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
+			db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
+			
+			db.execSQL(FamilyPlanningRecords.getCreateSQLString());
+			db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+			//end of family planning
+			
 			setDataVersion(db,DATABASE_NAME,6);
 			
 		}catch(Exception ex){
@@ -579,7 +581,7 @@ public class DataClass extends SQLiteOpenHelper {
 		try
 		{
 			if(oldVersion==1 ){
-				//add lab colunm to table
+				//add lab column to table
 				upgradeToVersion2(db);
 			}
 						
@@ -690,6 +692,16 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		
+		//Family Planning
+		//In some of the version distributed family planning services
+		//was added. but in other version it was not 
+		db.execSQL(FamilyPlanningServices.getCreateSQLString());
+		
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
+		
+		db.execSQL(FamilyPlanningRecords.getCreateSQLString());
+		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,6);
 	}
 		
