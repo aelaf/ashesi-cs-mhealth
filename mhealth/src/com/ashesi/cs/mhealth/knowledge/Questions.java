@@ -24,11 +24,9 @@ public class Questions extends DataClass{
 	public static final String KEY_CATEGORY_ID = "category_id";
 	public static final String KEY_DATE = "question_date";
 	public static final String KEY_GUID = "guid";
-	
-	
+		
 	String[] columns={KEY_ID, KEY_CONTENT, KEY_CHO_ID, KEY_CATEGORY_ID, KEY_DATE, KEY_GUID, DataClass.REC_STATE};
-	
-	
+		
 	public Questions(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
@@ -44,8 +42,7 @@ public class Questions extends DataClass{
 				+ KEY_GUID + " BLOB UNIQUE, "
 				+ DataClass.REC_STATE+" integer, "
 				+ "FOREIGN KEY( "+ KEY_CATEGORY_ID + ") REFERENCES categories(category_id), "
-				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";
-		
+				+ "FOREIGN KEY("+ KEY_CHO_ID +") REFERENCES chos(cho_id))";		
 	}
 	
 	public static String getInsert(String content,int choId, int categoryId, UUID guid){
@@ -65,8 +62,7 @@ public class Questions extends DataClass{
 				+ categoryId + ", "
 				+ choId
 				+" , " + dt.format(date) + ", "
-				+ guid + "," + DataClass.REC_STATE_NEW + ") ";
-		
+				+ guid + "," + DataClass.REC_STATE_NEW + ") ";		
 	}
 	
 	public boolean addQuestion(int id,String content,int choId, int categoryId, String date, String guid, int rec_state){
@@ -79,7 +75,8 @@ public class Questions extends DataClass{
 				values.put(KEY_CATEGORY_ID, categoryId);
 				values.put(KEY_CHO_ID, choId);
 				if(date ==  ""){		//if the question generated locally then generate a time stamp for it.
-					Date date1 = new Date();		            DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+					Date date1 = new Date();		            
+					DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 					values.put(KEY_DATE, dt.format(date1));
 				}else{ 
 					values.put(KEY_DATE, date);
@@ -176,12 +173,62 @@ public class Questions extends DataClass{
 		}
 	}
 	
+	public ArrayList<Question> contains(String query){
+		try{
+			db=getReadableDatabase();		
+			String Query = "Select * from " + TABLE_NAME_QUESTIONS + " where " + KEY_CONTENT + 
+					" LIKE '%" + query + "%'";
+		    cursor = db.rawQuery(Query, null);
+		    Question q = fetch();
+		    ArrayList<Question> list = new ArrayList<Question>();
+		    while(q!=null){
+				list.add(q);
+				q=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
+	public boolean deleteQuestion (String qId){
+		try{
+			db = getReadableDatabase();			
+			db.delete(TABLE_NAME_QUESTIONS, KEY_GUID + "='" + qId + "'", null);
+			db.close();
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+	}
+	
+	public ArrayList<Question> getAllNewQuestions(){
+		try{
+			db=getReadableDatabase();
+			String selection = DataClass.REC_STATE + "=" + 0;
+			cursor=db.query(TABLE_NAME_QUESTIONS, columns, selection , null, null, null,null, null);
+			Question q=fetch();
+			ArrayList<Question> list=new ArrayList<Question>();
+			while(q!=null){
+				list.add(q);
+				q=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			return null;
+		}
+	}
+	
 	public void changeStatus(String id, int status){
 		try{
 			db=getReadableDatabase();
 	        ContentValues initialValues = new ContentValues();
 	        initialValues.put(DataClass.REC_STATE, status);
-	        db.update(TABLE_NAME_QUESTIONS, initialValues, KEY_GUID + "= ?", new String[] {String.valueOf(status)});
+	        db.update(TABLE_NAME_QUESTIONS, initialValues, KEY_GUID + "= " + id, new String[] {String.valueOf(status)});
 	        db.close();
 		}catch(Exception e){
 			db.close();
@@ -219,7 +266,8 @@ public class Questions extends DataClass{
 	 */
 	public void download(){
 		//final int deviceId=mDeviceId;
-		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=5";
+//		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=5";
+		String url="http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=5";
 		System.out.println("Starting Post request");
 		String data=request(url);
 		System.out.println(data);

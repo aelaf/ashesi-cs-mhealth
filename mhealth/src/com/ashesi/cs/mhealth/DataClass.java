@@ -33,8 +33,11 @@ import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
+import com.ashesi.cs.mhealth.knowledge.AnswerLinks;
 import com.ashesi.cs.mhealth.knowledge.Answers;
 import com.ashesi.cs.mhealth.knowledge.Categories;
+import com.ashesi.cs.mhealth.knowledge.LocalLinks;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 import com.ashesi.cs.mhealth.knowledge.Questions;
 import com.ashesi.cs.mhealth.knowledge.ResourceLinks;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
@@ -274,7 +277,6 @@ public class DataClass extends SQLiteOpenHelper {
 		try{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(urlAddress);
-
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        HttpResponse response = httpclient.execute(httppost);
 	        return response;
@@ -540,7 +542,7 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Categories.getInsert("Nutrition"));
 			db.execSQL(Categories.getInsert("Pharmaceuticals"));
 			db.execSQL(Categories.getInsert("Administration"));
-			db.execSQL(Categories.getInsert("Diagnosis and Treatement"));
+			db.execSQL(Categories.getInsert("Diagnosis and Treatment"));
 			db.execSQL(Categories.getInsert("Childcare"));
 			db.execSQL(Categories.getInsert("General"));
 			
@@ -569,7 +571,17 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 			//end of family planning
 			
+			//Create Log table
+			db.execSQL(LogData.getCreateQuery());
+			
+			//create answer links table
+			db.execSQL(AnswerLinks.getCreateQuery());
+			
+			//create local links table
+			db.execSQL(LocalLinks.getCreateQuery());
+
 			setDataVersion(db,DATABASE_NAME,6);
+			
 			
 		}catch(Exception ex){
 			Log.e("DataClass.onCreate", "Exception "+ex.getMessage());
@@ -702,6 +714,15 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		db.execSQL(FamilyPlanningRecords.getCreateSQLString());
 		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		//Create Log table
+		db.execSQL(LogData.getCreateQuery());
+		
+		//create answer links table
+		db.execSQL(AnswerLinks.getCreateQuery());
+		
+		//create local links table
+		db.execSQL(LocalLinks.getCreateQuery());
+
 		setDataVersion(db,DATABASE_NAME,6);
 	}
 		

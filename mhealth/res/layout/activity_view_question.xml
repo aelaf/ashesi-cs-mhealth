@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="20dp"        
         android:background="@drawable/answer_shadow"
         android:orientation="vertical"
         android:visibility="gone">
@@ -82,8 +82,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30sp"
-        android:textColor="@color/BlueViolet"
+        android:textColor="@color/black"
         android:textSize="20sp" >
+    </TextView>
+	
+    <TextView
+        android:id="@+id/answer_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30sp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="#10bcc9">
     </TextView>
 
     <View
@@ -92,5 +102,18 @@
         android:layout_height="50dp"
         android:text="@string/viewPost" >
     </View>
+    
+    <ListView 
+        android:id="@+id/answerlinks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    "
+    <ListView 
+	        android:id="@+id/linklist"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:visibility="gone"/>
 	</LinearLayout>
+
 </LinearLayout>

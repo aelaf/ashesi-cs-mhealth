@@ -16,6 +16,11 @@
 
 package com.ashesi.cs.mhealth;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -40,7 +45,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.DeviceListFragment.DeviceActionListener;
+import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 
 /**
  * An activity that uses WiFi Direct APIs to discover and connect with available
@@ -59,6 +67,9 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     private final IntentFilter intentFilter = new IntentFilter();
     private Channel channel;
     private BroadcastReceiver receiver = null;
+	private int onStartCount = 0;
+	private CHO currentCHO;
+	private LogData log;
 
     /**
      * @param isWifiP2pEnabled the isWifiP2pEnabled to set
@@ -72,10 +83,30 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-      //Style actionBar
-  		ActionBar ab = getActionBar();
-  		ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#428bca"));
-  		ab.setBackgroundDrawable(colorDrawable);
+
+		log = new LogData(this);
+		
+        Intent intent = getIntent();
+		int choId = intent.getIntExtra("choId", 0);
+		CHOs chos = new CHOs(this);
+		currentCHO = chos.getCHO(choId);
+		
+      //Transition between screens
+		onStartCount = 1;
+	      if (savedInstanceState == null) // 1st time
+	      {
+	      	this.overridePendingTransition(R.anim.anim_slide_in_left,
+	                  R.anim.anim_slide_out_left);
+	      } else // already created so reverse animation
+	      { 
+	          onStartCount = 2;
+	      }
+              
+	    //Style actionBar
+	  	ActionBar ab = getActionBar();
+		ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#428bca"));
+		ab.setBackgroundDrawable(colorDrawable);
+				
         // add necessary intent values to be matched.
 
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -139,7 +170,6 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                     // Since this is the system wireless settings activity, it's
                     // not going to send us a result. We will be notified by
                     // WiFiDeviceBroadcastReceiver instead.
-
                     startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
                 } else {
                     Log.e(TAG, "channel or manager is null");
@@ -150,6 +180,10 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                 if (!isWifiP2pEnabled) {
                     Toast.makeText(WiFiDirectActivity.this, R.string.p2p_off_warning,
                             Toast.LENGTH_SHORT).show();
+                    Date date1 = new Date();		            
+    				DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+    				log.addLog(0401, dt.format(date1), currentCHO.getFullname(), 
+    			    this.getClass().getName() , "Discovering Peers with the Wifi disabled.");
                     return true;
                 }
                 final DeviceListFragment fragment = (DeviceListFragment) getFragmentManager()
@@ -161,6 +195,10 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                     public void onSuccess() {
                         Toast.makeText(WiFiDirectActivity.this, "Discovery Initiated",
                                 Toast.LENGTH_SHORT).show();
+                        Date date1 = new Date();		            
+            			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+            			log.addLog(0402, dt.format(date1), currentCHO.getFullname(), 
+            		    this.getClass().getName() , "Discovery of peers initiated.");
                     }
 
                     @Override
@@ -190,13 +228,21 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             @Override
             public void onSuccess() {
                 // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+                Date date1 = new Date();		            
+     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+     			log.addLog(0405, dt.format(date1), currentCHO.getFullname(), 
+     		    this.getClass().getName() + " Method: connect() -> onSuccess()", "Connection successful." );
             }
 
             @Override
             public void onFailure(int reason) {
                 Toast.makeText(WiFiDirectActivity.this, "Connect failed. Retry.",
                         Toast.LENGTH_SHORT).show();
-            }
+                Date date1 = new Date();		            
+     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+     			log.addLog(0405, dt.format(date1), currentCHO.getFullname(), 
+     		    this.getClass().getName() + " Method: connect() -> onFailure()", "Connection Unsuccessful. Reasoncode: " +  reason);
+        }
         });
     }
 
@@ -210,12 +256,19 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             @Override
             public void onFailure(int reasonCode) {
                 Log.d(TAG, "Disconnect failed. Reason :" + reasonCode);
-
+                Date date1 = new Date();		            
+     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+     			log.addLog(0404, dt.format(date1), currentCHO.getFullname(), 
+     		    this.getClass().getName() + " Method: disconnect() -> onFailure()" , "Disconnect request from p2p connection failed. Reason: " + reasonCode);
             }
 
             @Override
             public void onSuccess() {
                 fragment.getView().setVisibility(View.GONE);
+                Date date1 = new Date();		            
+    			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+    			log.addLog(0404, dt.format(date1), currentCHO.getFullname(), 
+    		    this.getClass().getName() + " Method: disconnect() -> onSuccess()" , "Disconnect request from p2p connection successful.");
             }
 
         });
@@ -229,10 +282,18 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             resetData();
             retryChannel = true;
             manager.initialize(this, getMainLooper(), this);
+            Date date1 = new Date();		            
+			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+			log.addLog(0402, dt.format(date1), currentCHO.getFullname(), 
+		    this.getClass().getName() , "Channel lost.");
         } else {
             Toast.makeText(this,
                     "Severe! Channel is probably lost premanently. Try Disable/Re-Enable P2P.",
                     Toast.LENGTH_LONG).show();
+            Date date1 = new Date();		            
+			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+			log.addLog(0402, dt.format(date1), currentCHO.getFullname(), 
+		    this.getClass().getName() + "Method: onChannelDisconnected()", "Channel lost permanently.");
         }
     }
 
@@ -266,10 +327,26 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
                         Toast.makeText(WiFiDirectActivity.this,
                                 "Connect abort request failed. Reason Code: " + reasonCode,
                                 Toast.LENGTH_SHORT).show();
+                        Date date1 = new Date();		            
+            			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
+            			log.addLog(0403, dt.format(date1), currentCHO.getFullname(), 
+            		    this.getClass().getName() + "Method: cancelDisconnect()", "Trying to abort the connection. Reason Code:" + reasonCode);
                     }
                 });
             }
         }
 
+    }
+    
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        if (onStartCount > 1) {
+        	 this.overridePendingTransition(R.anim.anim_slide_in_right,
+                     R.anim.anim_slide_out_right);                	 
+        } else if (onStartCount == 1) {
+            onStartCount++;
+        }
     }
 }

@@ -8,9 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
-
+	private QuestionsFragment q;
+	private ResourceFragment r;
+	
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);
+		q = new QuestionsFragment();
+		r = new ResourceFragment();
 	}
 
 	@Override
@@ -19,12 +23,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		switch (index) {
 		case 0:
 			// Top Rated fragment activity
-			QuestionsFragment q = new QuestionsFragment();
 			q.setHasOptionsMenu(true);
 			return q;
 		case 1:
 			// Games fragment activity
-			ResourceFragment r = new ResourceFragment();
 			r.setHasOptionsMenu(true);
 			return r;
 		}

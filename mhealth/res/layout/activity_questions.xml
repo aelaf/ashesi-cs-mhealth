@@ -8,11 +8,26 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-	    android:layout_width="match_parent"
+	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-        android:paddingTop="10dp" >
-
-        <EditText
+        android:paddingTop="10dp"
+        android:orientation="vertical">
+		<TextView 
+		    android:id="@+id/qstatus"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="3dp"
+		    android:text="@string/qstatustxt"
+		    android:textStyle="bold"/> 
+	    <ProgressBar
+	     android:id="@+id/qprogress"
+	     style="@android:style/Widget.ProgressBar.Horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="3dp"
+         android:layout_margin="10dp" 
+         android:visibility="gone"/>
+	    
+       <EditText
             android:id="@+id/resource_material"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -24,7 +39,7 @@
 
     <Spinner
         android:id="@+id/spinner1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/linearLayout1"
@@ -39,7 +54,7 @@
         android:layout_alignTop="@+id/spinner1"
         android:layout_marginRight="14dp"
         android:text="@string/postQ"
-        android:textColor="#000" />
+        android:textColor="@color/background" />
 
     <View
         android:id="@+id/spacer"
@@ -108,8 +123,7 @@
         android:paddingTop="30dp"
         android:text="@string/answered"
         android:textOff="All"
-        android:textOn="Answered" />
-
+        android:textOn="Answered" />"
     <Spinner
         android:id="@+id/spinner2"
         android:layout_width="120dp"
