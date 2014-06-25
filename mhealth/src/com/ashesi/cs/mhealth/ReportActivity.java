@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import com.ashesi.cs.mhealth.data.CommunityMember;
+import com.ashesi.cs.mhealth.data.FamilyPlanningReport;
+import com.ashesi.cs.mhealth.data.FamilyPlanningReport.FamilyPlanningReportRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.id;
@@ -132,16 +134,17 @@ public class ReportActivity extends FragmentActivity implements
 			//OPD and Vaccination report use DummySectionFragment
 			//0: OPD
 			//1: Vaccination
-			Fragment fragment = new DummySectionFragment();
+			//2: FamilyPlanning
+			Fragment fragment = new ReportFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position);
+			args.putInt(ReportFragment.ARG_SECTION_NUMBER, position);
 			fragment.setArguments(args);
 			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 3;
 		}
 
 		@Override
@@ -153,7 +156,7 @@ public class ReportActivity extends FragmentActivity implements
 			case 1:
 				return getString(R.string.title_report_vaccine).toUpperCase(l);
 			case 2:
-				return getString(R.string.title_report_next).toUpperCase(l);
+				return "Family Plan";//getString("Family Plan").toUpperCase(l);
 			}
 			return null;
 		}
@@ -162,7 +165,7 @@ public class ReportActivity extends FragmentActivity implements
 	/**
 	 * A fragment for OPD report display
 	 */
-	public static class DummySectionFragment extends Fragment implements OnClickListener, OnItemSelectedListener {
+	public static class ReportFragment extends Fragment implements OnClickListener, OnItemSelectedListener {
 		
 		/**
 		 * The fragment argument representing the section number for this
@@ -170,11 +173,13 @@ public class ReportActivity extends FragmentActivity implements
 		 */
 		int sectionNumber=0;
 		public static final String ARG_SECTION_NUMBER = "section_number";
-		private String[] ageGroups={"Total","U 1","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
-		private String[] vaccineAgeGroups={"Total","U 1","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70"};
+		private String[] ageGroups={"Total","under 1yr","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70yr"};
+		private String[] vaccineAgeGroups={"Total","under 12m","12-23","above 24m"};
+		private String[] familyPlanAgeGroups={"Total","under 1yr","10-14","15-19","20-24","30-34","above 35yr"};
+		
 		private String[] months={"this month","whole year","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 
-		public DummySectionFragment() {
+		public ReportFragment() {
 		}
 
 		@Override
@@ -184,8 +189,8 @@ public class ReportActivity extends FragmentActivity implements
 			displayReport(rootView); 
 			return rootView;
 		}
+		
 		private void displayReport(View rootView){
-			
 			
 			fillAgeGroupSpinner(rootView);
 			fillMonthSpinner(rootView);
@@ -201,7 +206,6 @@ public class ReportActivity extends FragmentActivity implements
 			loadData(rootView);
 		}
 		
-
 		private void loadData(View rootView){
 			TextView reportTitle = (TextView) rootView.findViewById(R.id.section_label);
 			switch(sectionNumber){
@@ -213,6 +217,10 @@ public class ReportActivity extends FragmentActivity implements
 				reportTitle.setText("Vaccination report");
 				loadVaccinationReportData(rootView);
 				break;
+			case 2:
+				reportTitle.setText("Family Planning");
+				loadFamilyPlanningReportData(rootView);
+				break;
 			default:
 				reportTitle.setText("OPD Cases");
 				loadOPDReportData(rootView);
@@ -220,6 +228,7 @@ public class ReportActivity extends FragmentActivity implements
 				
 		}
 		}
+	
 		private void loadOPDReportData(View rootView){
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
 			
@@ -267,6 +276,31 @@ public class ReportActivity extends FragmentActivity implements
 				gridView.setAdapter(adapter);
 			}
 		}
+		
+		private void loadFamilyPlanningReportData(View rootView){
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
+			
+			int ageGroup=getSelectedAgeGroup();
+			int month=getSelectedMonth();
+			int year=getSelectedYear();
+			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
+			String[] headers={"Service","","no cases"};
+			FamilyPlanningReport familyPlanningReport=new FamilyPlanningReport(this.getActivity().getApplicationContext());
+			ArrayList<FamilyPlanningReportRecord> listRecord=familyPlanningReport.getMonthlyFamilyPlanningReport(month,year,ageGroup,null);
+			
+					
+			if(listRecord==null){
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+				gridView.setAdapter(adapter);
+			}else{
+				ArrayList<String> list=familyPlanningReport.getMonthlyFamilyReportStringList(listRecord);
+				list.add(0,headers[2]);
+				list.add(0,headers[1]);
+				list.add(0,headers[0]);
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+				gridView.setAdapter(adapter);
+			}
+		}
 
 		@Override
 		public void onClick(View v) {
@@ -285,6 +319,7 @@ public class ReportActivity extends FragmentActivity implements
 			// TODO Auto-generated method stub
 			
 		}
+		
 		private void fillAgeGroupSpinner(View rootView){
 	
 			ArrayAdapter<String> adapter;
@@ -292,6 +327,8 @@ public class ReportActivity extends FragmentActivity implements
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
 			}else if(sectionNumber==1){
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,vaccineAgeGroups);
+			}else if(sectionNumber==2){
+				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,familyPlanAgeGroups);
 			}else{
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
 			}
@@ -301,6 +338,7 @@ public class ReportActivity extends FragmentActivity implements
 			
 			
 		}
+		
 		private void fillMonthSpinner(View rootView){
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerReportMonth);
@@ -311,6 +349,8 @@ public class ReportActivity extends FragmentActivity implements
 		
 		private void fillYearSpinner(View rootView){
 			String[] strYears=new String[2];
+			//TODO: year drop down should be field based on records available 
+			//get the lowest date on record and populate from today's year to the final year  
 			int year=Calendar.getInstance().get(Calendar.YEAR); //this year
 			strYears[0]=Integer.toString(year);
 			strYears[1]=Integer.toString((year-1));

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.layout;
@@ -119,6 +120,7 @@ public class Synch extends Activity implements OnClickListener {
 		textStatus.setText(msg);
 		textStatus.setTextColor(this.getResources().getColor(R.color.text_color_error));
 	}
+	
 	public void downloadCommunities(){
 		if(task!=null){
 			cancel();
@@ -236,6 +238,7 @@ public class Synch extends Activity implements OnClickListener {
 		RadioButton radioLocalBackup=(RadioButton)findViewById(R.id.radioSynchLocalBackup);
 		if(radioLocalBackup.isChecked()){
 			loadVaccinesFromFile();
+			loadFamilyPlanningServicesFromFile();
 			return;
 		}
 		
@@ -273,6 +276,40 @@ public class Synch extends Activity implements OnClickListener {
 				return;
 			}
 			
+			progressBar.setProgress(5);
+			showStatus("complete");
+			fis.close();
+		}catch(Exception ex){
+			showError("loading from data file failed");
+		}
+	}
+	
+	public void loadFamilyPlanningServicesFromFile(){
+		try{
+			progressBar.setMax(5);
+			progressBar.setProgress(0);
+			showStatus("starting...");
+
+			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			String communityFilename=downloadPath.getPath() + SUPPORT_DATA_FILENAME; 
+			FileInputStream fis=new FileInputStream(communityFilename);
+
+			progressBar.setProgress(2);
+			showStatus("reading data file...");
+
+			byte[] buffer=new byte[fis.available()];
+			fis.read(buffer);
+			String data=new String(buffer);
+			progressBar.setProgress(4);
+			showStatus("loading...");
+
+			FamilyPlanningServices services=new FamilyPlanningServices(getApplicationContext());
+			if(!services.processDownloadData(data)){
+				showError("processing data from data file failed");
+				fis.close();
+				return;
+			}
+
 			progressBar.setProgress(5);
 			showStatus("complete");
 			fis.close();

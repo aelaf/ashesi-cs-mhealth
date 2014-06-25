@@ -11,6 +11,11 @@ import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.Community;
 import com.ashesi.cs.mhealth.data.CommunityMember;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.FamilyPlanningGridAdapter;
+import com.ashesi.cs.mhealth.data.FamilyPlanningRecord;
+import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
+import com.ashesi.cs.mhealth.data.FamilyPlanningService;
+import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.OPDCase;
 import com.ashesi.cs.mhealth.data.OPDCaseRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
@@ -36,6 +41,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -1395,6 +1401,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	public static class FamilyPlanFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
 		int communityMemberId=0;
+		View rootView;
 		
 		public FamilyPlanFragment(){
 			
@@ -1402,7 +1409,24 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_community_member_record_vaccine, container,false);
+			rootView = inflater.inflate(R.layout.fragment_community_member_record_vaccine, container,false);
+			fillServiceSpinner();
+			
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+		        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+		            //Toast.makeText(getActivity().getApplicationContext(), "Position=" + position, Toast.LENGTH_SHORT).show();
+		            itemClicked(parent,v,position,id);
+		        }
+		    });
+			
+			RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
+			radioGroup.setVisibility(View.INVISIBLE);
+			
+			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
+			buttonAddVaccine.setOnClickListener(this);
+			
+			loadFamilyPlanningServiceRecords();
 			return rootView;
 		}
 		
@@ -1414,7 +1438,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		@Override
-		public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+		public void onItemSelected(AdapterView<?> parent, View v, int position,long id) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -1426,10 +1450,98 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		@Override
-		public void onClick(View arg0) {
+		public void onClick(View v) {
 			// TODO Auto-generated method stub
+			switch(v.getId()){
+				case R.id.buttonAddVaccine:
+					recordService();
+					break;
+			}
+		}
+		
+		private void itemClicked(AdapterView<?> parent, View v, int position, long id){
+			if(communityMemberId<=0){
+				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+				communityMemberId=a.getCommunityMemberId();
+				if(communityMemberId==0){
+					return;
+				}
+			}
+			int columnIndex=position%4;
+			if(columnIndex!=3){ //if the click is not on 4th column there is nothing to do
+				return;
+			}
+			
+			removeService(position);
 			
 		}
+		
+		private void removeService(int position){
+			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
+			FamilyPlanningGridAdapter adapter=(FamilyPlanningGridAdapter)gridView.getAdapter();
+			int serviceRecId=(int)adapter.getItemId(position);
+			records.reomveRecord(serviceRecId);
+			adapter.updateReomve(position);
+		}
+		
+		private void recordService(){
+			if(communityMemberId==0){
+				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+				communityMemberId=a.getCommunityMemberId();
+				if(communityMemberId==0){
+					return;
+				}
+			}
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
+			FamilyPlanningService service=(FamilyPlanningService)spinner.getSelectedItem();
+			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
+
+			Calendar calendar=Calendar.getInstance();
+			
+			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId, service.getId(),calendar.getTime());
+			if(serviceRecord==null){
+				return;
+			}
+			//add to the adapter for update
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
+			FamilyPlanningGridAdapter adapter=(FamilyPlanningGridAdapter)gridView.getAdapter();
+			adapter.updateNewRecord(serviceRecord);
+			
+		}
+		
+		public void loadFamilyPlanningServiceRecords(){
+			if(communityMemberId==0){
+				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+				communityMemberId=a.getCommunityMemberId();
+				if(communityMemberId==0){
+					return;
+				}
+			}
+			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
+			ArrayList<FamilyPlanningRecord> list=records.getServiceRecords(communityMemberId);
+			FamilyPlanningGridAdapter adapter=new FamilyPlanningGridAdapter(getActivity().getApplicationContext());
+			adapter.setList(list);
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
+			gridView.setAdapter(adapter);
+			
+		}
+		
+		public String getDatabaseDateString(){
+			Calendar calendar=Calendar.getInstance();
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			return dateFormat.format(calendar.getTime());
+		}
+		
+		private void fillServiceSpinner(){
+		
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
+			FamilyPlanningServices services=new FamilyPlanningServices(getActivity().getApplicationContext());
+			ArrayList<FamilyPlanningService> listServices=services.geServices();
+			ArrayAdapter<FamilyPlanningService> adapter=new ArrayAdapter<FamilyPlanningService>(getActivity(), android.R.layout.simple_dropdown_item_1line,listServices);
+			spinner.setAdapter(adapter);
+		}	
+	
 	}
 	
 	public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {

@@ -26,6 +26,8 @@ import org.apache.http.message.BasicNameValuePair;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
+import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
@@ -533,6 +535,17 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Vaccines.getCreateViewPendingVaccinesSQLString());
 			setDataVersion(db,DATABASE_NAME,5); 			//note down the data base version
 			
+			//Family Planning
+			//In some of the version distributed family planning services
+			//was added. but in other version it was not 
+			db.execSQL(FamilyPlanningServices.getCreateSQLString());
+			
+			db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
+			db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
+			
+			db.execSQL(FamilyPlanningRecords.getCreateSQLString());
+			db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+			//end of family planning
 			//added in version 6
 			db.execSQL(Categories.getInsert("Nutrition"));
 			db.execSQL(Categories.getInsert("Pharmaceuticals"));
@@ -553,6 +566,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			//Create answers table
 			db.execSQL(Answers.getCreateQuery());
+			
 			setDataVersion(db,DATABASE_NAME,6);
 			
 		}catch(Exception ex){
