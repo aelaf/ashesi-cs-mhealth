@@ -284,7 +284,7 @@ public class ReportActivity extends FragmentActivity implements
 			int month=getSelectedMonth();
 			int year=getSelectedYear();
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
-			String[] headers={"Service","","no cases"};
+			String[] headers={"Service","Quantity","No Cases"};
 			FamilyPlanningReport familyPlanningReport=new FamilyPlanningReport(this.getActivity().getApplicationContext());
 			ArrayList<FamilyPlanningReportRecord> listRecord=familyPlanningReport.getMonthlyFamilyPlanningReport(month,year,ageGroup,null);
 			

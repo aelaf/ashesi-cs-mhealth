@@ -13,6 +13,7 @@ import android.content.Context;
 
 public class FamilyPlanningReport extends FamilyPlanningRecords {
 	final static String NO_RECORDS="no_records";
+	final static String TOTAL_QUANTITY="total_quanity";
 	
 	public FamilyPlanningReport(Context context){
 		super(context);
@@ -23,7 +24,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 		ArrayList<String> listString=new ArrayList<String>();
 		for(int i=0;i<list.size();i++){
 			listString.add(list.get(i).getServiceName());
-			listString.add("");
+			listString.add(list.get(i).getTotalQuantityString());
 			listString.add(Integer.toString(list.get(i).getNumberOfRecords()));
 		}
 		
@@ -78,6 +79,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			String strQuery="select "
 					+FamilyPlanningServices.SERVICE_ID +", "
 					+FamilyPlanningServices.SERVICE_NAME+", "
+					+"SUM(" +FamilyPlanningRecords.QUANTITY+") as "+ TOTAL_QUANTITY +", "
 					+"count("+FamilyPlanningServices.SERVICE_ID+") as "+NO_RECORDS
 					+" from " +FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
 					+" where "
@@ -92,15 +94,18 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			int indexId=cursor.getColumnIndex(FamilyPlanningServices.SERVICE_ID);
 			int indexServiceName=cursor.getColumnIndex(FamilyPlanningServices.SERVICE_NAME);
 			int indexNoRecords=cursor.getColumnIndex(NO_RECORDS);
+			int indexTotalQuantity=cursor.getColumnIndex(TOTAL_QUANTITY);
 			FamilyPlanningReportRecord record;
 			int serviceId;
 			String serviceName;
 			int noRecords;
+			double quantity;
 			while(!cursor.isAfterLast()){
 				serviceId=cursor.getInt(indexId);
 				serviceName=cursor.getString(indexServiceName);
 				noRecords=cursor.getInt(indexNoRecords);
-				record= new FamilyPlanningReportRecord(month,year,ageRange,gender,serviceId,serviceName,noRecords);
+				quantity=cursor.getInt(indexTotalQuantity);
+				record= new FamilyPlanningReportRecord(month,year,ageRange,gender,serviceId,serviceName,quantity,noRecords);
 				list.add(record);
 				cursor.moveToNext();
 			}
@@ -121,9 +126,10 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 		private String gender;		//male or female
 		private int serviceId;
 		private String serviceName;
+		private double totalQuantity;
 		private int numberOfRecords;
 		
-		public FamilyPlanningReportRecord(int month,int year,int ageRange,String gender,int serviceId, String serviceName, int numberOfRecords){
+		public FamilyPlanningReportRecord(int month,int year,int ageRange,String gender,int serviceId, String serviceName, double totalQuantity, int numberOfRecords){
 			this.month=month;
 			this.year=year;		
 			this.ageRange=ageRange;
@@ -131,6 +137,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			this.serviceId=serviceId;
 			this.serviceName=serviceName;
 			this.numberOfRecords=numberOfRecords;
+			this.totalQuantity=totalQuantity;
 		}
 		
 		public int getMonth(){
@@ -159,6 +166,14 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 		
 		public int getNumberOfRecords(){
 			return numberOfRecords;
+		}
+		
+		public double getTotalQuantity(){
+			return totalQuantity;
+		}
+		
+		public String getTotalQuantityString(){
+			return String.format("%,.2f", totalQuantity);
 		}
 		
 		public String toString(){

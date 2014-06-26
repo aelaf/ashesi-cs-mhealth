@@ -1409,7 +1409,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			rootView = inflater.inflate(R.layout.fragment_community_member_record_vaccine, container,false);
+			rootView = inflater.inflate(R.layout.fragment_community_member_record_family_plan_service, container,false);
 			fillServiceSpinner();
 			
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
@@ -1420,10 +1420,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		        }
 		    });
 			
-			RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
-			radioGroup.setVisibility(View.INVISIBLE);
+			//RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
+			//radioGroup.setVisibility(View.INVISIBLE);
 			
-			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAddVaccine);
+			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAdd);
 			buttonAddVaccine.setOnClickListener(this);
 			
 			loadFamilyPlanningServiceRecords();
@@ -1453,7 +1453,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			switch(v.getId()){
-				case R.id.buttonAddVaccine:
+				case R.id.buttonAdd:
 					recordService();
 					break;
 			}
@@ -1493,13 +1493,21 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					return;
 				}
 			}
-			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecord);
+			EditText editQty=(EditText)rootView.findViewById(R.id.editQuantity); 
 			FamilyPlanningService service=(FamilyPlanningService)spinner.getSelectedItem();
 			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
-
+			
+			double quantity=0;
+			String strQty=editQty.getText().toString();
+			
+			if(!strQty.isEmpty()){
+				quantity=Double.parseDouble(strQty);
+			}
+			
 			Calendar calendar=Calendar.getInstance();
 			
-			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId, service.getId(),calendar.getTime());
+			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId, service.getId(),calendar.getTime(),quantity);
 			if(serviceRecord==null){
 				return;
 			}
@@ -1535,7 +1543,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		private void fillServiceSpinner(){
 		
-			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecordVaccinVaccines);
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecord);
 			FamilyPlanningServices services=new FamilyPlanningServices(getActivity().getApplicationContext());
 			ArrayList<FamilyPlanningService> listServices=services.geServices();
 			ArrayAdapter<FamilyPlanningService> adapter=new ArrayAdapter<FamilyPlanningService>(getActivity(), android.R.layout.simple_dropdown_item_1line,listServices);

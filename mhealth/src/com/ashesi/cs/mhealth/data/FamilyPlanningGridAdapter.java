@@ -60,7 +60,7 @@ public class FamilyPlanningGridAdapter extends BaseAdapter {
 		}else if(columnIndex==1){
 			return (View)getTextView(records.get(index).getFormattedServiceDate());
 		}else if(columnIndex==2){
-			return (View)getTextView("----");
+			return (View)getTextView(records.get(index).getQuantityString());
 		}else if(columnIndex==3){
 			return (View)getImageViewRemove();
 		}

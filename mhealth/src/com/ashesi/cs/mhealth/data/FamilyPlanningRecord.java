@@ -18,9 +18,20 @@ public class FamilyPlanningRecord {
 	private String serviceDate;
 	private String fullname;
 	private String familyPlanningServiceName;
+	private double quantity;
 	
 	public FamilyPlanningRecord(){
-		
+		this.quantity=0;
+	}
+	
+	public FamilyPlanningRecord(int familyPlanningRecordId,int communityMemberId,String fullname,int familyPlanningServiceId, String familyPlanningServiceName, String serviceDate, double quantity){
+		this.familyPlanningRecordId=familyPlanningRecordId;
+		this.communityMemberId=communityMemberId;
+		this.fullname=fullname;
+		this.familyPlanningServiceId=familyPlanningServiceId;
+		this.serviceDate=serviceDate;
+		this.familyPlanningServiceName=familyPlanningServiceName;
+		this.quantity=quantity;
 	}
 	
 	public FamilyPlanningRecord(int familyPlanningRecordId,int communityMemberId,String fullname,int familyPlanningServiceId, String familyPlanningServiceName, String serviceDate){
@@ -30,6 +41,7 @@ public class FamilyPlanningRecord {
 		this.familyPlanningServiceId=familyPlanningServiceId;
 		this.serviceDate=serviceDate;
 		this.familyPlanningServiceName=familyPlanningServiceName;
+		this.quantity=0;
 	}
 	
 	public int getId(){
@@ -69,7 +81,18 @@ public class FamilyPlanningRecord {
 		}
 	}
 	
-
+	public double getQuantity(){
+		return quantity;
+	}
+	
+	public int getQuantityInt(){
+		return (int)quantity;
+	}
+	
+	public String getQuantityString(){
+		return String.format("%,.2f",quantity);
+	}
+	
 	public String toString(){
 		return fullname +" "+familyPlanningServiceName;
 	}
