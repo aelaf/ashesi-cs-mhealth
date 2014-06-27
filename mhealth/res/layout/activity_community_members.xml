@@ -22,14 +22,15 @@
         android:orientation="horizontal" >
 	    <Spinner
 	        android:id="@+id/spinnerCommunities"
-	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
 	        android:layout_weight="0.60" />
-	    <Button
-            android:id="@+id/buttonGetAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/getAllinCommunity" />
+
+	    <Spinner
+	        android:id="@+id/spinnerSort"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:layout_weight="0.20" />
 
 	    <Button
 	        android:id="@+id/buttonCommunityAddMember"

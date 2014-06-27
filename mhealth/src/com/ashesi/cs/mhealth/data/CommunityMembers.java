@@ -31,6 +31,8 @@ public class CommunityMembers extends DataClass {
     public static final String BIRTHDATE_CONFIRMED="1";
     public static final String BIRTHDATE_NOT_CONFIRMED="0";
     		
+    private String orderBy=COMMUNITY_MEMBER_ID;
+    private String direction="ASC";
     
     public static final int PAGE_SIZE=10;
 	
@@ -41,6 +43,36 @@ public class CommunityMembers extends DataClass {
 	
 	public CommunityMembers(Context context){
 		super(context);
+	}
+	
+	public void setOrder(String orderBy, int direction){
+		this.orderBy=orderBy;
+		if(direction==1){
+			this.direction="DESC";
+		}else{
+			this.direction="ASC";
+		}
+	}
+	
+	public void setOrder(int orderBy,int direction){
+		switch(orderBy){
+			case 2:
+				this.orderBy=COMMUNITY_MEMBER_ID;
+				break;
+			case 0:
+				this.orderBy=COMMUNITY_MEMBER_NAME;
+				break;
+			case 1:
+				this.orderBy=CARD_NO;
+				break;
+		}
+		
+		if(direction==1){
+			this.direction="DESC";
+		}else{
+			this.direction="ASC";
+		}
+		
 	}
 	
 	/**
@@ -88,9 +120,12 @@ public class CommunityMembers extends DataClass {
 			}
 			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			db=getReadableDatabase();
-			page=page*15;
-			String limit=page +",15";
-			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, null,limit);
+			
+			String strOrder=orderBy+" "+direction;
+			
+			page=page*PAGE_SIZE;
+			String limit=page +"," +PAGE_SIZE;
+			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, strOrder,limit);
 			CommunityMember c=fetch();
 			while(c!=null){
 				list.add(c);
@@ -350,8 +385,9 @@ public class CommunityMembers extends DataClass {
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
 			}
 			
+			String strOrder=orderBy+" "+direction;
 			db=getReadableDatabase();
-			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null);
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, strOrder);
 			cursor.moveToFirst();
 			CommunityMember c=fetch();
 			while(c!=null){
@@ -383,14 +419,16 @@ public class CommunityMembers extends DataClass {
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
 			}
 			
+			String strOrder=orderBy+" "+direction;
+			
 			String limit=null;
 			if(page>=0){
-				page=page*15;
-				limit=page +",15";
+				page=page*PAGE_SIZE;
+				limit=page +"," +PAGE_SIZE;
 			}
 			
 			db=getReadableDatabase();
-			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null,limit);
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, strOrder,limit);
 			cursor.moveToFirst();
 			CommunityMember c=fetch();
 			while(c!=null){
@@ -427,15 +465,15 @@ public class CommunityMembers extends DataClass {
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
 			}
 			
-			
+			String strOrder=orderBy+" "+direction;
 			String limit=null;
 			if(page>=0){
-				page=page*15;
-				limit=page +",15";
+				page=page*PAGE_SIZE;
+				limit=page +","+PAGE_SIZE;
 			}
 			
 			db=getReadableDatabase();
-			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null,limit);
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, strOrder,limit);
 			cursor.moveToFirst();
 			CommunityMember c=fetch();
 			while(c!=null){
@@ -475,6 +513,8 @@ public class CommunityMembers extends DataClass {
 		if(communityID!=0){
 			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
 		}
+		
+		strQuery=" "+orderBy+" "+direction;
 		
 		String limit="";
 		if(page>=0){
@@ -524,6 +564,8 @@ public class CommunityMembers extends DataClass {
 			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
 		}
 		
+		strQuery=" "+orderBy+" "+direction;
+		
 		String limit="";
 		if(page>=0){
 			page=page*15;
@@ -542,6 +584,41 @@ public class CommunityMembers extends DataClass {
 			close();
 			return list;
 		}catch(Exception ex){
+			return list;
+		}
+	}
+	
+	public ArrayList<CommunityMember> findCommunityMemberWithCardNo(int communityID,String cardNo,int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String selector=CARD_NO +" LIKE '%"+ cardNo +"%' ";
+			if(communityID!=0){
+				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
+			}
+			
+			String limit=null;
+			if(page>=0){
+				page=page*15;
+				limit=page +",15";
+			}
+			
+			String strOrder=" "+orderBy+" "+direction;
+			
+			db=getReadableDatabase();
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, strOrder,limit);
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			Log.e("CommunityMembers.findCommunityMemberCardNo(int,String,int)","Exception "+ex.getMessage());
+			close();
 			return list;
 		}
 	}
@@ -753,6 +830,7 @@ public class CommunityMembers extends DataClass {
 		close();
 		return list;
 	}
+	
 	/**
 	 * gets a set of records limited by PAGE SIZE for display. Cursor should be open  
 	 * @param page 0 index page number
@@ -781,6 +859,7 @@ public class CommunityMembers extends DataClass {
 			return list;
 		}
 	}
+	
 	/**
 	 * get list of community members in cursor as string array of full name 
 	 * @return

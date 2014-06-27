@@ -91,22 +91,20 @@ public class CommunityMemberAdapter extends BaseAdapter {
 			
 		}
 		
-		String str=obj.getId() +" "+ obj.getFullname() +"\t"+ obj.getFormatedBirthdate() +"\t"+ obj.getCardNo()+"\t" +obj.getCommunity(); 
+		//String str=obj.getId() +" "+ obj.getFullname() +"\t"+ obj.getFormatedBirthdate() +"\t"+ obj.getCardNo()+"\t" +obj.getCommunity();
+		String str=String.format("%-6d %-35s %-12s %-7s %s",obj.getId(), obj.getFullname(), obj.getFormatedBirthdate(),  obj.getCardNo(),obj.getCommunity());
 		textView.setTextColor(mContext.getResources().getColor(R.color.text_color_black));
 		textView.setText(str);
-		if(obj.IsNHISExpiring(0)){
-			textView.setBackgroundColor(mContext.getResources().getColor(R.color.background_error));
-		} else if(obj.IsNHISExpiring(3)){
-			textView.setBackgroundColor(mContext.getResources().getColor(R.color.background_warning));
-		}
+		
 		p=new LinearLayout.LayoutParams(30,30);
+		//birth date status
 		ImageView image=new ImageView(mContext);
 		image.setLayoutParams(p);
-		image.setPadding(8,8,8,8);
+		image.setPadding(4,4,4,4);
 		if(obj.IsBirthDateConfirmed()){
-			image.setImageResource(R.drawable.checked);
+			image.setImageResource(R.drawable.bdate_ok);
 		}else{
-			image.setImageResource(R.drawable.caution);
+			image.setImageResource(R.drawable.bdate_caution);
 			image.setOnClickListener(new OnClickListener(){
 				int id=communityMemberId;	
 				@Override
@@ -116,10 +114,10 @@ public class CommunityMemberAdapter extends BaseAdapter {
 					CommunityMember cm=communityMembers.getCommunityMember(id);
 					if(!cm.IsBirthDateConfirmed()){
 						communityMembers.confirmBirthDate(id);
-						iv.setImageResource(R.drawable.checked);
+						iv.setImageResource(R.drawable.bdate_ok);
 					}else{
 						communityMembers.unconfirmBirthDate(id);
-						iv.setImageResource(R.drawable.caution);
+						iv.setImageResource(R.drawable.bdate_caution);
 					}
 
 				}
@@ -128,16 +126,31 @@ public class CommunityMemberAdapter extends BaseAdapter {
 		}
 
 		l.addView(image);
-
+		//nhis status
 		image=new ImageView(mContext);
 		image.setLayoutParams(p);
-		image.setPadding(8,8,8,8);
+		image.setPadding(4,4,4,4);
+		
+		if(obj.IsNHISExpiring(0)){
+			image.setImageResource(R.drawable.nhis_expired);
+		} else if(obj.IsNHISExpiring(3)){
+			image.setImageResource(R.drawable.nhis_expiring);
+		}else{
+			image.setImageResource(R.drawable.nhis_ok);
+		}
+		l.addView(image);
+		
+		//gender
+		image=new ImageView(mContext);
+		image.setLayoutParams(p);
+		image.setPadding(4,4,4,4);
 		if(obj.getGender().equalsIgnoreCase("male")){
 			image.setImageResource(R.drawable.male);
 		}else{
 			image.setImageResource(R.drawable.female);
 		}
 		l.addView(image);
+		
 		l.addView(textView);
 			
 

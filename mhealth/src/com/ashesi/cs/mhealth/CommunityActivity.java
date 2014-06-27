@@ -39,7 +39,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	ArrayList<Community> listCommunities;
 	ArrayList<CommunityMember> listCommunityMembers;
 	int page=0;
-	int queryType=1;
+	int queryType=2;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +50,6 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		b.setOnClickListener(this);
 		
 		b=(Button)findViewById(R.id.buttonCommunityAddMember);
-		b.setOnClickListener(this);
-		
-		b=(Button)findViewById(R.id.buttonGetAll);
 		b.setOnClickListener(this);
 		
 		b=(Button)findViewById(R.id.buttonCommunityNext);
@@ -77,6 +74,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		CHOs chos=new CHOs(getApplicationContext());
 		currentCHO=chos.getCHO(choId);
 		
+		loadSortSpinner();
 		loadCommunitySpinner();
 		loadSearchTypeSpinner();
 	}
@@ -92,7 +90,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		int id=v.getId();
 		switch(id){
 			case R.id.buttonCommunityFind:
-				page=0;
+				page=0;			//new search
 				find();
 				break;
 			case R.id.buttonCommunityAddMember:
@@ -106,11 +104,6 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 			case R.id.buttonCommunityPrev:
 				this.getPrev();
 				break;
-			case R.id.buttonGetAll:
-				page=0;
-				this.getAllCommunityMembers();
-				break;
-			
 		}
 	}
 	
@@ -127,6 +120,9 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		return true;
 	}
 	
+	/**
+	 * get all community member
+	 */
 	public void getAllCommunityMembers(){
 		queryType=1;
 
@@ -143,26 +139,34 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	public void find(){
 		queryType=2;
 		EditText txtCommunityName=(EditText)findViewById(R.id.editCommunityMemberSearchName);
-		String communityMemberName=txtCommunityName.getText().toString();
+		String searchText=txtCommunityName.getText().toString();
 		CommunityMembers members=new CommunityMembers(getApplicationContext());
 		int communityId=getSelectedCommunityId();
 		int searchType=getSelectedSearchType();
+		int sortType=getSelectedSortType();
+		members.setOrder(sortType,0);	//ascending 
 		//listCommunityMembers=members.findCommunityMember(commmunityId, communityMemberName);
 		switch(searchType){
-			case 0:	//search by name
-				listCommunityMembers=members.findCommunityMember(communityId,communityMemberName, page);
+			case 0:	//get all in community	
+				listCommunityMembers=members.getAllCommunityMember(communityId,page);
 				break;
-			case 1: //search NHIS expiring
+			case 1:	//search by name
+				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
+				break;
+			case 2: //search by card
+				listCommunityMembers=members.findCommunityMemberWithCardNo(communityId, searchText, page);
+				break;
+			case 3: //search NHIS expiring
 				listCommunityMembers=members.findCommunityMemberInsuranceExpiring(communityId, page);
 				break;
-			case 2:	//opd in the last 30 days
+			case 4:	//opd in the last 30 days
 				listCommunityMembers=members.findCommunityMemberWithRecord(communityId, page);
 				break;
-			case 3: //vaccine within 7 days
+			case 5: //vaccine within 7 days
 				listCommunityMembers=members.findCommunityMemberWithScheduled(communityId, 7, page);
 				break;
 			default:
-				listCommunityMembers=members.findCommunityMember(communityId,communityMemberName, page);
+				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
 				break;
 				
 		}
@@ -190,6 +194,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		
 	}
 	
+	
 	public void getPrev(){
 
 		page=page-1;
@@ -210,6 +215,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		
 	}
 	
+	
 	public void uploadData(){
 		//OPDCaseRecords records=new OPDCaseRecords(getApplicationContext());
 		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
@@ -220,6 +226,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		UploadRecords uploadRecords=new UploadRecords(); 
 		uploadRecords.execute(params);
 	}
+	
 	
 	public void addCommunityMember(){
 		int commmunityId=getSelectedCommunityId();
@@ -232,6 +239,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		intent.putExtra("choId", currentCHO.getId());
 		startActivity(intent);
 	}
+	
 	
 	public boolean loadCommunitySpinner(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerCommunities);
@@ -247,14 +255,23 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		
 	}
 	
+	
 	public boolean loadSearchTypeSpinner(){
-		String searchTypes[]={"By Name","NHIS expiring","OPD in last 30 days", "Vaccine in a week"};
+		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);
 		return true;
 	}
-
+	
+	public boolean loadSortSpinner(){
+		String searchTypes[]={"By Name","By Card No","By ID"};
+		Spinner spinner=(Spinner)findViewById(R.id.spinnerSort);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
+		spinner.setAdapter(adapter);
+		return true;
+	}
+	
 	@Override
 	public void onItemSelected(AdapterView<?> adapter, View v, int startIndex, long endIndex) {
 		// TODO Auto-generated method 
@@ -273,12 +290,14 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		
 	}
 
+	
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View v, int startIndex, long endItem) {
 		// TODO Auto-generated method stub
@@ -295,6 +314,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		startActivity(intent);
 	}
 	
+	
 	public int getSelectedCommunityId(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerCommunities);
 		int index=(int)spinner.getSelectedItemId();
@@ -306,8 +326,17 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		return community.getId();
 	}
  
+	
 	public int getSelectedSearchType(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
+		int index=(int)spinner.getSelectedItemId();
+		return index;
+		
+	}
+	
+	
+	public int getSelectedSortType(){
+		Spinner spinner=(Spinner)findViewById(R.id.spinnerSort);
 		int index=(int)spinner.getSelectedItemId();
 		return index;
 		
