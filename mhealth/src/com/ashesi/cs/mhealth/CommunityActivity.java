@@ -165,6 +165,21 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 			case 5: //vaccine within 7 days
 				listCommunityMembers=members.findCommunityMemberWithScheduled(communityId, 7, page);
 				break;
+			case 6:// by age
+				int age=0;
+				try{
+					age=Integer.parseInt(searchText);
+				}catch(Exception ex){
+					age=2;		//use default;
+					txtCommunityName.setText("under 2 years");
+				}
+				
+				listCommunityMembers=members.findCommunityMemberWithAge(communityId, age, page);
+				break;
+			case 7: // children
+				txtCommunityName.setText("under 2 years");
+				listCommunityMembers=members.findCommunityMemberWithAge(communityId, 2, page);
+				break;
 			default:
 				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
 				break;
@@ -257,7 +272,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	
 	
 	public boolean loadSearchTypeSpinner(){
-		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week"};
+		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);
@@ -265,7 +280,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	}
 	
 	public boolean loadSortSpinner(){
-		String searchTypes[]={"By Name","By Card No","By ID"};
+		String searchTypes[]={"Sort by","Name","Card No","ID"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSort);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);
@@ -338,6 +353,9 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	public int getSelectedSortType(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSort);
 		int index=(int)spinner.getSelectedItemId();
+		if(index>0){
+			index=index-1;
+		}
 		return index;
 		
 	}

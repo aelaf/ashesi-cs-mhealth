@@ -34,7 +34,7 @@ public class CommunityMembers extends DataClass {
     private String orderBy=COMMUNITY_MEMBER_ID;
     private String direction="ASC";
     
-    public static final int PAGE_SIZE=10;
+    public static final int PAGE_SIZE=15;
 	
 	public static final String VIEW_NAME_COMMUNITY_MEMBERS="view_community_members";
 	
@@ -514,7 +514,7 @@ public class CommunityMembers extends DataClass {
 			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
 		}
 		
-		strQuery=" "+orderBy+" "+direction;
+		strQuery+=" order by "+orderBy+" "+direction;
 		
 		String limit="";
 		if(page>=0){
@@ -564,7 +564,7 @@ public class CommunityMembers extends DataClass {
 			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
 		}
 		
-		strQuery=" "+orderBy+" "+direction;
+		strQuery+=" order by "+orderBy+" "+direction;
 		
 		String limit="";
 		if(page>=0){
@@ -618,6 +618,41 @@ public class CommunityMembers extends DataClass {
 			
 		}catch(Exception ex){
 			Log.e("CommunityMembers.findCommunityMemberCardNo(int,String,int)","Exception "+ex.getMessage());
+			close();
+			return list;
+		}
+	}
+	
+	public ArrayList<CommunityMember> findCommunityMemberWithAge(int communityID, int age,int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			String selector=AGE +"<=" +age;
+			if(communityID!=0){
+				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
+			}
+			
+			String strOrder=orderBy+" "+direction;
+			
+			String limit=null;
+			if(page>=0){
+				page=page*PAGE_SIZE;
+				limit=page +"," +PAGE_SIZE;
+			}
+			
+			db=getReadableDatabase();
+			cursor=db.query(CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, strOrder,limit);
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+			
+		}catch(Exception ex){
+			Log.e("CommunityMembers.findCommunityMember(int)","Exception "+ex.getMessage());
 			close();
 			return list;
 		}

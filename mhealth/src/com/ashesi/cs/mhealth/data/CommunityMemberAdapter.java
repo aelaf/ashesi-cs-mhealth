@@ -92,7 +92,7 @@ public class CommunityMemberAdapter extends BaseAdapter {
 		}
 		
 		//String str=obj.getId() +" "+ obj.getFullname() +"\t"+ obj.getFormatedBirthdate() +"\t"+ obj.getCardNo()+"\t" +obj.getCommunity();
-		String str=String.format("%-6d %-35s %-12s %-7s %s",obj.getId(), obj.getFullname(), obj.getFormatedBirthdate(),  obj.getCardNo(),obj.getCommunity());
+		String str=String.format("%-6d %-30s %-10s %-7s %s",obj.getId(), obj.getFullname(), obj.getFormatedBirthdate(),  obj.getCardNo(),obj.getCommunity());
 		textView.setTextColor(mContext.getResources().getColor(R.color.text_color_black));
 		textView.setText(str);
 		
