@@ -64,6 +64,11 @@
             android:name="com.ashesi.cs.mhealth.AddCommunityActivity"
             android:label="@string/title_add_community" >
         </activity>
+         <activity
+            android:name="com.ashesi.cs.mhealth.HealthPromotionReportDetails"
+            android:label="@string/title_add_community" >
+        </activity>
+        
          <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsActivity"></activity>
          <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsReport"></activity>
          <activity android:name="HealthPromotionReport"></activity>

@@ -13,6 +13,7 @@ import com.ashesi.cs.mhealth.data.R;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
@@ -228,6 +229,7 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	HealthPromotions healthPromos=new HealthPromotions(getActivity().getApplicationContext());
 	ArrayList<HealthPromotion> list;
 	list=healthPromos.getReport();
+	
 	final HealthPromotionGridAdapter adapter=new HealthPromotionGridAdapter(getActivity().getApplicationContext());
 	adapter.setList(list);
 	gridView.setAdapter(adapter);
@@ -238,11 +240,8 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 						public void onItemClick(AdapterView<?> parent,
 								View view, int position, long id) {
 							
-							ReportDetailsFragment secFrag = new ReportDetailsFragment();
-							android.support.v4.app.FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
-							                    fragTransaction.replace(R.layout.activity_health_promotion_details,secFrag );
-							                    fragTransaction.addToBackStack(null);
-							                    fragTransaction.commit();
+							Intent intent = new Intent(getActivity(), HealthPromotionReportDetails.class);
+			                startActivity(intent);
 							
 							
 						}
@@ -278,7 +277,7 @@ public static class ReportFragment extends Fragment implements OnClickListener, 
 	}
 	
 	}
-public static class ReportDetailsFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
+public static class ReportDetailsFragment extends Activity implements OnClickListener, OnItemSelectedListener{
 	
 	//VaccineAdapter adapter; 
 	
@@ -317,17 +316,17 @@ public static class ReportDetailsFragment extends Fragment implements OnClickLis
 		remarks_txt=(TextView) rootView.findViewById(R.id.txt_remarks);
 	 
 	ReportFragment report=new ReportFragment();
-	HealthPromotions healthPromos=new HealthPromotions(this.getActivity().getApplicationContext());
+	HealthPromotions healthPromos=new HealthPromotions(this);
 	ArrayList<String> list;
 	list=healthPromos.getDetails(report.id);
 	String[] headers={"--------"};
 
 	if(list==null){
-		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, headers);
 		detailsList.setAdapter(adapter);
 		image.setVisibility(View.GONE);
 	}else{
-		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
 		detailsList.setAdapter(adapter);
 		imagepath=list.get(7);
 		 bitmap=BitmapFactory.decodeFile(imagepath);
