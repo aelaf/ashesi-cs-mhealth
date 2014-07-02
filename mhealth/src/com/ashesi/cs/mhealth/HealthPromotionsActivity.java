@@ -7,6 +7,8 @@ import java.util.List;
 
 import com.ashesi.cs.mhealth.DataClass;
 import com.ashesi.cs.mhealth.MainActivity;
+import com.ashesi.cs.mhealth.data.CHO;
+import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.GPSTracker;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
 import com.ashesi.cs.mhealth.data.R;
@@ -33,7 +35,7 @@ import android.widget.Toast;
 
 @SuppressLint("SimpleDateFormat") 
 public class HealthPromotionsActivity extends Activity implements OnClickListener {
-
+	private CHO currentCHO;
 	private Button set_location_btn;
 	private ImageButton image_upload_btn;
 	private Button save_btn;
@@ -85,7 +87,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	    year = c.get(Calendar.YEAR);
 	    month = (c.get(Calendar.MONTH)+1);
 	    day = c.get(Calendar.DAY_OF_MONTH);
-	    date_txt.setText(year+"/"+month+"/"+day);
+	    date_txt.setText(year+"-"+month+"-"+day);
 	    
 	    month_txt=(TextView) findViewById(R.id.month_txt);
 	    month_txt.setTextColor(Color.BLACK);
@@ -108,7 +110,10 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		image_url_txt=(EditText) findViewById(R.id.image_url_txt);
 		
 		
-		
+		Intent intent=getIntent();
+		int choId=intent.getIntExtra("choId", 0);
+		CHOs chos=new CHOs(getApplicationContext());
+		currentCHO=chos.getCHO(choId);
 		
 	}
 
@@ -129,8 +134,8 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 			String latitude_str=latitude_txt.getText().toString();
 			String longitude_str=longitude_txt.getText().toString();
 			String image=image_url_txt.getText().toString();
-			String cho_id=MainActivity.choId;
-			String subdistrict_id=MainActivity.subdistrictId;
+			String cho_id=Integer.toString(currentCHO.getId());
+			String subdistrict_id=Integer.toString(currentCHO.getSubdistrictId());
 			
 			
 			HealthPromo.addHealthPromotion(date, venue, topic, method_txt, target, number, remarks, month, latitude_str, longitude_str, image, cho_id, subdistrict_id);
@@ -167,6 +172,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		}
 		
 	}
+	
 	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
          
 	        if (requestCode == 1 && resultCode == RESULT_OK) {

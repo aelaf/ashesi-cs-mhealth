@@ -54,7 +54,7 @@ public class HealthPromotionReportDetails extends Activity implements OnClickLis
 	ReportFragment report=new ReportFragment();
 	HealthPromotions healthPromos=new HealthPromotions(this);
 	ArrayList<String> list;
-	list=healthPromos.getDetails(report.id);
+	list=healthPromos.getDetails(0);
 	String[] headers={"--------"};
 
 	if(list==null){

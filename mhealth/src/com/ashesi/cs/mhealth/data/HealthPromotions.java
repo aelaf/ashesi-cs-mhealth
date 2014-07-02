@@ -31,21 +31,21 @@ public class HealthPromotions extends DataClass {
 	public static final String SERVER_REC_NO="server_rec_no";
 	public static final String REC_SUBDISTRICTID="subdistrict_id";
 	public static final String TABLE_NAME_HEALTH_PROMOTION="health_promotion";
-	
+
 	public HealthPromotions(Context context){
 		super(context);
 	}
-	
-	
+
+
 	/**
 	 *
 	 * 
 	 * @return
 	 */
-	
+
 	public static String getCreateSQLString(){
 		return "create table "+ TABLE_NAME_HEALTH_PROMOTION +" ("
-				+REC_NO +" int primary key, "
+				+REC_NO +" integer primary key autoincrement, "
 				+REC_DATE+" text, "
 				+REC_VENUE +" text, "
 				+REC_TOPIC+" text, "
@@ -61,7 +61,10 @@ public class HealthPromotions extends DataClass {
 				+REC_SUBDISTRICTID+" text "
 				+" )";
 	}
-	
+
+	/*
+	 * I dont think we need this. 
+	 */
 	public static String getInsert(String date,String venue,String topic, String method, String target, String number, String remarks, String month, String lat, String longitude, String image_url, String cho_id, String subdistrict_id){
 		return "insert into "
 				+ TABLE_NAME_HEALTH_PROMOTION +" ("
@@ -94,7 +97,7 @@ public class HealthPromotions extends DataClass {
 				+subdistrict_id
 				+") ";
 	}
-	
+
 	public boolean addHealthPromotion(String date,String venue,String topic, String method, String target, String number, String remarks, String month, String lat, String longitude, String image_url, String cho_id, String subdistrict_id){
 		try
 		{
@@ -113,29 +116,28 @@ public class HealthPromotions extends DataClass {
 			values.put(REC_IMAGE, image_url);
 			values.put(REC_IDCHO, cho_id);
 			values.put(REC_SUBDISTRICTID, subdistrict_id);
-			
+
 			db.insertWithOnConflict(TABLE_NAME_HEALTH_PROMOTION, null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			return true;
 		}catch(Exception ex){
 			return false;
 		}
 	}
-	
-	
+
+
 	public HealthPromotion fetch(){
 		try
 		{
 			if(cursor.isAfterLast()){
 				return null;
 			}
-			
+
 			if(cursor.isBeforeFirst()){
 				cursor.moveToFirst();
 			}
 			int index=cursor.getColumnIndex(REC_NO);
-			
 			int id=cursor.getInt(index);
-			//index=cursor.getColumnIndex(REC_NO);
+			index=cursor.getColumnIndex(REC_DATE);
 			String date=cursor.getString(index);
 			index=cursor.getColumnIndex(REC_VENUE);
 			String venue=cursor.getString(index);
@@ -168,7 +170,7 @@ public class HealthPromotions extends DataClass {
 		}catch(Exception ex){
 			return null;
 		}
-		
+
 	}
 	public ArrayList<HealthPromotion> getArrayList(){
 		ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();
@@ -180,80 +182,60 @@ public class HealthPromotions extends DataClass {
 		close();
 		return list;
 	}
-	
+
 	public ArrayList<HealthPromotion> getReport(){
-	
-		
+
+
 		try
 		{
 			db=getReadableDatabase();
+			String[] columns={REC_NO,REC_DATE,REC_TOPIC,REC_VENUE,REC_METHOD,
+					REC_TARGETAUDIENCE,REC_NUMBERAUDIENCE,REC_REMARKS,REC_MONTH,REC_LATITUDE,
+					REC_LONGITUDE,REC_IMAGE,REC_IDCHO,REC_SUBDISTRICTID};
+		
+
+			cursor=db.query(TABLE_NAME_HEALTH_PROMOTION, columns, null, null, null, null, null);
 			
-			String strQuery="select "+HealthPromotions.REC_NO
-								+","+HealthPromotions.REC_DATE
-								+"," +HealthPromotions.REC_TOPIC
-								+","+HealthPromotions.REC_VENUE
-								+" from "+HealthPromotions.TABLE_NAME_HEALTH_PROMOTION;
-			
-			cursor=db.rawQuery(strQuery, null);
 			ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();		
-			
-			cursor.moveToFirst();
-			
-			int indexHealthPromoID=cursor.getColumnIndex(HealthPromotions.REC_NO);
-			int indexHealthPromoDate=cursor.getColumnIndex(HealthPromotions.REC_DATE);
-			int indexHealthPromoTopic=cursor.getColumnIndex(HealthPromotions.REC_TOPIC);
-			int indexHealthPromoVenue=cursor.getColumnIndex(HealthPromotions.REC_VENUE);
-			HealthPromotion record = null ;	
-			HealthPromotion record2 = null ;
-			record2= new HealthPromotion("DATE","TOPIC","VENUE");
-			list.add(record2);
-			int healthPromoId = 0;
-			String healthPromoDate =null;
-			String healthPromoVenue = null;
-			String healthPromoTopic = null;
-			while(!cursor.isAfterLast()){
-				record= new HealthPromotion(healthPromoId,healthPromoDate,healthPromoVenue,healthPromoTopic);
-				healthPromoId=cursor.getInt(indexHealthPromoID);
-				healthPromoDate=cursor.getString(indexHealthPromoDate);
-				healthPromoVenue=cursor.getString(indexHealthPromoTopic);
-				healthPromoTopic=cursor.getString(indexHealthPromoVenue);
+			HealthPromotion record = fetch();	
+			while(record!=null){
+	
 				list.add(record);
-				
-				cursor.moveToNext();
-				
+				record=fetch();
+
 			}
-			
+
 			close();
 			return list;
 		}catch(Exception ex){
 			return null;
 		}
-		
-		
+
+
 	}
-public ArrayList<String> getDetails(int id){
-	
-		
+	public ArrayList<String> getDetails(int id){
+
+
 		try
 		{
 			db=getReadableDatabase();
-			
+
 			String strQuery="select "+HealthPromotions.REC_DATE
-								+","+HealthPromotions.REC_TOPIC
-								+"," +HealthPromotions.REC_VENUE
-								+","+HealthPromotions.REC_REMARKS
-								+","+HealthPromotions.REC_METHOD
-								+","+HealthPromotions.REC_NUMBERAUDIENCE
-								+","+HealthPromotions.REC_TARGETAUDIENCE
-								+","+HealthPromotions.REC_IMAGE
-								+" from "+HealthPromotions.TABLE_NAME_HEALTH_PROMOTION
-								+" where "+HealthPromotions.REC_NO+" = "+id;
-			
+					+","+HealthPromotions.REC_TOPIC
+					+"," +HealthPromotions.REC_VENUE
+					+","+HealthPromotions.REC_REMARKS
+					+","+HealthPromotions.REC_METHOD
+					+","+HealthPromotions.REC_NUMBERAUDIENCE
+					+","+HealthPromotions.REC_TARGETAUDIENCE
+					+","+HealthPromotions.REC_IMAGE
+					+" from "+HealthPromotions.TABLE_NAME_HEALTH_PROMOTION
+					+" where "+HealthPromotions.REC_NO+" = "+id;
+
 			cursor=db.rawQuery(strQuery, null);
 			ArrayList<String> list=new ArrayList<String>();		
-			
+
 			cursor.moveToFirst();
-			
+
 			int indexHealthPromoDate=cursor.getColumnIndex(HealthPromotions.REC_DATE);
 			int indexHealthPromoTopic=cursor.getColumnIndex(HealthPromotions.REC_TOPIC);
 			int indexHealthPromoVenue=cursor.getColumnIndex(HealthPromotions.REC_VENUE);
@@ -262,7 +244,7 @@ public ArrayList<String> getDetails(int id){
 			int indexHealthPromoNumAudience=cursor.getColumnIndex(HealthPromotions.REC_NUMBERAUDIENCE);
 			int indexHealthPromoTargetAudience=cursor.getColumnIndex(HealthPromotions.REC_TARGETAUDIENCE);
 			int indexHealthPromoImage=cursor.getColumnIndex(HealthPromotions.REC_IMAGE);
-				
+
 			String healthPromoDate ="";
 			String healthPromoVenue = null;
 			String healthPromoTopic = null;
@@ -289,16 +271,16 @@ public ArrayList<String> getDetails(int id){
 				healthPromoImage=cursor.getString(indexHealthPromoImage);
 				list.add(healthPromoImage);
 				cursor.moveToNext();
-				
+
 			}
-			
+
 			close();
 			return list;
 		}catch(Exception ex){
 			return null;
 		}
-		
-		
+
+
 	}
-	
+
 }
