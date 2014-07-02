@@ -61,9 +61,11 @@ public class DataClass extends SQLiteOpenHelper {
 	 * DATABASE VERSION 4
 	 * community member view and community member opd record view has been changed to compute age using julianday
 	 * Database VERSION 6
-	 * Questions, Answers, Categories, ResourceMaterials 
+	 * Questions, Answers, Categories, ResourceMaterials
+	 * Datavase VERSION 7
+	 * log, family planning, answerlink, local link 
 	 */
-	protected static final int DATABASE_VERSION=6; 
+	protected static final int DATABASE_VERSION=7; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -559,6 +561,7 @@ public class DataClass extends SQLiteOpenHelper {
 			//Create answers table
 			db.execSQL(Answers.getCreateQuery());
 			
+			//version 7 additions
 			//Family Planning
 			//In some of the version distributed family planning services
 			//was added. but in other version it was not 
@@ -580,7 +583,7 @@ public class DataClass extends SQLiteOpenHelper {
 			//create local links table
 			db.execSQL(LocalLinks.getCreateQuery());
 
-			setDataVersion(db,DATABASE_NAME,6);
+			setDataVersion(db,DATABASE_NAME,7);
 			
 			
 		}catch(Exception ex){
@@ -610,6 +613,10 @@ public class DataClass extends SQLiteOpenHelper {
 			}
 			if(oldVersion<=5 ){
 				upgradeToVersion6(db);
+			}
+			
+			if(oldVersion<=6){
+				upgradeToVersion7(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
@@ -704,9 +711,14 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		
+
+
+		setDataVersion(db,DATABASE_NAME,6);
+	}
+		
+	private void upgradeToVersion7(SQLiteDatabase db){
 		//Family Planning
-		//In some of the version distributed family planning services
-		//was added. but in other version it was not 
+		
 		db.execSQL(FamilyPlanningServices.getCreateSQLString());
 		
 		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
@@ -722,11 +734,8 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		//create local links table
 		db.execSQL(LocalLinks.getCreateQuery());
-
-		setDataVersion(db,DATABASE_NAME,6);
+		setDataVersion(db,DATABASE_NAME,7); 			//note down the database version
 	}
-		
-	
 	
 	public String getDataFilePath(){
 		db=this.getReadableDatabase();
