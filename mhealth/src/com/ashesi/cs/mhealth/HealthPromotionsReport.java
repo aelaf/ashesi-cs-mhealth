@@ -220,16 +220,6 @@ ActionBar.TabListener, OnClickListener {
 			//final HealthPromotionsReport activity=(HealthPromotionsReport)this.getActivity();
 			gridView.setOnItemClickListener(this);
 
-			/*gridView.setOnItemClickListener(new OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-
-					activity.selectedHealthPromotionID=(int)adapter.getItemId(position);
-					activity.mViewPager.setCurrentItem(1);
-
-				}
-			});*/
 			return rootView;
 		}
 		
@@ -304,14 +294,16 @@ ActionBar.TabListener, OnClickListener {
 			image=(ImageView) rootView.findViewById(R.id.imageView1);
 			audience_txt=(TextView) rootView.findViewById(R.id.txt_target);
 			remarks_txt=(TextView) rootView.findViewById(R.id.txt_remarks);
-			int id=0;
+			
+			HealthPromotionsReport activity=(HealthPromotionsReport)getActivity();
+			int id=activity.selectedHealthPromotionID;
 			
 			HealthPromotions healthPromos=new HealthPromotions(this.getActivity().getApplicationContext());
 			ArrayList<String> list=null;
 			
 			String[] headers={"--------"};
 			if(id!=0){
-				list=healthPromos.getDetails(1);
+				list=healthPromos.getDetails(id);
 			}
 			if(list==null){
 				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
