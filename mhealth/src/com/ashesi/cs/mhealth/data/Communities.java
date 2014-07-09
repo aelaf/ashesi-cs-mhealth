@@ -79,7 +79,7 @@ public class Communities extends DataClass {
 				list.add(community);
 				community=fetch();
 			}
-					
+			db.close(); //added by NNA, 9-July-14 to stop non fatal error "close() not explicitly called on database"		
 			return list;
 		}catch(Exception ex){
 			return null;

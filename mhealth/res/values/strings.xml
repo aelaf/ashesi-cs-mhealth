@@ -134,5 +134,6 @@
     <string name="resourceMaterial">Resource Material</string>
     <string name="categories">Category</string>
     <string name="resourceType">Resource Type</string>
+   <string name="label_synchronizeData">Synchronize Data</string>
    
 </resources>

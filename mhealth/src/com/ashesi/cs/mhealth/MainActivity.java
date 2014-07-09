@@ -38,6 +38,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	private int choId=0;
 	private Button buttonOpenClose;
 	private ResourceMaterials resMaterials;
+	private Button buttonSychronizeData;
 	
 	public static String subdistrictId;
 	public TextView textStatus;
@@ -64,6 +65,9 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		
 		View buttonOpenKnowledge = findViewById(R.id.buttonMainKnowledge);
         buttonOpenKnowledge.setOnClickListener(this);
+		
+        View buttonSychronizeData=findViewById(R.id.buttonSynchronizeData);
+        buttonSychronizeData.setOnClickListener(this);
 		
 		choId=0;
 		textStatus.setText("enter your name and click open");
@@ -99,7 +103,13 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 				Intent knowledge = new Intent(this,KnowledgeActivity.class);
 				knowledge.putExtra("choId", currentCHO.getId());
 				startActivity(knowledge);
-				break;				
+				break;	
+			case R.id.buttonSynchronizeData: //synch data
+				DataClass data= new DataClass(getApplicationContext());
+				Log.v("mhealthDebug1_main activity","before thread");
+				data.threadedPost(MainActivity.this);
+				Log.v("mhealthDebug1_main activity","after thread");
+				break;
 		}
 	}
 	

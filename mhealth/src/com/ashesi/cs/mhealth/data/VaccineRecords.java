@@ -109,6 +109,8 @@ public class VaccineRecords extends DataClass {
 	 * returns list of vaccination record of one community member. It uses joint query
 	 * @param communityMemberId
 	 * @return
+	 * 
+	 * modified by NAmanquah to return all rows if communityMemberID is 0
 	 */
 	public ArrayList<VaccineRecord> getVaccineRecords(int communityMemberId){
 		ArrayList<VaccineRecord> list=new ArrayList<VaccineRecord>();
@@ -118,7 +120,10 @@ public class VaccineRecords extends DataClass {
 					+" where "
 					+TABLE_NAME_VACCINE_RECORDS+ "."+ CommunityMembers.COMMUNITY_MEMBER_ID
 					+"="+communityMemberId;
-						
+			//NNA addition:
+			if (communityMemberId==0){
+				 sql= VaccineRecords.getVaccineRecordSQLString(); 
+			}
 			cursor=db.rawQuery(sql, null);
 			cursor.moveToFirst();
 			VaccineRecord record=fetch();

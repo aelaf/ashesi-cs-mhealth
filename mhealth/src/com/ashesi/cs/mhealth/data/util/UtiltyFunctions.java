@@ -32,30 +32,6 @@ public class UtiltyFunctions {
 	}
 	
 	
-	/**
-	 * Encode the reserved characters in a URL before sending as a GET or POST request.
-	 * @param sUrl the URL variables/values to encode
-	 * @return  - the encoded version.
-	 */
-	public String urlEncode(String sUrl){ 
-		 StringBuffer urlOK = new StringBuffer();
-		 for(int e=0; e<sUrl.length(); e++){
-			 char ch=sUrl.charAt(e);
-			switch(ch){
-				case '<': urlOK.append("%3C"); break;
-				case '>': urlOK.append("%3E"); break;
-				case ' ': urlOK.append("%20"); break;
-				case ':': urlOK.append("%3A"); break;
-				case '-': urlOK.append("%2D"); break;
-				case '%': urlOK.append("%25"); break;
-	                        //case '&': urlOK.append("%26"); break;
-				//see   http://www.degraeve.com/reference/urlencoding.php
-				default: urlOK.append(ch); break;
-			}
-		}
-	    return urlOK.toString();
-	}
-	
 	
 /**
  * To store passwords for offline login, i need to be able to evaluate md5	
@@ -86,7 +62,7 @@ public class UtiltyFunctions {
     
     /**
      * The MySQL date uses -. Local SQLite db expects /
-     * This function conversts - to /
+     * This function converts - to /
      */
     public static final String SQLdateToAndroidStringDate(String sqlDate){
     	return sqlDate.replace("-", "/");
