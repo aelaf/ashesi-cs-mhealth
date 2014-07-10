@@ -845,11 +845,11 @@ public class DataClass extends SQLiteOpenHelper {
 	    		 communityMembersData.append("('"+oneCommunityMember.getCommunityID()+"',");
 	    		 communityMembersData.append("('"+oneCommunityMember.getFullname()+"',");
 	    		 communityMembersData.append("('"+"',");  //*****pending split that has forenames separate
-	    		 communityMembersData.append("('"+oneCommunityMember.getFormatedBirthdate()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getBirthdate()+"',");
 	    		 communityMembersData.append("('"+oneCommunityMember.getGender()+"',");
 	    		 communityMembersData.append("('"+oneCommunityMember.getCardNo()+"',");
 	    		 communityMembersData.append("('"+oneCommunityMember.getNHISId()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getFormatedNHISExpiryDate()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getNHISExpiryDate()+"',");
 	    		 communityMembersData.append("('"+oneCommunityMember.getRecState()+"',");
 	    		 communityMembersData.append("('"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
 	    	 }
@@ -857,6 +857,9 @@ public class DataClass extends SQLiteOpenHelper {
 	    	 returnValues.add(new BasicNameValuePair("communitymembers", communityMembersData.toString()));
     	 }//if
     	 
+    	 
+    	 // moved into OPDCase class
+    	 /*
     	 StringBuilder OPDCasesData = new StringBuilder("Replace into community_members_opd_cases  " +
     	 		"(rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");
     	 ArrayList<OPDCaseRecord> OPDCaseRecordsRawData= new OPDCaseRecords(theMainActivity).getArrayList();
@@ -874,6 +877,10 @@ public class DataClass extends SQLiteOpenHelper {
 	    	 OPDCasesData.setLength(Math.max(OPDCasesData.length() - 1, 0))  ; 
 	    	 returnValues.add(new BasicNameValuePair("OPDCaseData", OPDCasesData.toString()));
     	 }//if
+    	 */
+    	 
+    	 returnValues.add(new BasicNameValuePair("OPDCaseData", new OPDCaseRecords(theMainActivity).fetchSQLDumpToUpload()));
+    	 //add mechanism to remove null values/entries. watch for null values passed to server.
     	 
     	 // ,    
     	 StringBuilder vaccineRecordsData = new StringBuilder("Replace into vaccine_records  " +
