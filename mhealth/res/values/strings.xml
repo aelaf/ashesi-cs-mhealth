@@ -47,7 +47,8 @@
     <string name="title_cm_record_other">OPD</string>
     <string name="title_cm_record_note">notes</string>
     <string name="title_report_opdsection">OPD</string>
-    <string name="title_cm_record_vaccine">vaccine</string><string name="title_report_vaccine">vaccination</string>
+    <string name="title_cm_record_vaccine">vaccine</string>
+    <string name="title_report_vaccine">vaccination</string>
     <string name="title_report_next">next</string>
     <string name="report">Go to report</string>
     <string name="open">Open</string>
@@ -102,7 +103,7 @@
     <string name="image">Image Upload</string>
     <string name="date">Date</string>
     <string name="prev">previous</string>
-    <string name="ok">OK</string>	
+    <string name="ok">OK</string>
     <string name="title_activity_knowledge">mHealth Knowledge</string>
     <string name="questionTag">"What is your question?"</string>
     <string name="postQ">Post Question</string>
@@ -138,9 +139,12 @@
     <string name="resourceType">Resource Type</string>
     <string name="bluetoohSynch">Bluetooth Synch</string>
     <string name="confirmUseAge">Birth date record is important for immunization. Age has to be used if birth date is absolutely unknown. Do you want to continue using age?</string>
-   <string name="dialog_confirm_delete">Do you want to delete this question?</string>
-   <string name="qstatustxt">Idle&#8230;</string>
-   <string name="searchhint">Search Questions</string>
-   <string name="quantity">Quantity</string>
-   <string name="qty">Qty</string>
+    <string name="dialog_confirm_delete">Do you want to delete this question?</string>
+    <string name="qstatustxt">Idle&#8230;</string>
+    <string name="searchhint">Search Questions</string>
+    <string name="quantity">Quantity</string>
+    <string name="qty">Qty</string>
+    <string name="title_activity_detail_report">Detail</string>
+    <string name="detailreport">Detail Report</string>
+
 </resources>

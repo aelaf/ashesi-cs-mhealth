@@ -18,6 +18,7 @@ import com.ashesi.cs.mhealth.data.VaccinationReport;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -117,6 +119,18 @@ public class ReportActivity extends FragmentActivity implements
 	@Override
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+			case R.id.itemDetailReport:
+				Intent intent=new Intent(this,DetailReport.class);
+				intent.putExtra("currentView", this.mViewPager.getCurrentItem());
+				startActivity(intent);
+				break;
+		}
+		return true;
 	}
 
 	/**
