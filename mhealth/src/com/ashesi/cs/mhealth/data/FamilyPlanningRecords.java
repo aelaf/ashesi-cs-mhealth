@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.data.FamilyPlanningReport.FamilyPlanningReportRecord;
 
 /**
  * Reads and writes family planning service record of community member to a table
@@ -225,6 +226,91 @@ public class FamilyPlanningRecords extends DataClass {
 		}catch(Exception ex){
 			return null;
 		}
+	}
+	
+	public ArrayList<FamilyPlanningRecord> getMonthlyFamilyPlanningRecords(int month,int year,int ageRange,String gender,int page){
+		//define period for the report
+		ArrayList<FamilyPlanningRecord> list=new ArrayList< FamilyPlanningRecord>();
+		String firstDateOfTheMonth;
+		String lastDateOfTheMonth;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		Calendar calendar=Calendar.getInstance();
+		if(month==0){ //this month
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else if(month==1){	//this year/all year
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH,Calendar.JANUARY);
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+			calendar.set(Calendar.DAY_OF_MONTH,31);
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else{	//selected month and year
+			month=month-2;
+			calendar.set(year, month, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(year,month,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}
+
+		//define age range
+
+		int[] limit={10,15,18,20,35,50,60,70};
+		String strAgeFilter=" 1 ";
+		if(ageRange>0){//if it is not total
+			ageRange=ageRange-1;
+			if(ageRange==0){
+				strAgeFilter=CommunityMembers.AGE+"<10";	//under 1 year
+			}else if(ageRange>=1 && ageRange<7){	//compute range
+				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+			}else{	
+				strAgeFilter=CommunityMembers.AGE+">=70";
+			}
+		}
+
+		String limitClause="";
+		if(page>=0){
+			page=page*15;
+			limitClause=" limit " +page +",15";
+		}
+		
+		try{
+			db=getReadableDatabase();
+			String strQuery="select "
+					+SERVICE_REC_ID+", "
+					+FamilyPlanningServices.SERVICE_ID +", "
+					+FamilyPlanningServices.SERVICE_NAME+", "
+					+CommunityMembers.COMMUNITY_MEMBER_ID+", "
+					+CommunityMembers.COMMUNITY_MEMBER_NAME+", "
+					+QUANTITY+", "
+					+SERVICE_DATE +","
+					+CommunityMembers.BIRTHDATE +", "
+					+CommunityMembers.COMMUNITY_ID +","
+					+" from " +FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
+					+" where "
+					+"("+FamilyPlanningRecords.SERVICE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+					+FamilyPlanningRecords.SERVICE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
+					+" AND "
+					+strAgeFilter
+					+limitClause;
+					
+			cursor=db.rawQuery(strQuery, null);
+			FamilyPlanningRecord record=fetch();
+			while(record!=null){
+				list.add(record);
+				record=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+				
+				
+				
 	}
 	
 	/**

@@ -248,6 +248,93 @@ public class OPDCaseRecords extends DataClass {
 		
 	}
 	
+	public ArrayList<OPDCaseRecord>getMonthReportDetail(int month,int year, int ageRange, String gender,int page){
+		String firstDateOfTheMonth;
+		String lastDateOfTheMonth;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		Calendar calendar=Calendar.getInstance();
+		if(month==0){ //this month
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else if(month==1){	//this year
+			calendar.set(Calendar.YEAR,year);
+			calendar.set(Calendar.MONTH,Calendar.JANUARY);
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+			calendar.set(Calendar.DAY_OF_MONTH,31);
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else{	//selected month and year
+			month=month-2;
+			calendar.set(year, month, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(year,month,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}
+		
+		//define age range
+		int[] ageLimit={0,1,5,10,15,18,20,35,50,60,70};
+		String strAgeFilter=" 1 ";
+		if(ageRange>0){//if it is not total
+			ageRange=ageRange-1;
+			if(ageRange==0){
+				strAgeFilter=CommunityMembers.AGE+"<1";	//under 1 year
+			}else if(ageRange>=1 && ageRange<10){	//compute range
+				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
+			}else{	
+				strAgeFilter=CommunityMembers.AGE+">=70";
+			}
+		}
+		
+		String limit="";
+		if(page>=0){
+			page=page*15;
+			limit=" limit " +page +",15";
+		}
+		//query report for the age range, period grouped by gender and OPD case
+		try
+		{
+			db=getReadableDatabase();
+			
+			String strQuery="select "
+								+REC_NO
+								+","+ CommunityMembers.COMMUNITY_MEMBER_ID
+								+","+ OPDCases.OPD_CASE_ID
+								+ ","+CHOs.CHO_ID
+								+ ","+ REC_DATE
+								+"," +CommunityMembers.COMMUNITY_MEMBER_NAME
+								+"," +REC_STATE
+								+"," +CommunityMembers.BIRTHDATE
+								+"," + "AGE"
+								+"," +LAB
+								+"," +OPDCases.OPD_CASE_NAME
+								+","+CommunityMembers.GENDER
+						
+								+" from "+DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
+								+" where "
+								+REC_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+								+REC_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
+								+strAgeFilter
+								+limit;
+				
+								
+			
+			cursor=db.rawQuery(strQuery, null);
+			ArrayList<OPDCaseRecord> list=new ArrayList<OPDCaseRecord>();
+			OPDCaseRecord record=fetch();
+			
+			while(record!=null){
+				list.add(record);
+				record=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
+			return null;
+		}
+	}
 	public boolean upload(){
 		final int deviceId=mDeviceId;
 		Log.d("OPDCases.synch", "synch called");

@@ -1,13 +1,16 @@
 package com.ashesi.cs.mhealth.data;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.ContentValues;
 import android.content.Context;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.data.VaccinationReport.VaccinationReportRecord;
 
 /**
  * Reads and writes vaccination record of community member to a table
@@ -154,6 +157,92 @@ public class VaccineRecords extends DataClass {
 		}catch(Exception ex){
 			return null;
 		}
+	}
+	
+	public ArrayList< VaccineRecord> getMonthlyVaccinationRecord(int month,int year,int ageRange,String gender,int page){
+		//define period for the report
+		ArrayList< VaccineRecord> list=new ArrayList< VaccineRecord>();
+		String firstDateOfTheMonth;
+		String lastDateOfTheMonth;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		Calendar calendar=Calendar.getInstance();
+		if(month==0){ //this month
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else if(month==1){	//this year/all year
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH,Calendar.JANUARY);
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+			calendar.set(Calendar.DAY_OF_MONTH,31);
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else{	//selected month and year
+			month=month-2;
+			calendar.set(year, month, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(year,month,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}
+
+		//define age range
+		int[] limit={0,12,24};
+		String strAgeFilter=" 1 ";
+
+		if(ageRange==0){ //all total
+			strAgeFilter=" 1 "; 
+		}else if(ageRange==1){ //under 1 year
+			strAgeFilter=" "+ AGE+"<1";	
+		}else if(ageRange==2){	//between 1 and less than 2 years 
+			strAgeFilter=" ("+AGE+">=1 AND "+AGE+"< 2) "; 
+		}else if(ageRange==3){
+			strAgeFilter=" "+AGE+">=2 ";
+		}else{
+			strAgeFilter=" 1 "; 
+		}
+		
+		String limitClause="";
+		if(page>=0){
+			page=page*15;
+			limitClause=" limit " +page +",15";
+		}
+
+		try{
+			db=getReadableDatabase();
+			String strQuery="select "
+					+VACCINE_REC_ID+", "
+					+Vaccines.VACCINE_ID +", "
+					+Vaccines.VACCINE_NAME+", "
+					+CommunityMembers.COMMUNITY_MEMBER_ID+", "
+					+CommunityMembers.COMMUNITY_MEMBER_NAME+", "
+					+VACCINE_DATE+", "
+					+CommunityMembers.BIRTHDATE +", "
+					+AGE +","
+					+CommunityMembers.COMMUNITY_ID 
+					+" from " +VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL
+					+" where "
+					+"("+VaccineRecords.VACCINE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+					+VaccineRecords.VACCINE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
+					+" AND "
+					+strAgeFilter 
+					+limitClause;
+					
+			cursor=db.rawQuery(strQuery, null);
+			VaccineRecord record=fetch();	
+			while(record!=null){
+				list.add(record);
+				record=fetch();
+			}
+			close();
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+				
+				
+				
 	}
 	
 	/**

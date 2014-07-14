@@ -55,6 +55,10 @@ public class ReportActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+	
+	int mYear=0;
+	int mMonth=0;
+	int mAgeGroup=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +129,14 @@ public class ReportActivity extends FragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
 			case R.id.itemDetailReport:
+
 				Intent intent=new Intent(this,DetailReport.class);
 				intent.putExtra("currentView", this.mViewPager.getCurrentItem());
+				
+				intent.putExtra("month", mMonth);
+				intent.putExtra("year", mYear);
+				intent.putExtra("ageGroup",mAgeGroup);
+				
 				startActivity(intent);
 				break;
 		}
@@ -222,25 +232,25 @@ public class ReportActivity extends FragmentActivity implements
 		
 		private void loadData(View rootView){
 			TextView reportTitle = (TextView) rootView.findViewById(R.id.section_label);
-			switch(sectionNumber){
-			case 0:
-				reportTitle.setText("OPD Cases");
-				loadOPDReportData(rootView);
-				break;
-			case 1:
-				reportTitle.setText("Vaccination report");
-				loadVaccinationReportData(rootView);
-				break;
-			case 2:
-				reportTitle.setText("Family Planning");
-				loadFamilyPlanningReportData(rootView);
-				break;
-			default:
-				reportTitle.setText("OPD Cases");
-				loadOPDReportData(rootView);
-				break;
-				
-		}
+				switch(sectionNumber){
+				case 0:
+					reportTitle.setText("OPD Cases");
+					loadOPDReportData(rootView);
+					break;
+				case 1:
+					reportTitle.setText("Vaccination report");
+					loadVaccinationReportData(rootView);
+					break;
+				case 2:
+					reportTitle.setText("Family Planning");
+					loadFamilyPlanningReportData(rootView);
+					break;
+				default:
+					reportTitle.setText("OPD Cases");
+					loadOPDReportData(rootView);
+					break;
+					
+			}
 		}
 	
 		private void loadOPDReportData(View rootView){
@@ -386,6 +396,8 @@ public class ReportActivity extends FragmentActivity implements
 				ageGroup=0;	
 				spinner.setSelection(0);
 			}
+			ReportActivity activity=(ReportActivity)this.getActivity();
+			activity.mAgeGroup=ageGroup;
 			return ageGroup;
 		}
 		
@@ -400,7 +412,8 @@ public class ReportActivity extends FragmentActivity implements
 				month=0;
 				spinner.setSelection(month);
 			}
-			
+			ReportActivity activity=(ReportActivity)this.getActivity();
+			activity.mMonth=month;
 			return month;
 		}
 		
@@ -417,6 +430,8 @@ public class ReportActivity extends FragmentActivity implements
 				spinner.setSelection(n);
 			}
 			year=year-n;
+			ReportActivity activity=(ReportActivity)this.getActivity();
+			activity.mYear=year;	
 			return year;
 		}
 	}

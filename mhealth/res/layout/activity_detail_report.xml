@@ -28,7 +28,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/buttonCommunityPrev"
+            android:id="@+id/buttonPrev"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:layout_weight="0.07" />
 
         <Button
-            android:id="@+id/buttonCommunityNext"
+            android:id="@+id/buttonNext"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
