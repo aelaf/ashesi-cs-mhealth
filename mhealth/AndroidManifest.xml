@@ -9,8 +9,8 @@
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -60,19 +60,35 @@
             android:name="com.ashesi.cs.mhealth.CommunityMemberRecordActivity"
             android:label="@string/title_activity_community_member_record" >
         </activity>
-         <activity
+        <activity
             android:name="com.ashesi.cs.mhealth.AddCommunityActivity"
             android:label="@string/title_add_community" >
         </activity>
-         <activity
+        <activity
             android:name="com.ashesi.cs.mhealth.HealthPromotionReportDetails"
             android:label="@string/title_add_community" >
         </activity>
-        
-         <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsActivity"></activity>
-         <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsReport"></activity>
-         <activity android:name="HealthPromotionReport"></activity>
-         
+        <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsActivity" >
+        </activity>
+        <activity android:name="com.ashesi.cs.mhealth.HealthPromotionsReport" >
+        </activity>
+        <activity android:name="com.ashesi.cs.mhealth.data.HealthPromotionReport" >
+        </activity>
+         <activity android:name="com.ashesi.cs.mhealth.HealthPromotionDetailsActivity" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.data.ItemListActivity"
+            android:label="@string/title_item_list" >
+        </activity>
+        <activity
+            android:name="com.ashesi.cs.mhealth.data.ItemDetailActivity"
+            android:label="@string/title_item_detail"
+            android:parentActivityName="com.ashesi.cs.mhealth.data.ItemListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ashesi.cs.mhealth.data.ItemListActivity" />
+        </activity>
+        <activity android:name="com.ashesi.cs.mhealth.HealthPromotionDetails"></activity>
     </application>
 
 </manifest>

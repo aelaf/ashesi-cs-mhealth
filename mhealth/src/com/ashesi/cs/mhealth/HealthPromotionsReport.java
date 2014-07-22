@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.ashesi.cs.mhealth.data.HealthPromotion;
+import com.ashesi.cs.mhealth.data.HealthPromotionDetailsAdapter;
 import com.ashesi.cs.mhealth.data.HealthPromotionGridAdapter;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
 import com.ashesi.cs.mhealth.data.R;
@@ -14,7 +15,11 @@ import com.ashesi.cs.mhealth.data.R;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -27,7 +32,9 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -197,6 +204,7 @@ ActionBar.TabListener, OnClickListener {
 		private GridView gridView;
 		HealthPromotionGridAdapter adapter;
 		public static final String ARG_SECTION_NUMBER = "section_number";	
+		public static final int selectedId=0;
 		
 		public ReportFragment(){
 
@@ -212,9 +220,10 @@ ActionBar.TabListener, OnClickListener {
 			HealthPromotions healthPromos = new HealthPromotions(getActivity().getApplicationContext());
 			ArrayList<HealthPromotion> list;
 			list = healthPromos.getReport();
-
+			
 			adapter = new HealthPromotionGridAdapter(getActivity().getApplicationContext());
 			adapter.setList(list);
+			adapter.notifyDataSetChanged();
 			gridView.setAdapter(adapter);
 
 			//final HealthPromotionsReport activity=(HealthPromotionsReport)this.getActivity();
@@ -228,19 +237,23 @@ ActionBar.TabListener, OnClickListener {
 			// TODO Auto-generated method stub
 			HealthPromotionsReport activity=(HealthPromotionsReport)this.getActivity();
 			activity.selectedHealthPromotionID=(int)adapter.getItemId(position);
-			activity.mViewPager.setCurrentItem(1);
+			System.out.println(activity.selectedHealthPromotionID);
+			Intent i=new Intent(getActivity().getApplicationContext(),HealthPromotionDetails.class);
+			i.putExtra("ID", activity.selectedHealthPromotionID);
+			startActivity(i);
+			//activity.mViewPager.setCurrentItem(2);	
 		}
 		@Override
 		public void onResume(){
 			super.onResume();
-			/*HealthPromotions healthPromos = new HealthPromotions(getActivity().getApplicationContext());
+			HealthPromotions healthPromos = new HealthPromotions(getActivity().getApplicationContext());
 			ArrayList<HealthPromotion> list;
 			list = healthPromos.getReport();
 
 			final HealthPromotionGridAdapter adapter = new HealthPromotionGridAdapter(getActivity().getApplicationContext());
 			adapter.setList(list);
 			adapter.notifyDataSetChanged();
-			gridView.setAdapter(adapter);*/
+			gridView.setAdapter(adapter);
 		}
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -263,9 +276,6 @@ ActionBar.TabListener, OnClickListener {
 	}
 	
 	public static class ReportDetailsFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
-
-	
-
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private View rootView2;
 		private View rootView;
@@ -278,6 +288,7 @@ ActionBar.TabListener, OnClickListener {
 		private ListView detailsList;
 		private Bitmap bitmap;
 		private String imagepath;
+		private int id;
 		public ReportDetailsFragment(){
 
 		}
@@ -296,34 +307,41 @@ ActionBar.TabListener, OnClickListener {
 			remarks_txt=(TextView) rootView.findViewById(R.id.txt_remarks);
 			
 			HealthPromotionsReport activity=(HealthPromotionsReport)getActivity();
-			int id=activity.selectedHealthPromotionID;
+			//int id=activity.selectedHealthPromotionID;
+			id=ReportFragment.selectedId;
 			
-			HealthPromotions healthPromos=new HealthPromotions(this.getActivity().getApplicationContext());
-			ArrayList<String> list=null;
 			
 			String[] headers={"--------"};
-			if(id!=0){
-				list=healthPromos.getDetails(id);
-			}
-			if(list==null){
+		
+		//if(id!=0){
+				HealthPromotions healthPromosDetails = new HealthPromotions(getActivity().getApplicationContext());
+				ArrayList<HealthPromotion> listDetails;
+				listDetails = healthPromosDetails.getDetails(1);
+
+				final HealthPromotionDetailsAdapter adapter = new HealthPromotionDetailsAdapter(getActivity().getApplicationContext());
+				adapter.setList(listDetails);
+				adapter.notifyDataSetChanged();
+				detailsList.setAdapter(adapter);
+			//}
+			/*else{
 				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
 				detailsList.setAdapter(adapter);
 				image.setVisibility(View.GONE);
-			}else{
-				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
-				detailsList.setAdapter(adapter);
-				imagepath=list.get(7);
-				bitmap=BitmapFactory.decodeFile(imagepath);
-				image.setImageBitmap(bitmap);
-
-			}
-
+			}*/
+			
 
 			return rootView;
 		}
 		public void onResume(){
 			super.onResume();
+			HealthPromotions healthPromosDetails = new HealthPromotions(getActivity().getApplicationContext());
+			ArrayList<HealthPromotion> listDetails;
+			listDetails = healthPromosDetails.getDetails(id);
 
+			final HealthPromotionDetailsAdapter adapter = new HealthPromotionDetailsAdapter(getActivity().getApplicationContext());
+			adapter.setList(listDetails);
+			adapter.notifyDataSetChanged();
+			detailsList.setAdapter(adapter);
 		}
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int position,
@@ -345,7 +363,7 @@ ActionBar.TabListener, OnClickListener {
 	}
 
 	@SuppressLint("SimpleDateFormat") 
-	public static class HealthPromotionsFragment extends Fragment implements OnClickListener, LocationListener {
+	public static class HealthPromotionsFragment extends Fragment implements OnClickListener {
 
 		private Button set_location_btn;
 		private ImageButton image_upload_btn;
@@ -371,12 +389,13 @@ ActionBar.TabListener, OnClickListener {
 		View rootView2;
 		private ImageView image;
 		private ProgressBar mActivityIndicator;
-		private LocationManager locationManager;
-		private String provider;
+		private TextView status_txt;
+		GPSTracker gps;
+		private double latitude_double;
+		private double longitude_double;
+		
 
-		public HealthPromotionsFragment(){
-
-		}
+		
 
 		/** Called when the activity is first created. */
 		@Override
@@ -390,7 +409,8 @@ ActionBar.TabListener, OnClickListener {
 				parent.removeView(rootView2);
 			}
 			create();
-			//  mActivityIndicator.setVisibility(View.GONE);
+			image.setVisibility(View.GONE);
+			 mActivityIndicator.setVisibility(View.GONE);
 			return rootView2;
 
 
@@ -424,8 +444,27 @@ ActionBar.TabListener, OnClickListener {
 				break;
 
 			case R.id.location_btn:
+				 mActivityIndicator.setVisibility(View.VISIBLE);
+				 status_txt.setText("Searching gps......");
+				 gps=new GPSTracker(getActivity().getApplicationContext());
+				 
+				 if(gps.canGetLocation()){
+		            	
+					 mActivityIndicator.setVisibility(View.GONE);
+					 status_txt.setText("GPS search completed!");
+		                latitude_double = gps.getLatitude();
+		                longitude_double = gps.getLongitude();
 
-
+		                // \n is for new line
+		              longitude_txt.setText(String.valueOf(longitude_double));
+		              latitude_txt.setText(String.valueOf(latitude_double));
+		              //  Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+		            }else{
+		                // can't get location
+		                // GPS or Network is not enabled
+		                // Ask user to enable GPS/network in settings
+		                gps.showSettingsAlert();
+		            }
 				break;
 
 			case R.id.camera_btn:
@@ -451,6 +490,7 @@ ActionBar.TabListener, OnClickListener {
 				//fileArraySplit=imagepath.split("/") ;
 
 				fileArray.get(fileArray.size()-1);
+				image.setVisibility(View.VISIBLE);
 				image.setImageBitmap(bitmap);
 				image_url_txt.setText(imagepath);
 
@@ -510,88 +550,203 @@ ActionBar.TabListener, OnClickListener {
 			audience_number=(EditText)rootView2.findViewById(R.id.audience_number_txt);
 			remarks_txt=(EditText)rootView2.findViewById(R.id.remarks_txt);
 			image_url_txt=(EditText)rootView2.findViewById(R.id.image_url_txt);
+			status_txt=(TextView)rootView2.findViewById(R.id.txt_status);
 
 
 		}
-		private class PostTask extends AsyncTask<Integer, Integer, Integer> {
-
-			protected void onPreExecute() {
-				super.onPreExecute();
-				mActivityIndicator.setVisibility(View.VISIBLE);
-			}
-			protected Integer doInBackground(Integer ...n){
-				try{
-					if(n==null){
-						return 0;
-					}
-					if(n.length<=0){
-						return 0;
-					}
-					switch(n[0]){
-					/*
-						case 1:
-							//locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-						    // Define the criteria how to select the locatioin provider -> use
-						    // default
-						    Criteria criteria = new Criteria();
-						    provider = locationManager.getBestProvider(criteria, false);
-						    Location location = locationManager.getLastKnownLocation(provider);
-
-						    // Initialize the location fields
-						    if (location != null) {
-						      System.out.println("Provider " + provider + " has been selected.");
-						      onLocationChanged(location);
-						    } else {
-						      latitude_txt.setText("Location not available");
-						      longitude_txt.setText("Location not available");
-						    }
-			 	                break;
-
-
-			 				return null;
-					 */
-					}
-
-
-
-				}catch(Exception ex){
-					Log.e("GPS Tracking error", ex.getMessage());
-					return 0;
-
-				}
-				return 1;
-			}
+		class GPSTracker extends Service implements LocationListener{
+			 private final Context mContext;
+			 
+			    // flag for GPS status
+			    boolean isGPSEnabled = false;
+			 
+			    // flag for network status
+			    boolean isNetworkEnabled = false;
+			 
+			    // flag for GPS status
+			    boolean canGetLocation = false;
+			 
+			    Location location; // location
+			    double latitude; // latitude
+			    double longitude; // longitude
+			 
+			    // The minimum distance to change Updates in meters
+			    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+			 
+			    // The minimum time between updates in milliseconds
+			    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+			 
+			    // Declaring a Location Manager
+			    protected LocationManager locationManager;
+			    
+			 
+			    public GPSTracker(Context context) {
+			        this.mContext = context;
+			        getLocation();
+			    }
+			
+			    
+			    public Location getLocation() {
+			        try {
+			            locationManager = (LocationManager) mContext
+			                    .getSystemService(LOCATION_SERVICE);
+			 
+			            // getting GPS status
+			            isGPSEnabled = locationManager
+			                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+			 
+			            // getting network status
+			            isNetworkEnabled = locationManager
+			                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			 
+			            if (!isGPSEnabled && !isNetworkEnabled) {
+			                // no network provider is enabled
+			            } else {
+			                this.canGetLocation = true;
+			                // First get location from Network Provider
+			                if (isNetworkEnabled) {
+			                    locationManager.requestLocationUpdates(
+			                    	
+			                            LocationManager.NETWORK_PROVIDER,
+			                            MIN_TIME_BW_UPDATES,
+			                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+			                    Log.d("Network", "Network");
+			                    if (locationManager != null) {
+			                        location = locationManager
+			                                .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			                        if (location != null) {
+			                            latitude = location.getLatitude();
+			                            longitude = location.getLongitude();
+			                        }
+			                    }
+			                }
+			                // if GPS Enabled get lat/long using GPS Services
+			                if (isGPSEnabled) {
+			                    if (location == null) {
+			                        locationManager.requestLocationUpdates(
+			                                LocationManager.GPS_PROVIDER,
+			                                MIN_TIME_BW_UPDATES,
+			                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+			                        Log.d("GPS Enabled", "GPS Enabled");
+			                        if (locationManager != null) {
+			                            location = locationManager
+			                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			                            if (location != null) {
+			                                latitude = location.getLatitude();
+			                                longitude = location.getLongitude();
+			                            }
+			                        }
+			                    }
+			                }
+			            }
+			 
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+			 
+			        return location;
+			    }
+			 
+			    /**
+			     * Stop using GPS listener
+			     * Calling this function will stop using GPS in your app
+			     * */
+			    public void stopUsingGPS(){
+			        if(locationManager != null){
+			            locationManager.removeUpdates(GPSTracker.this);
+			        }
+			    }
+			 
+			    /**
+			     * Function to get latitude
+			     * */
+			    public double getLatitude(){
+			        if(location != null){
+			        
+			            latitude = location.getLatitude();
+			        }
+			 
+			        // return latitude
+			        return latitude;
+			    }
+			 
+			    /**
+			     * Function to get longitude
+			     * */
+			    public double getLongitude(){
+			        if(location != null){
+			            longitude = location.getLongitude();
+			        }
+			 
+			        // return longitude
+			        return longitude;
+			    }
+			 
+			    /**
+			     * Function to check GPS/wifi enabled
+			     * @return boolean
+			     * */
+			    public boolean canGetLocation() {
+			        return this.canGetLocation;
+			    }
+			 
+			    /**
+			     * Function to show settings alert dialog
+			     * On pressing Settings button will launch Settings Options
+			     * */
+			    public void showSettingsAlert(){
+			        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+			 
+			        // Setting Dialog Title
+			        alertDialog.setTitle("GPS settings");
+			 
+			        // Setting Dialog Message
+			        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
+			 
+			        // On pressing Settings button
+			        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+			            public void onClick(DialogInterface dialog,int which) {
+			                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			                mContext.startActivity(intent);
+			            }
+			        });
+			 
+			        // on pressing cancel button
+			        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			            public void onClick(DialogInterface dialog, int which) {
+			            dialog.cancel();
+			            }
+			        });
+			 
+			        // Showing Alert Message
+			        alertDialog.show();
+			    }
+			 
+			    @Override
+			    public void onLocationChanged(Location location) {
+			    }
+			 
+			    @Override
+			    public void onProviderDisabled(String provider) {
+			    }
+			 
+			    @Override
+			    public void onProviderEnabled(String provider) {
+			    }
+			 
+			    @Override
+			    public void onStatusChanged(String provider, int status, Bundle extras) {
+			    }
+			 
+			    @Override
+			    public IBinder onBind(Intent intent) {
+			        return null;
+			    }
+			    
+			 
 		}
-		@Override
-		public void onLocationChanged(Location location) {
-
-
-		}
-
-		@Override
-		public void onStatusChanged(String provider, int status,
-				Bundle extras) {
-
-
-		}
-
-		@Override
-		public void onProviderEnabled(String provider) {
-
-
-		}
-
-		@Override
-		public void onProviderDisabled(String provider) {
-
-
-		}
-
-
 
 	}
-
-
 
 	@Override
 	public void onClick(View v) {

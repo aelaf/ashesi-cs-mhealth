@@ -1,4 +1,4 @@
-package com.ashesi.cs.mhealth.data;
+ package com.ashesi.cs.mhealth.data;
 
 import android.widget.BaseAdapter;
 
@@ -73,6 +73,7 @@ public class HealthPromotionGridAdapter extends BaseAdapter{
 
 	}
 	
+	
 	/**
 	 * It returns a view based on position. 
 	 * @param position
@@ -102,7 +103,7 @@ public class HealthPromotionGridAdapter extends BaseAdapter{
 			
 			
 		}catch(Exception ex){
-			Log.e("VaccineGridApapter.getNewView", ex.getMessage());
+			Log.e("HealthPromotionGridAdapter.getNewView", ex.getMessage());
 			return null;
 		}
     

@@ -91,7 +91,7 @@ public class HealthPromotion {
 	}
 	public String getRemarks(){
 		return remarks;
-	}
+	}  
 	
 	public String getMonth(){
 		return month;

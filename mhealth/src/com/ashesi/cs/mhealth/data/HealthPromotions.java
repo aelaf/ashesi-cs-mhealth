@@ -16,7 +16,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class HealthPromotions extends DataClass {
 	public static final String REC_DATE="date";
-	public static final String REC_NO="rec_no";
+	public static String REC_NO="rec_no";
 	public static final String REC_VENUE="venue";
 	public static final String REC_TOPIC="topic";
 	public static final String REC_METHOD="method";
@@ -101,7 +101,7 @@ public class HealthPromotions extends DataClass {
 	public boolean addHealthPromotion(String date,String venue,String topic, String method, String target, String number, String remarks, String month, String lat, String longitude, String image_url, String cho_id, String subdistrict_id){
 		try
 		{
-			db=getReadableDatabase();
+			db=getWritableDatabase();
 			ContentValues values=new ContentValues();
 			values.put(REC_DATE, date);
 			values.put(REC_VENUE, venue);
@@ -172,6 +172,7 @@ public class HealthPromotions extends DataClass {
 		}
 
 	}
+	
 	public ArrayList<HealthPromotion> getArrayList(){
 		ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();
 		HealthPromotion healthPromotion=fetch();
@@ -196,8 +197,10 @@ public class HealthPromotions extends DataClass {
 
 			cursor=db.query(TABLE_NAME_HEALTH_PROMOTION, columns, null, null, null, null, null);
 			
-			ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();		
+			ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();	
+			String[] headers={"DATE","TOPIC", "VENUE"};
 			HealthPromotion record = fetch();	
+			//slist.add(record);
 			while(record!=null){
 	
 				list.add(record);
@@ -213,9 +216,34 @@ public class HealthPromotions extends DataClass {
 
 
 	}
-	public ArrayList<String> getDetails(int id){
+	public ArrayList<HealthPromotion> getDetails(int id){
+		try
+		{
+			db=getReadableDatabase();
+			String[] columns={REC_NO,REC_DATE,REC_TOPIC,REC_VENUE,REC_METHOD,
+					REC_TARGETAUDIENCE,REC_NUMBERAUDIENCE,REC_REMARKS,REC_MONTH,REC_LATITUDE,
+					REC_LONGITUDE,REC_IMAGE,REC_IDCHO,REC_SUBDISTRICTID};
+		
+			String where=REC_NO+" = "+id;
+			cursor=db.query(TABLE_NAME_HEALTH_PROMOTION, columns,where, null, null, null, null);
+			
+			ArrayList<HealthPromotion> list=new ArrayList<HealthPromotion>();		
+			HealthPromotion record = fetch();	
+			
+			while(record!=null){
+	
+				list.add(record);
+				record=fetch();
 
+			}
 
+			close();
+			return list;
+		}catch(Exception ex){
+			return null;
+		}
+
+/*
 		try
 		{
 			db=getReadableDatabase();
@@ -278,7 +306,7 @@ public class HealthPromotions extends DataClass {
 			return list;
 		}catch(Exception ex){
 			return null;
-		}
+		}*/
 
 
 	}
