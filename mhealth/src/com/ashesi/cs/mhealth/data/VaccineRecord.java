@@ -15,6 +15,7 @@ public class VaccineRecord {
 	private String vaccineDate;
 	private String fullname;
 	private String vaccineName;
+	private String gender;
 	
 	public VaccineRecord(){
 		
@@ -27,6 +28,18 @@ public class VaccineRecord {
 		this.vaccineId=vaccineId;
 		this.vaccineDate=vaccineDate;
 		this.vaccineName=vaccineName;
+		
+	}
+	
+	public VaccineRecord(int vaccineRecordId,int communityMemberId,String fullname,int vaccineId, String vaccineName, String vaccineDate, String gender){
+		this.vaccineRecordId=vaccineRecordId;
+		this.communityMemberId=communityMemberId;
+		this.fullname=fullname;
+		this.vaccineId=vaccineId;
+		this.vaccineDate=vaccineDate;
+		this.vaccineName=vaccineName;
+		this.gender=gender;
+		
 	}
 	
 	public int getId(){
@@ -67,7 +80,7 @@ public class VaccineRecord {
 	}
 
 	public String toString(){
-		return fullname +" "+vaccineName;
+		return fullname +" "+vaccineName +" " +gender;
 	}
 	
 	public boolean equals(VaccineRecord record){

@@ -59,6 +59,7 @@ public class ReportActivity extends FragmentActivity implements
 	int mYear=0;
 	int mMonth=0;
 	int mAgeGroup=0;
+	int mGender=0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class ReportActivity extends FragmentActivity implements
 				intent.putExtra("month", mMonth);
 				intent.putExtra("year", mYear);
 				intent.putExtra("ageGroup",mAgeGroup);
+				intent.putExtra("gender",mGender);
 				
 				startActivity(intent);
 				break;
@@ -202,6 +204,7 @@ public class ReportActivity extends FragmentActivity implements
 		private String[] familyPlanAgeGroups={"Total","under 1yr","10-14","15-19","20-24","30-34","above 35yr"};
 		
 		private String[] months={"this month","whole year","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
+		private String[] genderOptions={"all","male","female"};
 
 		public ReportFragment() {
 		}
@@ -219,6 +222,7 @@ public class ReportActivity extends FragmentActivity implements
 			fillAgeGroupSpinner(rootView);
 			fillMonthSpinner(rootView);
 			fillYearSpinner(rootView);
+			fillGenderSpinner(rootView);
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerOPDReportAgeGroup);
 			spinner.setOnItemSelectedListener(this);
@@ -259,11 +263,13 @@ public class ReportActivity extends FragmentActivity implements
 			int ageGroup=getSelectedAgeGroup();
 			int month=getSelectedMonth();
 			int year=getSelectedYear();
+			String strGender=getSelectedGender();
+			
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
 			String[] headers={"OPD Case","Gender","no cases"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
 			ArrayList<String> list;
-			list=opdCaseRecords.getMontlyReport(month, year,ageGroup, CommunityMember.MALE);
+			list=opdCaseRecords.getMontlyReport(month, year,ageGroup, strGender);
 			if(list==null){
 				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
 				gridView.setAdapter(adapter);
@@ -282,10 +288,12 @@ public class ReportActivity extends FragmentActivity implements
 			int ageGroup=getSelectedAgeGroup();
 			int month=getSelectedMonth();
 			int year=getSelectedYear();
+			String strGender=getSelectedGender();
+			
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
 			String[] headers={"Vaccination","","no cases"};
 			VaccinationReport vaccinationReport=new VaccinationReport(this.getActivity().getApplicationContext());
-			ArrayList<VaccinationReportRecord> listRecord=vaccinationReport.getMonthlyVaccinationReport(month,year,ageGroup,null);
+			ArrayList<VaccinationReportRecord> listRecord=vaccinationReport.getMonthlyVaccinationReport(month,year,ageGroup,strGender);
 			
 					
 			if(listRecord==null){
@@ -307,6 +315,8 @@ public class ReportActivity extends FragmentActivity implements
 			int ageGroup=getSelectedAgeGroup();
 			int month=getSelectedMonth();
 			int year=getSelectedYear();
+			String strGender=getSelectedGender();
+			
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
 			String[] headers={"Service","Quantity","No Cases"};
 			FamilyPlanningReport familyPlanningReport=new FamilyPlanningReport(this.getActivity().getApplicationContext());
@@ -385,6 +395,13 @@ public class ReportActivity extends FragmentActivity implements
 			spinner.setOnItemSelectedListener(this);
 		}
 		
+		private void fillGenderSpinner(View rootView){
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerGender);
+			ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,genderOptions);
+			spinner.setAdapter(adapter);
+			spinner.setOnItemSelectedListener(this);
+		}
+		
 		private int getSelectedAgeGroup(){
 			View rootView=getView();
 			if(rootView==null){
@@ -433,6 +450,19 @@ public class ReportActivity extends FragmentActivity implements
 			ReportActivity activity=(ReportActivity)this.getActivity();
 			activity.mYear=year;	
 			return year;
+		}
+	
+		private String getSelectedGender(){
+			View rootView=getView();
+			if(rootView==null){
+				return "all";
+			}
+			
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerGender);
+			int n=spinner.getSelectedItemPosition();
+			ReportActivity activity=(ReportActivity)this.getActivity();
+			activity.mGender=n;
+			return genderOptions[n];
 		}
 	}
 

@@ -16,7 +16,7 @@
             android:id="@+id/textCommunityMembersRecOthersTitle"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/title_report_vaccine"
+            android:text="@string/title_cm_record_other"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
     </TableRow>

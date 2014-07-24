@@ -57,6 +57,13 @@ public class VaccinationReport extends VaccineRecords {
 		}else{
 			strAgeFilter=" 1 "; 
 		}
+		
+		String strGenderFilter=" 1 ";
+		if(gender != null){
+			if(!gender.equals("all")){
+				strGenderFilter=CommunityMembers.GENDER +" = '"+gender+"'";
+			}
+		}
 
 		try{
 			db=getReadableDatabase();
@@ -69,9 +76,11 @@ public class VaccinationReport extends VaccineRecords {
 					+"("+VaccineRecords.VACCINE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 					+VaccineRecords.VACCINE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
 					+" AND "
-					+strAgeFilter
+					+strAgeFilter+ " AND "
+					+strGenderFilter
 					+" group by "+ Vaccines.VACCINE_ID
 					+" order by "+ Vaccines.VACCINE_ID;
+			
 			cursor=db.rawQuery(strQuery, null);
 			cursor.moveToFirst();
 			int indexId=cursor.getColumnIndex(Vaccines.VACCINE_ID);
@@ -109,6 +118,7 @@ public class VaccinationReport extends VaccineRecords {
 		
 		return listString;
 	}
+	
 	public class VaccinationReportRecord{
 		private int ageRange; 		//0: total, 1: under 1, 2: above or equal 1 and less than 2, 3: above or equal 2
 		private int month;

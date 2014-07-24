@@ -24,21 +24,26 @@
                  android:id="@+id/spinnerOPDReportAgeGroup"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_weight="0.3" />
-
+                 android:layout_weight="0.25" />
              <Spinner
                  android:id="@+id/spinnerReportMonth"
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
-                 android:layout_weight="0.3" />
+                 android:layout_weight="0.25" />
              <Spinner
 		        android:id="@+id/spinnerReportYear"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-				android:layout_weight="0.3"/>
+				android:layout_weight="0.25"/>
+             <Spinner
+                android:id="@+id/spinnerGender"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="0.25">
+            </Spinner>
 
          </LinearLayout>
-            
+        
           <GridView
 	        android:id="@+id/gridView1"
 	        android:layout_width="match_parent"

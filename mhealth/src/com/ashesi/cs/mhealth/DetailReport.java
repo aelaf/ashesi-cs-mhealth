@@ -116,10 +116,19 @@ public class DetailReport extends Activity implements OnClickListener {
 		int month=intent.getIntExtra("month", 0);
 		int ageGroup=intent.getIntExtra("ageGroup", 0);
 		int year=intent.getIntExtra("year", 0);
+		int gender=intent.getIntExtra("gender", 0);
+		String strGender=null;
+		if(gender==1){
+			strGender="male";
+		}else if(gender==2){
+			strGender="female";
+		}else {
+			strGender="all";
+		}
 		showStatus("Showing OPD detail ");
 		
 		OPDCaseRecords records=new OPDCaseRecords(this.getApplicationContext());
-		ArrayList<OPDCaseRecord> listRecords=records.getMonthReportDetail(month, year, ageGroup, "", page);
+		ArrayList<OPDCaseRecord> listRecords=records.getMonthReportDetail(month, year, ageGroup, strGender, page);
 		ArrayAdapter<OPDCaseRecord> adapter=new ArrayAdapter<OPDCaseRecord>(this,android.R.layout.simple_list_item_activated_1,listRecords);
 		
 		ListView list=(ListView)this.findViewById(R.id.listView);
@@ -132,10 +141,19 @@ public class DetailReport extends Activity implements OnClickListener {
 		int month=intent.getIntExtra("month", 0);
 		int ageGroup=intent.getIntExtra("ageGroup", 0);
 		int year=intent.getIntExtra("year", 0);
+		int gender=intent.getIntExtra("gender", 0);
+		String strGender=null;
+		if(gender==1){
+			strGender="male";
+		}else if(gender==2){
+			strGender="female";
+		}else {
+			strGender="all";
+		}
 		showStatus("Showing Vaccine detail ");
 		
 		VaccineRecords records=new VaccineRecords(this.getApplicationContext());
-		ArrayList<VaccineRecord> listRecords=records.getMonthlyVaccinationRecord(month, year, ageGroup, "", page);
+		ArrayList<VaccineRecord> listRecords=records.getMonthlyVaccinationRecord(month, year, ageGroup, strGender, page);
 		ArrayAdapter<VaccineRecord> adapter=new ArrayAdapter<VaccineRecord>(this,android.R.layout.simple_list_item_activated_1,listRecords);
 		
 		ListView list=(ListView)this.findViewById(R.id.listView);
@@ -148,9 +166,18 @@ public class DetailReport extends Activity implements OnClickListener {
 		int month=intent.getIntExtra("month", 0);
 		int ageGroup=intent.getIntExtra("ageGroup", 0);
 		int year=intent.getIntExtra("year", 0);
+		int gender=intent.getIntExtra("gender", 0);
+		String strGender=null;
+		if(gender==1){
+			strGender="male";
+		}else if(gender==2){
+			strGender="female";
+		}else {
+			strGender="all";
+		}
 		showStatus("Showing Family Planning record detail ");
 		FamilyPlanningRecords records=new FamilyPlanningRecords(this.getApplicationContext());
-		ArrayList<FamilyPlanningRecord> listRecords=records.getMonthlyFamilyPlanningRecords(month, year, ageGroup, "", page);
+		ArrayList<FamilyPlanningRecord> listRecords=records.getMonthlyFamilyPlanningRecords(month, year, ageGroup, strGender, page);
 		ArrayAdapter<FamilyPlanningRecord> adapter=new ArrayAdapter<FamilyPlanningRecord>(this,android.R.layout.simple_list_item_activated_1,listRecords);
 		
 		ListView list=(ListView)this.findViewById(R.id.listView);

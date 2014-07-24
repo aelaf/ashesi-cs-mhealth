@@ -87,7 +87,7 @@ public class VaccineRecords extends DataClass {
 			int vaccineId=cursor.getInt(index);
 			index=cursor.getColumnIndex(VACCINE_DATE);
 			String vaccineDate=cursor.getString(index);
-			
+
 			index=cursor.getColumnIndex(CommunityMembers.COMMUNITY_MEMBER_NAME);
 			String fullname="";
 			if(index>=0){
@@ -98,8 +98,12 @@ public class VaccineRecords extends DataClass {
 			if(index>=0){
 				vaccineName=cursor.getString(index);
 			}
-			
-			VaccineRecord record=new VaccineRecord(id,communityMemberId,fullname,vaccineId,vaccineName,vaccineDate);
+			index=cursor.getColumnIndex(CommunityMembers.GENDER);
+			String gender="";
+			if(index>=0){
+				gender=cursor.getString(index);
+			}
+			VaccineRecord record=new VaccineRecord(id,communityMemberId,fullname,vaccineId,vaccineName,vaccineDate,gender);
 			cursor.moveToNext();
 			return record;
 			
@@ -203,6 +207,13 @@ public class VaccineRecords extends DataClass {
 			strAgeFilter=" 1 "; 
 		}
 		
+		String strGenderFilter=" 1 ";
+		if(gender != null){
+			if(!gender.equals("all")){
+				strGenderFilter=CommunityMembers.GENDER +" = '"+gender+"'";
+			}
+		}
+		
 		String limitClause="";
 		if(page>=0){
 			page=page*15;
@@ -220,13 +231,15 @@ public class VaccineRecords extends DataClass {
 					+VACCINE_DATE+", "
 					+CommunityMembers.BIRTHDATE +", "
 					+AGE +","
-					+CommunityMembers.COMMUNITY_ID 
+					+CommunityMembers.COMMUNITY_ID +","
+					+CommunityMembers.GENDER
 					+" from " +VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL
 					+" where "
 					+"("+VaccineRecords.VACCINE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 					+VaccineRecords.VACCINE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
 					+" AND "
-					+strAgeFilter 
+					+strAgeFilter + " AND "
+					+strGenderFilter
 					+limitClause;
 					
 			cursor=db.rawQuery(strQuery, null);
@@ -287,7 +300,8 @@ public class VaccineRecords extends DataClass {
 				+VACCINE_DATE+"-"+CommunityMembers.BIRTHDATE +" as "+AGE +", "
 				+VACCINE_DATE+", "
 				+CommunityMembers.BIRTHDATE +", "
-				+CommunityMembers.COMMUNITY_ID 
+				+CommunityMembers.COMMUNITY_ID+","
+				+CommunityMembers.GENDER
 				+" from "
 				+TABLE_NAME_VACCINE_RECORDS + " left join " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
 				+" on "+ TABLE_NAME_VACCINE_RECORDS+ "."+ CommunityMembers.COMMUNITY_MEMBER_ID +"="+

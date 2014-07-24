@@ -202,6 +202,14 @@ public class OPDCaseRecords extends DataClass {
 				strAgeFilter=CommunityMembers.AGE+">=70";
 			}
 		}
+		
+		String strGenderFilter=" 1 ";
+		if(gender != null){
+			if(!gender.equals("all")){
+				strGenderFilter=CommunityMembers.GENDER +" = '"+gender+"'";
+			}
+		}
+		
 		//query report for the age range, period grouped by gender and OPD case
 		try
 		{
@@ -215,7 +223,8 @@ public class OPDCaseRecords extends DataClass {
 								+" where "
 								+REC_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 								+REC_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
-								+strAgeFilter
+								+strAgeFilter+ " AND "
+								+strGenderFilter
 								+" group by "+OPDCases.OPD_CASE_ID
 								+", "+CommunityMembers.GENDER
 								+" order by "+OPDCases.OPD_CASE_NAME
@@ -247,6 +256,7 @@ public class OPDCaseRecords extends DataClass {
 		}
 		
 	}
+	
 	
 	public ArrayList<OPDCaseRecord>getMonthReportDetail(int month,int year, int ageRange, String gender,int page){
 		String firstDateOfTheMonth;
@@ -288,6 +298,13 @@ public class OPDCaseRecords extends DataClass {
 			}
 		}
 		
+		String strGenderFilter=" 1 ";
+		if(gender != null){
+			if(!gender.equals("all")){
+				strGenderFilter=CommunityMembers.GENDER +" = '"+gender+"'";
+			}
+		}
+		
 		String limit="";
 		if(page>=0){
 			page=page*15;
@@ -316,7 +333,8 @@ public class OPDCaseRecords extends DataClass {
 								+" where "
 								+REC_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 								+REC_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
-								+strAgeFilter
+								+strAgeFilter + " AND "
+								+strGenderFilter
 								+limit;
 				
 								
@@ -335,6 +353,7 @@ public class OPDCaseRecords extends DataClass {
 			return null;
 		}
 	}
+	
 	public boolean upload(){
 		final int deviceId=mDeviceId;
 		Log.d("OPDCases.synch", "synch called");

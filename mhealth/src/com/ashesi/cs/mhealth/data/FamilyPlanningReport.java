@@ -73,6 +73,13 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 				strAgeFilter=CommunityMembers.AGE+">=70";
 			}
 		}
+		
+		String strGenderFilter=" 1 ";
+		if(gender != null){
+			if(!gender.equals("all")){
+				strGenderFilter=CommunityMembers.GENDER +" = '"+gender+"'";
+			}
+		}
 
 		try{
 			db=getReadableDatabase();
@@ -86,7 +93,8 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 					+"("+FamilyPlanningRecords.SERVICE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 					+FamilyPlanningRecords.SERVICE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
 					+" AND "
-					+strAgeFilter
+					+strAgeFilter +" AND "
+					+strGenderFilter
 					+" group by "+ FamilyPlanningServices.SERVICE_ID
 					+" order by "+ FamilyPlanningServices.SERVICE_NAME;
 			cursor=db.rawQuery(strQuery, null);

@@ -270,6 +270,13 @@ public class FamilyPlanningRecords extends DataClass {
 				strAgeFilter=CommunityMembers.AGE+">=70";
 			}
 		}
+		
+		String strGenderFilter=" 1 ";
+		if(gender != null){
+			if(!gender.equals("all")){
+				strGenderFilter=CommunityMembers.GENDER +" = '"+gender+"'";
+			}
+		}
 
 		String limitClause="";
 		if(page>=0){
@@ -289,12 +296,14 @@ public class FamilyPlanningRecords extends DataClass {
 					+SERVICE_DATE +","
 					+CommunityMembers.BIRTHDATE +", "
 					+CommunityMembers.COMMUNITY_ID +","
+					+CommunityMembers.GENDER
 					+" from " +FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
 					+" where "
 					+"("+FamilyPlanningRecords.SERVICE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 					+FamilyPlanningRecords.SERVICE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
 					+" AND "
-					+strAgeFilter
+					+strAgeFilter +" AND "
+					+strGenderFilter
 					+limitClause;
 					
 			cursor=db.rawQuery(strQuery, null);
@@ -336,7 +345,8 @@ public class FamilyPlanningRecords extends DataClass {
 				+ TABLE_NAME_FAMILY_PLANNING_RECORDS+ "."+FamilyPlanningServices.SERVICE_ID+", "
 				+FamilyPlanningServices.SERVICE_NAME+", "
 				+QUANTITY+", "
-				+SERVICE_DATE 
+				+SERVICE_DATE +", "
+				+CommunityMembers.GENDER
 				+" from "
 				+TABLE_NAME_FAMILY_PLANNING_RECORDS + " left join " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
 				+" on "+ TABLE_NAME_FAMILY_PLANNING_RECORDS+ "."+ CommunityMembers.COMMUNITY_MEMBER_ID +"="+

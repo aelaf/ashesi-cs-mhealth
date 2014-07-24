@@ -65,7 +65,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * Datavase VERSION 7
 	 * log, family planning, answerlink, local link 
 	 */
-	protected static final int DATABASE_VERSION=7; 
+	protected static final int DATABASE_VERSION=8; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -618,6 +618,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion<=6){
 				upgradeToVersion7(db);
 			}
+			
+			if(oldVersion<=7){
+				upgradeToVersion8(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -735,6 +739,13 @@ public class DataClass extends SQLiteOpenHelper {
 		//create local links table
 		db.execSQL(LocalLinks.getCreateQuery());
 		setDataVersion(db,DATABASE_NAME,7); 			//note down the database version
+	}
+	
+	private void upgradeToVersion8(SQLiteDatabase db){
+		db.execSQL("drop view "+ VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL);
+		db.execSQL(VaccineRecords.getCreateViewSQLString());
+		db.execSQL("drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
+		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 	}
 	
 	public String getDataFilePath(){
