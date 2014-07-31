@@ -165,8 +165,6 @@ ActionBar.TabListener, OnClickListener {
 				fragment= new ReportFragment();
 			}else if(position==1){
 				fragment=new HealthPromotionsFragment();
-			}else if(position==2){
-				fragment=new ReportDetailsFragment();
 			}
 			return fragment;
 		}
@@ -184,8 +182,7 @@ ActionBar.TabListener, OnClickListener {
 					return getString(R.string.title_activity_report).toUpperCase(l);
 				case 1:
 					return getString(R.string.title_add_new_health_promo).toUpperCase(l);
-				case 2:
-					return "Details";
+				
 			
 			}
 			return null;
