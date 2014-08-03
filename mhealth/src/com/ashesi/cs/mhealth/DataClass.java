@@ -582,6 +582,9 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			//create local links table
 			db.execSQL(LocalLinks.getCreateQuery());
+			
+			//version 8
+			//views are updated
 
 			setDataVersion(db,DATABASE_NAME,7);
 			
@@ -742,6 +745,7 @@ public class DataClass extends SQLiteOpenHelper {
 	}
 	
 	private void upgradeToVersion8(SQLiteDatabase db){
+		//updates the family planing and vaccine record views for querying based on gender
 		db.execSQL("drop view "+ VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL);
 		db.execSQL(VaccineRecords.getCreateViewSQLString());
 		db.execSQL("drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
