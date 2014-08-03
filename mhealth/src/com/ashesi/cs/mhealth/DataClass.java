@@ -1,5 +1,12 @@
 package com.ashesi.cs.mhealth;
-
+/**
+ * NAmanquah: 
+ * a few things to check up on: communityMember data  returned- is incomplete, see code below
+ * Also appears existing code throws non fatal error bc local db is not closed explicitly.  <---corrected in Communities.java
+ * verify the format of all dates returned.
+ * OPDCaseRecords fetch generates a null exception in existing code.
+ * 
+ */
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,15 +29,28 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
+import com.ashesi.cs.mhealth.data.Community;
+import com.ashesi.cs.mhealth.data.CommunityMember;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
 import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
+import com.ashesi.cs.mhealth.data.OPDCaseRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
+import com.ashesi.cs.mhealth.data.VaccineRecord;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
 import com.ashesi.cs.mhealth.knowledge.AnswerLinks;
@@ -788,6 +808,160 @@ public class DataClass extends SQLiteOpenHelper {
 		this.context = context;
 	}
 	
+	
+	
+/**
+ * Synchronize data with server using data returned from other child classes.
+ * @param theMainActivity A reference to the main activity, to provide context for this method.
+ * @author namanquah
+ */
+	public void threadedPost(final Activity theMainActivity){
+		new Thread(new Runnable() {
+	        public void run() {
+	        	//obtain the data to post, save them as key value pairs
+	        	List<NameValuePair> nameValuePairs=getDataToPost( theMainActivity);
+	        	
+	        	
+	        	//List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	        	//nameValuePairs.addAll(allData);
+	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
+	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
+		        
+	        	String urlAddress="http://10.0.2.2/mywebs/mhealth_android/mhealth_android.php";
+	        	String result= request(postRequest(urlAddress, nameValuePairs));
+	        	//now write to db
+	        	if (result.endsWith(":OK")  ){
+	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
+	        		theMainActivity.runOnUiThread(new Runnable() {
+	        			  public void run() {
+	        			    Toast.makeText(theMainActivity.getBaseContext(), "Successful upload", Toast.LENGTH_LONG).show();
+	        			  }
+	        			}); 
+	        		
+	        	}else
+	        	{
+	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
+	        		theMainActivity.runOnUiThread(new Runnable() {
+	        			  public void run() {
+	        			    Toast.makeText(theMainActivity.getBaseContext(), "Upload failed", Toast.LENGTH_LONG).show();
+	        			  }
+	        			}); 
+	        		
+	        		
+	        	}
+	        	Log.v("mHealthDebug",result);
+	        	
+	        }
+		}).start();
+	}
+	
+	/**
+	 * 
+	 * @param theMainActivity the active activity that forms the current app context
+	 * @return the key-value list of data feteched from local db, and prepared as REPLACE into SQL statements.
+	 * 			which can be directly executed on remote server. The return value is a list of NameValuePairs.
+	 * @author namanquah
+	 * 
+	 */
+	public List<NameValuePair> getDataToPost(Activity theMainActivity){
+		/*
+		 * the coupling between this function and the PHP script:
+		 * the $_POST[] variables are fixed here. eg
+		 * $_POST["communities"]
+		 * See all occurrences of returnValues.add(new BasicNameValuePair("key"...
+		 * 
+		 * The set of data collected are for:
+		 * communities,  communityMembers, community_members_opd_cases, vaccine_records
+		 */
+		
+		List<NameValuePair> returnValues = new ArrayList<NameValuePair>();
+		
+		StringBuilder communitiesData= new StringBuilder("Replace into communities (community_id, community_name, subdistrict_id, latitude, longitude, population, household) VALUES ");    	 
+    	ArrayList<Community> communitiesRawData= new Communities(theMainActivity).getCommunties(0);
+    	if(communitiesRawData.size()!=0){
+	    	 for(Community oneCommunity: communitiesRawData){    		 
+	    		 communitiesData.append("('"+oneCommunity.getId()+"',");  //includes starting brace
+	    		 communitiesData.append("'"+oneCommunity.getCommunityName()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getSubdistrictId()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getLatitude()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getLongitude()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getPopulation()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getHousehold()+"'),");  //with closing brace and starting comma. 
+	    		 																//Need to remove comma after the last
+	    	 }
+	    	 if (communitiesData.length()>0)
+	    	 communitiesData.setLength(communitiesData.length()-1);   //more efficient than deleting last character.
+	    	 returnValues.add(new BasicNameValuePair("communities", communitiesData.toString()));	    	 
+    	}
+    	//community_members:
+    	
+    	 StringBuilder communityMembersData= new StringBuilder("Replace into community_members (community_member_id, " +
+    	 		"serial_no, community_id, community_member_surname, community_member_other_names, birthdate, gender, " +
+    	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed) VALUES ");
+    	 ArrayList<CommunityMember> communityMembersRawData= new CommunityMembers(theMainActivity).getAllCommunityMember(0);
+    	 if (communityMembersRawData.size()!=0){
+    	 
+	    	 for(CommunityMember oneCommunityMember: communityMembersRawData){    		 
+	    		 communityMembersData.append("('"+oneCommunityMember.getId()+"',");  //includes starting brace
+	    		 communityMembersData.append("'"+"',"); //info not available for serialNO  
+	    		 communityMembersData.append("('"+oneCommunityMember.getCommunityID()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getFullname()+"',");
+	    		 communityMembersData.append("('"+"',");  //*****pending split that has forenames separate
+	    		 communityMembersData.append("('"+oneCommunityMember.getBirthdate()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getGender()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getCardNo()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getNHISId()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getNHISExpiryDate()+"',");
+	    		 communityMembersData.append("('"+oneCommunityMember.getRecState()+"',");
+	    		 communityMembersData.append("('"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
+	    	 }
+	    	 communityMembersData.setLength(Math.max(communityMembersData.length() - 1, 0))  ; //dispense with explicit check if length>0
+	    	 returnValues.add(new BasicNameValuePair("communitymembers", communityMembersData.toString()));
+    	 }//if
+    	 
+    	 
+    	 // moved into OPDCase class
+    	 /*
+    	 StringBuilder OPDCasesData = new StringBuilder("Replace into community_members_opd_cases  " +
+    	 		"(rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");
+    	 ArrayList<OPDCaseRecord> OPDCaseRecordsRawData= new OPDCaseRecords(theMainActivity).getArrayList();
+    	 if (OPDCaseRecordsRawData.size()!=0){
+	    	 for(OPDCaseRecord oneOPDCaseRecord: OPDCaseRecordsRawData){    		 
+	    		 OPDCasesData.append("('"+oneOPDCaseRecord.getRecNo()+"',");  //includes starting brace
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getCommunityMemberId()+"',");
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getOPDCaseId()+"',");
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getCHOId()+"',");
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getFormatedRecDate()+"',");
+	    		 OPDCasesData.append("'"+"',"); //server rec no not included
+	    		 OPDCasesData.append("'"+"',"); //rec state not included
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getLab()+"'),");
+	    	 }
+	    	 OPDCasesData.setLength(Math.max(OPDCasesData.length() - 1, 0))  ; 
+	    	 returnValues.add(new BasicNameValuePair("OPDCaseData", OPDCasesData.toString()));
+    	 }//if
+    	 */
+    	 
+    	 returnValues.add(new BasicNameValuePair("OPDCaseData", new OPDCaseRecords(theMainActivity).fetchSQLDumpToUpload()));
+    	 //add mechanism to remove null values/entries. watch for null values passed to server.
+    	 
+    	 // ,    
+    	 StringBuilder vaccineRecordsData = new StringBuilder("Replace into vaccine_records  " +
+     	 		"(vaccine_rec_id, vaccine_id, community_member_id, vaccine_date, rec_state) VALUES ");
+     	 ArrayList<VaccineRecord> vaccineRecordsRawData= new VaccineRecords(theMainActivity).getVaccineRecords(0);
+     	 if(vaccineRecordsRawData.size()!=0){
+	     	 for(VaccineRecord oneVaccineRecord: vaccineRecordsRawData){    		 
+	     		vaccineRecordsData.append("('"+oneVaccineRecord.getId()+"',");  //includes starting brace,
+	     		vaccineRecordsData.append("'"+oneVaccineRecord.getVaccineId()+"',");
+	     		vaccineRecordsData.append("'"+oneVaccineRecord.getCommunityMemberId()+"',");
+	     		vaccineRecordsData.append("'"+oneVaccineRecord.getVaccineDate()+"',");  
+	     		vaccineRecordsData.append("'"+"'),"); //missing record state
+	     	
+	    	 }
+	     	vaccineRecordsData.setLength(Math.max(vaccineRecordsData.length() - 1, 0))  ; 
+	    	returnValues.add(new BasicNameValuePair("vaccine_records", vaccineRecordsData.toString()));
+     	 }
+    	 return returnValues;
+	}
 	
 	
 }

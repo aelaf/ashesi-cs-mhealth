@@ -28,6 +28,7 @@ public class OPDCaseRecords extends DataClass {
 	}
 	/**
 	 * Returns recorded opd cases for one communityMember 
+	 * NNA; modified to return all records if commuityMemberId is 0
 	 * @param communityMemberId
 	 * @return
 	 */
@@ -37,8 +38,11 @@ public class OPDCaseRecords extends DataClass {
 			db=getReadableDatabase();
 			String[] columns={REC_NO,CommunityMembers.COMMUNITY_MEMBER_ID, OPDCases.OPD_CASE_ID,
 						CommunityMembers.COMMUNITY_MEMBER_NAME,OPD_CASE_NAME,REC_DATE,LAB,CHOs.CHO_ID};
-			String selection=CommunityMembers.COMMUNITY_MEMBER_ID+"="+communityMemberId;
 			
+			String selection=CommunityMembers.COMMUNITY_MEMBER_ID+"="+communityMemberId;
+			if (communityMemberId==0){  //to allow selecting all records.
+				selection=null;  
+				}
 			cursor=db.query(DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES, columns, 
 					selection, null, null, null, null );
 				return true;
@@ -442,5 +446,29 @@ public class OPDCaseRecords extends DataClass {
 				+ " left join " + OPDCases.TABLE_NAME_OPD_CASES
 				+ " ON " + TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES+ "."+ OPDCases.OPD_CASE_ID +"=" +
 				OPDCases.TABLE_NAME_OPD_CASES +"."+OPDCases.OPD_CASE_ID;
+	}
+
+	public String fetchSQLDumpToUpload(){
+   	 StringBuilder OPDCasesData = new StringBuilder("Replace into community_members_opd_cases  " +
+ 	 		"(rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");
+   	 
+   	getCommunityMemberOPDCases(0); //in order to create a cursor.
+ 	 ArrayList<OPDCaseRecord> OPDCaseRecordsRawData= getArrayList();
+ 	 if (OPDCaseRecordsRawData.size()!=0){
+	    	 for(OPDCaseRecord oneOPDCaseRecord: OPDCaseRecordsRawData){    		 
+	    		 OPDCasesData.append("('"+oneOPDCaseRecord.getRecNo()+"',");  //includes starting brace
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getCommunityMemberId()+"',");
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getOPDCaseId()+"',");
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getCHOId()+"',");
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getRecDate()+"',");
+	    		 OPDCasesData.append("'"+"',"); //server rec no not included
+	    		 OPDCasesData.append("'"+"',"); //rec state not included
+	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getLab()+"'),");
+	    	 }
+	    	 OPDCasesData.setLength(Math.max(OPDCasesData.length() - 1, 0))  ; 
+	    	 
+	    	 return OPDCasesData.toString();
+ 	 }//if   	 
+ 	 return null;
 	}
 }
