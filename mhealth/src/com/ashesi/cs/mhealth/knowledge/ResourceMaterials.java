@@ -227,7 +227,7 @@ public class ResourceMaterials extends DataClass {
 	 */
 	public void download(){
 		final int deviceId=mDeviceId;
-		String url="choAction?cmd=2&deviceId"+deviceId;
+		String url="/mhealth/choAction?cmd=2&deviceId"+deviceId;
 		String data=request(url);
 		try{
 			JSONObject obj=new JSONObject(data);

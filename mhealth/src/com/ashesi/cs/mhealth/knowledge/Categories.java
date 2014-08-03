@@ -124,7 +124,7 @@ public class Categories extends DataClass{
 		new Thread(new Runnable() {
 	        public void run() {
 	        	Log.e("Categories.synch", "request called");
-	            String data = request("http://192.168.56.2/msupport/ajax_categories.php?cmd=1&v="+dataversion);
+	            String data = request("mhealth/ajax_categories.php?cmd=1&v="+dataversion);
 	            processUpdate(data);
 	        }
 	    }).start();

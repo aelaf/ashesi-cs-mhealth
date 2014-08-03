@@ -89,13 +89,13 @@ public class DataClass extends SQLiteOpenHelper {
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
-	protected String mServerUrl="http://192.168.56.2/mHealth/";
+	protected String mServerUrl="http://cs.ashesi.edu.gh/";
 	
 	Context context;
 	
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
-	public static final String SERVER_URL="http://192.168.56.2/mHealth/";
+	public static final String SERVER_URL="http://cs.ashesi.edu.gh/";
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
 		
@@ -816,6 +816,8 @@ public class DataClass extends SQLiteOpenHelper {
  * @author namanquah
  */
 	public void threadedPost(final Activity theMainActivity){
+		final String serverUrl=this.getServerUrl();
+		
 		new Thread(new Runnable() {
 	        public void run() {
 	        	//obtain the data to post, save them as key value pairs
@@ -827,7 +829,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
-	        	String urlAddress="http://10.0.2.2/mywebs/mhealth_android/mhealth_android.php";
+	        	String urlAddress= serverUrl+"mhealthproject/mhealth_android/mhealth_android.php";
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
