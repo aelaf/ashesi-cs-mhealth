@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">mHealth Data</string>
+    <string name="app_name">Yaresa</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="cbMyPost">My Post</string>
@@ -26,7 +26,7 @@
     <string name="year">Years</string>
     <string name="months">Months</string>
     <string name="birthdate">Birthdate</string>
-    <string name="title_activity_community_members_record">CommunityMembersRecordActivity</string>
+    <string name="title_activity_community_members_record">Community Member Record</string>
     <string name="fullname">Full Name</string>
     <string name="record">Record</string>
     <string name="addCommunityMember">Add Community Member</string>
@@ -39,11 +39,11 @@
     <string name="removeRecord">Remove Record</string>
     <string name="remove">remove</string>
     <string name="delete">delete</string>
-    <string name="editClient">Edit Client</string>
+    <string name="editClient">Edit Community Member</string>
     <string name="cardNo">Card No</string>
     <string name="cardNumber">Card Number</string>
-    <string name="title_activity_report">ReportActivity</string>
-    <string name="title_cm_record_main">main</string>
+    <string name="title_activity_report">Report</string>
+    <string name="title_cm_record_main">basic</string>
     <string name="title_cm_record_other">OPD</string>
     <string name="title_cm_record_note">notes</string>
     <string name="title_report_opdsection">OPD</string>
@@ -67,7 +67,7 @@
     <string name="clickAbuttonUpdate">click a button to update</string>
     <string name="cancel">Cancel</string>
     <string name="blankSpace">" "</string>
-    <string name="title_activity_community_member_record">CommunityMemberRecordActivity</string>
+    <string name="title_activity_community_member_record">Community Member Record</string>
     <string name="hintNumber">00</string>
     <string name="nhisIDNumber">NHIS ID NO</string>
     <string name="nhisExpiryDate">Expiry Date</string>
