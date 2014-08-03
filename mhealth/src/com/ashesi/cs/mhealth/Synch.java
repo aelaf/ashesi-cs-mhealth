@@ -72,6 +72,8 @@ public class Synch extends Activity implements OnClickListener {
 		buttonSynchVaccine.setOnClickListener(this);
 		buttonSynchRestore=(Button)findViewById(R.id.buttonSynchRestore);
 		buttonSynchRestore.setOnClickListener(this);
+		View buttonSychronizeData=findViewById(R.id.buttonSynchronizeData);
+        buttonSychronizeData.setOnClickListener(this);
 		task=null;
 		
 	}
@@ -106,6 +108,12 @@ public class Synch extends Activity implements OnClickListener {
 				break;
 			case R.id.buttonSynchCancel:
 				cancel();
+				break;
+			case R.id.buttonSynchronizeData: //synch data
+				DataClass data= new DataClass(getApplicationContext());
+				Log.v("mhealthDebug1_main activity","before thread");
+				data.threadedPost(Synch.this);
+				Log.v("mhealthDebug1_main activity","after thread");
 				break;
 		}
 	}

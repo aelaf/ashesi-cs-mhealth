@@ -146,5 +146,6 @@
     <string name="qty">Qty</string>
     <string name="title_activity_detail_report">Detail</string>
     <string name="detailreport">Detail Report</string>
+    <string name="label_synchronizeData">Synchronize Data</string>
 
 </resources>

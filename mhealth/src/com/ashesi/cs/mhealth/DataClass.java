@@ -828,7 +828,17 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
 	        	String urlAddress="http://10.0.2.2/mywebs/mhealth_android/mhealth_android.php";
-	        	String result= request(postRequest(urlAddress, nameValuePairs));
+	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
+	        	if(response==null){
+	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
+	        		theMainActivity.runOnUiThread(new Runnable() {
+	        			  public void run() {
+	        			    Toast.makeText(theMainActivity.getBaseContext(), "Upload failed. No Connection", Toast.LENGTH_LONG).show();
+	        			  }
+	        			}); 
+	        		return;
+	        	}
+	        	String result= request(response);
 	        	//now write to db
 	        	if (result.endsWith(":OK")  ){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
