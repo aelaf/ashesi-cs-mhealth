@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
 import com.ashesi.cs.mhealth.data.FamilyPlanningReport.FamilyPlanningReportRecord;
@@ -60,6 +61,27 @@ public class FamilyPlanningRecords extends DataClass {
 
 	}
 	
+	public boolean alreadyAcceptor(int communityMemberId){
+		try{
+			
+			db=getReadableDatabase();
+			String columns[]={SERVICE_REC_ID};
+			String selection=FamilyPlanningServices.SERVICE_ID+"="+Integer.toString(FamilyPlanningServices.NEW_ACCEPTOR_SERVICE_ID)
+								+" and "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+Integer.toString(communityMemberId);
+			cursor=db.query(TABLE_NAME_FAMILY_PLANNING_RECORDS,columns, selection,null, null, null,null);
+			
+			if(cursor.getCount()>0){
+				return true;
+			}
+			close();
+			return false;
+			
+		}catch(Exception ex){
+			
+			close();
+			return true;
+		}
+	}
 	/**
 	 * records when a community member was received with particular service identified by vaccineId 
 	 * @param communityMemberId
@@ -103,6 +125,7 @@ public class FamilyPlanningRecords extends DataClass {
 		return addRecord(communityMemberId,serviceId,serviceDate,0);
 
 	}
+	
 	//removes one service record form table 
 	public boolean reomveRecord(int serviceRecId){
 		try{

@@ -1498,6 +1498,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			FamilyPlanningService service=(FamilyPlanningService)spinner.getSelectedItem();
 			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
 			
+			//New acceptor can be recorded once only. 
+			if(service.getId()==FamilyPlanningServices.NEW_ACCEPTOR_SERVICE_ID){
+				if(records.alreadyAcceptor(communityMemberId)){
+					return;
+				}
+			}
+			
 			double quantity=0;
 			String strQty=editQty.getText().toString();
 			

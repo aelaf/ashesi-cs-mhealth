@@ -15,6 +15,7 @@ import com.ashesi.cs.mhealth.DataClass;
 public class FamilyPlanningServices extends DataClass {
 	public final static String SERVICE_ID="service_id";
 	public final static String SERVICE_NAME="service_name";
+	public final static int	NEW_ACCEPTOR_SERVICE_ID=17;
 
 	public final static String TABLE_NAME_FAMILY_PLANNING_SERVICES="family_planning_services";
 	

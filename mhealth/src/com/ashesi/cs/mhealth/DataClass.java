@@ -83,7 +83,9 @@ public class DataClass extends SQLiteOpenHelper {
 	 * Database VERSION 6
 	 * Questions, Answers, Categories, ResourceMaterials
 	 * Datavase VERSION 7
-	 * log, family planning, answerlink, local link 
+	 * log, family planning, answerlink, local link
+	 * Database VERSION 8
+	 * update vaccine view to disaggregate  by gender
 	 */
 	protected static final int DATABASE_VERSION=8; 
 	protected SQLiteDatabase db;
