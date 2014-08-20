@@ -296,7 +296,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		
 		String imageFilename="healthpromopic" +sdf.format(Calendar.getInstance().getTime())+".jpg";
 		HealthPromotions healthPromotions=new HealthPromotions(this.getApplicationContext());
-		File file = new File(healthPromotions.getApplicationFolderPath()+ imageFilename);
+		File file = new File(healthPromotions.getHealthPromotionPicturePath()+ imageFilename);
 
 		selectedImageUri=Uri.fromFile(file);
 		

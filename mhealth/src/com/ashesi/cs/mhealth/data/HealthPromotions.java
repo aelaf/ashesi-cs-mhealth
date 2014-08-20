@@ -12,6 +12,7 @@ import com.ashesi.cs.mhealth.DataClass;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
 
 public class HealthPromotions extends DataClass {
@@ -195,8 +196,8 @@ public class HealthPromotions extends DataClass {
 		
 	}
 	
-	public String getHealthPromotionPicture(){
-		return this.getApplicationFolderPath() + HealthPromotions.HEALTH_PROMOTION_PIC_PATH;
+	public String getHealthPromotionPicturePath(){
+		return Environment.getExternalStorageDirectory() + "/mHealth/hp/";
 	}
 	
 	public boolean deleteHealhtPromotion(int id){

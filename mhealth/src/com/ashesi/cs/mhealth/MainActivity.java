@@ -74,6 +74,10 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		if(!folder.exists()){
 			folder.mkdir();
 		}
+		folder=new File(Environment.getExternalStorageDirectory() + "/mHealth/hp");
+		if(!folder.exists()){
+			folder.mkdir();
+		}
 	
 	}
 	
