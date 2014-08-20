@@ -93,8 +93,10 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 				break;
 				
 			case R.id.buttonHealthPromotions:
-				Intent intent1=new Intent(this,HealthPromotionsActivity.class);
-				startActivity(intent1);
+				Intent intentHealthPromotion=new Intent(this,HealthPromotionList.class);
+				intentHealthPromotion.putExtra("choId", currentCHO.getId());
+				startActivity(intentHealthPromotion);
+				break;
 			case R.id.buttonMainKnowledge:
 				Intent knowledge = new Intent(this,KnowledgeActivity.class);
 				knowledge.putExtra("choId", currentCHO.getId());
@@ -125,9 +127,11 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		choId=currentCHO.getId();
 		buttonOpenClose.setText(R.string.close);
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(true);
-		findViewById(R.id.buttonMainKnowledge).setEnabled(true);
+		//findViewById(R.id.buttonMainKnowledge).setEnabled(true);
 		findViewById(R.id.buttonHealthPromotions).setEnabled(true);
-		findViewById(R.id.buttonAddCommunity).setEnabled(true);
+		//findViewById(R.id.buttonAddCommunity).setEnabled(true);
+		textStatus.setText("application open");
+		textStatus.setTextColor(this.getResources().getColor(R.color.text_color_black));
 	}
 	
 	private void logout(){
@@ -156,7 +160,9 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
-		
+		if(choId==0){
+			return false;
+		}
 		switch(item.getItemId()){
 			case R.id.itemMainActionBarSynch:
 				synch();	//you can synch with out logging in
@@ -204,7 +210,6 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		return true;
 	}
 	
-
 	@Override
 	public void onItemSelected(AdapterView<?> view, View view1, int position, long arg3) {
 		

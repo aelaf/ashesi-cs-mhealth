@@ -10,5 +10,6 @@
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
     <EditTextPreference android:key="synch_url" android:title="@string/synch_url" android:defaultValue="http://cs.ashesi.edu.gh/"/>
     <EditTextPreference android:title="@string/deviceId" android:key="device_id" android:defaultValue="1"/>
+    <EditTextPreference android:key="app_path" android:title="@string/app_path" android:defaultValue="/mHealth/"/>
 
 </PreferenceScreen>

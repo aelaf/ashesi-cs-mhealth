@@ -211,6 +211,10 @@ public class ResourceFragment extends Fragment{
 			refreshMenuItem = item;
 			loadResources();
 			break;
+		case R.id.bluetooth_backup:
+			refreshMenuItem = item;
+			loadResources();
+			break;
 		case android.R.id.home:
 			NavUtils.navigateUpFromSameTask(getActivity());
 			break;

@@ -147,5 +147,10 @@
     <string name="title_activity_detail_report">Detail</string>
     <string name="detailreport">Detail Report</string>
     <string name="label_synchronizeData">Synchronize Data</string>
+    <string name="app_path">Application Folder</string>
+    <string name="picture">Picture</string>
+    <string name="snap">Snap</string>
+    <string name="select">Select</string>
+    <string name="title_activity_health_promotion_list">Health Promotions</string>
 
 </resources>

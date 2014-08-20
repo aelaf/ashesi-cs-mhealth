@@ -35,6 +35,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -86,18 +87,22 @@ public class DataClass extends SQLiteOpenHelper {
 	 * log, family planning, answerlink, local link
 	 * Database VERSION 8
 	 * update vaccine view to disaggregate  by gender
+	 *  * Database VERSION 9
+	 * update health promotion table is recreated
 	 */
-	protected static final int DATABASE_VERSION=8; 
+	protected static final int DATABASE_VERSION=9; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
 	protected String mServerUrl="http://cs.ashesi.edu.gh/";
+	
 	
 	Context context;
 	
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
 	public static final String SERVER_URL="http://cs.ashesi.edu.gh/";
+	public static final String APPLICATION_PATH="/mHealth/"; 
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
 		
@@ -647,6 +652,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion<=7){
 				upgradeToVersion8(db);
 			}
+			
+			if(oldVersion<=8){
+				upgradeToVersion9(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -772,13 +781,35 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(VaccineRecords.getCreateViewSQLString());
 		db.execSQL("drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
 		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		setDataVersion(db,DATABASE_NAME,8); 
 	}
+	
+	private void upgradeToVersion9(SQLiteDatabase db){
+		//recreate table
+		db.execSQL("drop table "+ HealthPromotions.TABLE_NAME_HEALTH_PROMOTION);
+		db.execSQL(HealthPromotions.getCreateSQLString());
+		setDataVersion(db,DATABASE_NAME,9); 
+	}
+	
+	
 	
 	public String getDataFilePath(){
 		db=this.getReadableDatabase();
 		String str=db.getPath();
 		close();
 		return str;
+	}
+	
+	public String getApplicationFolderPath(){
+		String path;
+		try{
+			path=PreferenceManager.getDefaultSharedPreferences(context).getString("app_path", "");
+			path=Environment.getExternalStorageDirectory().getPath()+path;
+			
+		}catch(Exception ex){
+			path= Environment.getExternalStorageDirectory().getPath() +DataClass.APPLICATION_PATH;
+		}
+		return path;
 	}
 	
 	public String getServerUrl(){

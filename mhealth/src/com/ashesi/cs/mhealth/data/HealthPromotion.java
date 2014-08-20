@@ -1,39 +1,70 @@
 package com.ashesi.cs.mhealth.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class HealthPromotion {
+	private int id;
 	private String date;
 	private String venue;
 	private String topic;
 	private String method;
-	private String target_audience;
-	private String number_of_audience;
+	private String targetAudience;
+	private int audienceNumber;
 	private String remarks;
 	private String month;
 	private String latitude;
 	private String longitude;
 	private String image;
-	private String idcho;
-	private String subdistrict_id;
+	private int choId;
+	private int subdistrictId;
 	
-	public HealthPromotion(String date,String venue,String topic,String method,String target_audience,String number_of_audience,
-			String remarks, String month, String latitude, String longitude, String image,String dcho, String subdistrict_id){
+	public HealthPromotion(int recId,String date,String venue,String topic,String method,String targetAudience,int audienceNumber,
+			String remarks, String month, String latitude, String longitude, String image,int choId, int subdistrictId){
+		this.id=recId;
 		this.date=date;
 		this.venue=venue;
 		this.topic=topic;
 		this.method=method;
-		this.target_audience=target_audience;
-		this.number_of_audience=number_of_audience;
-		this.idcho=idcho;
+		this.targetAudience=targetAudience;
+		this.audienceNumber=audienceNumber;
+		this.choId=choId;
 		this.remarks=remarks;
 		this.month=month;
 		this.latitude=latitude;
 		this.longitude=longitude;
 		this.image=image;
-		this.subdistrict_id=subdistrict_id;
+		this.subdistrictId=subdistrictId;
 		
+	}
+	public int getId(){
+		return id;
 	}
 	public String getDate(){
 		return date;
+	}
+	
+	public java.util.Date getPromotionDateDate(){
+		try
+		{
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			return dateFormat.parse(date);
+		}
+		catch(Exception ex){
+			return null;
+		}
+		
+	}
+	
+	public String getFormattedDate(){
+		try
+		{
+			java.util.Date d=getPromotionDateDate();
+			SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+			return dateFormat.format(d);
+		}catch(Exception ex){
+			return date;
+		}
 	}
 	
 	public String getVenue(){
@@ -49,14 +80,15 @@ public class HealthPromotion {
 	}
 	
 	public String getTargetAudience(){
-		return target_audience;
-	}
-	public String getNumberAudience(){
-		return number_of_audience;
+		return targetAudience;
 	}
 	
-	public String getChoId(){
-		return idcho;
+	public int getNumberAudience(){
+		return audienceNumber;
+	}
+	
+	public int getChoId(){
+		return choId;
 	}
 	public String getRemarks(){
 		return remarks;
@@ -74,7 +106,11 @@ public class HealthPromotion {
 	public String getImage(){
 		return image;
 	}
-	public String getSubdistrictid(){
-		return subdistrict_id;
+	public int getSubdistrictid(){
+		return subdistrictId;
+	}
+	
+	public String toString(){
+		return getFormattedDate() +"\t"+ topic + "\t " +method + "\t " +targetAudience + "\t " +venue;
 	}
 }
