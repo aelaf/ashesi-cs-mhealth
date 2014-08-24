@@ -41,6 +41,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
@@ -60,9 +61,8 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 
 
 	private TextView textDate;
-	private int year;
-	private int month;
-	private int day;
+	private java.util.Date date;
+	
 	private TextView textMonth;
 	private EditText editLongitude;
 	private EditText editLatitude;
@@ -122,11 +122,10 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	    textDate.setTextColor(Color.CYAN);
 	    textDate.setTypeface(Typeface.DEFAULT, Typeface.ITALIC);
 	    
-	    final Calendar c = Calendar.getInstance();
-	    year = c.get(Calendar.YEAR);
-	    month = (c.get(Calendar.MONTH)+1);
-	    day = c.get(Calendar.DAY_OF_MONTH);
-	    textDate.setText(day +"/"+month +"/" +year);
+	    Calendar c = Calendar.getInstance();
+	    date=c.getTime();
+	    showDate();
+	    
 	    textDate.setOnClickListener(this);
 	   
 		
@@ -172,12 +171,8 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		editAudienceNumber.setText(Integer.toString(healthPromotion.getNumberAudience()));
 		editRemarks.setText(healthPromotion.getRemarks());
 		textDate.setText(healthPromotion.getFormattedDate());
-		java.util.Date date=healthPromotion.getPromotionDateDate();
-		Calendar calendar=Calendar.getInstance();
-		calendar.setTime(date);
-		year=calendar.get(Calendar.YEAR);
-		month=calendar.get(Calendar.MONTH);
-		day=calendar.get(calendar.DAY_OF_MONTH);
+		date=healthPromotion.getPromotionDateDate();
+		showDate();
 		
 		
 		selectedImageUri=Uri.parse(healthPromotion.getImage());
@@ -257,13 +252,25 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		{
 			FragmentManager fm=this.getFragmentManager();
 			XDatePickerFragment newFragment = new XDatePickerFragment();
-		    newFragment.showDateDialog(fm);
+			newFragment.date=date;
+			newFragment.show(fm, "date_picker");
+		    //newFragment.showDateDialog(fm,date);
 		}
 		catch(Exception ex){
 			Log.e("health promotion",ex.getMessage());
 			
 		}
 
+	}
+	
+	private void showDate(){
+		if(date==null){
+			return;
+		}
+
+		SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+		textDate.setText(dateFormat.format(date));
+		
 	}
 	
 	protected boolean getLocation(){
@@ -299,7 +306,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		File file = new File(healthPromotions.getHealthPromotionPicturePath()+ imageFilename);
 
 		selectedImageUri=Uri.fromFile(file);
-		
+	
 	    intent.putExtra(MediaStore.EXTRA_OUTPUT,selectedImageUri); // set the image file name
 
 	    // start the image capture Intent
@@ -320,6 +327,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 			return false;
 		}
 		String date=getDatabaseDateString();
+		
 		String venue=editVenue.getText().toString();
 		String topic=editTopic.getText().toString();
 		String method=editMethod.getText().toString();
@@ -398,8 +406,10 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		if(resultCode != RESULT_OK){
 			return ;
 		}
+
 		switch(requestCode){
 			case PICTURE_SNAP:
+				selectedImageUri=Uri.parse("file://"+selectedImageUri.getPath());
 				imageCaptured=true;
 				break;
 			case PICTURE_SELECT:
@@ -413,13 +423,13 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	}
 	
 	public void updateDate(int year, int month, int day){
-		this.year=year;
-		this.month=month;
-		this.day=day;
-		textDate.setText(day+"/"+month+"/"+year);
-	}
-	
+		Calendar c=Calendar.getInstance();
+		c.set(year, month, day);
+		date=c.getTime();
+		showDate();
 
+	}
+		
 	
 	protected void showImage(){
 		if(!imageCaptured){
@@ -427,19 +437,33 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		}
 		
 		ImageView image=(ImageView)findViewById(R.id.imageHealthPromotion);
-		image.setImageURI(selectedImageUri);
-		image.invalidate();
+		try{
+			if(selectedImageUri.getScheme()!=null){
+				Bitmap map=Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+				image.setImageBitmap(map);
+			}else{
+				image.setImageURI(selectedImageUri);
+			}
+			image.postInvalidate();
+		}catch(Exception ex){
+			return;
+		}
 	}
 	
 	public static class XDatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
+		public java.util.Date date=null;
+		
 		public XDatePickerFragment(){
 			
 		}
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			// Use the current date as the default date in the picker
-			final Calendar c = Calendar.getInstance();
+			
+			Calendar c = Calendar.getInstance();
+			if(date!=null){
+				c.setTime(date);
+			}
 			int year = c.get(Calendar.YEAR);
 			int month = c.get(Calendar.MONTH);
 			int day = c.get(Calendar.DAY_OF_MONTH);
@@ -454,11 +478,12 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 			h.updateDate(year, month, day);
 		}
 		
-		public void showDateDialog(FragmentManager fm){
+		public void showDateDialog(FragmentManager fm,java.util.Date date){
 			try{
-			
-	        XDatePickerFragment newFragment = new XDatePickerFragment();
-	        newFragment.show(fm, "date_picker");
+				this.date=date;
+		        XDatePickerFragment newFragment = new XDatePickerFragment();
+		        newFragment.date=date;
+		        newFragment.show(fm, "date_picker");
 			}catch(Exception ex){
 				Log.e("DatePicker",ex.getMessage());
 			}
@@ -466,17 +491,15 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 	    }
 	}
 	
+	
 	public String getDatabaseDateString(){
 		Calendar calendar=Calendar.getInstance();
-		calendar.set(year, month, day);
+		calendar.setTime(date);
 		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 		return dateFormat.format(calendar.getTime());
 	}
 	
-	public String getMonth(){
-		Calendar calendar=Calendar.getInstance();
-		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
-		return dateFormat.format(calendar.getTime());
-	}
+	
+
 		
 }
