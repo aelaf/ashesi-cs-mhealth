@@ -949,16 +949,16 @@ public class DataClass extends SQLiteOpenHelper {
 	    	 for(CommunityMember oneCommunityMember: communityMembersRawData){    		 
 	    		 communityMembersData.append("('"+oneCommunityMember.getId()+"',");  //includes starting brace
 	    		 communityMembersData.append("'"+"',"); //info not available for serialNO  
-	    		 communityMembersData.append("('"+oneCommunityMember.getCommunityID()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getFullname()+"',");
-	    		 communityMembersData.append("('"+"',");  //*****pending split that has forenames separate
-	    		 communityMembersData.append("('"+oneCommunityMember.getBirthdate()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getGender()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getCardNo()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getNHISId()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getNHISExpiryDate()+"',");
-	    		 communityMembersData.append("('"+oneCommunityMember.getRecState()+"',");
-	    		 communityMembersData.append("('"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
+	    		 communityMembersData.append("'"+oneCommunityMember.getCommunityID()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getFullname()+"',");
+	    		 communityMembersData.append("'"+"',");  //*****pending split that has forenames separate
+	    		 communityMembersData.append("'"+oneCommunityMember.getBirthdate()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getGender()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getCardNo()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getNHISId()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getNHISExpiryDate()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getRecState()+"',");
+	    		 communityMembersData.append("'"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
 	    	 }
 	    	 communityMembersData.setLength(Math.max(communityMembersData.length() - 1, 0))  ; //dispense with explicit check if length>0
 	    	 returnValues.add(new BasicNameValuePair("communitymembers", communityMembersData.toString()));
