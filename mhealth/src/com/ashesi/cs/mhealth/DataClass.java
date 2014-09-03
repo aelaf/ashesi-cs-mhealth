@@ -8,6 +8,7 @@ package com.ashesi.cs.mhealth;
  * 
  */
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -105,6 +106,7 @@ public class DataClass extends SQLiteOpenHelper {
 	public static final String APPLICATION_PATH="/mHealth/"; 
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
+	private static final int MAX_READ_COUNT=10000;	//each read is 1024byte , maximum file size=10,000x1024 ~ 10mm
 		
 	public static final String TABLE_NAME_DATAVERSION="dataversion";
 	public static final String VERSION="version";
@@ -120,7 +122,6 @@ public class DataClass extends SQLiteOpenHelper {
 	public static final int REC_STATE_UPTODATE=2;
 	public static final int REC_STATE_DELETED=3;
 	private static final int DATAVIRSION = 0;
-	
 
 	/**
 	 * Creates an object of DataClass and calls getWritableDatabase to force database creation if necessary
@@ -182,19 +183,23 @@ public class DataClass extends SQLiteOpenHelper {
 			String data="";
 			boolean stop=false;
 			int readLength=0;
+			int count=0;
 			Reader reader=new InputStreamReader(stream,"UTF-8");
 			while(!stop){
 				readLength=reader.read(buffer);
 				if(readLength>0){
 					data=data+(new String(buffer,0,readLength));
 				}
-					if(data.contains("#SUCCESS#")){
+				if(data.contains("#SUCCESS#")){
+					stop=true;
+				}
+				count++;
+				if(count>MAX_READ_COUNT){
 					stop=true;
 				}
 			}
 			int end=data.lastIndexOf("#SUCCESS#");
-		
-			
+
 			return data.substring(0, end);
 		}catch(Exception ex){
 			Log.d("DataClass.request","Exception" + ex.getMessage());
@@ -862,7 +867,22 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
-	        	String urlAddress= serverUrl+"mhealthproject/mhealth_android/mhealth_android.php";
+	        	String urlAddress= "mhealthproject/mhealth_android/mhealth_android.php";
+	        	File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+	        	File debugFile=new File(downloadPath.getPath(),"debug");
+	        	try{
+	        		FileOutputStream fos=new FileOutputStream(debugFile);
+	        		//UrlEncodedFormEntity encoder=new UrlEncodedFormEntity(nameValuePairs);
+	        		//encoder.writeTo(fos);
+	        		String str=nameValuePairs.toString();
+	        		byte buffer[]=str.getBytes();
+	        		fos.write(buffer);
+	        		fos.close();
+	        		
+	        		
+	        	}catch(Exception ex){
+	        		Log.d("DataClass",ex.getMessage());
+	        	}
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
@@ -945,8 +965,11 @@ public class DataClass extends SQLiteOpenHelper {
     	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed) VALUES ");
     	 ArrayList<CommunityMember> communityMembersRawData= new CommunityMembers(theMainActivity).getAllCommunityMember(0);
     	 if (communityMembersRawData.size()!=0){
-    	 
-	    	 for(CommunityMember oneCommunityMember: communityMembersRawData){    		 
+    		 CommunityMember oneCommunityMember;
+    		 for(int i=0;i<10;i++){
+    			 
+	    	 //for(CommunityMember oneCommunityMember: communityMembersRawData){    
+    			 oneCommunityMember=communityMembersRawData.get(i);
 	    		 communityMembersData.append("('"+oneCommunityMember.getId()+"',");  //includes starting brace
 	    		 communityMembersData.append("'"+"',"); //info not available for serialNO  
 	    		 communityMembersData.append("('"+oneCommunityMember.getCommunityID()+"',");
