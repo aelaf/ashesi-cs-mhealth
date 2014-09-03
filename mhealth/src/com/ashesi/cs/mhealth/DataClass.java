@@ -862,7 +862,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
-	        	String urlAddress= serverUrl+"mhealthproject/mhealth_android/mhealth_android.php";
+	        	String urlAddress= "mhealthproject/mhealth_android/mhealth_android.php";
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
