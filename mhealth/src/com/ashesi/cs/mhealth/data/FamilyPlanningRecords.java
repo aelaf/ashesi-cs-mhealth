@@ -22,6 +22,7 @@ public class FamilyPlanningRecords extends DataClass {
 	public final static String SERVICE_REC_ID="service_rec_id";
 	public final static String SERVICE_NAME="service_name";
 	public final static String SERVICE_DATE="service_date";
+	public final static String SCHEDULE_DATE="service_schedule_date";
 	public final static String QUANTITY="quantity";
 	public final static String TABLE_NAME_FAMILY_PLANNING_RECORDS="family_planning_records";
 	public final static String VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL="view_family_planning_records_detail";
@@ -60,6 +61,37 @@ public class FamilyPlanningRecords extends DataClass {
 		}
 
 	}
+	
+	/**
+	 * records when a community member was received with particular service identified by vaccineId 
+	 * @param communityMemberId
+	 * @param serviceId
+	 * @param serviceDate
+	 * @return
+	 */
+	public FamilyPlanningRecord addRecord(int communityMemberId, int serviceId, String serviceDate,double quanity, String scheduleDate){
+		try{
+						
+			db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
+			cv.put(CommunityMembers.COMMUNITY_MEMBER_ID, communityMemberId);
+			cv.put(FamilyPlanningServices.SERVICE_ID,serviceId);
+			cv.put(QUANTITY, quanity);
+			cv.put(SERVICE_DATE, serviceDate);
+			cv.put(SCHEDULE_DATE, scheduleDate);
+			long id=db.insert(TABLE_NAME_FAMILY_PLANNING_RECORDS, null, cv);
+			if(id<=0){
+				return null;
+			}
+			return getServiceRecord((int)id);
+			
+		}catch(Exception ex){
+			close();
+			return null;
+		}
+
+	}
+	
 	
 	public boolean alreadyAcceptor(int communityMemberId){
 		try{
@@ -107,6 +139,27 @@ public class FamilyPlanningRecords extends DataClass {
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			String strDate=dateFormat.format(serviceDate);
 			return addRecord(communityMemberId,serviceId,strDate,quantity);
+		}catch(Exception ex){
+			close();
+			return null;
+		}
+			
+	}
+	
+	/**
+	 * records when a community member was received with particular service identified by vaccineId 
+	 * @param communityMemberId
+	 * @param serviceId
+	 * @param serviceDate
+	 * @return
+	 */
+	public FamilyPlanningRecord addRecord(int communityMemberId, int serviceId, Date serviceDate,double quantity,Date scheduleDate){
+	   try{
+			
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			String strServiceDate=dateFormat.format(serviceDate);
+			String strScheduleDate=dateFormat.format(scheduleDate);
+			return addRecord(communityMemberId,serviceId,strServiceDate,quantity,strScheduleDate);
 		}catch(Exception ex){
 			close();
 			return null;
@@ -171,8 +224,13 @@ public class FamilyPlanningRecords extends DataClass {
 			if(index>=0){
 				serviceName=cursor.getString(index);
 			}
+			String scheduleDate="";
+			index=cursor.getColumnIndex(SCHEDULE_DATE);
+			if(index>=0){
+				scheduleDate=cursor.getString(index);
+			}
 			
-			FamilyPlanningRecord record=new FamilyPlanningRecord(id,communityMemberId,fullname,serviceId,serviceName,serviceDate,quantity);
+			FamilyPlanningRecord record=new FamilyPlanningRecord(id,communityMemberId,fullname,serviceId,serviceName,serviceDate,quantity,scheduleDate);
 			cursor.moveToNext();
 			return record;
 			
@@ -355,6 +413,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+FamilyPlanningServices.SERVICE_ID +" integer, "
 				+CommunityMembers.COMMUNITY_MEMBER_ID +" integer, "
 				+SERVICE_DATE+" text,"
+				+SCHEDULE_DATE+" text, "
 				+QUANTITY+" numberic ,"
 				+DataClass.REC_STATE+ " integer "
 				+")";
@@ -369,6 +428,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+FamilyPlanningServices.SERVICE_NAME+", "
 				+QUANTITY+", "
 				+SERVICE_DATE +", "
+				+SCHEDULE_DATE+ ", "
 				+CommunityMembers.GENDER
 				+" from "
 				+TABLE_NAME_FAMILY_PLANNING_RECORDS + " left join " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
@@ -393,6 +453,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+"julianday(" + SERVICE_DATE +")-julianday(" +CommunityMembers.BIRTHDATE+") as "+AGE_DAYS +", "
 				+SERVICE_DATE+"-"+CommunityMembers.BIRTHDATE +" as "+AGE +", "
 				+SERVICE_DATE+", "
+				+SCHEDULE_DATE+", "
 				+QUANTITY+", "
 				+CommunityMembers.BIRTHDATE +", "
 				+CommunityMembers.COMMUNITY_ID 

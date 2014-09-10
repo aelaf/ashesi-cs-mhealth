@@ -89,8 +89,10 @@ public class DataClass extends SQLiteOpenHelper {
 	 * update vaccine view to disaggregate  by gender
 	 *  * Database VERSION 9
 	 * update health promotion table is recreated
+	 * version 10
+	 * Add column family planning service for service schedule
 	 */
-	protected static final int DATABASE_VERSION=9; 
+	protected static final int DATABASE_VERSION=10; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -656,6 +658,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion<=8){
 				upgradeToVersion9(db);
 			}
+			
+			if(oldVersion<=9){
+				upgradeToVersion10(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -791,6 +797,18 @@ public class DataClass extends SQLiteOpenHelper {
 		setDataVersion(db,DATABASE_NAME,9); 
 	}
 	
+	private void upgradeToVersion10(SQLiteDatabase db){
+		db.execSQL("alter table "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES +
+					" add column " +FamilyPlanningServices.SERVICE_SCHEDULE +" integer default 0"
+				);
+		
+		db.execSQL("alter table " + FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS + 
+					" add column " +FamilyPlanningRecords.SCHEDULE_DATE +" text ");
+		
+		db.execSQL("drop view "+FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
+		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		setDataVersion(db,DATABASE_NAME,10); 	
+	}
 	
 	
 	public String getDataFilePath(){

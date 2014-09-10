@@ -1,6 +1,7 @@
 package com.ashesi.cs.mhealth.data;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import android.widget.GridView;
@@ -16,6 +17,7 @@ public class FamilyPlanningRecord {
 	private int communityMemberId;
 	private int familyPlanningServiceId;
 	private String serviceDate;
+	private String scheduleDate;
 	private String fullname;
 	private String familyPlanningServiceName;
 	private double quantity;
@@ -34,6 +36,17 @@ public class FamilyPlanningRecord {
 		this.quantity=quantity;
 	}
 	
+	public FamilyPlanningRecord(int familyPlanningRecordId,int communityMemberId,String fullname,int familyPlanningServiceId, String familyPlanningServiceName, String serviceDate, double quantity,String scheduleDate){
+		this.familyPlanningRecordId=familyPlanningRecordId;
+		this.communityMemberId=communityMemberId;
+		this.fullname=fullname;
+		this.familyPlanningServiceId=familyPlanningServiceId;
+		this.serviceDate=serviceDate;
+		this.familyPlanningServiceName=familyPlanningServiceName;
+		this.quantity=quantity;
+		this.scheduleDate=scheduleDate;
+	}
+	
 	public FamilyPlanningRecord(int familyPlanningRecordId,int communityMemberId,String fullname,int familyPlanningServiceId, String familyPlanningServiceName, String serviceDate){
 		this.familyPlanningRecordId=familyPlanningRecordId;
 		this.communityMemberId=communityMemberId;
@@ -44,6 +57,7 @@ public class FamilyPlanningRecord {
 		this.quantity=0;
 	}
 	
+		
 	public int getId(){
 		return this.familyPlanningRecordId;
 	}
@@ -81,6 +95,23 @@ public class FamilyPlanningRecord {
 		}
 	}
 	
+	public String getScheduleDate(){
+		return this.scheduleDate;
+	}
+	
+	public String getFormattedScheduleDate(){
+		try
+		{
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			Date date=dateFormat.parse(scheduleDate);
+			dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+			return dateFormat.format(date);
+		}
+		catch(Exception ex){
+			return "";
+		}
+	}
+	
 	public double getQuantity(){
 		return quantity;
 	}
@@ -94,7 +125,7 @@ public class FamilyPlanningRecord {
 	}
 	
 	public String toString(){
-		return fullname +" "+familyPlanningServiceName;
+		return fullname +" "+familyPlanningServiceName +" "+getFormattedServiceDate()+" for "+ this.getFormattedScheduleDate();
 	}
 	
 	public boolean equals(FamilyPlanningRecord record){

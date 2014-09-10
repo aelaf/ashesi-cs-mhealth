@@ -3,6 +3,7 @@ package com.ashesi.cs.mhealth;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import com.ashesi.cs.mhealth.data.CHO;
@@ -1286,7 +1287,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		private void showDatePicker(int position){
 			DatePickerFragment datePicker=new DatePickerFragment();
-			datePicker.vf=this;
+			
 			datePicker.position=position;
 			if(adapter.getMode()==VaccineGridAdapter.SCHEDULE_LIST){
 			
@@ -1298,7 +1299,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				
 			}
 			
-			datePicker.show(this.getActivity().getSupportFragmentManager(), "datePicker");
+			datePicker.showDatePicker(this.getActivity().getSupportFragmentManager(), this);
 			
 			
 		}
@@ -1419,7 +1420,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		            itemClicked(parent,v,position,id);
 		        }
 		    });
-			
+			gridView.setNumColumns(5);
 			//RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
 			//radioGroup.setVisibility(View.INVISIBLE);
 			
@@ -1454,7 +1455,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			// TODO Auto-generated method stub
 			switch(v.getId()){
 				case R.id.buttonAdd:
-					recordService();
+					showDatePicker();
 					break;
 			}
 		}
@@ -1485,7 +1486,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			adapter.updateReomve(position);
 		}
 		
-		private void recordService(){
+		private void showDatePicker(){
+			DatePickerFragment datePicker=new DatePickerFragment();
+			datePicker.showDatePicker(this.getActivity().getSupportFragmentManager(), this);
+			
+			
+		}
+		
+		private void recordService(Date date){
 			if(communityMemberId==0){
 				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
 				communityMemberId=a.getCommunityMemberId();
@@ -1512,14 +1520,15 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				quantity=Double.parseDouble(strQty);
 			}
 			
-			Calendar calendar=Calendar.getInstance();
 			
-			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId, service.getId(),calendar.getTime(),quantity);
+			
+			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId,service.getId(), date,quantity,service.getScheduleDate(date));
 			if(serviceRecord==null){
 				return;
 			}
 			//add to the adapter for update
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView);
+			
 			FamilyPlanningGridAdapter adapter=(FamilyPlanningGridAdapter)gridView.getAdapter();
 			adapter.updateNewRecord(serviceRecord);
 			
@@ -1552,7 +1561,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerRecord);
 			FamilyPlanningServices services=new FamilyPlanningServices(getActivity().getApplicationContext());
-			ArrayList<FamilyPlanningService> listServices=services.geServices();
+			ArrayList<FamilyPlanningService> listServices=services.getServices();
 			ArrayAdapter<FamilyPlanningService> adapter=new ArrayAdapter<FamilyPlanningService>(getActivity(), android.R.layout.simple_dropdown_item_1line,listServices);
 			spinner.setAdapter(adapter);
 		}	
@@ -1563,9 +1572,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 		
 		Calendar calendar;
-	
-		public VaccineFragment vf;
+		private int returnTo=0;
+		private Fragment fragment;
 		public int position;
+		
 		
 		public DatePickerFragment(){
 			calendar = Calendar.getInstance();
@@ -1589,7 +1599,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 		// Do something with the date chosen by the user
 			calendar.set(year, month, day);
-			this.vf.recordVaccine(position,getDateString());
+			if(returnTo==1){
+				VaccineFragment vf=(VaccineFragment)fragment;
+				vf.recordVaccine(position,getDateString());
+			}else if(returnTo==2){
+				FamilyPlanFragment fp=(FamilyPlanFragment)fragment;
+				fp.recordService(calendar.getTime());
+			}
 		}
 		
 		public void setDate(java.util.Date date){
@@ -1611,6 +1627,18 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public String getFormattedDateString(){
 			SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
 			return dateFormat.format(calendar.getTime());
+		}
+		
+		public void showDatePicker(FragmentManager fm,VaccineFragment fragment){
+			this.returnTo=1;
+			this.fragment=fragment;
+			this.show(fm, "dpvaccine");
+		}
+		
+		public void showDatePicker(FragmentManager fm,FamilyPlanFragment fragment){
+			this.returnTo=2;
+			this.fragment=fragment;
+			this.show(fm, "dpvaccine");
 		}
 		
 	}

@@ -15,9 +15,11 @@ import com.ashesi.cs.mhealth.DataClass;
 public class FamilyPlanningServices extends DataClass {
 	public final static String SERVICE_ID="service_id";
 	public final static String SERVICE_NAME="service_name";
+	public final static String SERVICE_SCHEDULE="service_schedule";
 	public final static int	NEW_ACCEPTOR_SERVICE_ID=17;
 
 	public final static String TABLE_NAME_FAMILY_PLANNING_SERVICES="family_planning_services";
+	private static final String SERVICE_SCEHDULE = null;
 	
 	public FamilyPlanningServices(Context context){
 		super(context);
@@ -27,6 +29,7 @@ public class FamilyPlanningServices extends DataClass {
 		return "create table "+ TABLE_NAME_FAMILY_PLANNING_SERVICES +" ( "
 				+SERVICE_ID + "  integer primary key , "
 				+SERVICE_NAME+ " text "
+				+SERVICE_SCHEDULE +" integer default 0"
 				+")";
 		
 	}
@@ -39,6 +42,19 @@ public class FamilyPlanningServices extends DataClass {
 				+id+","
 				+"'"+serviceName+"'" 
 				+")";
+				
+	}
+	
+	public static String getInsertSQLString(int id,String serviceName,int schedule){
+		return "insert into "+TABLE_NAME_FAMILY_PLANNING_SERVICES +"("
+				+SERVICE_ID+", "
+				+SERVICE_NAME+", "
+				+SERVICE_SCHEDULE
+				+") values( "+
+				+id+","
+				+"'"+serviceName+"',"
+				+schedule
+				+" )";
 				
 	}
 
@@ -68,8 +84,11 @@ public class FamilyPlanningServices extends DataClass {
 				obj=jsonArray.getJSONObject(i);
 				int serviceId=obj.getInt("id");
 				String serviceName=obj.getString("serviceName");
-
-				addService(serviceId,serviceName);
+				int schedule=0;
+				if(obj.has("schedule")){
+					schedule=obj.getInt("schedule");
+				}
+				addService(serviceId,serviceName,schedule);
 			}
 			return true;
 		}catch(Exception ex){
@@ -82,7 +101,6 @@ public class FamilyPlanningServices extends DataClass {
 	 * adds service to table
 	 * @param serviceId
 	 * @param serviceName
-	 * @param serviceSchedule
 	 * @return
 	 */
 	public boolean addService(int serviceId, String serviceName){
@@ -91,6 +109,32 @@ public class FamilyPlanningServices extends DataClass {
 			ContentValues cv=new ContentValues();
 			cv.put(SERVICE_ID,serviceId);
 			cv.put(SERVICE_NAME, serviceName);
+
+			if(db.insertWithOnConflict(TABLE_NAME_FAMILY_PLANNING_SERVICES, null, cv, SQLiteDatabase.CONFLICT_REPLACE)<=0){
+				return false;
+			}
+			close();
+			return true;
+		}catch(Exception ex){
+			close();
+			return false;
+		}
+	}
+	
+	/**
+	 * adds service to table
+	 * @param serviceId
+	 * @param serviceName
+	 * @param schedule
+	 * @return
+	 */
+	public boolean addService(int serviceId, String serviceName, int schedule){
+		try{
+			db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
+			cv.put(SERVICE_ID,serviceId);
+			cv.put(SERVICE_NAME, serviceName);
+			cv.put(SERVICE_SCHEDULE, schedule);
 
 			if(db.insertWithOnConflict(TABLE_NAME_FAMILY_PLANNING_SERVICES, null, cv, SQLiteDatabase.CONFLICT_REPLACE)<=0){
 				return false;
@@ -116,8 +160,13 @@ public class FamilyPlanningServices extends DataClass {
 			int id=cursor.getInt(index);
 			index=cursor.getColumnIndex(SERVICE_NAME);
 			String serviceName=cursor.getString(index);
+			index=cursor.getColumnIndex(SERVICE_SCHEDULE);
+			int schedule=0;
+			if(index>=0){
+				schedule=cursor.getInt(index);
+			}
 			cursor.moveToNext();
-			return new FamilyPlanningService(id,serviceName);
+			return new FamilyPlanningService(id,serviceName,schedule);
 		}catch(Exception ex){
 			close();
 			return null;
@@ -129,9 +178,9 @@ public class FamilyPlanningServices extends DataClass {
 	 * return all services in the table
 	 * @return
 	 */
-	public ArrayList<FamilyPlanningService> geServices(){
+	public ArrayList<FamilyPlanningService> getServices(){
 		ArrayList<FamilyPlanningService> list=new ArrayList<FamilyPlanningService>();
-		String[] columns={SERVICE_ID,SERVICE_NAME};
+		String[] columns={SERVICE_ID,SERVICE_NAME,SERVICE_SCHEDULE};
 		try
 		{
 			db=getReadableDatabase();
@@ -151,7 +200,24 @@ public class FamilyPlanningServices extends DataClass {
 	}
 	
 	
-	
+	public FamilyPlanningService getService(int id){
+		
+		String[] columns={SERVICE_ID,SERVICE_NAME,SERVICE_SCHEDULE};
+		try
+		{
+			db=getReadableDatabase();
+			String selector="SERVICE_ID="+id;
+			cursor=db.query(TABLE_NAME_FAMILY_PLANNING_SERVICES, columns,selector,null, null, null, null);
+			cursor.moveToFirst();
+			FamilyPlanningService service=fetch();
+			
+			close();
+			return service;
+		}catch(Exception ex){
+			close();
+			return null;
+		}
+	}
 	
 	
 	

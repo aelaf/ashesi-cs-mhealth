@@ -1,9 +1,15 @@
 package com.ashesi.cs.mhealth.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class FamilyPlanningService {
 
 	private int id;
 	private String serviceName;
+	private int schedule=0;
 	
 	public FamilyPlanningService(){
 		
@@ -12,6 +18,13 @@ public class FamilyPlanningService {
 	public FamilyPlanningService(int id,String serviceName){
 		this.id=id;
 		this.serviceName=serviceName;
+		this.schedule=0;
+	}
+	
+	public FamilyPlanningService(int id,String serviceName,int schedule){
+		this.id=id;
+		this.serviceName=serviceName;
+		this.schedule=schedule;
 	}
 	
 	public int getId(){
@@ -26,5 +39,24 @@ public class FamilyPlanningService {
 		return serviceName;
 	}
 	
-
+	public int getSchedule(){
+		return schedule;
+	}
+	
+	public Date getScheduleDate(Date date){
+		Calendar calendar=Calendar.getInstance();
+		if(date!=null){
+			calendar.setTime(date);
+		}
+		calendar.add(Calendar.DAY_OF_MONTH, schedule);
+		return calendar.getTime();
+	}
+	
+	public String getFormatedScheduleDate(Date date){
+		SimpleDateFormat format=new SimpleDateFormat("dd/MM/yyyy",Locale.UK);
+		date=getScheduleDate(date);
+		return format.format(date);
+		
+	}
+	
 }
