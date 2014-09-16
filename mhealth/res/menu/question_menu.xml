@@ -16,11 +16,6 @@
         android:orderInCategory="100"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/device_synch"/>
-    <item
-        android:id="@+id/bluetooth_backup"
-        android:orderInCategory="101"
-        android:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/synch"/>
     <item 
         android:id="@+id/action_search"
         android:title="@string/searchhint"

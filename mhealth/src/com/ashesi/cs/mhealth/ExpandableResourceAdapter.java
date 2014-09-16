@@ -30,7 +30,7 @@ public class ExpandableResourceAdapter extends BaseExpandableListAdapter{
 		this._listDataChild = listChildData;
 		new CHOs(context);
 		cat = new Categories(context);
-		mediaList = new String[]{"Picture", "Video", "Webpage"};
+		mediaList = new String[]{"Picture", "Video", "Webpage", "Pdf"};
 	}
 	@Override
 	public Object getChild(int groupPosition, int childPosition) {

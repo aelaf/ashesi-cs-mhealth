@@ -121,7 +121,7 @@ public class LogData extends DataClass{
 	 * downloads LogData data from server 
 	 */
 	public void download(){
-		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=7";//&deviceId"+deviceId;
+		String url="mhealth/checkLogin/knowledgeAction.php?cmd=7";
 		String data=request(url);
 		System.out.println(data);
 		try{

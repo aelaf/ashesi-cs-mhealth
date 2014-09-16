@@ -112,19 +112,16 @@ public class ResourceMaterials extends DataClass {
 		    
 		    List<String> resultTags = new ArrayList<String>();
 		    String curTag = null;
-		    do{
-			    if(cursor.isAfterLast()){
-			    	curTag = null;
-			    	break;
-			    }else{
-			    	cursor.moveToFirst();
-			    }
-			    int index  = cursor.getColumnIndex(KEY_TAG);
-			    curTag = cursor.getString(index);
-			    resultTags.add(curTag);
-			    Log.d("Current Tag is", curTag);
-			    cursor.moveToNext();
-		    } while(curTag !=null);
+		    
+		    if (cursor.moveToFirst())
+		    {
+			    do{
+				    int index  = cursor.getColumnIndex(KEY_TAG);
+				    curTag = cursor.getString(index);
+				    resultTags.add(curTag);
+				    Log.d("Current Tag is", curTag);
+			    } while(cursor.moveToNext());
+		    }
 			close();
 			return resultTags;			
 		}catch(Exception ex){
@@ -227,7 +224,7 @@ public class ResourceMaterials extends DataClass {
 	 */
 	public void download(){
 		final int deviceId=mDeviceId;
-		String url="/mhealth/choAction?cmd=2&deviceId"+deviceId;
+		String url="mhealth/choAction?cmd=2&deviceId"+deviceId;
 		String data=request(url);
 		try{
 			JSONObject obj=new JSONObject(data);

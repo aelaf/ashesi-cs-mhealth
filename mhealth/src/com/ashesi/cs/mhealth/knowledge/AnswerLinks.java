@@ -121,8 +121,7 @@ public class AnswerLinks extends DataClass{
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url= getServerUrl()+"mhealth/checkLogin/knowledgeAction.php?cmd=8";
-		//String url="http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=8";
+		String url= "mhealth/checkLogin/knowledgeAction.php?cmd=8";
 		String data=request(url);
 		System.out.println(data);
 		try{

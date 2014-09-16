@@ -14,7 +14,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);
 		q = new QuestionsFragment();
+		q.setHasOptionsMenu(true);
+		
 		r = new ResourceFragment();
+		r.setHasOptionsMenu(true);
+		
 	}
 
 	@Override
@@ -23,11 +27,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		switch (index) {
 		case 0:
 			// Top Rated fragment activity
-			q.setHasOptionsMenu(true);
 			return q;
 		case 1:
 			// Games fragment activity
-			r.setHasOptionsMenu(true);
 			return r;
 		}
 

@@ -19,8 +19,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -92,7 +95,7 @@ public class ResourceFragment extends Fragment{
 		currentCHO = chos.getCHO(choId);
 		
 		log = new LogData(getActivity());
-		mediaList = new String[]{"image/*", "video/*"};
+		mediaList = new String[]{"image/*", "video/*", "text/html", "application/pdf"};
 		sortList = new ArrayList<String>();
 		db1 = new Categories(getActivity());
 		cat = db1.getAllCategories();
@@ -193,8 +196,8 @@ public class ResourceFragment extends Fragment{
 					               Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
 					File file = new File(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getContent());
-	                intent.setDataAndType(Uri.parse( file.getAbsolutePath()), 
-	                		               mediaList[listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getType()-1]);
+					String fileType = mediaList[listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getType()-1];
+	                intent.setDataAndType(Uri.fromFile(file), fileType);
 	                startActivity(intent);
 					return true;
 				}
@@ -208,10 +211,7 @@ public class ResourceFragment extends Fragment{
 		// TODO Auto-generated method stub
 		switch (item.getItemId()){
 		case R.id.synch_q:
-			refreshMenuItem = item;
-			loadResources();
-			break;
-		case R.id.bluetooth_backup:
+			Log.d("Refresh", "Refreshing list");
 			refreshMenuItem = item;
 			loadResources();
 			break;
@@ -222,27 +222,38 @@ public class ResourceFragment extends Fragment{
 		return super.onOptionsItemSelected(item);
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// TODO Auto-generated method stub
+		super.onCreateOptionsMenu(menu, inflater);
+	}  				
+
+	
 	/**
 	 * Upload all the added files to the Database
 	 */
 	private void loadResources(){
+		System.out.println("Loading resources");
 		File upload = new File(Environment.getExternalStorageDirectory() + "/mHealth/resourceslist.txt");
+		
 		try {
 			if(upload.exists()){
-				int maxId = resMat.getMaxID(), count=0;				
+				int maxId = resMat.getMaxID(), count=0;	
+				Log.d("Max resourceID", String.valueOf(maxId));
 				Scanner scan = new Scanner(upload);
 				String fileDetails;
 				String delimit = "[,]";
 				refreshMenuItem.setActionView(R.layout.action_progressbar);				
 				refreshMenuItem.expandActionView();
 				while(scan.hasNext()){
-					while(scan.hasNextLine() && count<=maxId ){  //progress till you get to the current index in the resource list
-						scan.nextLine();
+					while(scan.hasNextLine() && count<maxId ){  //progress till you get to the current index in the resource list
+						Log.d("Scanned", scan.nextLine());
 						count++;
 					}
 					if(scan.hasNextLine()){
 						fileDetails = scan.nextLine();
 						String [] results = fileDetails.split(delimit);
+						Log.d("fileinfo", results.toString());
 						Toast.makeText(getActivity().getApplicationContext(),results[0], Toast.LENGTH_LONG).show();
 						resMat.addResMat(Integer.parseInt(results[0]), 
 						                 Integer.parseInt(results[1]), 

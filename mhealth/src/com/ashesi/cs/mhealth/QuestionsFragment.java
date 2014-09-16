@@ -622,8 +622,7 @@ public class QuestionsFragment extends Fragment{
 								      nameValuePairs.add(new BasicNameValuePair("questionid",
 								          jObj.toString()));
 								      String data;
-								      //"http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php"
-									if((data = db.request(db.postRequest("http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=5", nameValuePairs))) == null){
+									if((data = db.request(db.postRequest("mhealth/checkLogin/knowledgeAction.php?cmd=1", nameValuePairs))) == null){
 										System.out.println(data);
 												
 									}
@@ -633,6 +632,7 @@ public class QuestionsFragment extends Fragment{
 										Questions temp1 = new Questions(getActivity());
 										System.out.println(q.get(i).getContent());
 										temp1.changeStatus(q.get(i).getGuid(), 1);
+										refreshData(isOnlyAnswered());
 									}
 								}
 							}

@@ -265,9 +265,7 @@ public class Questions extends DataClass{
 	 * downloads Question data from server 
 	 */
 	public void download(){
-		//final int deviceId=mDeviceId;
-//		String url="http://cs.ashesi.edu.gh/mhealth/checkLogin/knowledgeAction.php?cmd=5";
-		String url="http://192.168.137.1/mhealth/checkLogin/knowledgeAction.php?cmd=5";
+		String url="mhealth/checkLogin/knowledgeAction.php?cmd=5";
 		System.out.println("Starting Post request");
 		String data=request(url);
 		System.out.println(data);

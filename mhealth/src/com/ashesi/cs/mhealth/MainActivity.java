@@ -131,7 +131,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		choId=currentCHO.getId();
 		buttonOpenClose.setText(R.string.close);
 		findViewById(R.id.buttonMainOpenRecord).setEnabled(true);
-		//findViewById(R.id.buttonMainKnowledge).setEnabled(true);
+		findViewById(R.id.buttonMainKnowledge).setEnabled(true);
 		findViewById(R.id.buttonHealthPromotions).setEnabled(true);
 		//findViewById(R.id.buttonAddCommunity).setEnabled(true);
 		textStatus.setText("application open");

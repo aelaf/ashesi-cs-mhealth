@@ -579,7 +579,7 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			/*Knowledge Section*/
 			//Create the Question table	
-			//db.execSQL(Questions.getCreateQuery());				
+			db.execSQL(Questions.getCreateQuery());				
 			
 			//Create resources materials
 			db.execSQL(ResourceMaterials.getCreateQuery());

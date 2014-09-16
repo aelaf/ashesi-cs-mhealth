@@ -168,15 +168,13 @@ public class KnowledgeActivity extends FragmentActivity implements ActionBar.Tab
 				break;
 			case R.id.device_synch:    //Wifi direct synchronization
 				Intent deviceIntent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
+				deviceIntent.putExtra("choId", currentCHO.getId());
 				startActivity(deviceIntent);
 				//Log the synchronize event
 				Date date1 = new Date();		            
 				DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
 				log.addLog(0102, dt.format(date1), currentCHO.getFullname(), 
 			    this.getClass().getName() , "Openned the Wifi Direct Resource synch.");
-				break;
-			case R.id.bluetooth_backup:  //Bluetooth Backup
-				Toast.makeText(getApplicationContext(), "Sending data via Bluetooth", Toast.LENGTH_SHORT).show();
 				break;
 		}
 			//return true;			

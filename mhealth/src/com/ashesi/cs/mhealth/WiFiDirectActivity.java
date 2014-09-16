@@ -67,7 +67,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     private final IntentFilter intentFilter = new IntentFilter();
     private Channel channel;
     private BroadcastReceiver receiver = null;
-	private int onStartCount = 0;
+	private int onStartCount = 0, choId;
 	private CHO currentCHO;
 	private LogData log;
 
@@ -87,7 +87,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
 		log = new LogData(this);
 		
         Intent intent = getIntent();
-		int choId = intent.getIntExtra("choId", 0);
+		choId = intent.getIntExtra("choId", 0);
 		CHOs chos = new CHOs(this);
 		currentCHO = chos.getCHO(choId);
 		
@@ -145,6 +145,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
             fragmentList.clearPeers();
         }
         if (fragmentDetails != null) {
+        	fragmentDetails.setChoId(choId);
             fragmentDetails.resetViews();
         }
         
@@ -217,6 +218,7 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
     public void showDetails(WifiP2pDevice device) {
         DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
                 .findFragmentById(R.id.frag_detail);
+//        fragment.setChoId(choId);
         fragment.showDetails(device);
 
     }

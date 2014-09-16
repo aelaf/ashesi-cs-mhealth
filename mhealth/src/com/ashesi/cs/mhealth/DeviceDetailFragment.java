@@ -69,6 +69,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 	private Socket socket;
 	private LogData log;
 	private CHO currentCHO;
+	private CHOs chos;
+	private int choId = 1;
     
     ProgressDialog progressDialog = null;
 
@@ -79,11 +81,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	
-    	Intent intent = this.getActivity().getIntent();
-		int choId = intent.getIntExtra("choId", 0);
-		CHOs chos = new CHOs(getActivity());
-		currentCHO = chos.getCHO(choId);
+    	log = new LogData(getActivity());
+    	chos = new CHOs(getActivity());
+    	currentCHO = chos.getCHO(this.choId);
         mContentView = inflater.inflate(R.layout.device_detail, null);
         mContentView.findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
 
@@ -100,8 +100,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 ((DeviceActionListener) getActivity()).connect(config);
                 Date date1 = new Date();		            
      			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
-     			log.addLog(0501, dt.format(date1), currentCHO.getFullname(), 
-     		    this.getClass().getName() + " Method: onClick()", "Connection initiated. To device: " +  device.deviceAddress );
+     			//log.addLog(0501, dt.format(date1), currentCHO.getFullname(), 
+//     		    this.getClass().getName() + " Method: onClick()", "Connection initiated. To device: " +  device.deviceAddress );
 
             }
         });
@@ -155,23 +155,22 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					serverSock = new ServerSocket(8988);
 					Date date1 = new Date();		            
 	     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
-	     			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
-	     		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", "Connection complete. Server/Group Owner: " +  info.groupOwnerAddress.getHostAddress() );
+//	     			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
+//	     		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", "Connection complete. Server/Group Owner: " + info.groupOwnerAddress.getHostAddress());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
 					Date date1 = new Date();		            
 	     			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
-	     			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
-	     		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", e.getMessage() );
+//	     			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
+//	     		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", e.getMessage() );
 				}
                 new ServerTask().execute();
         } else if (info.groupFormed) {
             // The other device acts as the client.
         	Date date1 = new Date();		            
  			DateFormat dt = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.UK);
- 			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
- 		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", "Connection complete. Client:" + device.deviceAddress );
+// 			log.addLog(0502, dt.format(date1), currentCHO.getFullname(), 
+// 		    this.getClass().getName() + " Method: onConnectionInfoAvailable()", "Connection complete. Client:");
         	socket = new Socket();
             new ClientTask().execute(); 
          }
@@ -457,6 +456,12 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     
     public String getAddress(){
     	return otherAddress;
+    }
+    
+    public void setChoId(int choId){
+    	Log.d("setting ID", String.valueOf(choId));
+    	this.choId = choId;
+        this.currentCHO = chos.getCHO(this.choId);
     }
     
 }
