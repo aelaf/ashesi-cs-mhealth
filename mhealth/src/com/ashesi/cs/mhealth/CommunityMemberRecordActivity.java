@@ -1468,8 +1468,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 					return;
 				}
 			}
-			int columnIndex=position%4;
-			if(columnIndex!=3){ //if the click is not on 4th column there is nothing to do
+			int columnIndex=position%5;
+			if(columnIndex!=4){ //if the click is not on 4th column there is nothing to do
 				return;
 			}
 			
