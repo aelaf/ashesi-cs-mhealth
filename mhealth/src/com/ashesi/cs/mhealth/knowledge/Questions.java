@@ -33,7 +33,7 @@ public class Questions extends DataClass{
 	}
 	
 	public static String getCreateQuery(){
-		return "create table "+ TABLE_NAME_QUESTIONS +" ("
+		return "create table if not exists "+ TABLE_NAME_QUESTIONS +" ("
 				+ KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ KEY_CONTENT +" text, "
 				+ KEY_CATEGORY_ID +" int, "

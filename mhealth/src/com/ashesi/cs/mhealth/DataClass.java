@@ -91,8 +91,11 @@ public class DataClass extends SQLiteOpenHelper {
 	 * update health promotion table is recreated
 	 * version 10
 	 * Add column family planning service for service schedule
+	 * version 11
+	 * creates question table in because in some users did not have questions table event though they had
+	 * version 9 and 10 database
 	 */
-	protected static final int DATABASE_VERSION=10; 
+	protected static final int DATABASE_VERSION=11; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -614,8 +617,15 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			//version 8
 			//views are updated
+			
+			//version 9
+			//updates views and tables no new addition
+			//version 10
+			//updates views and tables no new additions
+			//version 11
+			//creates questions table if it does not exist
 
-			setDataVersion(db,DATABASE_NAME,7);
+			setDataVersion(db,DATABASE_NAME,11);
 			
 			
 		}catch(Exception ex){
@@ -661,6 +671,10 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			if(oldVersion<=9){
 				upgradeToVersion10(db);
+			}
+			
+			if(oldVersion<=10){
+				upgradeToVersion11(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
@@ -809,6 +823,12 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,10); 	
 	}
+	
+	private void upgradeToVersion11(SQLiteDatabase db){
+		db.execSQL(Questions.getCreateQuery());
+		setDataVersion(db,DATABASE_NAME,11); 	
+	}
+	
 	
 	
 	public String getDataFilePath(){
