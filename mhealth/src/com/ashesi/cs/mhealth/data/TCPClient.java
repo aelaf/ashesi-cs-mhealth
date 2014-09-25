@@ -60,7 +60,7 @@ public class TCPClient {
 		        int i = 0;
 		        int bytecount = 1024;
 		        while ((i = inStr.read(buf, 0, 1024)) != -1) {
-		          bytecount = bytecount + 1024;
+		          bytecount = bytecount + i;
 		          outStr.write(buf, 0, i);
 		          outStr.flush();
 		        }
@@ -101,14 +101,19 @@ public class TCPClient {
 	        
 	        byte[] b = new byte[1024];
 	        int len = 0;
-	        int bytcount = 1024;
+	        int bytcount = 0;
 	        FileOutputStream inFile = new FileOutputStream(new File(fileName));
 	        InputStream is = socket.getInputStream();
 	        BufferedInputStream in2 = new BufferedInputStream(is, 1024);
-	        while ((len = in2.read(b, 0, 1024)) != -1 && bytcount <= fileLength) {
-	          bytcount = bytcount + 1024;
+	        //while ((len = in2.read(b, 0, 1024)) != -1 && bytcount <= fileLength) {
+	        do{
+	          len = in2.read(b, 0, 1024);
+	          if(len == -1){
+	        	  break;
+	          }
+	          bytcount = bytcount + len;
 	          inFile.write(b, 0, len);
-	        }
+	        }while(bytcount < fileLength);
 	        System.out.println("Bytes Writen : " + bytcount);
 	        socket.shutdownInput();
 	        // Sending the response back to the client.
