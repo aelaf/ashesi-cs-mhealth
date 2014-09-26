@@ -34,9 +34,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class ReportActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -191,13 +194,14 @@ public class ReportActivity extends FragmentActivity implements
 	/**
 	 * A fragment for OPD report display
 	 */
-	public static class ReportFragment extends Fragment implements OnClickListener, OnItemSelectedListener {
+	public static class ReportFragment extends Fragment implements OnClickListener, OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 		
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
 		 */
 		int sectionNumber=0;
+		int mode=1;
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private String[] ageGroups={"Total","under 1yr","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70yr"};
 		private String[] vaccineAgeGroups={"Total","under 12m","12-23","above 24m"};
@@ -230,16 +234,25 @@ public class ReportActivity extends FragmentActivity implements
 			spinner.setOnItemSelectedListener(this);
 			spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
 			spinner.setOnItemSelectedListener(this);
+			Button button=(Button)rootView.findViewById(R.id.buttonMode);
+			button.setOnClickListener(this);
 			
 			loadData(rootView);
 		}
 		
 		private void loadData(View rootView){
+
 			TextView reportTitle = (TextView) rootView.findViewById(R.id.section_label);
 				switch(sectionNumber){
 				case 0:
-					reportTitle.setText("OPD Cases");
-					loadOPDReportData(rootView);
+					
+					if(mode==2){
+						reportTitle.setText("OPD: No Community Members");
+						loadTotalReportData(rootView);
+					}else{
+						reportTitle.setText("OPD: No Cases");
+						loadOPDReportData(rootView);
+					}
 					break;
 				case 1:
 					reportTitle.setText("Vaccination report");
@@ -266,10 +279,35 @@ public class ReportActivity extends FragmentActivity implements
 			String strGender=getSelectedGender();
 			
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
-			String[] headers={"OPD Case","Gender","no cases"};
+			String[] headers={"Community","Gender","No"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
 			ArrayList<String> list;
 			list=opdCaseRecords.getMontlyReport(month, year,ageGroup, strGender);
+			if(list==null){
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+				gridView.setAdapter(adapter);
+			}else{
+				list.add(0,headers[2]);
+				list.add(0,headers[1]);
+				list.add(0,headers[0]);
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+				gridView.setAdapter(adapter);
+			}
+		}
+		
+		private void loadTotalReportData(View rootView){
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
+			
+			int ageGroup=getSelectedAgeGroup();
+			int month=getSelectedMonth();
+			int year=getSelectedYear();
+			
+			
+			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
+			String[] headers={"OPD Case","Gender","no cases"};
+			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
+			ArrayList<String> list;
+			list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup);
 			if(list==null){
 				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
 				gridView.setAdapter(adapter);
@@ -336,13 +374,23 @@ public class ReportActivity extends FragmentActivity implements
 			}
 		}
 
+		private void modeButtonClicked(){
+			mode=mode+1;
+			if(mode>2){		//if more than maximum reset;
+				mode=1;
+			}
+			loadData(this.getView());
+		}
+		
 		@Override
 		public void onClick(View v) {
 			switch(v.getId()){
-				
+				case R.id.buttonMode:
+					modeButtonClicked();
+					break;
 			}
 		}
-
+		
 		@Override
 		public void onItemSelected(AdapterView<?> adapter, View v, int startIndex, long length) {
 			loadData(this.getView());
@@ -351,6 +399,13 @@ public class ReportActivity extends FragmentActivity implements
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onCheckedChanged(CompoundButton v, boolean state) {
+			// TODO Auto-generated method stub
+			loadData(this.getView());
 			
 		}
 		
@@ -464,6 +519,8 @@ public class ReportActivity extends FragmentActivity implements
 			activity.mGender=n;
 			return genderOptions[n];
 		}
+
+		
 	}
 
 }

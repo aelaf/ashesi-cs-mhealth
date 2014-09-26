@@ -25,7 +25,7 @@ public class OPDCaseReportRecord {
 				cursor.moveToNext();
 			}
 			int indexOPDCaseName=cursor.getColumnIndex(OPDCases.OPD_CASE_NAME);
-			int indexNoCases=cursor.getColumnIndex(DataClass.NO_CASES);
+			int indexNoCases=cursor.getColumnIndex(OPDCaseRecords.NO_CASES);
 			
 			while(!cursor.isAfterLast()){
 				list.add(cursor.getString(indexOPDCaseName));

@@ -22,7 +22,16 @@ public class OPDCaseRecords extends DataClass {
 	public static final String OPD_CASE_NAME="opd_case_name";
 	public static final String LAB="lab";
 	public static final String SERVER_REC_NO="server_rec_no";
+	public static final String NO_CASES="no_cases";
 	public static final String TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES="community_members_opd_cases";
+	public static final String VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES="view_community_member_opd_cases";
+	public static final String VIEW_COMMUNITIY_MEMBERS_IN_OPD_CASES="view_community_members_in_opd_cases";
+	
+	public static final int GROUP_BY_COMMUNITY=1;
+	public static final int GROUP_BY_OPD_CASE=2;
+	public static final int GROUP_BY_GENDER=3;
+	public static final int GROUP_BY_NONE=0;
+	
 	public OPDCaseRecords(Context context){
 		super(context);
 	}
@@ -43,7 +52,7 @@ public class OPDCaseRecords extends DataClass {
 			if (communityMemberId==0){  //to allow selecting all records.
 				selection=null;  
 				}
-			cursor=db.query(DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES, columns, 
+			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES, columns, 
 					selection, null, null, null, null );
 				return true;
 		}catch(Exception ex){
@@ -110,7 +119,7 @@ public class OPDCaseRecords extends DataClass {
 								+"," +CommunityMembers.COMMUNITY_MEMBER_ID
 								+"," +REC_DATE
 								+"," +CHOs.CHO_ID
-								+" from "+ DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES 
+								+" from "+ VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES 
 								+" where "+ DataClass.REC_STATE +"=" +DataClass.REC_STATE_NEW;
 								
 			
@@ -222,8 +231,8 @@ public class OPDCaseRecords extends DataClass {
 			String strQuery="select "+OPDCases.OPD_CASE_ID
 								+"," +OPDCases.OPD_CASE_NAME
 								+","+CommunityMembers.GENDER
-								+", count(" +REC_NO +") AS "+DataClass.NO_CASES
-								+" from "+DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
+								+", count(" +REC_NO +") AS "+NO_CASES
+								+" from "+VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
 								+" where "
 								+REC_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 								+REC_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
@@ -240,7 +249,7 @@ public class OPDCaseRecords extends DataClass {
 			cursor.moveToFirst();
 			
 			int indexOPDCaseName=cursor.getColumnIndex(OPDCases.OPD_CASE_NAME);
-			int indexNoCases=cursor.getColumnIndex(DataClass.NO_CASES);
+			int indexNoCases=cursor.getColumnIndex(NO_CASES);
 			int indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
 			String str="";
 			while(!cursor.isAfterLast()){
@@ -261,6 +270,135 @@ public class OPDCaseRecords extends DataClass {
 		
 	}
 	
+	/**
+	 * Returns a report on the number of total male and female community members on record in the given select condition
+	 * @param month
+	 * @param year
+	 * @param ageRange
+	 * @param gender
+	 * @return
+	 */
+	public ArrayList<String> getMontlyTotalsReport(int month,int year, int ageRange){
+		//query report for the age range, period grouped by gender and OPD case
+		ArrayList<String>list=new ArrayList<String>();
+		//define period for the report
+		String firstDateOfTheMonth;
+		String lastDateOfTheMonth;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		Calendar calendar=Calendar.getInstance();
+		if(month==0){ //this month
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else if(month==1){	//this year
+			calendar.set(Calendar.YEAR,year);
+			calendar.set(Calendar.MONTH,Calendar.JANUARY);
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+			calendar.set(Calendar.DAY_OF_MONTH,31);
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else{	//selected month and year
+			month=month-2;
+			calendar.set(year, month, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(year,month,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}
+
+		//define age range
+		int[] limit={0,1,5,10,15,18,20,35,50,60,70};
+		String strAgeFilter=" 1 ";
+		if(ageRange>0){//if it is not total
+			ageRange=ageRange-1;
+			if(ageRange==0){
+				strAgeFilter=CommunityMembers.AGE+"<1";	//under 1 year
+			}else if(ageRange>=1 && ageRange<10){	//compute range
+				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+			}else{	
+				strAgeFilter=CommunityMembers.AGE+">=70";
+			}
+		}
+
+		
+		String filter=" (select "
+				+ CommunityMembers.COMMUNITY_MEMBER_ID 
+				+ " from "+ OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES 
+				+ " where "
+				+REC_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+				+REC_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
+				+strAgeFilter +" ) ";	
+		
+		
+		try
+		{
+			db=getReadableDatabase();
+			//get number of community members who had opd cases male and female
+			String strQuery="select 'All Communities' as "+Communities.COMMUNITY_NAME
+							+ ", "+CommunityMembers.GENDER +", "
+							+" count(*) as NO_REC "
+							+" from  "
+							+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+							+" where "
+							+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
+							+ filter
+							+" group by " +CommunityMembers.GENDER;
+		
+			cursor=db.rawQuery(strQuery, null);
+			
+			cursor.moveToFirst();
+			int indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			int indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			int indexNoRecords=cursor.getColumnIndex("NO_REC");
+			String str="";
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				list.add(str);
+				str=cursor.getString(indexGender);		
+				list.add(str);							//string 2
+				str=Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);							//string 3
+				
+				cursor.moveToNext();
+			}
+			
+			// get the count group by community
+			strQuery="select "
+					+Communities.COMMUNITY_NAME +","
+				    +CommunityMembers.GENDER 
+				    +",count(*) as NO_REC "
+				    +" from  "
+					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+					+" where "
+					+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
+					+ filter
+					+" group by "
+					+Communities.COMMUNITY_ID +", "	
+					+CommunityMembers.GENDER;
+			cursor=db.rawQuery(strQuery, null);
+			
+			cursor.moveToFirst();
+			indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			indexNoRecords=cursor.getColumnIndex("NO_REC");
+			
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				list.add(str);
+				str=cursor.getString(indexGender);		
+				list.add(str);							//string 2
+				str=Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);							//string 3
+				
+				cursor.moveToNext();
+			}
+			return list;
+
+		}catch(Exception ex){
+			return list;
+		}
+	}
 	
 	public ArrayList<OPDCaseRecord>getMonthReportDetail(int month,int year, int ageRange, String gender,int page){
 		String firstDateOfTheMonth;
@@ -333,7 +471,7 @@ public class OPDCaseRecords extends DataClass {
 								+"," +OPDCases.OPD_CASE_NAME
 								+","+CommunityMembers.GENDER
 						
-								+" from "+DataClass.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
+								+" from "+VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
 								+" where "
 								+REC_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 								+REC_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
@@ -435,6 +573,8 @@ public class OPDCaseRecords extends DataClass {
 				+ TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +"." +REC_STATE+","
 				+ CommunityMembers.BIRTHDATE +", "
 				+ CommunityMembers.GENDER +", "
+				+ CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+ CommunityMembers.COMMUNITY_ID +", "
+				+ Communities.COMMUNITY_NAME+", "
 				+ " ((julianday("+ REC_DATE +")- julianday("+ CommunityMembers.BIRTHDATE +"))/366) AS AGE, "
 				+ OPD_CASE_NAME+", "
 				+ LAB 
@@ -445,9 +585,12 @@ public class OPDCaseRecords extends DataClass {
 								CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +"."+CommunityMembers.COMMUNITY_MEMBER_ID
 				+ " left join " + OPDCases.TABLE_NAME_OPD_CASES
 				+ " ON " + TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES+ "."+ OPDCases.OPD_CASE_ID +"=" +
-				OPDCases.TABLE_NAME_OPD_CASES +"."+OPDCases.OPD_CASE_ID;
-	}
-
+				OPDCases.TABLE_NAME_OPD_CASES +"."+OPDCases.OPD_CASE_ID
+				+" left join " +Communities.TABLE_COMMUNITIES +" on " 
+				+ CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS + "."+Communities.COMMUNITY_ID +"=" 
+				+Communities.TABLE_COMMUNITIES +"." +Communities.COMMUNITY_ID;
+	}	
+	
 	public String fetchSQLDumpToUpload(){
    	 StringBuilder OPDCasesData = new StringBuilder("Replace into community_members_opd_cases  " +
  	 		"(rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");

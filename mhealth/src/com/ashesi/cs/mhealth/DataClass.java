@@ -94,8 +94,11 @@ public class DataClass extends SQLiteOpenHelper {
 	 * version 11
 	 * creates question table in because in some users did not have questions table event though they had
 	 * version 9 and 10 database
+	 * version 12
+	 * modifies VIEW_COMMUNITY_MEMBERS_OPD_CASES
+	 * adds VIEW_COMMUNITY_MEMBERS_IN_OPD_CASES
 	 */
-	protected static final int DATABASE_VERSION=11; 
+	protected static final int DATABASE_VERSION=12; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -115,16 +118,12 @@ public class DataClass extends SQLiteOpenHelper {
 	public static final String VERSION="version";
 	public static final String DATANAME="dataname";
 	
-	
-	public static final String VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES="view_community_member_opd_cases";
-	public static final String NO_CASES="no_cases";
-	
 	public static final String REC_STATE="rec_state";
 	public static final int REC_STATE_NEW=0;
 	public static final int REC_STATE_DIRTY=1;
 	public static final int REC_STATE_UPTODATE=2;
 	public static final int REC_STATE_DELETED=3;
-	private static final int DATAVIRSION = 0;
+	private static final int DATAVERSION = 0;
 	
 
 	/**
@@ -676,6 +675,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion<=10){
 				upgradeToVersion11(db);
 			}
+			
+			if(oldVersion<=11){
+				upgradeToVersion12(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -827,6 +830,12 @@ public class DataClass extends SQLiteOpenHelper {
 	private void upgradeToVersion11(SQLiteDatabase db){
 		db.execSQL(Questions.getCreateQuery());
 		setDataVersion(db,DATABASE_NAME,11); 	
+	}
+	
+	private void upgradeToVersion12(SQLiteDatabase db){
+		db.execSQL(" drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
+		db.execSQL(OPDCaseRecords.getCreateViewString());//two views are created through this statement
+		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	
 	

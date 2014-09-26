@@ -152,5 +152,7 @@
     <string name="snap">Snap</string>
     <string name="select">Select</string>
     <string name="title_activity_health_promotion_list">Health Promotions</string>
-
+    <string name="modeNoCases">No Cases</string>
+    <string name="modeNoCommuintyMembers">People</string>
+	<string name="mode">Mode</string>
 </resources>
