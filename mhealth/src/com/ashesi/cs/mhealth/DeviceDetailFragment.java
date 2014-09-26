@@ -211,7 +211,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 				ResourceMaterials resourceMat = new ResourceMaterials(getActivity());
 				
 				ServerSocket sock = serSocket();
-				TCPServer server = new TCPServer(resourceMat, sock.accept());
+				TCPServer server = new TCPServer(sock.accept(),resourceMat);
 				try {
 					//Establish the right of way i.e. who will be sending files.
 					Log.d("Server Version", String.valueOf(resourceMat.getMaxID()));
@@ -351,7 +351,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 					while(countDown >  maxId){
 						diag.incrementProgressBy(1);
 						sock = new Socket(getInfo().groupOwnerAddress, 8988);
-						client.resetSocket(sock);
+						client.resetSock(sock);
 						client.receiveFile();
 						countDown--;
 						System.out.println(countDown);
@@ -380,7 +380,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 						
 						diag.incrementProgressBy(1);
 						sock = new Socket(getInfo().groupOwnerAddress, 8988);
-						client.resetSocket(sock);
+						client.resetSock(sock);
 						File file = new File(resMat.getMaterial(countUp).getContent());
 						client.sendFile(file, resMat.getMaterial(countUp));
 						countUp++;
