@@ -64,7 +64,7 @@ public class TCPBase {
 		len = in2.read(buf, 0, 1024);
 		
 		while(!fileEnded){
-			if(buf[0] == 1 && buf[1] == 9 && buf[2] == 1 && buf[3] == 9){
+			if(buf[0] == 1 && buf[1] == 9 && buf[2] == 1 && buf[3] == 9 || (len == -1)){
 				fileEnded = true;
 				break;
 			}
