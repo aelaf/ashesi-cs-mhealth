@@ -37,10 +37,6 @@ public class TCPBase {
 		BufferedReader in =new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		PrintWriter out =new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
 
-		//Receive the right of way
-		String msg = in.readLine();
-		System.out.println("Ok gotcha" + msg);
-
 		//Send Version to the server
 		out.println("Waiting for file");	
 
@@ -58,17 +54,23 @@ public class TCPBase {
 		String tag = result[5];
 		int fileLength = Integer.parseInt(result[6]);
 
-		byte[] b = new byte[1024];
+		byte[] buf = new byte[1024];
 		int len = 0;
 		int bytcount = 0;
+		boolean fileEnded = false;
 		FileOutputStream inFile = new FileOutputStream(new File(fileName));
 		InputStream is = socket.getInputStream();
 		BufferedInputStream in2 = new BufferedInputStream(is, 1024);
-		len = in2.read(b, 0, 1024);
-		while(len!=-1){
+		len = in2.read(buf, 0, 1024);
+		
+		while(!fileEnded){
+			if(buf[0] == 1 && buf[1] == 9 && buf[2] == 1 && buf[3] == 9){
+				fileEnded = true;
+				break;
+			}
 			bytcount = bytcount + len;
-			inFile.write(b, 0, len);
-			len = in2.read(b, 0, 1024);
+			inFile.write(buf, 0, len);
+			len = in2.read(buf, 0, 1024);
 		}
 		System.out.println("Bytes Writen : " + bytcount);
 
@@ -111,6 +113,14 @@ public class TCPBase {
 			outStr.flush();
 			len=inStr.read(buf, 0, 1024);
 		}
+		buf[0] = 1;
+		buf[1] = 9;
+		buf[2] = 1;
+		buf[3] = 9;
+		outStr.write(buf, 0, 4);
+		outStr.flush();
+		bytecount += 4;
+		
 		socket.shutdownOutput();
 		inStr.close();
 		System.out.println("Bytes Sent :" + bytecount);
