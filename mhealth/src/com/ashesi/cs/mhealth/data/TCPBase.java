@@ -15,6 +15,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import android.util.Log;
+
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
@@ -31,21 +33,23 @@ public class TCPBase {
 		this.resMat = resMat;
 	}
 
-	public void receiveFile() throws IOException{
+	public void receiveFile() throws IOException {
 		System.out.println("Sending confirmation to the client to send files");
 
-		BufferedReader in =new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		PrintWriter out =new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				socket.getInputStream()));
+		PrintWriter out = new PrintWriter(new BufferedWriter(
+				new OutputStreamWriter(socket.getOutputStream())), true);
 
-		//Send Version to the server
-		out.println("Waiting for file");	
+		// Send Version to the server
+		out.println("Waiting for file");
 
-		//Receive the right of way
+		// Receive the right of way
 		String fileInfo = in.readLine();
 		System.out.println("from server : " + fileInfo);
 
 		String delimit = "[|]";
-		String [] result = fileInfo.split(delimit);
+		String[] result = fileInfo.split(delimit);
 		int fileId = Integer.parseInt(result[0]);
 		String fileName = result[1];
 		int catId = Integer.parseInt(result[2]);
@@ -56,21 +60,19 @@ public class TCPBase {
 
 		byte[] buf = new byte[1024];
 		int len = 0;
-		int bytcount = 0;
-		boolean fileEnded = false;
+		Long bytcount = 0L;
 		FileOutputStream inFile = new FileOutputStream(new File(fileName));
 		InputStream is = socket.getInputStream();
 		BufferedInputStream in2 = new BufferedInputStream(is, 1024);
 		len = in2.read(buf, 0, 1024);
-		
-		while(!fileEnded){
-			if(buf[0] == 1 && buf[1] == 9 && buf[2] == 1 && buf[3] == 9 || (len == -1)){
-				fileEnded = true;
-				break;
+
+		while (bytcount < fileLength ) {
+			if(len != -1){
+				bytcount += len;
+				inFile.write(buf, 0, len);
 			}
-			bytcount = bytcount + len;
-			inFile.write(buf, 0, len);
 			len = in2.read(buf, 0, 1024);
+			Log.d("Length", String.valueOf(len));
 		}
 		System.out.println("Bytes Writen : " + bytcount);
 
@@ -83,44 +85,40 @@ public class TCPBase {
 		socket.close();
 	}
 
-	public void sendFile(File file, ResourceMaterial resrc) throws IOException{
+	public void sendFile(File file, ResourceMaterial resrc) throws IOException {
 		System.out.println("Waiting to send files to the client");
 
-		BufferedReader in =new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		PrintWriter out =new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
+		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
 
-		//Receive the right of way
+		// Receive the right of way
 		String confirm = in.readLine();
 		System.out.println("from client : " + confirm);
 
-		//If the server has the rightOfway then allow it to send a file    	        
-		out.println(resrc.getId() + "|" + file.getAbsolutePath() + "|" +
-				resrc.getCatId() + "|" + resrc.getType() + "|" + 
-				resrc.getDescription() + "|" +
-				resrc.getTag() + "|" + file.length());
+		// If the server has the rightOfway then allow it to send a file
+		out.println(resrc.getId() + "|" + file.getAbsolutePath() + "|"
+				+ resrc.getCatId() + "|" + resrc.getType() + "|"
+				+ resrc.getDescription() + "|" + resrc.getTag() + "|"
+				+ file.length());
 		System.out.println("Sending the file");
-
+	
 		byte[] buf = new byte[1024];
 		OutputStream os = socket.getOutputStream();
 		BufferedOutputStream outStr = new BufferedOutputStream(os, 1024);
 		FileInputStream inStr = new FileInputStream(file);
 
 		int bytecount = 0;
-		int len=inStr.read(buf, 0, 1024);
-		while (len!=-1) {
-			bytecount = bytecount + len;
-			outStr.write(buf, 0, len);
-			outStr.flush();
-			len=inStr.read(buf, 0, 1024);
+		int len = inStr.read(buf, 0, 1024);
+		while (bytecount < file.length()) {
+			if(len != -1){
+				bytecount += len;
+				outStr.write(buf, 0, len);
+				outStr.flush();
+			}
+			len = inStr.read(buf, 0, 1024);
+			Log.d("Length", String.valueOf(len));
 		}
-		buf[0] = 1;
-		buf[1] = 9;
-		buf[2] = 1;
-		buf[3] = 9;
-		outStr.write(buf, 0, 4);
-		outStr.flush();
-		bytecount += 4;
-		
+
 		socket.shutdownOutput();
 		inStr.close();
 		System.out.println("Bytes Sent :" + bytecount);
@@ -130,11 +128,8 @@ public class TCPBase {
 		socket.close();
 	}
 
-	public void resetSock(Socket sock){
+	public void resetSock(Socket sock) {
 		this.socket = sock;
 	}
-	
-			  
-	
 
 }
