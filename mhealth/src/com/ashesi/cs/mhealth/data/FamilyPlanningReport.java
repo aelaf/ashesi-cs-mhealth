@@ -66,7 +66,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 		if(ageRange>0){//if it is not total
 			ageRange=ageRange-1;
 			if(ageRange==0){
-				strAgeFilter=CommunityMembers.AGE+"<10";	//under 1 year
+				strAgeFilter=CommunityMembers.AGE+"<10";	//under 10 year
 			}else if(ageRange>=1 && ageRange<7){	//compute range
 				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
 			}else{	
@@ -117,6 +117,130 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 				list.add(record);
 				cursor.moveToNext();
 			}
+			close();
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+				
+				
+				
+	}
+	
+	public ArrayList<String> getMonthlyFamilyPlanningReportTotals(int month,int year,int ageRange){
+		//define period for the report
+		ArrayList<String> list=new ArrayList<String>();
+		String firstDateOfTheMonth;
+		String lastDateOfTheMonth;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		Calendar calendar=Calendar.getInstance();
+		if(month==0){ //this month
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else if(month==1){	//this year/all year
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH,Calendar.JANUARY);
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+			calendar.set(Calendar.DAY_OF_MONTH,31);
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else{	//selected month and year
+			month=month-2;
+			calendar.set(year, month, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(year,month,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}
+
+		//define age range
+
+		int[] limit={10,15,18,20,35,50,60,70};
+		String strAgeFilter=" 1 ";
+		if(ageRange>0){//if it is not total
+			ageRange=ageRange-1;
+			if(ageRange==0){
+				strAgeFilter=CommunityMembers.AGE+"<10";	//under 10 year
+			}else if(ageRange>=1 && ageRange<7){	//compute range
+				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+			}else{	
+				strAgeFilter=CommunityMembers.AGE+">=70";
+			}
+		}
+		
+		String filter=" (select "
+				+ CommunityMembers.COMMUNITY_MEMBER_ID 
+				+ " from "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
+				+ " where "
+				+FamilyPlanningRecords.SERVICE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+				+FamilyPlanningRecords.SERVICE_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
+				+strAgeFilter +" ) ";	
+
+		try{
+			
+			db=getReadableDatabase();
+			//get number of community members who had family planing both male and female
+			String strQuery="select 'All Communities' as "+Communities.COMMUNITY_NAME
+							+ ", "+CommunityMembers.GENDER +", "
+							+" count(*) as NO_REC "
+							+" from  "
+							+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+							+" where "
+							+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
+							+ filter
+							+" group by " +CommunityMembers.GENDER;
+		
+			cursor=db.rawQuery(strQuery, null);
+			
+			cursor.moveToFirst();
+			int indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			int indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			int indexNoRecords=cursor.getColumnIndex("NO_REC");
+			String str="";
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				list.add(str);
+				str=cursor.getString(indexGender);		
+				list.add(str);							//string 2
+				str=Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);							//string 3
+				
+				cursor.moveToNext();
+			}
+			
+			// get the count group by community
+			strQuery="select "
+					+Communities.COMMUNITY_NAME +","
+				    +CommunityMembers.GENDER 
+				    +",count(*) as NO_REC "
+				    +" from  "
+					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+					+" where "
+					+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
+					+ filter
+					+" group by "
+					+Communities.COMMUNITY_ID +", "	
+					+CommunityMembers.GENDER;
+			cursor=db.rawQuery(strQuery, null);
+			
+			cursor.moveToFirst();
+			indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			indexNoRecords=cursor.getColumnIndex("NO_REC");
+			
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				list.add(str);
+				str=cursor.getString(indexGender);		
+				list.add(str);							//string 2
+				str=Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);							//string 3
+				
+				cursor.moveToNext();
+			}
+
 			close();
 			return list;
 		}catch(Exception ex){

@@ -248,19 +248,30 @@ public class ReportActivity extends FragmentActivity implements
 					
 					if(mode==2){
 						reportTitle.setText("OPD: No Community Members");
-						loadTotalReportData(rootView);
+						loadReportTotalData(rootView);
 					}else{
 						reportTitle.setText("OPD: No Cases");
 						loadOPDReportData(rootView);
 					}
 					break;
 				case 1:
-					reportTitle.setText("Vaccination report");
-					loadVaccinationReportData(rootView);
+					if(mode==2){
+						reportTitle.setText("Vaccination: No Community Members");
+						loadVaccinationReportTotalData(rootView);
+					}else{
+						reportTitle.setText("Vaccination: No Records");
+						loadVaccinationReportData(rootView);
+					}
+
 					break;
 				case 2:
-					reportTitle.setText("Family Planning");
-					loadFamilyPlanningReportData(rootView);
+					if(mode==2){
+						reportTitle.setText("Family Planning: No Community Members");
+						loadFamilyPlanningReportTotalData(rootView);
+					}else{
+						reportTitle.setText("Family Planning: No Records");
+						loadFamilyPlanningReportData(rootView);
+					}
 					break;
 				default:
 					reportTitle.setText("OPD Cases");
@@ -295,7 +306,7 @@ public class ReportActivity extends FragmentActivity implements
 			}
 		}
 		
-		private void loadTotalReportData(View rootView){
+		private void loadReportTotalData(View rootView){
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
 			
 			int ageGroup=getSelectedAgeGroup();
@@ -304,7 +315,7 @@ public class ReportActivity extends FragmentActivity implements
 			
 			
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
-			String[] headers={"OPD Case","Gender","no cases"};
+			String[] headers={"Community","Gender","No Members"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
 			ArrayList<String> list;
 			list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup);
@@ -347,6 +358,33 @@ public class ReportActivity extends FragmentActivity implements
 			}
 		}
 		
+		private void loadVaccinationReportTotalData(View rootView){
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
+			
+			int ageGroup=getSelectedAgeGroup();
+			int month=getSelectedMonth();
+			int year=getSelectedYear();
+			String strGender=getSelectedGender();
+			
+			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
+			String[] headers={"Community","Gender","No Members"};
+			VaccinationReport vaccinationReport=new VaccinationReport(this.getActivity().getApplicationContext());
+			ArrayList<String> list=vaccinationReport.getMonthlyVaccinationReportTotals(month,year,ageGroup);
+			
+					
+			if(list==null){
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+				gridView.setAdapter(adapter);
+			}else{
+				
+				list.add(0,headers[2]);
+				list.add(0,headers[1]);
+				list.add(0,headers[0]);
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+				gridView.setAdapter(adapter);
+			}
+		}
+		
 		private void loadFamilyPlanningReportData(View rootView){
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
 			
@@ -366,6 +404,33 @@ public class ReportActivity extends FragmentActivity implements
 				gridView.setAdapter(adapter);
 			}else{
 				ArrayList<String> list=familyPlanningReport.getMonthlyFamilyReportStringList(listRecord);
+				list.add(0,headers[2]);
+				list.add(0,headers[1]);
+				list.add(0,headers[0]);
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, list);
+				gridView.setAdapter(adapter);
+			}
+		}
+		
+		private void loadFamilyPlanningReportTotalData(View rootView){
+			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
+			
+			int ageGroup=getSelectedAgeGroup();
+			int month=getSelectedMonth();
+			int year=getSelectedYear();
+			String strGender=getSelectedGender();
+			
+			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
+			String[] headers={"Community","Gender","No Mmembers"};
+			FamilyPlanningReport familyPlanningReport=new FamilyPlanningReport(this.getActivity().getApplicationContext());
+			ArrayList<String> list=familyPlanningReport.getMonthlyFamilyPlanningReportTotals(month, year, ageGroup);
+			
+					
+			if(list==null){
+				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
+				gridView.setAdapter(adapter);
+			}else{
+				
 				list.add(0,headers[2]);
 				list.add(0,headers[1]);
 				list.add(0,headers[0]);

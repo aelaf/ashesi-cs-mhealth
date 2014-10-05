@@ -108,6 +108,131 @@ public class VaccinationReport extends VaccineRecords {
 				
 	}
 	
+	public ArrayList<String> getMonthlyVaccinationReportTotals(int month,int year,int ageRange){
+		//define period for the report
+		ArrayList<String>list=new ArrayList<String>();
+		String firstDateOfTheMonth;
+		String lastDateOfTheMonth;
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		Calendar calendar=Calendar.getInstance();
+		if(month==0){ //this month
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else if(month==1){	//this year/all year
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH,Calendar.JANUARY);
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.MONTH,Calendar.DECEMBER);
+			calendar.set(Calendar.DAY_OF_MONTH,31);
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}else{	//selected month and year
+			month=month-2;
+			calendar.set(year, month, 1);
+			firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(year,month,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+		}
+
+		//define age range
+		int[] limit={0,12,24};
+		String strAgeFilter=" 1 ";
+
+		if(ageRange==0){ //all total
+			strAgeFilter=" 1 "; 
+		}else if(ageRange==1){ //under 1 year
+			strAgeFilter=" "+ AGE+"<1";	
+		}else if(ageRange==2){	//between 1 and less than 2 years 
+			strAgeFilter=" ("+AGE+">=1 AND "+AGE+"< 2) "; 
+		}else if(ageRange==3){
+			strAgeFilter=" "+AGE+">=2 ";
+		}else{
+			strAgeFilter=" 1 "; 
+		}
+		
+		String filter=" (select "
+				+ CommunityMembers.COMMUNITY_MEMBER_ID 
+				+ " from "+ VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL 
+				+ " where "
+				+VaccineRecords.VACCINE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+				+VaccineRecords.VACCINE_DATE +"<=\""+ lastDateOfTheMonth + "\" AND "
+				+strAgeFilter +" ) ";	
+
+		try{
+			
+			db=getReadableDatabase();
+			//get number of community members who had vaccination both male and female
+			String strQuery="select 'All Communities' as "+Communities.COMMUNITY_NAME
+							+ ", "+CommunityMembers.GENDER +", "
+							+" count(*) as NO_REC "
+							+" from  "
+							+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+							+" where "
+							+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
+							+ filter
+							+" group by " +CommunityMembers.GENDER;
+		
+			cursor=db.rawQuery(strQuery, null);
+			
+			cursor.moveToFirst();
+			int indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			int indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			int indexNoRecords=cursor.getColumnIndex("NO_REC");
+			String str="";
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				list.add(str);
+				str=cursor.getString(indexGender);		
+				list.add(str);							//string 2
+				str=Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);							//string 3
+				
+				cursor.moveToNext();
+			}
+			
+			// get the count group by community
+			strQuery="select "
+					+Communities.COMMUNITY_NAME +","
+				    +CommunityMembers.GENDER 
+				    +",count(*) as NO_REC "
+				    +" from  "
+					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+					+" where "
+					+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
+					+ filter
+					+" group by "
+					+Communities.COMMUNITY_ID +", "	
+					+CommunityMembers.GENDER;
+			cursor=db.rawQuery(strQuery, null);
+			
+			cursor.moveToFirst();
+			indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			indexNoRecords=cursor.getColumnIndex("NO_REC");
+			
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				list.add(str);
+				str=cursor.getString(indexGender);		
+				list.add(str);							//string 2
+				str=Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);							//string 3
+				
+				cursor.moveToNext();
+			}
+
+			close();
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+				
+				
+				
+	}
+	
 	public ArrayList<String> getMonthlyVaccinationReportStringList(ArrayList<VaccinationReportRecord> list){
 		ArrayList<String> listString=new ArrayList<String>();
 		for(int i=0;i<list.size();i++){
