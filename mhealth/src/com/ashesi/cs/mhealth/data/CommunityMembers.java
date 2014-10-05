@@ -623,11 +623,11 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 	
-	public ArrayList<CommunityMember> findCommunityMemberWithAge(int communityID, int age,int page){
+	public ArrayList<CommunityMember> findCommunityMemberWithAge(int communityID, int ageMin, int ageMax, int page){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
 			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
-			String selector=AGE +"<=" +age;
+			String selector=AGE +"<=" +ageMax +" AND " +AGE+ ">=" +ageMin;
 			if(communityID!=0){
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
 			}

@@ -166,19 +166,28 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 				listCommunityMembers=members.findCommunityMemberWithScheduled(communityId, 7, page);
 				break;
 			case 6:// by age
-				int age=0;
+				int ageMax=0;
+				int ageMin=0;
 				try{
-					age=Integer.parseInt(searchText);
+					if(searchText.contains(",")){
+						String strs[]=searchText.split(","); //if a comma, that means two numbers min and max
+						ageMin=Integer.parseInt(strs[0]);
+						ageMax=Integer.parseInt(strs[1]);
+					}else{
+						ageMin=0;							//if not, then it is just max	
+						ageMax=Integer.parseInt(searchText); 
+					}
 				}catch(Exception ex){
-					age=2;		//use default;
+					ageMax=2;		//use default;
+					ageMin=0;
 					txtCommunityName.setText("under 2 years");
 				}
 				
-				listCommunityMembers=members.findCommunityMemberWithAge(communityId, age, page);
+				listCommunityMembers=members.findCommunityMemberWithAge(communityId, ageMin,ageMax, page);
 				break;
 			case 7: // children
 				txtCommunityName.setText("under 2 years");
-				listCommunityMembers=members.findCommunityMemberWithAge(communityId, 2, page);
+				listCommunityMembers=members.findCommunityMemberWithAge(communityId, 0,2, page);
 				break;
 			default:
 				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
