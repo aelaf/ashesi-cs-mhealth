@@ -189,6 +189,9 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 				txtCommunityName.setText("under 2 years");
 				listCommunityMembers=members.findCommunityMemberWithAge(communityId, 0,2, page);
 				break;
+			case 8: //count community members
+				countCommunityMembers();
+				return; // dont go any further because the method deals with display
 			default:
 				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
 				break;
@@ -238,7 +241,37 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		}
 		
 	}
-	
+	/**
+	 * displays the number of community members in all community. It uses a string list which is added to List view
+	 */
+	public void countCommunityMembers(){
+		EditText txtCommunityName=(EditText)findViewById(R.id.editCommunityMemberSearchName);
+		String searchText=txtCommunityName.getText().toString();
+		CommunityMembers members=new CommunityMembers(getApplicationContext());
+		int communityId=getSelectedCommunityId();
+		
+		int ageMax=0;
+		int ageMin=0;
+		try{
+			if(searchText.contains(",")){
+				String strs[]=searchText.split(","); //if a comma, that means two numbers min and max
+				ageMin=Integer.parseInt(strs[0]);
+				ageMax=Integer.parseInt(strs[1]);
+			}else{
+				ageMin=0;							//if not, then it is just max	
+				ageMax=Integer.parseInt(searchText); 
+			}
+		}catch(Exception ex){
+			ageMax=0;		//use default;
+			ageMin=0;
+		}
+		//note that the list hear is a stirng list and not a list of CommunityMembers like like the other search methods
+		ArrayList<String> list=members.getCommunityMembersTotalCount(communityId, ageMin, ageMax);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(), R.layout.mhealth_simple_list_item, list);
+		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
+		listViewCommunityMembers.setAdapter(adapter);
+		
+	}
 	
 	public void uploadData(){
 		//OPDCaseRecords records=new OPDCaseRecords(getApplicationContext());
@@ -281,7 +314,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	
 	
 	public boolean loadSearchTypeSpinner(){
-		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr"};
+		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr","Count"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);

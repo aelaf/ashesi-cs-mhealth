@@ -161,7 +161,19 @@ public class CommunityMembers extends DataClass {
 			return 0;
 		}
 	}
-
+	/**
+	 * add community member to table
+	 * @param id if id supplied it will be used, other with a new id is generated
+	 * @param community_id
+	 * @param communityMemberName
+	 * @param birthdate
+	 * @param isBirthDateConfirmed
+	 * @param gender
+	 * @param cardNo
+	 * @param nhisId
+	 * @param nhisExpiryDate
+	 * @return
+	 */
 	public int addCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
 		try
 		{
@@ -654,6 +666,87 @@ public class CommunityMembers extends DataClass {
 		}catch(Exception ex){
 			Log.e("CommunityMembers.findCommunityMember(int)","Exception "+ex.getMessage());
 			close();
+			return list;
+		}
+	}
+	
+	/**
+	 * gets the number of community members with in a given age range. if both min and max age are 0, it will count all community members.
+	 * it groups the count by gender and community
+	 * @param communityID
+	 * @param ageMin	
+	 * @param ageMax
+	 * @return
+	 */
+	public ArrayList<String> getCommunityMembersTotalCount(int communityID, int ageMin, int ageMax){
+		//query report for the age range, period grouped by gender and OPD case
+		ArrayList<String>list=new ArrayList<String>();
+		String filter="1";
+		if(ageMax!=0 || ageMin!=0){		//if both min and max are 0, then no filter by age
+			filter=AGE +"<=" +ageMax +" AND " +AGE+ ">=" +ageMin;
+		}
+		
+		try
+		{
+			db=getReadableDatabase();
+			//get number of community members who had opd cases male and female
+			String strQuery="select 'All Communities' as "+Communities.COMMUNITY_NAME
+					+ ", "+CommunityMembers.GENDER +", "
+					+" count(*) as NO_REC "
+					+" from  "
+					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+					+" where "
+					+ filter
+					+" group by " +CommunityMembers.GENDER;
+
+			cursor=db.rawQuery(strQuery, null);
+
+			cursor.moveToFirst();
+			int indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			int indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			int indexNoRecords=cursor.getColumnIndex("NO_REC");
+			String str="";
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	//string 1
+				str+="\t"+ cursor.getString(indexGender);		
+				str+="\t"+ Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);
+				cursor.moveToNext();
+			}
+			
+			if(communityID!=0){
+				filter+= " AND "+ COMMUNITY_ID+"="+communityID;
+			}
+
+			// get the count group by community
+			strQuery="select "
+					+Communities.COMMUNITY_NAME +","
+					+CommunityMembers.GENDER 
+					+",count(*) as NO_REC "
+					+" from  "
+					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
+					+" where "
+					+ filter
+					+" group by "
+					+Communities.COMMUNITY_ID +", "	
+					+CommunityMembers.GENDER;
+			cursor=db.rawQuery(strQuery, null);
+
+			cursor.moveToFirst();
+			indexCommunityName=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
+			indexGender=cursor.getColumnIndex(CommunityMembers.GENDER);
+			indexNoRecords=cursor.getColumnIndex("NO_REC");
+
+			while(!cursor.isAfterLast()){
+				str=cursor.getString(indexCommunityName);	
+				str+="\t"+ cursor.getString(indexGender);		
+				str+="\t"+ Integer.toString(cursor.getInt(indexNoRecords));
+				list.add(str);
+				cursor.moveToNext();
+			}
+			return list;
+
+		}catch(Exception ex){
 			return list;
 		}
 	}
