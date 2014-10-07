@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,6 +27,7 @@ public class TCPBase {
 	protected boolean rightOfWay;
 	protected ResourceMaterials resMat;
 	protected Socket socket;
+	protected int BUFFER_SIZE = 1024;
 
 	public TCPBase(Socket soc, ResourceMaterials resMat) {
 		this.socket = soc;
@@ -36,18 +39,17 @@ public class TCPBase {
 	public void receiveFile() throws IOException {
 		System.out.println("Sending confirmation to the client to send files");
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
-		PrintWriter out = new PrintWriter(new BufferedWriter(
-				new OutputStreamWriter(socket.getOutputStream())), true);
+		DataInputStream in = new DataInputStream(socket.getInputStream());
+		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
 		// Send Version to the server
-		out.println("Waiting for file");
+		out.writeUTF("Waiting for file");
 
 		// Receive the right of way
-		String fileInfo = in.readLine();
+		String fileInfo = in.readUTF();
 		System.out.println("from server : " + fileInfo);
-
+		
+		// Reading header information
 		String delimit = "[|]";
 		String[] result = fileInfo.split(delimit);
 		int fileId = Integer.parseInt(result[0]);
@@ -56,74 +58,72 @@ public class TCPBase {
 		int type = Integer.parseInt(result[3]);
 		String desc = result[4];
 		String tag = result[5];
-		int fileLength = Integer.parseInt(result[6]);
+		Long fileLength = Long.parseLong(result[6]);
+		
+		//Read File data
+		byte[] buffer = new byte[1024];
+		int lengthOfBytesRead;
+		Long bytesReceived = 0L;
+		FileOutputStream fileOutputStream = new FileOutputStream(new File(fileName)); 
+		
+		System.out.println("Receiving: " + fileName + " estimated bytes: " + fileLength);
 
-		byte[] buf = new byte[1024];
-		int len = 0;
-		Long bytcount = 0L;
-		FileOutputStream inFile = new FileOutputStream(new File(fileName));
-		InputStream is = socket.getInputStream();
-		BufferedInputStream in2 = new BufferedInputStream(is, 1024);
-		len = in2.read(buf, 0, 1024);
-
-		while (bytcount < fileLength ) {
-			if(len != -1){
-				bytcount += len;
-				inFile.write(buf, 0, len);
-			}
-			len = in2.read(buf, 0, 1024);
-			Log.d("Length", String.valueOf(len));
-		}
-		System.out.println("Bytes Writen : " + bytcount);
-
-		resMat.addResMat(fileId, type, catId, fileName, desc, tag);
-
+		while(((lengthOfBytesRead = in.read(buffer, 0, BUFFER_SIZE)) != -1) && (bytesReceived <= fileLength)){
+            fileOutputStream.write(buffer, 0, lengthOfBytesRead);
+            bytesReceived += lengthOfBytesRead;
+            System.out.println(lengthOfBytesRead + ": received " + ". Total Received: " + bytesReceived);
+        }
+		
+		System.out.println("File completed");
+		
+		resMat.addResMat(fileId, type, catId, fileName, desc, tag); // record the transfer
+		
+		//Close sockets
+		fileOutputStream.close();		
 		socket.shutdownInput();
+		
 		// Sending the response back to the client.
-		out.println("OK");
-		inFile.close();
+		out.writeUTF("OK");
+
 		socket.close();
 	}
 
-	public void sendFile(File file, ResourceMaterial resrc) throws IOException {
+	public void sendFile(File fileToBeSent, ResourceMaterial resourceMaterial) throws IOException {
 		System.out.println("Waiting to send files to the client");
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+		DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+		DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
 		// Receive the right of way
-		String confirm = in.readLine();
-		System.out.println("from client : " + confirm);
+		String rightOfWayConfirmation = dataInputStream.readUTF();
+		System.out.println("from client : " + rightOfWayConfirmation);
 
 		// If the server has the rightOfway then allow it to send a file
-		out.println(resrc.getId() + "|" + file.getAbsolutePath() + "|"
-				+ resrc.getCatId() + "|" + resrc.getType() + "|"
-				+ resrc.getDescription() + "|" + resrc.getTag() + "|"
-				+ file.length());
-		System.out.println("Sending the file");
-	
-		byte[] buf = new byte[1024];
-		OutputStream os = socket.getOutputStream();
-		BufferedOutputStream outStr = new BufferedOutputStream(os, 1024);
-		FileInputStream inStr = new FileInputStream(file);
-
-		int bytecount = 0;
-		int len = inStr.read(buf, 0, 1024);
-		while (bytecount < file.length()) {
-			if(len != -1){
-				bytecount += len;
-				outStr.write(buf, 0, len);
-				outStr.flush();
-			}
-			len = inStr.read(buf, 0, 1024);
-			Log.d("Length", String.valueOf(len));
-		}
-
+		//Send Header Information
+		dataOutputStream.writeUTF(resourceMaterial.getId() + "|" + fileToBeSent.getAbsolutePath() + "|"
+				                + resourceMaterial.getCatId() + "|" + resourceMaterial.getType() + "|"
+				                + resourceMaterial.getDescription() + "|" + resourceMaterial.getTag() + "|"
+				                + fileToBeSent.length());
+		
+		System.out.println("Sending file with name: " + resourceMaterial.getContent());
+		dataOutputStream.flush();
+		
+		Long filesize = fileToBeSent.length();
+		byte[] buffer = new byte[BUFFER_SIZE];
+		OutputStream outputStream = socket.getOutputStream();
+		FileInputStream fileInputStream = new FileInputStream(fileToBeSent);
+		
+		int lengthOfBytesRead;
+		while(((lengthOfBytesRead = fileInputStream.read(buffer, 0, BUFFER_SIZE)) != -1) && (filesize >= 0)){
+            outputStream.write(buffer, 0, lengthOfBytesRead);
+            filesize -= lengthOfBytesRead;
+            System.out.println(lengthOfBytesRead + " sent. " + " Amount left: " + filesize);
+        }
+		
 		socket.shutdownOutput();
-		inStr.close();
-		System.out.println("Bytes Sent :" + bytecount);
+		fileInputStream.close();
 
-		String confirmation = in.readLine();
+		String confirmation = dataInputStream.readUTF();
 		System.out.println("from client : " + confirmation);
 		socket.close();
 	}
