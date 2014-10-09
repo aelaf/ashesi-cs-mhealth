@@ -20,8 +20,9 @@ public class OPDCases extends DataClass {
 	public static final String OPD_CASE_ID="opd_case_id";
 	public static final String OPD_CASE_NAME="opd_case_name";
 	public static final String OPD_CASE_CATEGORY="opd_case_category";
+	public static final String OPD_CASE_DISPLAY_ORDER="opd_case_display_order";
 	
-	private String[] columns={OPD_CASE_ID,OPD_CASE_NAME,OPD_CASE_CATEGORY};
+	private String[] columns={OPD_CASE_ID,OPD_CASE_NAME,OPD_CASE_CATEGORY,OPD_CASE_DISPLAY_ORDER};
 
 	public OPDCases(Context context){
 		super(context);
@@ -56,7 +57,9 @@ public class OPDCases extends DataClass {
 			if(opdCaseCategory>0){
 				selection=OPD_CASE_CATEGORY +"="+opdCaseCategory;
 			}
-			cursor=db.query("opd_cases", columns, selection, null, null, null, null);
+			
+			String order=OPD_CASE_DISPLAY_ORDER+","+OPD_CASE_NAME;
+			cursor=db.query("opd_cases", columns, selection, null, null, null, order);
 			cursor.moveToFirst();
 			OPDCase opdCase=fetch();
 			while(opdCase!=null){
@@ -116,8 +119,13 @@ public class OPDCases extends DataClass {
 			String name=cursor.getString(index);
 			index=cursor.getColumnIndex(OPD_CASE_CATEGORY);
 			int category=cursor.getInt(index);
+			index=cursor.getColumnIndex(OPD_CASE_DISPLAY_ORDER);
+			int displayOrder=0;
+			if(index>0){
+				displayOrder=cursor.getInt(index);
+			}
 			cursor.moveToNext();
-			return new OPDCase(id,name,category);
+			return new OPDCase(id,name,category,displayOrder);
 		}catch(Exception ex){
 			return null;
 		}
@@ -156,13 +164,18 @@ public class OPDCases extends DataClass {
 			String name;
 			int id;
 			int opdCaseCategory;
+			int displayOrder;
 			JSONArray jsonArray=object.getJSONArray("opdcases");
 			for(int i=0;i<jsonArray.length();i++){
 				JSONObject obj=jsonArray.getJSONObject(i);
 				name=obj.getString("opdCaseName");
 				id=obj.getInt("id");
 				opdCaseCategory=obj.getInt("opdCaseCategory");
-				addOrUpdate(id,name,opdCaseCategory);
+				displayOrder=0;
+				if(obj.has("opdCaseDisplayOrder")){
+					displayOrder=obj.getInt("opdCaseDisplayOrder");
+				}
+				addOrUpdate(id,name,opdCaseCategory,displayOrder);
 				
 			}
 			return true;
@@ -175,17 +188,27 @@ public class OPDCases extends DataClass {
 	}
 	
 	public boolean addOrUpdate(int id,String opdCaseName,int opdCaseCategory){
-		SQLiteDatabase db=getWritableDatabase();
-		ContentValues cv=new ContentValues();
+		return addOrUpdate(id,opdCaseName,opdCaseCategory,0);
+	}
+	
+	public boolean addOrUpdate(int id,String opdCaseName,int opdCaseCategory, int displayOrder){
+		try{
+			SQLiteDatabase db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
 
-		cv.put(OPD_CASE_NAME, opdCaseName);
-		cv.put(OPD_CASE_ID, id);
-		cv.put(OPD_CASE_CATEGORY, opdCaseCategory);
-		if(db.insertWithOnConflict(TABLE_NAME_OPD_CASES, null,cv,SQLiteDatabase.CONFLICT_REPLACE)<=0){
+			cv.put(OPD_CASE_NAME, opdCaseName);
+			cv.put(OPD_CASE_ID, id);
+			cv.put(OPD_CASE_CATEGORY, opdCaseCategory);
+			cv.put(OPD_CASE_DISPLAY_ORDER, displayOrder);
+			if(db.insertWithOnConflict(TABLE_NAME_OPD_CASES, null,cv,SQLiteDatabase.CONFLICT_REPLACE)<=0){
+				return false;
+			}
+			close();
+			return true;
+		}catch(Exception ex){
+			close();
 			return false;
 		}
-		db.close();
-		return true;
 	}
 			
 	public boolean updateDataVersion(int dataVersion){
@@ -196,7 +219,8 @@ public class OPDCases extends DataClass {
 		return "create table " + TABLE_NAME_OPD_CASES + " (" 
 				+OPD_CASE_ID + " integer primary key, "
 				+OPD_CASE_NAME +" text, "
-				+OPD_CASE_CATEGORY +" integer "
+				+OPD_CASE_CATEGORY +" integer, "
+				+OPD_CASE_DISPLAY_ORDER+" integer default 0"
 				+" )";
 	}
 		
@@ -209,6 +233,20 @@ public class OPDCases extends DataClass {
 				+id +","
 				+"'"+opdCaseName+"', "
 				+category
+				+" )";
+	}
+	
+	public static String getInsertSQLString(int id, String opdCaseName, int category,int displayOrder){
+		return "insert into " + TABLE_NAME_OPD_CASES + "(" 
+				+OPD_CASE_ID + " ,"
+				+OPD_CASE_NAME +", "
+				+OPD_CASE_CATEGORY +","
+				+OPD_CASE_DISPLAY_ORDER
+				+" ) values( "
+				+id +","
+				+"'"+opdCaseName+"', "
+				+category +", "
+				+displayOrder
 				+" )";
 	}
 

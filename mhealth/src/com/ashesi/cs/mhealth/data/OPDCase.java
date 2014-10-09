@@ -4,6 +4,7 @@ public class OPDCase {
 	private int id;
 	private String opdCaseName;
 	private int category;
+	private int displayOrder;
 	
 	public OPDCase(){
 		
@@ -19,6 +20,13 @@ public class OPDCase {
 		this.category=category;
 	}
 	
+	public OPDCase(int id, String opdCaseName, int category, int displayOrder){
+		this.id=id;
+		this.opdCaseName=opdCaseName;
+		this.category=category;
+		this.displayOrder=displayOrder;
+	}
+	
 	public int getID(){
 		return id;
 	}
@@ -29,6 +37,10 @@ public class OPDCase {
 	
 	public int getCategory(){
 		return category;
+	}
+	
+	public int getDisplayOrder(){
+		return displayOrder;
 	}
 	
 	public String toString(){
