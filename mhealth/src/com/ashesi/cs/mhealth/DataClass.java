@@ -48,6 +48,7 @@ import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
 import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.HealthPromotions;
+import com.ashesi.cs.mhealth.data.OPDCaseCategories;
 import com.ashesi.cs.mhealth.data.OPDCaseRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
@@ -623,8 +624,13 @@ public class DataClass extends SQLiteOpenHelper {
 			//updates views and tables no new additions
 			//version 11
 			//creates questions table if it does not exist
-
-			setDataVersion(db,DATABASE_NAME,11);
+			//version 12
+			//modify opd cases by adding display order
+			//modify view opd case records by adding community member
+			//add category table
+			db.execSQL(OPDCaseCategories.getCreateSQLString());
+			
+			setDataVersion(db,DATABASE_NAME,12);
 			
 			
 		}catch(Exception ex){
@@ -833,8 +839,10 @@ public class DataClass extends SQLiteOpenHelper {
 	}
 	
 	private void upgradeToVersion12(SQLiteDatabase db){
-		db.execSQL(" drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
+		db.execSQL(" drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);	//modfied to include community name
 		db.execSQL(OPDCaseRecords.getCreateViewString());//two views are created through this statement
+		db.execSQL("alter table "+OPDCases.TABLE_NAME_OPD_CASES + " add column "+ OPDCases.OPD_CASE_DISPLAY_ORDER + " integer default 0");
+		db.execSQL(OPDCaseCategories.getCreateSQLString());
 		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	

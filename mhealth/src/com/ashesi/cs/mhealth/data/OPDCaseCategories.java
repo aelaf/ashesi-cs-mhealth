@@ -69,39 +69,47 @@ public class OPDCaseCategories extends DataClass {
 		}
 	}
 	
+	public ArrayList<String> getOPDCaseCategoriesStringList(){
+		ArrayList<String> list=new ArrayList<String>();
+		try{
+			String columns[]={OPD_CASE_CATEGORY_ID,OPD_CASE_CATEGORY_NAME};
+			db=getReadableDatabase();
+			cursor=db.query(TABLE_OPD_CASE_CATEGORIES,columns , null, null, null, null, null);
+			ODPCaseCategory opdCaseCategory=fetch(cursor);
+			while(opdCaseCategory!=null){
+				list.add(opdCaseCategory.getOPDCaseCategoryName());
+				opdCaseCategory=fetch(cursor);
+			}
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+	}
 	/**
 	 * This function adds all the default categories of cases to the table
 	 * @return
 	 */
 	public boolean popluateTableWithDefault(){
-		try{
-			//{"ALL","CI","CNI","NCD","MHC","SC","OGC","RETD","IO","REF","OTH"}
-			String query="insert or replace into "+TABLE_OPD_CASE_CATEGORIES+"("+OPD_CASE_CATEGORY_ID +"," 
-					+OPD_CASE_CATEGORY_NAME +")"
-					+" values "
-					+"(1, 'Communicable Imm'),"
-					+"(2, 'Communicable Non-Imm'),"
-					+"(3, 'Non-Communicable '),"
-					+"(4, 'Mental Health '),"
-					+"(5, 'Special Condition'),"
-					+"(6, 'OGC'),"
-					+"(7, 'RETD'),"
-					+"(8, 'IO'),"
-					+"(9, 'Referral'),"
-					+"(10, 'Other Cases'),"
-					+"(11, 'Mental Health Extended')";
-			db=getWritableDatabase();
-			db.execSQL(query);
-			return true;
-		}catch(Exception ex){
-			return false;
-		}
+		
+		add(1,"Communicable Imm");
+		add(2,"Communicable Non-Imm");
+		add(3,"Non-Communicable");
+		add(4,"Mental Health");
+		add(5,"Special Condition");
+		add(6,"OGC");
+		add(7,"RETD");
+		add(8,"IO");
+		add(9,"Referral");
+		add(10,"Other Cases");
+		add(11,"Mental Health Extended");
+		return true;
+	
 	}
 	
 	static public String getCreateSQLString(){
 		return "create table "+ TABLE_OPD_CASE_CATEGORIES+ " ("
 					+ OPD_CASE_CATEGORY_ID + " integer primary key, "
-					+ OPD_CASE_CATEGORY_NAME +" text, "
+					+ OPD_CASE_CATEGORY_NAME +" text "
 					+" )";
 				
 	}

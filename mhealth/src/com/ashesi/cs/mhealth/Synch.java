@@ -13,6 +13,7 @@ import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
+import com.ashesi.cs.mhealth.data.OPDCaseCategories;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
 import com.ashesi.cs.mhealth.data.R.layout;
@@ -233,6 +234,8 @@ public class Synch extends Activity implements OnClickListener {
 			progressBar.setProgress(5);
 			showStatus("complete");
 			fis.close();
+			OPDCaseCategories categories=new OPDCaseCategories(getApplicationContext());
+			categories.popluateTableWithDefault();
 		}catch(Exception ex){
 			showError("loading from file failed");
 		}

@@ -18,6 +18,7 @@ import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
 import com.ashesi.cs.mhealth.data.FamilyPlanningService;
 import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.OPDCase;
+import com.ashesi.cs.mhealth.data.OPDCaseCategories;
 import com.ashesi.cs.mhealth.data.OPDCaseRecord;
 import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
@@ -1041,7 +1042,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		public boolean fillOPDCaseCategoriesSpinner(){
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerOPDCaseCategories);
-			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,opdCaseCategories);
+			OPDCaseCategories opdCaseCategories=new OPDCaseCategories(getActivity().getApplicationContext());
+			ArrayList<String> categories=opdCaseCategories.getOPDCaseCategoriesStringList();
+			categories.add(0," All Cases ");
+			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,categories);
 			spinner.setAdapter(adapter);
 			spinner.setOnItemSelectedListener(this);
 			return true;
