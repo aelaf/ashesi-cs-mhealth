@@ -1002,12 +1002,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		@Override
 		public boolean onOptionsItemSelected(MenuItem item){
-			switch(item.getItemId()){
-			case R.id.itemRemoveRecord:
-				//removeRecord();
-				break;
-	
-			}
+			
 			return true;
 		
 		}
