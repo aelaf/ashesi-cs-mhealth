@@ -376,15 +376,17 @@ public class FamilyPlanningRecords extends DataClass {
 					+QUANTITY+", "
 					+SERVICE_DATE +","
 					+CommunityMembers.BIRTHDATE +", "
-					+CommunityMembers.COMMUNITY_ID +","
-					+CommunityMembers.GENDER
+					+CommunityMembers.COMMUNITY_ID 
+					//+","
+					//+CommunityMembers.GENDER
 					+" from " +FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
 					+" where "
 					+"("+FamilyPlanningRecords.SERVICE_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 					+FamilyPlanningRecords.SERVICE_DATE +"<=\""+ lastDateOfTheMonth + "\" )"
 					+" AND "
-					+strAgeFilter +" AND "
-					+strGenderFilter
+					+strAgeFilter 
+					//+" AND "
+					//+strGenderFilter there is not gender in family planing record
 					+limitClause;
 					
 			cursor=db.rawQuery(strQuery, null);

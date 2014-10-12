@@ -54,6 +54,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -228,7 +229,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			if(position==0 ){
 				fragment= new MainSectionFragment();
 			}else if(position==1){
-				fragment=new OtherFragment();
+				fragment=new OPDFragment();
 			}else if(position==2){
 				fragment=new VaccineFragment();
 			}else if(position==3){
@@ -940,14 +941,16 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 
 	}
 	
-	public static class OtherFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
+	public static class OPDFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
 		ArrayList<OPDCase> listOPDCases;
 		String[] opdCaseCategories={"ALL","CI","CNI","NCD","MHC","SC","OGC","RETD","IO","REF","OTH"}; 
 		
 		View rootView;
 		int communityMemberId=0;
-		public OtherFragment(){
+		AdapterContextMenuInfo info;
+		
+		public OPDFragment(){
 			
 		}
 		
@@ -986,9 +989,10 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		@Override
 		public boolean onContextItemSelected(MenuItem item) {
+			info=(AdapterContextMenuInfo) item.getMenuInfo();
 			switch(item.getItemId()){
 				case R.id.itemRemoveRecord:
-					removeRecord();
+					remove();
 					break;
 			
 					
@@ -1000,7 +1004,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public boolean onOptionsItemSelected(MenuItem item){
 			switch(item.getItemId()){
 			case R.id.itemRemoveRecord:
-				removeRecord();
+				//removeRecord();
 				break;
 	
 			}
@@ -1052,23 +1056,19 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 
 		public boolean removeRecord(){
+			if(info==null){
+				return false;
+			}
 			ListView listView=(ListView)rootView.findViewById(R.id.list);
-			//OPDCaseRecord record=(OPDCaseRecord)listView.getSelectedItem();
-			int index=listView.getCheckedItemPosition();
-			if(index<0){
-				return false;
-			}
-			OPDCaseRecord record=(OPDCaseRecord)listView.getItemAtPosition(index);
-			if(record==null){
-				return false;
-			}
+			ArrayAdapter<OPDCaseRecord> adapter=(ArrayAdapter<OPDCaseRecord>)listView.getAdapter();
+			OPDCaseRecord record=adapter.getItem(info.position);
 			
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(getActivity().getApplicationContext());
 			if(!opdCaseRecords.removeOPDRecord(record.getRecNo())){
 				return false;
 			}
 			getListOfOPDCases();
-			//call remove
+			info=null;	//it has been dealt;
 			return true;
 		}
 		
@@ -1114,12 +1114,33 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}
 			ArrayList<OPDCaseRecord> list=opdCaseRecords.getArrayList();
 			ListView listView=(ListView)rootView.findViewById(R.id.list);
-			ArrayAdapter<OPDCaseRecord> adapter=new ArrayAdapter<OPDCaseRecord>(getActivity(),android.R.layout.simple_list_item_single_choice,list); 
+			ArrayAdapter<OPDCaseRecord> adapter=new ArrayAdapter<OPDCaseRecord>(getActivity(),R.layout.mhealth_simple_list_item,list); 
 			listView.setAdapter(adapter);
 			
 			return;
 		}
 		
+		protected void remove(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+			ListView list=(ListView)rootView.findViewById(R.id.list);
+			
+			String str=list.getItemAtPosition(info.position).toString();
+			builder.setMessage("Are you sure you want to remove the record? "+str );
+			builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   removeRecord();
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   dialog.dismiss();
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
 		
 
 	}
