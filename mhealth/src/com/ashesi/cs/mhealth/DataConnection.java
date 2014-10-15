@@ -33,7 +33,9 @@ public class DataConnection {
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
 	public static final String SERVER_URL="http://192.168.56.2/mHealth/";
 	public static final int CONNECTION_TIMEOUT=60000;
-
+	public static final String KNOWLEDGE_URL="knowledge/";
+	public static final String RECORD_URL="record/";
+	
 	Context context;
 	String strError;
 	

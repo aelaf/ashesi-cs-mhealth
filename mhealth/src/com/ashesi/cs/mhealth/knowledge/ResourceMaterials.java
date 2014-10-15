@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.DataConnection;
 
 public class ResourceMaterials extends DataClass {
 
@@ -224,7 +225,7 @@ public class ResourceMaterials extends DataClass {
 	 */
 	public void download(){
 		final int deviceId=mDeviceId;
-		String url="mhealth/choAction?cmd=2&deviceId"+deviceId;
+		String url=DataConnection.KNOWLEDGE_URL+"choAction?cmd=2&deviceId"+deviceId;
 		String data=request(url);
 		try{
 			JSONObject obj=new JSONObject(data);

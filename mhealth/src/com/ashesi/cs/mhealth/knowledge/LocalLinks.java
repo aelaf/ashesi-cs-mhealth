@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.DataConnection;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -112,7 +113,7 @@ public class LocalLinks extends DataClass{
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url="mhealth/checkLogin/knowledgeAction.php?cmd=9";
+		String url=DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=9";
 		String data=request(url);
 		System.out.println(data);
 		try{

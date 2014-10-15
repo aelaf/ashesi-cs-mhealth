@@ -14,6 +14,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.DataConnection;
 
 public class Questions extends DataClass{
     
@@ -265,7 +266,7 @@ public class Questions extends DataClass{
 	 * downloads Question data from server 
 	 */
 	public void download(){
-		String url="mhealth/checkLogin/knowledgeAction.php?cmd=5";
+		String url=DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=5";
 		System.out.println("Starting Post request");
 		String data=request(url);
 		System.out.println(data);
