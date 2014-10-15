@@ -622,7 +622,7 @@ public class QuestionsFragment extends Fragment{
 								      nameValuePairs.add(new BasicNameValuePair("questionid",
 								          jObj.toString()));
 								      String data;
-									if((data = db.request(db.postRequest("mhealth/checkLogin/knowledgeAction.php?cmd=1", nameValuePairs))) == null){
+									if((data = db.request(db.postRequest(DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=1", nameValuePairs))) == null){
 										System.out.println(data);
 												
 									}

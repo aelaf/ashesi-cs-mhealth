@@ -38,6 +38,7 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -252,7 +253,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 								e.printStackTrace();
 							}
 				 			
-							File file = new File(resourceMat.getMaterial(countUp).getContent());
+							File file = new File(Environment.getExternalStorageDirectory() + "/mHealth/" + resourceMat.getMaterial(countUp).getContent());
 							server.sendFile(file, resourceMat.getMaterial(countUp));
 							countUp++;
 							System.out.println(countUp);
@@ -381,7 +382,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 						diag.incrementProgressBy(1);
 						sock = new Socket(getInfo().groupOwnerAddress, 8988);
 						client.resetSock(sock);
-						File file = new File(resMat.getMaterial(countUp).getContent());
+						File file = new File(Environment.getExternalStorageDirectory() + "/mHealth/" + resMat.getMaterial(countUp).getContent());
 						client.sendFile(file, resMat.getMaterial(countUp));
 						countUp++;
 						System.out.println(countUp);

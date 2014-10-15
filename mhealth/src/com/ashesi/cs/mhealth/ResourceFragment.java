@@ -258,7 +258,7 @@ public class ResourceFragment extends Fragment{
 						resMat.addResMat(Integer.parseInt(results[0]), 
 						                 Integer.parseInt(results[1]), 
 						                 Integer.parseInt(results[2]), 
-						                 (Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]), 
+						                 (results[3]), 
 						                 results[4], results[5]);
 						System.out.println((Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]));
 					}else{

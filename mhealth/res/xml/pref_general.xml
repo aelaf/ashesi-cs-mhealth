@@ -8,7 +8,7 @@
          dismiss it.
     -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference android:key="synch_url" android:title="@string/synch_url" android:defaultValue="http://cs.ashesi.edu.gh/"/>
+    <EditTextPreference android:key="synch_url" android:title="@string/synch_url" android:defaultValue="http://http://41.191.246.251/~www_developer/yaresa/"/>
     <EditTextPreference android:title="@string/deviceId" android:key="device_id" android:defaultValue="1"/>
     <EditTextPreference android:key="app_path" android:title="@string/app_path" android:defaultValue="/mHealth/"/>
 

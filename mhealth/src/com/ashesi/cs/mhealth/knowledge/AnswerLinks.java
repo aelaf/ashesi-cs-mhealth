@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.DataConnection;
 
 public class AnswerLinks extends DataClass{
 	private static final String TABLE_NAME_ANSWERLINKS = "answer_links";
@@ -121,7 +122,7 @@ public class AnswerLinks extends DataClass{
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url= "mhealth/checkLogin/knowledgeAction.php?cmd=8";
+		String url= DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=8";
 		String data=request(url);
 		System.out.println(data);
 		try{

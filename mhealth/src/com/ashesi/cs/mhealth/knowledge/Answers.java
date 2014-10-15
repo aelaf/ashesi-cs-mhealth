@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
+import com.ashesi.cs.mhealth.DataConnection;
 import com.ashesi.cs.mhealth.KnowledgeActivity;
 
 public class Answers extends DataClass {
@@ -192,7 +193,7 @@ public class Answers extends DataClass {
 	public void download(){
 		final int deviceId=mDeviceId;
 
-		String url="mhealth/checkLogin/knowledgeAction.php?cmd=7";
+		String url=DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=7";
 		String data=request(url);
 		System.out.println(data);
 		try{

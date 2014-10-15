@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import android.os.Environment;
 import android.util.Log;
 
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
@@ -64,7 +65,7 @@ public class TCPBase {
 		byte[] buffer = new byte[1024];
 		int lengthOfBytesRead;
 		Long bytesReceived = 0L;
-		FileOutputStream fileOutputStream = new FileOutputStream(new File(fileName)); 
+		FileOutputStream fileOutputStream = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + "/mHealth/" + fileName)); 
 		
 		System.out.println("Receiving: " + fileName + " estimated bytes: " + fileLength);
 
@@ -100,7 +101,7 @@ public class TCPBase {
 
 		// If the server has the rightOfway then allow it to send a file
 		//Send Header Information
-		dataOutputStream.writeUTF(resourceMaterial.getId() + "|" + fileToBeSent.getAbsolutePath() + "|"
+		dataOutputStream.writeUTF(resourceMaterial.getId() + "|" + fileToBeSent.getName() + "|"
 				                + resourceMaterial.getCatId() + "|" + resourceMaterial.getType() + "|"
 				                + resourceMaterial.getDescription() + "|" + resourceMaterial.getTag() + "|"
 				                + fileToBeSent.length());
