@@ -843,6 +843,10 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(OPDCaseRecords.getCreateViewString());//two views are created through this statement
 		db.execSQL("alter table "+OPDCases.TABLE_NAME_OPD_CASES + " add column "+ OPDCases.OPD_CASE_DISPLAY_ORDER + " integer default 0");
 		db.execSQL(OPDCaseCategories.getCreateSQLString());
+		db.execSQL("alter talbe "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS+ 
+						" add column "+FamilyPlanningRecords.SERVICE_TYPE+" integer default 0");
+		db.execSQL(" drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
+		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	

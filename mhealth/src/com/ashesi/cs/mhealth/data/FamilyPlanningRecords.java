@@ -24,6 +24,7 @@ public class FamilyPlanningRecords extends DataClass {
 	public final static String SERVICE_DATE="service_date";
 	public final static String SCHEDULE_DATE="service_schedule_date";
 	public final static String QUANTITY="quantity";
+	public final static String SERVICE_TYPE="service_type_id";
 	public final static String TABLE_NAME_FAMILY_PLANNING_RECORDS="family_planning_records";
 	public final static String VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL="view_family_planning_records_detail";
 	public final static String AGE="age";
@@ -92,7 +93,37 @@ public class FamilyPlanningRecords extends DataClass {
 
 	}
 	
-	
+	/**
+	 * records when a community member has received with particular service identified by serviceId 
+	 * @param communityMemberId
+	 * @param serviceId
+	 * @param serviceDate
+	 * @return
+	 */
+	public FamilyPlanningRecord addRecord(int communityMemberId, int serviceId, String serviceDate,double quanity, String scheduleDate, int type){
+		try{
+						
+			db=getWritableDatabase();
+			ContentValues cv=new ContentValues();
+			cv.put(CommunityMembers.COMMUNITY_MEMBER_ID, communityMemberId);
+			cv.put(FamilyPlanningServices.SERVICE_ID,serviceId);
+			cv.put(QUANTITY, quanity);
+			cv.put(SERVICE_DATE, serviceDate);
+			cv.put(SCHEDULE_DATE, scheduleDate);
+			cv.put(SERVICE_TYPE, type);
+			long id=db.insert(TABLE_NAME_FAMILY_PLANNING_RECORDS, null, cv);
+			if(id<=0){
+				return null;
+			}
+			return getServiceRecord((int)id);
+			
+		}catch(Exception ex){
+			close();
+			return null;
+		}
+
+	}
+		
 	public boolean alreadyAcceptor(int communityMemberId){
 		try{
 			
@@ -114,8 +145,9 @@ public class FamilyPlanningRecords extends DataClass {
 			return true;
 		}
 	}
+	
 	/**
-	 * records when a community member was received with particular service identified by vaccineId 
+	 * records when a community member was received with particular service identified by serviceId 
 	 * @param communityMemberId
 	 * @param serviceId
 	 * @param serviceDate
@@ -127,7 +159,7 @@ public class FamilyPlanningRecords extends DataClass {
 	}
 	
 	/**
-	 * records when a community member was received with particular service identified by vaccineId 
+	 * records when a community member was received with particular service identified by serviceId 
 	 * @param communityMemberId
 	 * @param serviceId
 	 * @param serviceDate
@@ -160,6 +192,27 @@ public class FamilyPlanningRecords extends DataClass {
 			String strServiceDate=dateFormat.format(serviceDate);
 			String strScheduleDate=dateFormat.format(scheduleDate);
 			return addRecord(communityMemberId,serviceId,strServiceDate,quantity,strScheduleDate);
+		}catch(Exception ex){
+			close();
+			return null;
+		}
+			
+	}
+	
+	/**
+	 * records when a community member was received with particular service identified by vaccineId 
+	 * @param communityMemberId
+	 * @param serviceId
+	 * @param serviceDate
+	 * @return
+	 */
+	public FamilyPlanningRecord addRecord(int communityMemberId, int serviceId, Date serviceDate,double quantity,Date scheduleDate,int type){
+	   try{
+			
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			String strServiceDate=dateFormat.format(serviceDate);
+			String strScheduleDate=dateFormat.format(scheduleDate);
+			return addRecord(communityMemberId,serviceId,strServiceDate,quantity,strScheduleDate,type);
 		}catch(Exception ex){
 			close();
 			return null;
@@ -267,7 +320,6 @@ public class FamilyPlanningRecords extends DataClass {
 		}
 		
 	}
-	
 	
 	public FamilyPlanningRecord getServiceRecord(int communityMemberId, int serviceId){
 		try{
@@ -417,6 +469,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+SERVICE_DATE+" text,"
 				+SCHEDULE_DATE+" text, "
 				+QUANTITY+" numberic ,"
+				+SERVICE_TYPE+" integer default 0,"
 				+DataClass.REC_STATE+ " integer "
 				+")";
 	}
@@ -431,6 +484,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+QUANTITY+", "
 				+SERVICE_DATE +", "
 				+SCHEDULE_DATE+ ", "
+				+SERVICE_TYPE+" numberic,"
 				+CommunityMembers.GENDER
 				+" from "
 				+TABLE_NAME_FAMILY_PLANNING_RECORDS + " left join " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS
@@ -457,6 +511,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+SERVICE_DATE+", "
 				+SCHEDULE_DATE+", "
 				+QUANTITY+", "
+				+SERVICE_TYPE+", "
 				+CommunityMembers.BIRTHDATE +", "
 				+CommunityMembers.COMMUNITY_ID 
 				+" from "

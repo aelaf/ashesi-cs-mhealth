@@ -1446,7 +1446,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAdd);
 			buttonAddVaccine.setOnClickListener(this);
-			
+						
 			loadFamilyPlanningServiceRecords();
 			return rootView;
 		}
@@ -1525,6 +1525,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			EditText editQty=(EditText)rootView.findViewById(R.id.editQuantity); 
 			FamilyPlanningService service=(FamilyPlanningService)spinner.getSelectedItem();
 			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
+			int type=getServiceType();
 			
 			//New acceptor can be recorded once only. 
 			if(service.getId()==FamilyPlanningServices.NEW_ACCEPTOR_SERVICE_ID){
@@ -1540,9 +1541,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				quantity=Double.parseDouble(strQty);
 			}
 			
-			
-			
-			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId,service.getId(), date,quantity,service.getScheduleDate(date));
+			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId,service.getId(), date,quantity,service.getScheduleDate(date),type);
 			if(serviceRecord==null){
 				return;
 			}
@@ -1584,7 +1583,20 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			ArrayList<FamilyPlanningService> listServices=services.getServices();
 			ArrayAdapter<FamilyPlanningService> adapter=new ArrayAdapter<FamilyPlanningService>(getActivity(), android.R.layout.simple_dropdown_item_1line,listServices);
 			spinner.setAdapter(adapter);
-		}	
+		}
+		
+		private int getServiceType(){
+			RadioGroup group=(RadioGroup)rootView.findViewById(R.id.raidoGroupServiceType);
+			int id=group.getCheckedRadioButtonId();
+			
+			if(id==R.id.radioNewAcceptor){
+				return 1;
+			}else if(id==R.id.radioContinuing){
+				return 2;
+			}else{
+				return 0;
+			}
+		}
 	
 	}
 	
