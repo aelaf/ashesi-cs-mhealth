@@ -1,24 +1,13 @@
 package com.ashesi.cs.mhealth.data;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StreamCorruptedException;
 import java.net.Socket;
 
-import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 public class TCPServer extends TCPBase {

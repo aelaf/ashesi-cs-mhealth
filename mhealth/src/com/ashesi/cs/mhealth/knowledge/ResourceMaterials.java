@@ -172,9 +172,9 @@ public class ResourceMaterials extends DataClass {
 	public ResourceMaterial getMaterial(int matId){
 		try{
 			db=getReadableDatabase();
-			String selection=KEY_ID +"="+matId;
+			String selection=KEY_ID + "=" + matId;
 			cursor=db.query(TABLE_RESOURCE_MATERIALS, columns, selection, null, null, null, null, null);
-			ResourceMaterial res=fetch();
+			ResourceMaterial res= fetch();
 			close();
 			return res;
 			

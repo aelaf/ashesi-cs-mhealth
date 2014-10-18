@@ -30,7 +30,6 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -38,7 +37,6 @@ import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +59,6 @@ import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
  */
 public class DeviceDetailFragment extends Fragment implements ConnectionInfoListener {
 
-    protected static final int CHOOSE_FILE_RESULT_CODE = 20;
     private View mContentView = null;
     private WifiP2pDevice device;
     private WifiP2pInfo info;
@@ -253,7 +250,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 								e.printStackTrace();
 							}
 				 			
-							File file = new File(Environment.getExternalStorageDirectory() + "/mHealth/" + resourceMat.getMaterial(countUp).getContent());
+							File file = new File(DataClass.getApplicationFolderPath() + resourceMat.getMaterial(countUp).getContent());
 							server.sendFile(file, resourceMat.getMaterial(countUp));
 							countUp++;
 							System.out.println(countUp);
@@ -382,10 +379,11 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 						diag.incrementProgressBy(1);
 						sock = new Socket(getInfo().groupOwnerAddress, 8988);
 						client.resetSock(sock);
-						File file = new File(Environment.getExternalStorageDirectory() + "/mHealth/" + resMat.getMaterial(countUp).getContent());
-						client.sendFile(file, resMat.getMaterial(countUp));
-						countUp++;
-						System.out.println(countUp);
+
+				    	File file = new File(DataClass.getApplicationFolderPath() + resMat.getMaterial(countUp).getContent());
+				    	client.sendFile(file, resMat.getMaterial(countUp));
+				    	countUp++;
+						System.out.println(countUp);					
 					}
 				}
 				sock.close();

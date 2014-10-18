@@ -195,7 +195,7 @@ public class ResourceFragment extends Fragment{
 					               listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getDescription(), 
 					               Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-					File file = new File(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getContent());
+					File file = new File(DataClass.getApplicationFolderPath() + listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getContent());
 					String fileType = mediaList[listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).getType()-1];
 	                intent.setDataAndType(Uri.fromFile(file), fileType);
 	                startActivity(intent);
@@ -234,7 +234,7 @@ public class ResourceFragment extends Fragment{
 	 */
 	private void loadResources(){
 		System.out.println("Loading resources");
-		File upload = new File(Environment.getExternalStorageDirectory() + "/mHealth/resourceslist.txt");
+		File upload = new File(DataClass.getApplicationFolderPath() + "resourceslist.txt");
 		
 		try {
 			if(upload.exists()){
@@ -260,7 +260,7 @@ public class ResourceFragment extends Fragment{
 						                 Integer.parseInt(results[2]), 
 						                 (results[3]), 
 						                 results[4], results[5]);
-						System.out.println((Environment.getExternalStorageDirectory() + "/mHealth/" + results[3]));
+						System.out.println((DataClass.getApplicationFolderPath() + results[3]));
 					}else{
 						break;
 					}

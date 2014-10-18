@@ -111,7 +111,7 @@ public class DataClass extends SQLiteOpenHelper {
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
 	public static final String SERVER_URL="http://http://41.191.246.251/~www_developer/yaresa/";
-	public static final String APPLICATION_PATH="/mHealth/"; 
+	public static final String APPLICATION_PATH="/yaresa/"; 
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
 		
@@ -855,16 +855,8 @@ public class DataClass extends SQLiteOpenHelper {
 		return str;
 	}
 	
-	public String getApplicationFolderPath(){
-		String path;
-		try{
-			path=PreferenceManager.getDefaultSharedPreferences(context).getString("app_path", "");
-			path=Environment.getExternalStorageDirectory().getPath()+path;
-			
-		}catch(Exception ex){
-			path= Environment.getExternalStorageDirectory().getPath() +DataClass.APPLICATION_PATH;
-		}
-		return path;
+	public static String getApplicationFolderPath(){
+		return Environment.getExternalStorageDirectory().getPath() + DataClass.APPLICATION_PATH;
 	}
 	
 	public String getServerUrl(){

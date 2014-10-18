@@ -1,25 +1,15 @@
 package com.ashesi.cs.mhealth.data;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 
-import android.os.Environment;
-import android.util.Log;
-
+import com.ashesi.cs.mhealth.DataClass;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterial;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
@@ -48,7 +38,7 @@ public class TCPBase {
 
 		// Receive the right of way
 		String fileInfo = in.readUTF();
-		System.out.println("from server : " + fileInfo);
+		System.out.println("from server : " + fileInfo );
 		
 		// Reading header information
 		String delimit = "[|]";
@@ -65,7 +55,7 @@ public class TCPBase {
 		byte[] buffer = new byte[1024];
 		int lengthOfBytesRead;
 		Long bytesReceived = 0L;
-		FileOutputStream fileOutputStream = new FileOutputStream(new File(Environment.getExternalStorageDirectory() + "/mHealth/" + fileName)); 
+		FileOutputStream fileOutputStream = new FileOutputStream(new File(DataClass.getApplicationFolderPath() + fileName)); 
 		
 		System.out.println("Receiving: " + fileName + " estimated bytes: " + fileLength);
 
@@ -101,12 +91,12 @@ public class TCPBase {
 
 		// If the server has the rightOfway then allow it to send a file
 		//Send Header Information
-		dataOutputStream.writeUTF(resourceMaterial.getId() + "|" + fileToBeSent.getName() + "|"
+		dataOutputStream.writeUTF(resourceMaterial.getId() + "|" + resourceMaterial.getContent() + "|"
 				                + resourceMaterial.getCatId() + "|" + resourceMaterial.getType() + "|"
 				                + resourceMaterial.getDescription() + "|" + resourceMaterial.getTag() + "|"
 				                + fileToBeSent.length());
 		
-		System.out.println("Sending file with name: " + resourceMaterial.getContent());
+		System.out.println("Sending file with name: " + resourceMaterial.getContent() + " Path: " + fileToBeSent.getAbsolutePath());
 		dataOutputStream.flush();
 		
 		Long filesize = fileToBeSent.length();

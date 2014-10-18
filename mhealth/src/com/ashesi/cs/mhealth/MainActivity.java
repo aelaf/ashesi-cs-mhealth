@@ -34,11 +34,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 
 	CHO currentCHO;
 	Menu menu;
-	private DataClass dc;
 	private int choId=0;
 	private Button buttonOpenClose;
-	private ResourceMaterials resMaterials;
-	
 	public static String subdistrictId;
 	public TextView textStatus;
 	
@@ -49,8 +46,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		setContentView(R.layout.activity_main);
 				
 		textStatus=(TextView)findViewById(R.id.textStatus);
-		//make sure database is created
-		dc=new DataClass(getApplicationContext());
+		new DataClass(getApplicationContext());
 			
 		buttonOpenClose=(Button)findViewById(R.id.buttonMainLoginStart);
 		buttonOpenClose.setOnClickListener(this);
@@ -69,12 +65,12 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		textStatus.setText("enter your name and click open");
 		
 		//Create Folder for Resource materials
-		File folder = new File(Environment.getExternalStorageDirectory() + "/mHealth");
+		File folder = new File(DataClass.getApplicationFolderPath());
 				
 		if(!folder.exists()){
 			folder.mkdir();
 		}
-		folder=new File(Environment.getExternalStorageDirectory() + "/mHealth/hp");
+		folder=new File(DataClass.getApplicationFolderPath() + "hp");
 		if(!folder.exists()){
 			folder.mkdir();
 		}
