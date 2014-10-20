@@ -103,15 +103,15 @@ public class DataClass extends SQLiteOpenHelper {
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
-	protected String mServerUrl="http://cs.ashesi.edu.gh/";
+	protected String mServerUrl="http://41.191.246.251/~www_developer/yaresa/";
 	
 	
 	Context context;
 	
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
-	public static final String SERVER_URL="http://cs.ashesi.edu.gh/";
-	public static final String APPLICATION_PATH="/mHealth/"; 
+	public static final String SERVER_URL="http://http://41.191.246.251/~www_developer/yaresa/";
+	public static final String APPLICATION_PATH="/yaresa/"; 
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
 		
@@ -915,7 +915,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
-	        	String urlAddress= "mhealthproject/mhealth_android/mhealth_android.php";
+	        	String urlAddress= "mhealth_android/mhealth_android.php";
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
