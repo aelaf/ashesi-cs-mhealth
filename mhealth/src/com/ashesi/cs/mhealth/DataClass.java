@@ -788,11 +788,11 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		db.execSQL(FamilyPlanningServices.getCreateSQLString());
 		
-		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1"));
-		db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2"));
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1",30));
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2",30));
 		
 		db.execSQL(FamilyPlanningRecords.getCreateSQLString());
-		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		//db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());		//view should be created in the last upgrade that change it
 		//Create Log table
 		db.execSQL(LogData.getCreateQuery());
 		
@@ -808,8 +808,9 @@ public class DataClass extends SQLiteOpenHelper {
 		//updates the family planing and vaccine record views for querying based on gender
 		db.execSQL("drop view "+ VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL);
 		db.execSQL(VaccineRecords.getCreateViewSQLString());
-		db.execSQL("drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
-		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		//db.execSQL("drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
+		//view should be created in the last upgrade function
+		//db.execSQL(FamilyPlanningRecords.getCreateViewSQLString()); 
 		setDataVersion(db,DATABASE_NAME,8); 
 	}
 	
@@ -828,8 +829,9 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL("alter table " + FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS + 
 					" add column " +FamilyPlanningRecords.SCHEDULE_DATE +" text ");
 		
-		db.execSQL("drop view "+FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
-		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
+		//view should be create in the last upgrade that changes it
+		//db.execSQL("drop view "+FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);	
+		//db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,10); 	
 	}
 	
@@ -843,6 +845,10 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(OPDCaseRecords.getCreateViewString());//two views are created through this statement
 		db.execSQL("alter table "+OPDCases.TABLE_NAME_OPD_CASES + " add column "+ OPDCases.OPD_CASE_DISPLAY_ORDER + " integer default 0");
 		db.execSQL(OPDCaseCategories.getCreateSQLString());
+		db.execSQL("alter table "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS+ 
+						" add column "+FamilyPlanningRecords.SERVICE_TYPE+" integer default 0");
+		db.execSQL(" drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
+		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	
@@ -856,7 +862,7 @@ public class DataClass extends SQLiteOpenHelper {
 	}
 	
 	public static String getApplicationFolderPath(){
-		return Environment.getExternalStorageDirectory().getPath() + DataClass.APPLICATION_PATH;
+		return Environment.getExternalStorageDirectory().getPath() +DataClass.APPLICATION_PATH;
 	}
 	
 	public String getServerUrl(){
@@ -910,6 +916,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
 	        	String urlAddress= DataConnection.RECORD_URL+"mhealth_android/mhealth_android.php";
+
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.

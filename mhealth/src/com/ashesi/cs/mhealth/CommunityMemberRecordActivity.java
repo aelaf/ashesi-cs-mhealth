@@ -1423,6 +1423,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		int communityMemberId=0;
 		View rootView;
+		TextView textStatus;
 		
 		public FamilyPlanFragment(){
 			
@@ -1440,13 +1441,14 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		            itemClicked(parent,v,position,id);
 		        }
 		    });
-			gridView.setNumColumns(5);
-			//RadioGroup radioGroup=(RadioGroup)rootView.findViewById(R.id.radioGroup1);
-			//radioGroup.setVisibility(View.INVISIBLE);
+			
+	
 			
 			Button buttonAddVaccine=(Button)rootView.findViewById(R.id.buttonAdd);
 			buttonAddVaccine.setOnClickListener(this);
+			textStatus=(TextView)rootView.findViewById(R.id.textStatus);
 			
+			checkAge();
 			loadFamilyPlanningServiceRecords();
 			return rootView;
 		}
@@ -1525,6 +1527,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			EditText editQty=(EditText)rootView.findViewById(R.id.editQuantity); 
 			FamilyPlanningService service=(FamilyPlanningService)spinner.getSelectedItem();
 			FamilyPlanningRecords records=new FamilyPlanningRecords(getActivity().getApplicationContext());
+			int type=getServiceType();
 			
 			//New acceptor can be recorded once only. 
 			if(service.getId()==FamilyPlanningServices.NEW_ACCEPTOR_SERVICE_ID){
@@ -1540,9 +1543,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				quantity=Double.parseDouble(strQty);
 			}
 			
-			
-			
-			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId,service.getId(), date,quantity,service.getScheduleDate(date));
+			FamilyPlanningRecord serviceRecord=records.addRecord(communityMemberId,service.getId(), date,quantity,service.getScheduleDate(date),type);
 			if(serviceRecord==null){
 				return;
 			}
@@ -1571,6 +1572,21 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 		}
 		
+		public void checkAge(){
+			if(communityMemberId==0){
+				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
+				communityMemberId=a.getCommunityMemberId();
+				if(communityMemberId==0){
+					return;
+				}
+			}
+			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
+			CommunityMember member=members.getCommunityMember(communityMemberId);
+			if(member.getAgeAsYear()<10){
+				showError("the community member is less that 10 years");
+			}
+		}
+		
 		public String getDatabaseDateString(){
 			Calendar calendar=Calendar.getInstance();
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
@@ -1584,7 +1600,31 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			ArrayList<FamilyPlanningService> listServices=services.getServices();
 			ArrayAdapter<FamilyPlanningService> adapter=new ArrayAdapter<FamilyPlanningService>(getActivity(), android.R.layout.simple_dropdown_item_1line,listServices);
 			spinner.setAdapter(adapter);
-		}	
+		}
+		
+		private int getServiceType(){
+			RadioGroup group=(RadioGroup)rootView.findViewById(R.id.raidoGroupServiceType);
+			int id=group.getCheckedRadioButtonId();
+			
+			if(id==R.id.radioNewAcceptor){
+				return 1;
+			}else if(id==R.id.radioContinuing){
+				return 2;
+			}else{
+				return 0;
+			}
+		}
+		
+		protected void showError(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_error));
+		}
+		
+		protected void showStatus(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
+		}
+
 	
 	}
 	

@@ -60,7 +60,8 @@ public class FamilyPlanningGridAdapter extends BaseAdapter {
 		FamilyPlanningService service=services.getService(records.get(index).getFamilyPlanningServiceId());
 			
 		if(columnIndex==0){
-			return (View)getTextView(records.get(index).getServiceName());
+			//String str=records.get(index).getServiceName()+" "+records.get(index).getServiceTypeName();
+			return (View)getFirstColumn(records.get(index).getServiceName(),records.get(index).getServiceType());
 		}else if(columnIndex==1){
 			return (View)getTextView(records.get(index).getServiceDate());
 		}else if(columnIndex==2){
@@ -76,6 +77,27 @@ public class FamilyPlanningGridAdapter extends BaseAdapter {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Creates a column for type of service name of service
+	 * @param t
+	 * @param type
+	 * @return
+	 */
+	private LinearLayout getFirstColumn(String t,int type){
+		LinearLayout l=new LinearLayout(mContext);
+		l.setLayoutParams(new GridView.LayoutParams(GridView.LayoutParams.WRAP_CONTENT,GridView.LayoutParams.WRAP_CONTENT));
+		l.setPadding(0, 0, 0, 0);
+		l.setOrientation(LinearLayout.HORIZONTAL);
+
+		TextView textView=getTextView(t);
+		ImageView image=getImageServiceTypeView(type);
+		
+		l.addView((View)image);
+		l.addView((View)textView);
+		return l;
+		
 	}
 
 	private TextView getTextView(String t){
@@ -123,6 +145,22 @@ public class FamilyPlanningGridAdapter extends BaseAdapter {
 		image.setLayoutParams(new GridView.LayoutParams(30,30));
 		image.setPadding(8,8,8,8);
 		image.setImageResource(R.drawable.remove);
+		
+		return image;
+		
+	}
+	
+	private ImageView getImageServiceTypeView(int type){
+		ImageView image=new ImageView(mContext);
+		image.setLayoutParams(new GridView.LayoutParams(30,30));
+		image.setPadding(8,8,8,8);
+		if(type==1){
+			image.setImageResource(R.drawable.newitem);
+		}else if(type==2){
+			image.setImageResource(R.drawable.revisit);
+		}else{
+			image.setImageResource(R.drawable.unknown);
+		}
 		
 		return image;
 		

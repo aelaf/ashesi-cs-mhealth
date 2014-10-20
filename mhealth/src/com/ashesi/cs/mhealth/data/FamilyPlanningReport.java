@@ -23,7 +23,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 	public ArrayList<String> getMonthlyFamilyReportStringList(ArrayList<FamilyPlanningReportRecord> list){
 		ArrayList<String> listString=new ArrayList<String>();
 		for(int i=0;i<list.size();i++){
-			listString.add(list.get(i).getServiceName());
+			listString.add(list.get(i).getServiceName() +" "+list.get(i).getServiceTypeName());
 			listString.add(list.get(i).getTotalQuantityString());
 			listString.add(Integer.toString(list.get(i).getNumberOfRecords()));
 		}
@@ -86,6 +86,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			String strQuery="select "
 					+FamilyPlanningServices.SERVICE_ID +", "
 					+FamilyPlanningServices.SERVICE_NAME+", "
+					+FamilyPlanningRecords.SERVICE_TYPE+", "
 					+"SUM(" +FamilyPlanningRecords.QUANTITY+") as "+ TOTAL_QUANTITY +", "
 					+"count("+FamilyPlanningServices.SERVICE_ID+") as "+NO_RECORDS
 					+" from " +FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
@@ -95,7 +96,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 					+" AND "
 					+strAgeFilter +" AND "
 					+strGenderFilter
-					+" group by "+ FamilyPlanningServices.SERVICE_ID
+					+" group by "+ FamilyPlanningServices.SERVICE_ID+ ", "+FamilyPlanningRecords.SERVICE_TYPE
 					+" order by "+ FamilyPlanningServices.SERVICE_NAME;
 			cursor=db.rawQuery(strQuery, null);
 			cursor.moveToFirst();
@@ -103,17 +104,20 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			int indexServiceName=cursor.getColumnIndex(FamilyPlanningServices.SERVICE_NAME);
 			int indexNoRecords=cursor.getColumnIndex(NO_RECORDS);
 			int indexTotalQuantity=cursor.getColumnIndex(TOTAL_QUANTITY);
+			int indexServiceType=cursor.getColumnIndex(FamilyPlanningRecords.SERVICE_TYPE);
 			FamilyPlanningReportRecord record;
 			int serviceId;
 			String serviceName;
 			int noRecords;
 			double quantity;
+			int serviceType;
 			while(!cursor.isAfterLast()){
 				serviceId=cursor.getInt(indexId);
 				serviceName=cursor.getString(indexServiceName);
 				noRecords=cursor.getInt(indexNoRecords);
 				quantity=cursor.getInt(indexTotalQuantity);
-				record= new FamilyPlanningReportRecord(month,year,ageRange,gender,serviceId,serviceName,quantity,noRecords);
+				serviceType=cursor.getInt(indexServiceType);
+				record= new FamilyPlanningReportRecord(month,year,ageRange,gender,serviceId,serviceType,serviceName,quantity,noRecords);
 				list.add(record);
 				cursor.moveToNext();
 			}
@@ -260,8 +264,9 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 		private String serviceName;
 		private double totalQuantity;
 		private int numberOfRecords;
+		private int serviceType;
 		
-		public FamilyPlanningReportRecord(int month,int year,int ageRange,String gender,int serviceId, String serviceName, double totalQuantity, int numberOfRecords){
+		public FamilyPlanningReportRecord(int month,int year,int ageRange,String gender,int serviceId,int serviceType, String serviceName, double totalQuantity, int numberOfRecords){
 			this.month=month;
 			this.year=year;		
 			this.ageRange=ageRange;
@@ -270,6 +275,7 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			this.serviceName=serviceName;
 			this.numberOfRecords=numberOfRecords;
 			this.totalQuantity=totalQuantity;
+			this.serviceType=serviceType;
 		}
 		
 		public int getMonth(){
@@ -308,8 +314,16 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 			return String.format("%,.2f", totalQuantity);
 		}
 		
+		public int getServiceType(){
+			return serviceType;
+		}
+		
+		public String getServiceTypeName(){
+			return FamilyPlanningRecords.getServiceTypeName(serviceType);
+		}
+		
 		public String toString(){
-			return serviceName +" " +numberOfRecords;
+			return serviceName +" " +getServiceTypeName()+" "+ numberOfRecords;
 		}
 	}
 }

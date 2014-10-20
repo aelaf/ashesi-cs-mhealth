@@ -155,4 +155,6 @@
     <string name="modeNoCases">No Cases</string>
     <string name="modeNoCommuintyMembers">People</string>
 	<string name="mode">Mode</string>
+	<string name="newAcceptor">New Acceptor</string>
+	<string name="continuing">Continuing</string>
 </resources>
