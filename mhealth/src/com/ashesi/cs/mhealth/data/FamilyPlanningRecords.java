@@ -283,7 +283,13 @@ public class FamilyPlanningRecords extends DataClass {
 				scheduleDate=cursor.getString(index);
 			}
 			
-			FamilyPlanningRecord record=new FamilyPlanningRecord(id,communityMemberId,fullname,serviceId,serviceName,serviceDate,quantity,scheduleDate);
+			int serviceType=0;
+			index=cursor.getColumnIndex(SERVICE_TYPE);
+			if(index>=0){
+				serviceType=cursor.getInt(index);
+			}
+			
+			FamilyPlanningRecord record=new FamilyPlanningRecord(id,communityMemberId,fullname,serviceId,serviceName,serviceDate,quantity,scheduleDate,serviceType);
 			cursor.moveToNext();
 			return record;
 			
@@ -457,6 +463,16 @@ public class FamilyPlanningRecords extends DataClass {
 				
 	}
 	
+	public static String getServiceTypeName(int type){
+		if(type==1){
+			return "New Acceptor";
+		}else if(type==2){
+			return "Continuing";
+		}else{
+			return "Other";
+		}
+	}
+	
 	/**
 	 * returns a string for creating service_records table
 	 * @return
@@ -484,7 +500,7 @@ public class FamilyPlanningRecords extends DataClass {
 				+QUANTITY+", "
 				+SERVICE_DATE +", "
 				+SCHEDULE_DATE+ ", "
-				+SERVICE_TYPE+" numberic,"
+				+SERVICE_TYPE+","
 				+CommunityMembers.GENDER
 				+" from "
 				+TABLE_NAME_FAMILY_PLANNING_RECORDS + " left join " +CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS

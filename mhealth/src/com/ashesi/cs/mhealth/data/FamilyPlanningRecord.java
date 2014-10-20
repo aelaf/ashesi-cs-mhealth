@@ -21,6 +21,7 @@ public class FamilyPlanningRecord {
 	private String fullname;
 	private String familyPlanningServiceName;
 	private double quantity;
+	private int serviceType;
 	
 	public FamilyPlanningRecord(){
 		this.quantity=0;
@@ -55,6 +56,18 @@ public class FamilyPlanningRecord {
 		this.serviceDate=serviceDate;
 		this.familyPlanningServiceName=familyPlanningServiceName;
 		this.quantity=0;
+	}
+	
+	public FamilyPlanningRecord(int familyPlanningRecordId,int communityMemberId,String fullname,int familyPlanningServiceId, String familyPlanningServiceName, String serviceDate, double quantity,String scheduleDate, int type){
+		this.familyPlanningRecordId=familyPlanningRecordId;
+		this.communityMemberId=communityMemberId;
+		this.fullname=fullname;
+		this.familyPlanningServiceId=familyPlanningServiceId;
+		this.serviceDate=serviceDate;
+		this.familyPlanningServiceName=familyPlanningServiceName;
+		this.quantity=quantity;
+		this.scheduleDate=scheduleDate;
+		this.serviceType=type;
 	}
 	
 		
@@ -125,7 +138,13 @@ public class FamilyPlanningRecord {
 	}
 	
 	public String toString(){
-		return fullname +" "+familyPlanningServiceName +" "+getFormattedServiceDate()+" for "+ this.getFormattedScheduleDate();
+		String str=this.getFormattedScheduleDate();
+		if(str.length()==0){
+			return fullname +" "+familyPlanningServiceName +" "+ getServiceTypeName() +" "+getFormattedServiceDate();
+		}else{
+			return fullname +" "+familyPlanningServiceName +" "+ getServiceTypeName() +" "+getFormattedServiceDate()+" for "+ str;
+		}
+		
 	}
 	
 	public boolean equals(FamilyPlanningRecord record){
@@ -133,5 +152,13 @@ public class FamilyPlanningRecord {
 			return true;
 		}
 		return false;
+	}
+	
+	public int getServiceType(){
+		return serviceType;
+	}
+	
+	public String getServiceTypeName(){
+		return FamilyPlanningRecords.getServiceTypeName(serviceType);
 	}
 }
