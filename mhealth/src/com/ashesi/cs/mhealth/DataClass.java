@@ -110,7 +110,7 @@ public class DataClass extends SQLiteOpenHelper {
 	
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
-	public static final String SERVER_URL="http://http://41.191.246.251/~www_developer/yaresa/";
+	public static final String SERVER_URL="http://41.191.246.251/~www_developer/yaresa/";
 	public static final String APPLICATION_PATH="/yaresa/"; 
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
