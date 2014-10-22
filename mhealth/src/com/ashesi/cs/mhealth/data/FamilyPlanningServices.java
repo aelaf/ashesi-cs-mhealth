@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
 
@@ -28,7 +29,7 @@ public class FamilyPlanningServices extends DataClass {
 	public static String getCreateSQLString(){
 		return "create table "+ TABLE_NAME_FAMILY_PLANNING_SERVICES +" ( "
 				+SERVICE_ID + "  integer primary key , "
-				+SERVICE_NAME+ " text "
+				+SERVICE_NAME+ " text, "
 				+SERVICE_SCHEDULE +" integer default 0"
 				+")";
 		
@@ -142,6 +143,7 @@ public class FamilyPlanningServices extends DataClass {
 			close();
 			return true;
 		}catch(Exception ex){
+			Log.d("FamilyPlanningServices",ex.getMessage());
 			close();
 			return false;
 		}
