@@ -563,36 +563,9 @@ public class QuestionsFragment extends Fragment{
 			@Override
 			protected String doInBackground(String... params) {
 				// TODO Auto-generated method stub
-				Log.d("Synching", "Getting the questions & Answers from server");
-				
-				publishProgress(1);
-				//Phase 2 Download new questions
-				Questions temp = new Questions(getActivity());
-				temp.download();
-				publishProgress(1);
-				
-				System.out.println("Done with Questions on to Anwsers");
-				//Phase 3 Download new answers
-				Answers tempAns = new Answers(getActivity());
-				tempAns.download();
-				publishProgress(1);
-				
-				System.out.println("Done with Answers on to Answerlinks");
-				//Phase 4 Download new Answer Links
-				AnswerLinks ansLinks = new AnswerLinks(getActivity());
-				ansLinks.download();
-				publishProgress(1 );
-				
-				System.out.println("Done with Answerlinks on to local links");
-				//Phase 5 Download new Local links to answers
-				LocalLinks l = new LocalLinks(getActivity());
-				l.download();
-				publishProgress(1);
-			    
-				System.out.println("Done with local links on to uploading questions");
+				System.out.println("Uploading questions");
 				if(getQuestions().getAllNewQuestions().isEmpty()){
 					publishProgress(1);
-					return "Done";
 				}else{
 					//Phase 6 Upload new questions to remote server
 					JSONArray jArr = new JSONArray();
@@ -619,20 +592,20 @@ public class QuestionsFragment extends Fragment{
 									
 						 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 						 			nameValuePairs.add(new BasicNameValuePair("cmd", "6"));
-								      nameValuePairs.add(new BasicNameValuePair("questionid",
-								          jObj.toString()));
-								      String data;
-									if((data = db.request(db.postRequest(DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=1", nameValuePairs))) == null){
-										System.out.println(data);
-												
-									}
-									JSONArray resultArr = new JSONArray(data);
-									int result = resultArr.getJSONObject(1).getInt("result");  //if the upload was successful then update the status of the question to 1
-									if(result == 1){
-										Questions temp1 = new Questions(getActivity());
-										System.out.println(q.get(i).getContent());
-										temp1.changeStatus(q.get(i).getGuid(), 1);
-										refreshData(isOnlyAnswered());
+								    nameValuePairs.add(new BasicNameValuePair("questionid", jObj.toString()));
+								    String data;
+									
+								    if((data = db.request(db.postRequest(DataConnection.KNOWLEDGE_URL+"checkLogin/knowledgeAction.php?cmd=1", nameValuePairs))) != null){
+										JSONArray resultArr = new JSONArray(data);
+										int result = resultArr.getJSONObject(0).getInt("result");  //if the upload was successful then update the status of the question to 1
+										if(result == 1){
+											Questions temp1 = new Questions(getActivity());
+											System.out.println(q.get(i).getContent());
+											temp1.changeStatus(q.get(i).getGuid(), 1);
+											refreshData(isOnlyAnswered());
+										}
+									}else{
+										Log.d("HTTPResponse", "" + data);
 									}
 								}
 							}
@@ -647,7 +620,6 @@ public class QuestionsFragment extends Fragment{
 							log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
 									this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString());
 							publishProgress(1);  //update progressbar with completed status
-							return "Done";
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -664,9 +636,35 @@ public class QuestionsFragment extends Fragment{
 						log.addLog(0204, dt.format(date1), currentCHO.getFullname(), 
 								this.getClass().getName() + ": Method->Synchronize()", "Synchronizing questions. \n" + jObj.toString() + " \n" + e.getMessage());
 					}
-					publishProgress(1);  //process completed update progressbar
 				}
-		        return null;
+					publishProgress(1);  //process completed update progressbar
+					
+					Log.d("Synching", "Getting the questions & Answers from server");
+					
+					publishProgress(1);
+					//Phase 2 Download new questions
+					Questions temp = new Questions(getActivity());
+					temp.download();
+					publishProgress(1);
+					
+					System.out.println("Done with Questions on to Anwsers");
+					//Phase 3 Download new answers
+					Answers tempAns = new Answers(getActivity());
+					tempAns.download();
+					publishProgress(1);
+					
+					System.out.println("Done with Answers on to Answerlinks");
+					//Phase 4 Download new Answer Links
+					AnswerLinks ansLinks = new AnswerLinks(getActivity());
+					ansLinks.download();
+					publishProgress(1 );
+					
+					System.out.println("Done with Answerlinks on to local links");
+					//Phase 5 Download new Local links to answers
+					LocalLinks l = new LocalLinks(getActivity());
+					l.download();
+					publishProgress(1);
+					return "Done";
 			}
 			
 			
