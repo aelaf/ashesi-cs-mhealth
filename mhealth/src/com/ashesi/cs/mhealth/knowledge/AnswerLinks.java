@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.ashesi.cs.mhealth.DataClass;
 import com.ashesi.cs.mhealth.DataConnection;
@@ -54,6 +55,7 @@ public class AnswerLinks extends DataClass{
 				return false;
 			}
 		}catch(Exception ex){
+			Log.d("AnswerLinks", ex.getMessage());
 			return false;
 		}
 	}
