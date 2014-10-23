@@ -66,6 +66,21 @@ public class Vaccines extends DataClass {
 	}
 	
 	/**
+	 * clears every vaccine from the table
+	 * @return
+	 */
+	public boolean clearTable(){
+		try{
+			db=getWritableDatabase();
+			db.delete(TABLE_NAME_VACCINES, null, null);
+			return true;
+			
+		}catch(Exception ex){
+			return false;
+		}
+	}
+	
+	/**
 	 * writes the data from server to local database 
 	 * @param data
 	 */
@@ -77,7 +92,7 @@ public class Vaccines extends DataClass {
 				return false;
 			}
 						
-			
+			clearTable();
 			JSONArray jsonArray=obj.getJSONArray("vaccines");
 			for(int i=0;i<jsonArray.length();i++){
 				obj=jsonArray.getJSONObject(i);

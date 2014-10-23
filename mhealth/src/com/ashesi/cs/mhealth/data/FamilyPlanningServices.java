@@ -17,6 +17,7 @@ public class FamilyPlanningServices extends DataClass {
 	public final static String SERVICE_ID="service_id";
 	public final static String SERVICE_NAME="service_name";
 	public final static String SERVICE_SCHEDULE="service_schedule";
+	public final static String DISPLAY_ORDER="display_order";
 	public final static int	NEW_ACCEPTOR_SERVICE_ID=17;
 
 	public final static String TABLE_NAME_FAMILY_PLANNING_SERVICES="family_planning_services";
@@ -30,7 +31,8 @@ public class FamilyPlanningServices extends DataClass {
 		return "create table "+ TABLE_NAME_FAMILY_PLANNING_SERVICES +" ( "
 				+SERVICE_ID + "  integer primary key , "
 				+SERVICE_NAME+ " text, "
-				+SERVICE_SCHEDULE +" integer default 0"
+				+SERVICE_SCHEDULE +" integer default 0, "
+				+DISPLAY_ORDER +" integer default 1000"
 				+")";
 		
 	}
@@ -46,15 +48,17 @@ public class FamilyPlanningServices extends DataClass {
 				
 	}
 	
-	public static String getInsertSQLString(int id,String serviceName,int schedule){
+	public static String getInsertSQLString(int id,String serviceName,int schedule, int displayOrder){
 		return "insert into "+TABLE_NAME_FAMILY_PLANNING_SERVICES +"("
 				+SERVICE_ID+", "
 				+SERVICE_NAME+", "
-				+SERVICE_SCHEDULE
+				+SERVICE_SCHEDULE+", "
+				+DISPLAY_ORDER
 				+") values( "+
 				+id+","
 				+"'"+serviceName+"',"
-				+schedule
+				+schedule+","
+				+displayOrder
 				+" )";
 				
 	}
@@ -89,7 +93,11 @@ public class FamilyPlanningServices extends DataClass {
 				if(obj.has("schedule")){
 					schedule=obj.getInt("schedule");
 				}
-				addService(serviceId,serviceName,schedule);
+				int displayOrder=1000;
+				if(obj.has("displayOrder")){
+					displayOrder=obj.getInt("displayOrder");
+				}
+				addService(serviceId,serviceName,schedule,displayOrder);
 			}
 			return true;
 		}catch(Exception ex){
@@ -129,13 +137,14 @@ public class FamilyPlanningServices extends DataClass {
 	 * @param schedule
 	 * @return
 	 */
-	public boolean addService(int serviceId, String serviceName, int schedule){
+	public boolean addService(int serviceId, String serviceName, int schedule,int displayOrder){
 		try{
 			db=getWritableDatabase();
 			ContentValues cv=new ContentValues();
 			cv.put(SERVICE_ID,serviceId);
 			cv.put(SERVICE_NAME, serviceName);
 			cv.put(SERVICE_SCHEDULE, schedule);
+			cv.put(DISPLAY_ORDER, displayOrder);
 
 			if(db.insertWithOnConflict(TABLE_NAME_FAMILY_PLANNING_SERVICES, null, cv, SQLiteDatabase.CONFLICT_REPLACE)<=0){
 				return false;
@@ -167,8 +176,13 @@ public class FamilyPlanningServices extends DataClass {
 			if(index>=0){
 				schedule=cursor.getInt(index);
 			}
+			int displayOrder=1000;
+			index=cursor.getColumnIndex(DISPLAY_ORDER);
+			if(index>=0){
+				 displayOrder=cursor.getInt(index);
+			}
 			cursor.moveToNext();
-			return new FamilyPlanningService(id,serviceName,schedule);
+			return new FamilyPlanningService(id,serviceName,schedule, displayOrder);
 		}catch(Exception ex){
 			close();
 			return null;
@@ -186,7 +200,8 @@ public class FamilyPlanningServices extends DataClass {
 		try
 		{
 			db=getReadableDatabase();
-			cursor=db.query(TABLE_NAME_FAMILY_PLANNING_SERVICES, columns,null,null, null, null, null);
+			String order=DISPLAY_ORDER +", "+SERVICE_NAME;
+			cursor=db.query(TABLE_NAME_FAMILY_PLANNING_SERVICES, columns,null,null, null, null, order);
 			cursor.moveToFirst();
 			FamilyPlanningService v=fetch();
 			while(v!=null){
@@ -201,7 +216,11 @@ public class FamilyPlanningServices extends DataClass {
 		}
 	}
 	
-	
+	/**
+	 * returns a service identified by an id
+	 * @param id
+	 * @return
+	 */
 	public FamilyPlanningService getService(int id){
 		
 		String[] columns={SERVICE_ID,SERVICE_NAME,SERVICE_SCHEDULE};
