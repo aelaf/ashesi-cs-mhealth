@@ -10,6 +10,7 @@ import java.util.Calendar;
 import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.data.CHOs;
+import com.ashesi.cs.mhealth.data.CHPSZones;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
 import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
@@ -175,6 +176,9 @@ public class Synch extends Activity implements OnClickListener {
 			
 			CHOs chos=new CHOs(getApplicationContext());
 			chos.processDownloadData(data);
+			
+			CHPSZones zones=new CHPSZones(getApplicationContext());
+			zones.processDownloadData(data);
 			
 			progressBar.setProgress(5);
 			showStatus("complete");

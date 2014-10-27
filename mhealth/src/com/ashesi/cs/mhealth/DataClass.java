@@ -41,6 +41,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ashesi.cs.mhealth.data.CHOs;
+import com.ashesi.cs.mhealth.data.CHPSZones;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.Community;
 import com.ashesi.cs.mhealth.data.CommunityMember;
@@ -505,6 +506,8 @@ public class DataClass extends SQLiteOpenHelper {
 			db.execSQL(Communities.getCreateTable());
 			setDataVersion(db,Communities.TABLE_COMMUNITIES,0);
 			
+			db.execSQL(CHPSZones.getCreateSQLString());
+			setDataVersion(db,CHPSZones.TABLE_CHPS_ZONES,0);
 			
 			db.execSQL(CommunityMembers.getCreateSQLString());
 			
@@ -852,7 +855,19 @@ public class DataClass extends SQLiteOpenHelper {
 		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	
+	private void upgradeToVersion13(SQLiteDatabase db){
 	
+		db.execSQL(CHPSZones.getCreateSQLString());
+		//communitis were organized under sub districts but this has to change to zones
+		//to enable proper join query the subdistrict_id had to be replaced by chps_zone_id
+		//option 1, add new chps_zone id table and forget about subdistrict_id
+		db.execSQL("alter table "+Communities.TABLE_COMMUNITIES+ 
+				" add column "+CHPSZones.CHPS_ZONE_ID+" integer default 0");
+		//Alternate option is to drop the table and recreate it
+		//since communities is a support data it can be re populated from supportdata file
+		//db.execSQL("drop table "+Communities.TABLE_COMMUNITIES);
+		//db.execSQL(Communities.getCreateTable());
+	}
 	
 	public String getDataFilePath(){
 		db=this.getReadableDatabase();
@@ -1061,6 +1076,7 @@ public class DataClass extends SQLiteOpenHelper {
      	 }
     	 return returnValues;
 	}
+
 	
 	
 }

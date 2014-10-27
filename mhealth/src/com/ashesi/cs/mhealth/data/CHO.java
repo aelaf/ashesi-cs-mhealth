@@ -3,14 +3,14 @@ package com.ashesi.cs.mhealth.data;
 public class CHO {
 	private String fullname;
 	private int id;
-	private int subdistrictId;
-	private String subdistrictName;
+	private int chpsZoneId;
+	private String chpsZoneName;
 	
-	public CHO(int id, String fullname,int subdistrictId, String subdistrictName){
+	public CHO(int id, String fullname,int chpsZoneId, String chpsZoneName){
 		this.id=id;
 		this.fullname=fullname;
-		this.subdistrictId=subdistrictId;
-		this.subdistrictName=subdistrictName;
+		this.chpsZoneId=chpsZoneId;
+		this.chpsZoneName= chpsZoneName;
 				
 	}
 	public int getId(){
@@ -22,18 +22,22 @@ public class CHO {
 	}
 	
 	public int getSubdistrictId(){
-		return subdistrictId;
+		return chpsZoneId;
+	}
+	
+	public int getCHPSZoneId(){
+		return chpsZoneId;
 	}
 	
 	public String getSubdistrictName(){
-		return subdistrictName;
+		return chpsZoneName;
 	}
 	
 	public String toString(){
-		return fullname +" - "+ subdistrictName;
+		return fullname +" - "+ chpsZoneName;
 	}
 	
 	public String getAll(){
-		return fullname +" - "+ subdistrictId+ " - "+ id;
+		return fullname +" - "+ chpsZoneName;
 	}
 }
