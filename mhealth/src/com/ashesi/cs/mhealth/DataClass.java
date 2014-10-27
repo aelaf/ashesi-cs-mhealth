@@ -100,7 +100,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * modifies VIEW_COMMUNITY_MEMBERS_OPD_CASES
 	 * adds VIEW_COMMUNITY_MEMBERS_IN_OPD_CASES
 	 */
-	protected static final int DATABASE_VERSION=12; 
+	protected static final int DATABASE_VERSION=13; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -687,6 +687,9 @@ public class DataClass extends SQLiteOpenHelper {
 			
 			if(oldVersion<=11){
 				upgradeToVersion12(db);
+			}
+			if(oldVersion<=12){
+				upgradeToVersion13(db);
 			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());

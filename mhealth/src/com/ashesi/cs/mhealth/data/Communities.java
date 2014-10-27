@@ -63,16 +63,16 @@ public class Communities extends DataClass {
 	 * @param subdistrictId if 0, it returns all communities 
 	 * @return
 	 */
-	public ArrayList<Community> getCommunties(int subdistrictId){
+	public ArrayList<Community> getCommunties(int chpsZoneId){
 		try{
 			db=getReadableDatabase();
 			ArrayList<Community> list=new ArrayList<Community>();
 			String[] columns={COMMUNITY_ID,COMMUNITY_NAME,CHPSZones.CHPS_ZONE_ID,LATITUDE,LONGITUDE,POPULATION,HOUSEHOLD};
 			String selection=null;
-			if(subdistrictId!=0){
-				selection=CHPSZones.SUBDISTRICT_ID +"="+ subdistrictId;
+			if(chpsZoneId!=0){
+				selection=CHPSZones.CHPS_ZONE_ID +"="+ chpsZoneId;
 			}
-			cursor=db.query(TABLE_COMMUNITIES, columns, selection, null, null, null, null, null);
+			cursor=db.query(TABLE_COMMUNITIES, columns, selection, null, null, null, COMMUNITY_NAME, null);
 			Community community=fetch();
 			while(community!=null){
 				list.add(community);
@@ -106,7 +106,8 @@ public class Communities extends DataClass {
 						+ " from "+Communities.TABLE_COMMUNITIES 
 						+ " left join "+CHPSZones.TABLE_CHPS_ZONES 
 						+ " on "+Communities.TABLE_COMMUNITIES+"."+CHPSZones.CHPS_ZONE_ID +"="
-						+CHPSZones.TABLE_CHPS_ZONES+"."+CHPSZones.CHPS_ZONE_ID; 
+						+CHPSZones.TABLE_CHPS_ZONES+"."+CHPSZones.CHPS_ZONE_ID;
+						
 					
 			if(chpsZoneId!=0){
 				query+=" where "+Communities.TABLE_COMMUNITIES+"."+CHPSZones.CHPS_ZONE_ID +"="+Integer.toString(chpsZoneId);
@@ -115,7 +116,7 @@ public class Communities extends DataClass {
 			}else{
 				query+=" where "+CHPSZones.DISTRICT_ID +"="+Integer.toString(districtId);
 			}
-			
+			query +=" order by COMMUNITY_NAME"; 
 			db=getReadableDatabase();
 		
 			cursor=db.rawQuery(query, null);

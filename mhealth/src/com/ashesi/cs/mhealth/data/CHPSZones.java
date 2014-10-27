@@ -20,9 +20,9 @@ public class CHPSZones extends DataClass {
 	}
 	
 	static public String getCreateSQLString(){
-		return "create talbe "+ TABLE_CHPS_ZONES +" ("
+		return "create table "+ TABLE_CHPS_ZONES +" ("
 				+CHPS_ZONE_ID +" integer priamry key, "
-				+CHPS_ZONE_NAME+" text  "
+				+CHPS_ZONE_NAME+" text,  "
 				+SUBDISTRICT_ID+" integer, "
 				+DISTRICT_ID+" integer "
 				+")";
@@ -86,10 +86,16 @@ public class CHPSZones extends DataClass {
 	 * processes the data received from server
 	 * @param jsonArray
 	 */
-	public void processDownloadData(JSONArray jsonArray){
+	public boolean processDownloadData(String data){
 		try{
+			JSONObject obj=new JSONObject(data);
+			int result=obj.getInt("result");
+			if(result==0){
+				return false;
+			}
+						
 			
-			JSONObject obj;
+			JSONArray jsonArray=obj.getJSONArray("chpsZones");
 			String chpsZoneName;
 			int id;
 			int subdistrictId;
@@ -102,8 +108,9 @@ public class CHPSZones extends DataClass {
 				districtId=obj.getInt("districtId");
 				addCHPSZone(id,chpsZoneName,subdistrictId,districtId);
 			}
+			return true;
 		}catch(Exception ex){
-			return;
+			return false;
 		}
 	}
 	

@@ -448,6 +448,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			dpBirthdate.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),this);
 			fillAgeUnitSpinner();
 			
+			fillSubDistrictSpinner();
 			
 			if(state==STATE_NEW_MEMBER){
 				fillCommunitiesSpinner(communityId);
@@ -537,19 +538,31 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		}
 		
 		public boolean fillSubDistrictSpinner(){
-			
-			
+
 			String subdistricts[]={"CHPS zone","Sub District","District"};
-			Spinner spinnerSubdistrict=(Spinner)getView().findViewById(R.id.spinnerSubdistrict);
-			
+			Spinner spinnerSubdistrict=(Spinner)rootView.findViewById(R.id.spinnerSubdistrict);
+			spinnerSubdistrict.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+					fillCommunitiesSpinner(0);
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					//do nothing
+				}
+				
+			});
 			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,subdistricts);
 			spinnerSubdistrict.setAdapter(adapter);
+			
 			return true;
 			
 		}
 		
 		public int getSelectedSubDistrict(){
-			Spinner spinnerSubdistrict=(Spinner)getView().findViewById(R.id.spinnerSubdistrict);
+			Spinner spinnerSubdistrict=(Spinner)rootView.findViewById(R.id.spinnerSubdistrict);
 			return spinnerSubdistrict.getSelectedItemPosition();
 		}
 
