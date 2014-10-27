@@ -10,6 +10,8 @@ public class FamilyPlanningService {
 	private int id;
 	private String serviceName;
 	private int schedule=0;
+	private int displayOrder;
+	
 	
 	public FamilyPlanningService(){
 		
@@ -21,10 +23,11 @@ public class FamilyPlanningService {
 		this.schedule=0;
 	}
 	
-	public FamilyPlanningService(int id,String serviceName,int schedule){
+	public FamilyPlanningService(int id,String serviceName,int schedule,int displayOrder){
 		this.id=id;
 		this.serviceName=serviceName;
 		this.schedule=schedule;
+		this.displayOrder=displayOrder;
 	}
 	
 	public int getId(){
@@ -41,6 +44,10 @@ public class FamilyPlanningService {
 	
 	public int getSchedule(){
 		return schedule;
+	}
+	
+	public int getDisplayOrder(){
+		return displayOrder;
 	}
 	
 	public Date getScheduleDate(Date date){

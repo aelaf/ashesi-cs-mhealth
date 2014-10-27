@@ -99,7 +99,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * modifies VIEW_COMMUNITY_MEMBERS_OPD_CASES
 	 * adds VIEW_COMMUNITY_MEMBERS_IN_OPD_CASES
 	 */
-	protected static final int DATABASE_VERSION=12; 
+	protected static final int DATABASE_VERSION=13; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -685,6 +685,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion<=11){
 				upgradeToVersion12(db);
 			}
+			
+			if(oldVersion<=12){
+				upgradeToVersion13(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -788,8 +792,8 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		db.execSQL(FamilyPlanningServices.getCreateSQLString());
 		
-		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1",30));
-		db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2",30));
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(1, "Service 1",30,1));
+		db.execSQL(FamilyPlanningServices.getInsertSQLString(2, "Service 2",30,2));
 		
 		db.execSQL(FamilyPlanningRecords.getCreateSQLString());
 		//db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());		//view should be created in the last upgrade that change it
@@ -852,6 +856,11 @@ public class DataClass extends SQLiteOpenHelper {
 		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	
+	private void upgradeToVersion13(SQLiteDatabase db){
+		db.execSQL("alter table "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES+ 
+				" add column "+FamilyPlanningServices.DISPLAY_ORDER+" integer default 1000");
+		setDataVersion(db,DATABASE_NAME,13); 
+	}
 	
 	
 	public String getDataFilePath(){

@@ -58,7 +58,7 @@ public class OPDCases extends DataClass {
 				selection=OPD_CASE_CATEGORY +"="+opdCaseCategory;
 			}
 			
-			String order=OPD_CASE_DISPLAY_ORDER+","+OPD_CASE_NAME;
+			String order=OPD_CASE_DISPLAY_ORDER+", "+OPD_CASE_NAME;
 			cursor=db.query("opd_cases", columns, selection, null, null, null, order);
 			cursor.moveToFirst();
 			OPDCase opdCase=fetch();
@@ -87,8 +87,13 @@ public class OPDCases extends DataClass {
 			String name=cursor.getString(index);
 			index=cursor.getColumnIndex(OPD_CASE_CATEGORY);
 			int category=cursor.getInt(index);
+			index=cursor.getColumnIndex(OPD_CASE_DISPLAY_ORDER);
+			int displayOrder=0;
+			if(index>0){
+				displayOrder=cursor.getInt(index);
+			}
 			cursor.moveToNext();
-			return new OPDCase(id,name,category);
+			return new OPDCase(id,name,category,displayOrder);
 		}catch(Exception ex){
 			return null;
 		}
@@ -154,13 +159,30 @@ public class OPDCases extends DataClass {
 		}
 	}
 
+	/**
+	 * clears every opd case from the table
+	 * @return
+	 */
+	public boolean clearTable(){
+		try{
+			db=getWritableDatabase();
+			db.delete(TABLE_NAME_OPD_CASES, null, null);
+			return true;
+			
+		}catch(Exception ex){
+			return false;
+		}
+	}
 	public boolean processDownloadData(String data){
 		try{
+			
 			JSONObject object=new JSONObject(data);
 			int result=object.getInt("result");
 			if(result==0){
 				return false;
 			}
+			
+			clearTable();
 			String name;
 			int id;
 			int opdCaseCategory;
