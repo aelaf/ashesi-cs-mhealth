@@ -172,7 +172,7 @@ public class CHOs extends DataClass {
 	 * processes the data received from server
 	 * @param jsonArray
 	 */
-	private void processDownloadData(JSONArray jsonArray){
+	public void processDownloadData(JSONArray jsonArray){
 		try{
 			
 			JSONObject obj;

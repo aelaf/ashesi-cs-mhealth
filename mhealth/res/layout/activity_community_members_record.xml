@@ -25,8 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
         <Spinner
+            android:id="@+id/spinnerSubdistrict"
+            android:layout_span="1"
+            android:layout_height="wrap_content"
+            />    
+        <Spinner
             android:id="@+id/spinnerCommunities"
-            android:layout_span="4"
+            android:layout_span="3"
             android:layout_height="wrap_content" />
 
     </TableRow>

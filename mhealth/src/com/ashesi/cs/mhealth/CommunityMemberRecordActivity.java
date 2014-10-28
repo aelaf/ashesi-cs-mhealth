@@ -8,6 +8,8 @@ import java.util.Locale;
 
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
+import com.ashesi.cs.mhealth.data.CHPSZones;
+import com.ashesi.cs.mhealth.data.CHPSZones.CHPSZone;
 import com.ashesi.cs.mhealth.data.Communities;
 import com.ashesi.cs.mhealth.data.Community;
 import com.ashesi.cs.mhealth.data.CommunityMember;
@@ -446,6 +448,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			dpBirthdate.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),this);
 			fillAgeUnitSpinner();
 			
+			fillSubDistrictSpinner();
 			
 			if(state==STATE_NEW_MEMBER){
 				fillCommunitiesSpinner(communityId);
@@ -533,11 +536,56 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			spinnerAgeUnit.setOnItemSelectedListener(this);
 			
 		}
+		
+		public boolean fillSubDistrictSpinner(){
+
+			String subdistricts[]={"CHPS zone","Sub District","District"};
+			Spinner spinnerSubdistrict=(Spinner)rootView.findViewById(R.id.spinnerSubdistrict);
+			spinnerSubdistrict.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+					fillCommunitiesSpinner(0);
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					//do nothing
+				}
+				
+			});
+			ArrayAdapter<String> adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,subdistricts);
+			spinnerSubdistrict.setAdapter(adapter);
+			
+			return true;
+			
+		}
+		
+		public int getSelectedSubDistrict(){
+			Spinner spinnerSubdistrict=(Spinner)rootView.findViewById(R.id.spinnerSubdistrict);
+			return spinnerSubdistrict.getSelectedItemPosition();
+		}
 
 		public boolean fillCommunitiesSpinner(int selectedId){
 			
 			Communities communities=new Communities(getActivity().getApplicationContext());
-			listCommunities=communities.getCommunties(currentCHO.getSubdistrictId());
+			
+			int subdistrictId=getSelectedSubDistrict();
+			if(subdistrictId==0){
+				listCommunities=communities.getCommunties(currentCHO.getCHPSZoneId());
+			}else if(subdistrictId==1){
+				listCommunities=communities.getCommunties(currentCHO.getCHPSZoneId());
+				CHPSZones zones=new CHPSZones(getActivity().getApplicationContext());
+				CHPSZone zone=zones.getCHPSZone(currentCHO.getCHPSZoneId());
+				listCommunities=communities.getCommunties(0,zone.getSubDistrictId(),0);
+			}else if(subdistrictId==2){
+				listCommunities=communities.getCommunties(currentCHO.getCHPSZoneId());
+				CHPSZones zones=new CHPSZones(getActivity().getApplicationContext());
+				CHPSZone zone=zones.getCHPSZone(currentCHO.getCHPSZoneId());
+				listCommunities=communities.getCommunties(0,0,zone.getDistrictId());
+			}else{
+				listCommunities=communities.getCommunties(currentCHO.getCHPSZoneId());
+			}
 			ArrayAdapter<Community> adapter=new ArrayAdapter<Community>(getActivity(),android.R.layout.simple_dropdown_item_1line,listCommunities);
 			spinnerCommunities.setAdapter(adapter);
 			for(int i=0;i<listCommunities.size();i++){
