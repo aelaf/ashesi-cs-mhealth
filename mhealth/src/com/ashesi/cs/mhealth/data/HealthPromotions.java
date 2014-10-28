@@ -197,7 +197,7 @@ public class HealthPromotions extends DataClass {
 	}
 	
 	public String getHealthPromotionPicturePath(){
-		return Environment.getExternalStorageDirectory() + "/mHealth/hp/";
+		return  DataClass.getApplicationFolderPath()+"hp/";
 	}
 	
 	public boolean deleteHealhtPromotion(int id){

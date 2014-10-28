@@ -363,7 +363,7 @@ public class HealthPromotionsActivity extends Activity implements OnClickListene
 		int number=Integer.parseInt(editAudienceNumber.getText().toString());
 		String remarks=editRemarks.getText().toString();
 		String month="none";
-		String image=selectedImageUri.getPath();
+		String image=selectedImageUri.toString();
 		CHOs chos=new CHOs(getApplicationContext());
 		CHO cho=chos.getCHO(choId);
 		int subdistrictId=cho.getSubdistrictId();
