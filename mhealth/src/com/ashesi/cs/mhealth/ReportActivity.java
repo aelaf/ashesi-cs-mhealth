@@ -203,7 +203,7 @@ public class ReportActivity extends FragmentActivity implements
 		int sectionNumber=0;
 		int mode=1;
 		public static final String ARG_SECTION_NUMBER = "section_number";
-		private String[] ageGroups={"Total","under 1yr","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70yr"};
+		private String[] ageGroups={"Total","under 28 days", "1m-11m","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70yr"};
 		private String[] vaccineAgeGroups={"Total","under 12m","12-23","above 24m"};
 		private String[] familyPlanAgeGroups={"Total","under 1yr","10-14","15-19","20-24","30-34","above 35yr"};
 		

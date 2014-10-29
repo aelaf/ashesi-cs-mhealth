@@ -32,6 +32,9 @@ public class OPDCaseRecords extends DataClass {
 	public static final int GROUP_BY_GENDER=3;
 	public static final int GROUP_BY_NONE=0;
 	
+	//define age range
+	private double[] ageLimit={0,0.076712329,1,5,10,15,18,20,35,50,60,70};
+	
 	public OPDCaseRecords(Context context){
 		super(context);
 	}
@@ -203,14 +206,13 @@ public class OPDCaseRecords extends DataClass {
 		}
 		
 		//define age range
-		int[] limit={0,1,5,10,15,18,20,35,50,60,70};
 		String strAgeFilter=" 1 ";
 		if(ageRange>0){//if it is not total
 			ageRange=ageRange-1;
 			if(ageRange==0){
-				strAgeFilter=CommunityMembers.AGE+"<1";	//under 1 year
+				strAgeFilter=CommunityMembers.AGE+"<" +Double.toString(ageLimit[1]);	//under 28 days year
 			}else if(ageRange>=1 && ageRange<10){	//compute range
-				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
 				strAgeFilter=CommunityMembers.AGE+">=70";
 			}
@@ -308,14 +310,14 @@ public class OPDCaseRecords extends DataClass {
 		}
 
 		//define age range
-		int[] limit={0,1,5,10,15,18,20,35,50,60,70};
+
 		String strAgeFilter=" 1 ";
 		if(ageRange>0){//if it is not total
 			ageRange=ageRange-1;
 			if(ageRange==0){
-				strAgeFilter=CommunityMembers.AGE+"<1";	//under 1 year
+				strAgeFilter=CommunityMembers.AGE+"<" +Double.toString(ageLimit[1]);	//under 1 year
 			}else if(ageRange>=1 && ageRange<10){	//compute range
-				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
 				strAgeFilter=CommunityMembers.AGE+">=70";
 			}
@@ -426,13 +428,12 @@ public class OPDCaseRecords extends DataClass {
 			lastDateOfTheMonth=dateFormat.format(calendar.getTime());
 		}
 		
-		//define age range
-		int[] ageLimit={0,1,5,10,15,18,20,35,50,60,70};
+		
 		String strAgeFilter=" 1 ";
 		if(ageRange>0){//if it is not total
 			ageRange=ageRange-1;
 			if(ageRange==0){
-				strAgeFilter=CommunityMembers.AGE+"<1";	//under 1 year
+				strAgeFilter=CommunityMembers.AGE+ Double.toString(ageLimit[1]);	//under 1 year
 			}else if(ageRange>=1 && ageRange<10){	//compute range
 				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
