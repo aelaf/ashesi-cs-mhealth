@@ -290,7 +290,7 @@ public class ReportActivity extends FragmentActivity implements
 			String strGender=getSelectedGender();
 			
 			//GridView gridView=(GridView) rootView.findViewById(R.id.gridView1);
-			String[] headers={"Community","Gender","No"};
+			String[] headers={"Cases","Gender","No"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
 			ArrayList<String> list;
 			list=opdCaseRecords.getMontlyReport(month, year,ageGroup, strGender);
@@ -508,6 +508,7 @@ public class ReportActivity extends FragmentActivity implements
 			int year=Calendar.getInstance().get(Calendar.YEAR); //this year
 			strYears[0]=Integer.toString(year);
 			strYears[1]=Integer.toString((year-1));
+			strYears[1]=Integer.toString((year-2));
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
 			ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,strYears);

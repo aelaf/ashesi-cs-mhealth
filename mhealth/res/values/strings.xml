@@ -20,7 +20,7 @@
     <string name="title_activity_opdcase">OPDCaseActivity</string>
     <string name="opdCases">OPD Cases</string>
     <string name="CommunityName">Community Name</string>
-    <string name="title_activity_community">CommunityActivity</string>
+    <string name="title_activity_community">Record Module</string>
     <string name="find">find</string>
     <string name="Age">Age</string>
     <string name="year">Years</string>
