@@ -104,7 +104,7 @@ public class DataClass extends SQLiteOpenHelper {
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
-	protected String mServerUrl="http://cs2.ashesi.edu.gh/~www_developer/yaresa/";
+	//protected String mServerUrl="http://cs2.ashesi.edu.gh/~www_developer/yaresa/";
 	
 	
 	Context context;
@@ -112,7 +112,9 @@ public class DataClass extends SQLiteOpenHelper {
 	public  static final String DATABASE_NAME="mhealth";
 	public static final String MHEALTH_SETTINGS="mhealth_settings";
 	public static final String SERVER_URL="http://cs2.ashesi.edu.gh/~www_developer/yaresa/";
-	public static final String APPLICATION_PATH="/yaresa/"; 
+	public static final String APPLICATION_PATH="/yaresa/";
+	protected  String mServerUrl=SERVER_URL;		//keeping the original type as protected
+	public static final String MOBILE_APPLICATION_PATH="mhealth_android/mhealth_android.php"; //needs to be added to DataConnection.RECORD_URL
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String BACKUP_FOLDER="";
 		
@@ -937,7 +939,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
-	        	String urlAddress= DataConnection.RECORD_URL+"mhealth_android/mhealth_android.php";
+	        	String urlAddress= SERVER_URL+DataConnection.RECORD_URL+MOBILE_APPLICATION_PATH;//"mhealth_android/mhealth_android.php";
 
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
@@ -952,12 +954,22 @@ public class DataClass extends SQLiteOpenHelper {
 	        	String result= request(response);
 	        	//now write to db
 	        	if (result.endsWith(":OK")  ){
+	        		if (result.endsWith("failed:OK")  ){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
 	        		theMainActivity.runOnUiThread(new Runnable() {
 	        			  public void run() {
-	        			    Toast.makeText(theMainActivity.getBaseContext(), "Successful upload", Toast.LENGTH_LONG).show();
+	        			    Toast.makeText(theMainActivity.getBaseContext(), "Connected, but partial update", Toast.LENGTH_LONG).show();
 	        			  }
 	        			}); 
+	        		}
+	        		if (result.endsWith("success:OK")  ){
+		        		//This entire class is a background thread. Need to run this Toast on the UI thread.
+		        		theMainActivity.runOnUiThread(new Runnable() {
+		        			  public void run() {
+		        			    Toast.makeText(theMainActivity.getBaseContext(), "Successful upload", Toast.LENGTH_LONG).show();
+		        			  }
+		        			}); 
+		        		}
 	        		
 	        	}else
 	        	{
@@ -997,7 +1009,7 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		List<NameValuePair> returnValues = new ArrayList<NameValuePair>();
 		
-		StringBuilder communitiesData= new StringBuilder("Replace into communities (community_id, community_name, subdistrict_id, latitude, longitude, population, household) VALUES ");    	 
+		StringBuilder communitiesData= new StringBuilder(" (community_id, community_name, subdistrict_id, latitude, longitude, population, household) VALUES ");    	 
     	ArrayList<Community> communitiesRawData= new Communities(theMainActivity).getCommunties(0);
     	if(communitiesRawData.size()!=0){
 	    	 for(Community oneCommunity: communitiesRawData){    		 
@@ -1016,7 +1028,7 @@ public class DataClass extends SQLiteOpenHelper {
     	}
     	//community_members:
     	
-    	 StringBuilder communityMembersData= new StringBuilder("Replace into community_members (community_member_id, " +
+    	 StringBuilder communityMembersData= new StringBuilder("  (community_member_id, " +
     	 		"serial_no, community_id, community_member_surname, community_member_other_names, birthdate, gender, " +
     	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed) VALUES ");
     	 ArrayList<CommunityMember> communityMembersRawData= new CommunityMembers(theMainActivity).getAllCommunityMember(0);
@@ -1066,8 +1078,7 @@ public class DataClass extends SQLiteOpenHelper {
     	 //add mechanism to remove null values/entries. watch for null values passed to server.
     	 
     	 // ,    
-    	 StringBuilder vaccineRecordsData = new StringBuilder("Replace into vaccine_records  " +
-     	 		"(vaccine_rec_id, vaccine_id, community_member_id, vaccine_date, rec_state) VALUES ");
+    	 StringBuilder vaccineRecordsData = new StringBuilder(" (vaccine_rec_id, vaccine_id, community_member_id, vaccine_date, rec_state) VALUES ");
      	 ArrayList<VaccineRecord> vaccineRecordsRawData= new VaccineRecords(theMainActivity).getVaccineRecords(0);
      	 if(vaccineRecordsRawData.size()!=0){
 	     	 for(VaccineRecord oneVaccineRecord: vaccineRecordsRawData){    		 
