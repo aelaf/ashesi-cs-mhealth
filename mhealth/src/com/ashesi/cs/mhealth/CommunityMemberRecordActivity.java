@@ -667,7 +667,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		public void buttonClicked(){
 			if(state==STATE_NEW_MEMBER || state==STATE_EDIT_MEMBER){
-				addCommunityMember();
+				newCommunityMember();
 			}else if(state==STATE_RECORD){
 				editMember();
 			}else{
@@ -679,7 +679,8 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		 * This method is used to save community member personal information after add or edit
 		 * 
 		 */
-		public void addCommunityMember(){
+		public void addCommunityMember(boolean newClient){
+			//
 			//get fullname
 			EditText editFullname=(EditText)rootView.findViewById(R.id.editFullname);
 			String name=editFullname.getText().toString();
@@ -730,7 +731,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			boolean confirmed=(!birthDateNotConfirmed);
 			
 			if(state==STATE_NEW_MEMBER){
-				int id=members.addCommunityMember(0, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate);
+				int id=members.addCommunityMember(0, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate,newClient);
 				if(id!=0){
 					communityMemberId=id;
 					setCommunityMemberId(id); //make the new id available to the other fragments through the activity
@@ -746,7 +747,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				//birthDateNotConfimed if true tells us that original birth date was not confirmed and there was no attempt to confirm
 				//if false, it tells the original was not confirmed 
 				
-				int id=members.updateCommunityMember(communityMemberId, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate);
+				int id=members.updateCommunityMember(communityMemberId, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate,newClient);
 				if(id!=0){
 					state=STATE_RECORD;
 					stateAction();
@@ -759,6 +760,26 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			computeAge();
 
+		}
+		
+		
+		public void newCommunityMember(){
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage("Is the community member new or old client?" );
+			builder.setPositiveButton(R.string.newClient, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   addCommunityMember(true);
+			        	   dialog.dismiss();
+			           }
+			       });
+			builder.setNegativeButton(R.string.oldClient, new DialogInterface.OnClickListener() {
+			           public void onClick(DialogInterface dialog, int id) {
+			        	   addCommunityMember(false);
+			           }
+			       });
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
 		}
 		public void removeButtonClicked(){
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

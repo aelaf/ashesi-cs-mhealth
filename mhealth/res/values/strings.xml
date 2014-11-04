@@ -157,4 +157,6 @@
 	<string name="mode">Mode</string>
 	<string name="newAcceptor">New Acceptor</string>
 	<string name="continuing">Continuing</string>
+	<string name="newClient">New Client</string>
+	<string name="oldClient">Old Client</string>
 </resources>

@@ -64,10 +64,10 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		progressBar=(ProgressBar)findViewById(R.id.progressBarCommunity);
 		textStatus=(TextView)findViewById(R.id.textCommunityStatus);
 		
-		ListView listCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
+		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
 		//listCommunityMembers.setOnItemSelectedListener(this);
-		listCommunityMembers.setOnItemClickListener(this);
-		listCommunityMembers.setClickable(true);
+		listViewCommunityMembers.setOnItemClickListener(this);
+		listViewCommunityMembers.setClickable(true);
 		
 		Intent intent=getIntent();
 		int choId=intent.getIntExtra("choId", 0);
@@ -120,24 +120,9 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		return true;
 	}
 	
-	/**
-	 * get all community member
-	 */
-	public void getAllCommunityMembers(){
-		queryType=1;
-
-		int communityId=getSelectedCommunityId();
-		CommunityMembers members=new CommunityMembers(getApplicationContext());
-		listCommunityMembers=members.getAllCommunityMember(communityId,page);	
-		CommunityMemberAdapter adapter=new CommunityMemberAdapter(getApplicationContext(),listCommunityMembers);
-		//ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
-		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
-		listViewCommunityMembers.setAdapter(adapter);
-	
-	}
 	
 	public void find(){
-		queryType=2;
+		//queryType=2;
 		EditText txtCommunityName=(EditText)findViewById(R.id.editCommunityMemberSearchName);
 		String searchText=txtCommunityName.getText().toString();
 		CommunityMembers members=new CommunityMembers(getApplicationContext());
@@ -192,6 +177,10 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 			case 8: //count community members
 				countCommunityMembers();
 				return; // dont go any further because the method deals with display
+			case 9: //count community members
+				listCommunityMembers=members.findNewCommunityMember(communityId,page);
+				break; // dont go any further because the method deals with display
+				
 			default:
 				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
 				break;
@@ -202,25 +191,16 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		//ArrayAdapter<CommunityMember> adapter=new ArrayAdapter<CommunityMember>(getApplicationContext(),android.R.layout.simple_list_item_1 ,listCommunityMembers);
 		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
 		listViewCommunityMembers.setAdapter(adapter);
+		listViewCommunityMembers.setOnItemClickListener(this);
 		
 	}
 	
 	public void getNext(){
 
 		page=page+1;
-		switch(queryType){		
-			case 1:
-				getAllCommunityMembers();
-				break;
-			case 2:
-				find();
-				break;
-			default:
-				getAllCommunityMembers();
-		}
+		find();
 		
 	}
-	
 	
 	public void getPrev(){
 
@@ -229,16 +209,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 			page=0;
 		}
 
-		switch(queryType){		
-			case 1:
-				getAllCommunityMembers();
-				break;
-			case 2:
-				find();
-				break;
-			default:
-				getAllCommunityMembers();
-		}
+		find();
 		
 	}
 	/**
@@ -270,6 +241,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(), R.layout.mhealth_simple_list_item, list);
 		ListView listViewCommunityMembers=(ListView)findViewById(R.id.listCommunityMembers);
 		listViewCommunityMembers.setAdapter(adapter);
+		listViewCommunityMembers.setOnItemClickListener(null);
 		
 	}
 	
@@ -314,7 +286,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	
 	
 	public boolean loadSearchTypeSpinner(){
-		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr","Count"};
+		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr","Count","New Clients"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);

@@ -280,7 +280,7 @@ public class OPDCaseRecords extends DataClass {
 	 * @param gender
 	 * @return
 	 */
-	public ArrayList<String> getMontlyTotalsReport(int month,int year, int ageRange){
+	public ArrayList<String> getMontlyTotalsReport(int month,int year, int ageRange, int  newClient){
 		//query report for the age range, period grouped by gender and OPD case
 		ArrayList<String>list=new ArrayList<String>();
 		//define period for the report
@@ -323,7 +323,15 @@ public class OPDCaseRecords extends DataClass {
 			}
 		}
 
-		
+		String strNewClientFilter=" 1 ";
+		if(newClient==1){	//new
+			//Registered with in the elected period
+			strNewClientFilter= "("+CommunityMembers.FIRST_ACCESS_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
+								+CommunityMembers.FIRST_ACCESS_DATE +"<=\""+ lastDateOfTheMonth+"\")";
+		}else if(newClient==2){ //old
+			//Registered with in the elected period
+			strNewClientFilter= "("+CommunityMembers.FIRST_ACCESS_DATE +"<\""+ firstDateOfTheMonth +"\")";
+		}
 		String filter=" (select "
 				+ CommunityMembers.COMMUNITY_MEMBER_ID 
 				+ " from "+ OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES 
@@ -343,6 +351,7 @@ public class OPDCaseRecords extends DataClass {
 							+" from  "
 							+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
 							+" where "
+							+ strNewClientFilter  +" AND "
 							+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
 							+ filter
 							+" group by " +CommunityMembers.GENDER;

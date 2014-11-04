@@ -248,14 +248,17 @@ public class ReportActivity extends FragmentActivity implements
 					
 					if(mode==2){
 						reportTitle.setText("OPD: No Community Members");
-						loadReportTotalData(rootView);
+						loadReportTotalData(rootView,false);
+					}else if(mode==3){
+						reportTitle.setText("OPD: No New Community Members");
+						loadReportTotalData(rootView,true);
 					}else{
 						reportTitle.setText("OPD: No Cases");
 						loadOPDReportData(rootView);
 					}
 					break;
 				case 1:
-					if(mode==2){
+					if(mode==2 && mode==3){
 						reportTitle.setText("Vaccination: No Community Members");
 						loadVaccinationReportTotalData(rootView);
 					}else{
@@ -265,7 +268,7 @@ public class ReportActivity extends FragmentActivity implements
 
 					break;
 				case 2:
-					if(mode==2){
+					if(mode==2 && mode==3){
 						reportTitle.setText("Family Planning: No Community Members");
 						loadFamilyPlanningReportTotalData(rootView);
 					}else{
@@ -306,7 +309,7 @@ public class ReportActivity extends FragmentActivity implements
 			}
 		}
 		
-		private void loadReportTotalData(View rootView){
+		private void loadReportTotalData(View rootView,boolean newClient){
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
 			
 			int ageGroup=getSelectedAgeGroup();
@@ -318,7 +321,11 @@ public class ReportActivity extends FragmentActivity implements
 			String[] headers={"Community","Gender","No Members"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
 			ArrayList<String> list;
-			list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup);
+			if(newClient){
+				list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup,1);
+			}else{
+				list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup,0);
+			}
 			if(list==null){
 				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
 				gridView.setAdapter(adapter);
@@ -441,7 +448,7 @@ public class ReportActivity extends FragmentActivity implements
 
 		private void modeButtonClicked(){
 			mode=mode+1;
-			if(mode>2){		//if more than maximum reset;
+			if(mode>3){		//if more than maximum reset;
 				mode=1;
 			}
 			loadData(this.getView());

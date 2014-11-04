@@ -30,6 +30,8 @@ public class CommunityMembers extends DataClass {
     public static final String NHIS_EXPIRY_DATE="nhis_expiry_date";
     public static final String BIRTHDATE_CONFIRMED="1";
     public static final String BIRTHDATE_NOT_CONFIRMED="0";
+    public static final String FIRST_ACCESS_DATE="first_access_date";
+    
     		
     private String orderBy=COMMUNITY_MEMBER_ID;
     private String direction="ASC";
@@ -38,7 +40,7 @@ public class CommunityMembers extends DataClass {
 	
 	public static final String VIEW_NAME_COMMUNITY_MEMBERS="view_community_members";
 	
-	String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+	String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE,FIRST_ACCESS_DATE,Communities.COMMUNITY_NAME};
 	
 	
 	public CommunityMembers(Context context){
@@ -87,7 +89,7 @@ public class CommunityMembers extends DataClass {
 			if(communityId!=0){
 				selector=COMMUNITY_ID+"="+communityId;
 			}
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			
 			db=getReadableDatabase();
 			
 			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, null );
@@ -118,7 +120,7 @@ public class CommunityMembers extends DataClass {
 			if(communityId!=0){
 				selector=COMMUNITY_ID+"="+communityId;
 			}
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			
 			db=getReadableDatabase();
 			
 			String strOrder=orderBy+" "+direction;
@@ -174,7 +176,7 @@ public class CommunityMembers extends DataClass {
 	 * @param nhisExpiryDate
 	 * @return
 	 */
-	public int addCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
+	public int addCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate,boolean newClient){
 		try
 		{
 			
@@ -196,6 +198,12 @@ public class CommunityMembers extends DataClass {
 			cv.put(CARD_NO,cardNo);
 			cv.put(NHIS_ID,nhisId);
 			cv.put(NHIS_EXPIRY_DATE,dateFormat.format(nhisExpiryDate));
+			String regDate="1900-01-01";
+			if(newClient){
+				Calendar c=Calendar.getInstance(); 
+				regDate=dateFormat.format(c.getTime());
+			}
+			cv.put(FIRST_ACCESS_DATE, regDate);
 			cv.put(DataClass.REC_STATE,DataClass.REC_STATE_NEW);
 			if(db.insertWithOnConflict(TABLE_NAME_COMMUNITY_MEMBERS, null, cv, SQLiteDatabase.CONFLICT_FAIL)<=0){
 				close();
@@ -220,7 +228,7 @@ public class CommunityMembers extends DataClass {
 	 * @param cardNo
 	 * @return
 	 */
-	public int updateCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
+	public int updateCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate,boolean newClient){
 		try
 		{
 			CommunityMember cm=getCommunityMember(id);
@@ -238,6 +246,12 @@ public class CommunityMembers extends DataClass {
 			cv.put(GENDER,gender);
 			cv.put(CARD_NO,cardNo);
 			cv.put(NHIS_ID,nhisId);
+			String regDate="1900-01-01";
+			if(newClient){
+				Calendar date=Calendar.getInstance(); 
+				regDate=dateFormat.format(date);
+			}
+			cv.put(FIRST_ACCESS_DATE, regDate);
 			cv.put(NHIS_EXPIRY_DATE,dateFormat.format(nhisExpiryDate));
 			if(currentState!=DataClass.REC_STATE_NEW){	//if the record is new, leave it as new 
 				cv.put(DataClass.REC_STATE,DataClass.REC_STATE_DIRTY);
@@ -391,7 +405,6 @@ public class CommunityMembers extends DataClass {
 	public ArrayList<CommunityMember> findCommunityMember(int communityID,String communityMemberName){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			String selector=COMMUNITY_MEMBER_NAME +" LIKE '%"+ communityMemberName +"%' ";
 			if(communityID!=0){
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
@@ -425,7 +438,7 @@ public class CommunityMembers extends DataClass {
 	public ArrayList<CommunityMember> findCommunityMember(int communityID,String communityMemberName, int page){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
+			
 			String selector=COMMUNITY_MEMBER_NAME +" LIKE '%"+ communityMemberName +"%' ";
 			if(communityID!=0){
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
@@ -466,11 +479,7 @@ public class CommunityMembers extends DataClass {
 	public ArrayList<CommunityMember> findCommunityMemberInsuranceExpiring(int communityID,int page){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
-			
-			
-			
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
-			
+
 			String selector=CommunityMembers.NHIS_EXPIRY_DATE +"<= date('now','+3 month') ";
 			
 			if(communityID!=0){
@@ -516,6 +525,7 @@ public class CommunityMembers extends DataClass {
 							+","+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS +"."+REC_STATE
 							+","+NHIS_ID
 							+","+NHIS_EXPIRY_DATE
+							+","+FIRST_ACCESS_DATE
 							+" from " 
 							+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES 
 							+" left join "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
@@ -564,6 +574,7 @@ public class CommunityMembers extends DataClass {
 							+","+REC_STATE
 							+","+NHIS_ID
 							+","+NHIS_EXPIRY_DATE
+							+","+FIRST_ACCESS_DATE
 							+" from " 
 							+ Vaccines.VIEW_PENDING_VACCINES
 							+" inner join "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
@@ -638,7 +649,6 @@ public class CommunityMembers extends DataClass {
 	public ArrayList<CommunityMember> findCommunityMemberWithAge(int communityID, int ageMin, int ageMax, int page){
 		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			String selector=AGE +"<=" +ageMax +" AND " +AGE+ ">=" +ageMin;
 			if(communityID!=0){
 				selector+= " AND "+ COMMUNITY_ID+"="+communityID;
@@ -670,6 +680,49 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 	
+	/**
+	 * gets all new community members in a community 
+	 * @param communityId
+	 * @return
+	 */
+	public ArrayList<CommunityMember> findNewCommunityMember(int communityId,int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			
+
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			Calendar calendar=Calendar.getInstance();
+			calendar.set(Calendar.DAY_OF_MONTH,1);
+			String selector= CommunityMembers.FIRST_ACCESS_DATE +">"+dateFormat.format(calendar.getTime());
+			
+			if(communityId!=0){
+				selector+=" AND " +COMMUNITY_ID+"="+communityId;
+			}
+			String strOrder=orderBy+" "+direction;
+			
+			String limit=null;
+			if(page>=0){
+				page=page*PAGE_SIZE;
+				limit=page +"," +PAGE_SIZE;
+			}
+			
+			db=getReadableDatabase();
+			
+			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, selector,null, null, null, strOrder,limit );
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+
+			return list;
+		}catch(Exception ex){
+			Log.e("CommunityMembers.getNewCommunityMember(int)","Exception "+ex.getMessage());
+			close();
+			return list;
+		}
+	}
 	/**
 	 * gets the number of community members with in a given age range. if both min and max age are 0, it will count all community members.
 	 * it groups the count by gender and community
@@ -871,7 +924,6 @@ public class CommunityMembers extends DataClass {
 	
 	public CommunityMember getCommunityMember(int id){
 		try{
-			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
 			String selector= COMMUNITY_MEMBER_ID+"="+id; 
 			db=getReadableDatabase();
 			cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns,selector,null, null, null, null);
@@ -1086,6 +1138,7 @@ public class CommunityMembers extends DataClass {
 				+GENDER +" text, "
 				+CARD_NO +" text, "
 				+NHIS_ID+" text, "
+				+FIRST_ACCESS_DATE+" text default '1900-01-01',"
 				+NHIS_EXPIRY_DATE+" text, "
 				+DataClass.REC_STATE+" integer "
 				+" )";
@@ -1104,6 +1157,7 @@ public class CommunityMembers extends DataClass {
 				+CommunityMembers.CARD_NO+", "
 				+NHIS_ID+", "
 				+NHIS_EXPIRY_DATE+", "
+				+FIRST_ACCESS_DATE+", "
 				+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+DataClass.REC_STATE+", "
 				+" ((julianday('now')-julianday("+CommunityMembers.BIRTHDATE+"))/366) as "+CommunityMembers.AGE+", "
 				+Communities.COMMUNITY_NAME
@@ -1128,7 +1182,7 @@ public class CommunityMembers extends DataClass {
 			//remove all other client records before removing the client
 			db.delete(OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES, whereClause, null);
 			db.delete(VaccineRecords.TABLE_NAME_VACCINE_RECORDS,whereClause,null);
-			//TODO:remove all other records that might be added in the future like family planning 
+			db.delete(FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS, whereClause, null); 
 			if(db.delete(TABLE_NAME_COMMUNITY_MEMBERS, whereClause, null)<0){
 				return false;
 			}

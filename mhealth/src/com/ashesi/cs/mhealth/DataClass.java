@@ -100,7 +100,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * modifies VIEW_COMMUNITY_MEMBERS_OPD_CASES
 	 * adds VIEW_COMMUNITY_MEMBERS_IN_OPD_CASES
 	 */
-	protected static final int DATABASE_VERSION=13; 
+	protected static final int DATABASE_VERSION=14; 
 	protected SQLiteDatabase db;
 	protected Cursor cursor;
 	protected int mDeviceId;
@@ -692,6 +692,10 @@ public class DataClass extends SQLiteOpenHelper {
 			if(oldVersion<=12){
 				upgradeToVersion13(db);
 			}
+			
+			if(oldVersion<=13){
+				upgradeToVersion14(db);
+			}
 		}catch(Exception ex){
 			Log.e("DataClass.onUpgrade", "Exception while upgrading to "+newVersion + " exception= "+ex.getMessage());
 		}
@@ -873,6 +877,14 @@ public class DataClass extends SQLiteOpenHelper {
 				//db.execSQL("drop table "+Communities.TABLE_COMMUNITIES);
 				//db.execSQL(Communities.getCreateTable());
 		setDataVersion(db,DATABASE_NAME,13); 
+	}
+	
+	private void upgradeToVersion14(SQLiteDatabase db){
+		db.execSQL("alter table "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+
+						" add column "+CommunityMembers.FIRST_ACCESS_DATE+" text default '1900-01-01'");
+		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
+		db.execSQL(CommunityMembers.getViewCreateSQLString());
+		setDataVersion(db,DATABASE_NAME,14); 
 	}
 
 	
