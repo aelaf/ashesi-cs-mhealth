@@ -1092,6 +1092,9 @@ public class DataClass extends SQLiteOpenHelper {
 	     	vaccineRecordsData.setLength(Math.max(vaccineRecordsData.length() - 1, 0))  ; 
 	    	returnValues.add(new BasicNameValuePair("vaccine_records", vaccineRecordsData.toString()));
      	 }
+     	 FamilyPlanningRecords familyPlanningRecords=new FamilyPlanningRecords(theMainActivity);
+     	 returnValues.add(new BasicNameValuePair("family_planning_records",familyPlanningRecords.fetchSQLDumpToUpload()));
+     	 
     	 return returnValues;
 	}
 
