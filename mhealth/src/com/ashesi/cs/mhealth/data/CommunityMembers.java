@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -1137,5 +1138,33 @@ public class CommunityMembers extends DataClass {
 		}catch(Exception ex){
 			return false;
 		}
+	}
+	
+	public String fetchSQLDumpToUpload(){
+		StringBuilder communityMembersData= new StringBuilder("  (community_member_id, " +
+    	 		"serial_no, community_id, community_member_surname, community_member_other_names, birthdate, gender, " +
+    	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed) VALUES ");
+    	 ArrayList<CommunityMember> communityMembersRawData=getAllCommunityMember(0);
+    	 if (communityMembersRawData.size()!=0){
+    	 
+	    	 for(CommunityMember oneCommunityMember: communityMembersRawData){    		 
+	    		 communityMembersData.append("('"+oneCommunityMember.getId()+"',");  //includes starting brace
+	    		 communityMembersData.append("'"+"',"); //info not available for serialNO  
+	    		 communityMembersData.append("'"+oneCommunityMember.getCommunityID()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getFullname()+"',");
+	    		 communityMembersData.append("'"+"',");  //*****pending split that has forenames separate
+	    		 communityMembersData.append("'"+oneCommunityMember.getBirthdate()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getGender()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getCardNo()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getNHISId()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getNHISExpiryDate()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getRecState()+"',");
+	    		 communityMembersData.append("'"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
+	    	 }
+	    	 communityMembersData.setLength(Math.max(communityMembersData.length() - 1, 0))  ; //dispense with explicit check if length>0
+	    	 return communityMembersData.toString();
+    	 }else{
+    		 return null;
+    	 }
 	}
 }

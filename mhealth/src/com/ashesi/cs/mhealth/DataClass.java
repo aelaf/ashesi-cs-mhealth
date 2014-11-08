@@ -1009,92 +1009,33 @@ public class DataClass extends SQLiteOpenHelper {
 		
 		List<NameValuePair> returnValues = new ArrayList<NameValuePair>();
 		
-		StringBuilder communitiesData= new StringBuilder(" (community_id, community_name, subdistrict_id, latitude, longitude, population, household) VALUES ");    	 
-    	ArrayList<Community> communitiesRawData= new Communities(theMainActivity).getCommunties(0);
-    	if(communitiesRawData.size()!=0){
-	    	 for(Community oneCommunity: communitiesRawData){    		 
-	    		 communitiesData.append("('"+oneCommunity.getId()+"',");  //includes starting brace
-	    		 communitiesData.append("'"+oneCommunity.getCommunityName()+"',");
-	    		 communitiesData.append("'"+oneCommunity.getSubdistrictId()+"',");
-	    		 communitiesData.append("'"+oneCommunity.getLatitude()+"',");
-	    		 communitiesData.append("'"+oneCommunity.getLongitude()+"',");
-	    		 communitiesData.append("'"+oneCommunity.getPopulation()+"',");
-	    		 communitiesData.append("'"+oneCommunity.getHousehold()+"'),");  //with closing brace and starting comma. 
-	    		 																//Need to remove comma after the last
-	    	 }
-	    	 if (communitiesData.length()>0)
-	    	 communitiesData.setLength(communitiesData.length()-1);   //more efficient than deleting last character.
-	    	 returnValues.add(new BasicNameValuePair("communities", communitiesData.toString()));	    	 
-    	}
-    	//community_members:
+		String str= new Communities(theMainActivity).fetchSQLDumpToUpload();
+		if(str!=null){
+			returnValues.add(new BasicNameValuePair("communities", str));
+		}
     	
-    	 StringBuilder communityMembersData= new StringBuilder("  (community_member_id, " +
-    	 		"serial_no, community_id, community_member_surname, community_member_other_names, birthdate, gender, " +
-    	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed) VALUES ");
-    	 ArrayList<CommunityMember> communityMembersRawData= new CommunityMembers(theMainActivity).getAllCommunityMember(0);
-    	 if (communityMembersRawData.size()!=0){
+    	//community_members:
+    	 str= new CommunityMembers(theMainActivity).fetchSQLDumpToUpload();
     	 
-	    	 for(CommunityMember oneCommunityMember: communityMembersRawData){    		 
-	    		 communityMembersData.append("('"+oneCommunityMember.getId()+"',");  //includes starting brace
-	    		 communityMembersData.append("'"+"',"); //info not available for serialNO  
-	    		 communityMembersData.append("'"+oneCommunityMember.getCommunityID()+"',");
-	    		 communityMembersData.append("'"+oneCommunityMember.getFullname()+"',");
-	    		 communityMembersData.append("'"+"',");  //*****pending split that has forenames separate
-	    		 communityMembersData.append("'"+oneCommunityMember.getBirthdate()+"',");
-	    		 communityMembersData.append("'"+oneCommunityMember.getGender()+"',");
-	    		 communityMembersData.append("'"+oneCommunityMember.getCardNo()+"',");
-	    		 communityMembersData.append("'"+oneCommunityMember.getNHISId()+"',");
-	    		 communityMembersData.append("'"+oneCommunityMember.getNHISExpiryDate()+"',");
-	    		 communityMembersData.append("'"+oneCommunityMember.getRecState()+"',");
-	    		 communityMembersData.append("'"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
-	    	 }
-	    	 communityMembersData.setLength(Math.max(communityMembersData.length() - 1, 0))  ; //dispense with explicit check if length>0
-	    	 returnValues.add(new BasicNameValuePair("communitymembers", communityMembersData.toString()));
-    	 }//if
+    	 if(str!=null){
+	    	 returnValues.add(new BasicNameValuePair("communitymembers", str));
+    	 }
     	 
-    	 
-    	 // moved into OPDCase class
-    	 /*
-    	 StringBuilder OPDCasesData = new StringBuilder("Replace into community_members_opd_cases  " +
-    	 		"(rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");
-    	 ArrayList<OPDCaseRecord> OPDCaseRecordsRawData= new OPDCaseRecords(theMainActivity).getArrayList();
-    	 if (OPDCaseRecordsRawData.size()!=0){
-	    	 for(OPDCaseRecord oneOPDCaseRecord: OPDCaseRecordsRawData){    		 
-	    		 OPDCasesData.append("('"+oneOPDCaseRecord.getRecNo()+"',");  //includes starting brace
-	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getCommunityMemberId()+"',");
-	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getOPDCaseId()+"',");
-	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getCHOId()+"',");
-	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getFormatedRecDate()+"',");
-	    		 OPDCasesData.append("'"+"',"); //server rec no not included
-	    		 OPDCasesData.append("'"+"',"); //rec state not included
-	    		 OPDCasesData.append("'"+oneOPDCaseRecord.getLab()+"'),");
-	    	 }
-	    	 OPDCasesData.setLength(Math.max(OPDCasesData.length() - 1, 0))  ; 
-	    	 returnValues.add(new BasicNameValuePair("OPDCaseData", OPDCasesData.toString()));
-    	 }//if
-    	 */
-    	 
-    	 returnValues.add(new BasicNameValuePair("OPDCaseData", new OPDCaseRecords(theMainActivity).fetchSQLDumpToUpload()));
-    	 //add mechanism to remove null values/entries. watch for null values passed to server.
-    	 
-    	 // ,    
-    	 StringBuilder vaccineRecordsData = new StringBuilder(" (vaccine_rec_id, vaccine_id, community_member_id, vaccine_date, rec_state) VALUES ");
-     	 ArrayList<VaccineRecord> vaccineRecordsRawData= new VaccineRecords(theMainActivity).getVaccineRecords(0);
-     	 if(vaccineRecordsRawData.size()!=0){
-	     	 for(VaccineRecord oneVaccineRecord: vaccineRecordsRawData){    		 
-	     		vaccineRecordsData.append("('"+oneVaccineRecord.getId()+"',");  //includes starting brace,
-	     		vaccineRecordsData.append("'"+oneVaccineRecord.getVaccineId()+"',");
-	     		vaccineRecordsData.append("'"+oneVaccineRecord.getCommunityMemberId()+"',");
-	     		vaccineRecordsData.append("'"+oneVaccineRecord.getVaccineDate()+"',");  
-	     		vaccineRecordsData.append("'"+"'),"); //missing record state
-	     	
-	    	 }
-	     	vaccineRecordsData.setLength(Math.max(vaccineRecordsData.length() - 1, 0))  ; 
-	    	returnValues.add(new BasicNameValuePair("vaccine_records", vaccineRecordsData.toString()));
+    	 //OPDCases
+    	 str=  new OPDCaseRecords(theMainActivity).fetchSQLDumpToUpload();
+    	 if(str!=null){
+    		 returnValues.add(new BasicNameValuePair("OPDCaseData",str));
+    	 }
+    	 //VaccineRecords    
+    	 str=new VaccineRecords(theMainActivity).fetchSQLDumpToUpload();
+    	 if(str!=null){
+	    	returnValues.add(new BasicNameValuePair("vaccine_records", str));
      	 }
-     	 FamilyPlanningRecords familyPlanningRecords=new FamilyPlanningRecords(theMainActivity);
-     	 returnValues.add(new BasicNameValuePair("family_planning_records",familyPlanningRecords.fetchSQLDumpToUpload()));
-     	 
+	
+     	 str=new FamilyPlanningRecords(theMainActivity).fetchSQLDumpToUpload();
+     	 if(str!=null){
+     		 returnValues.add(new BasicNameValuePair("family_planning_records",str));
+     	 }
     	 return returnValues;
 	}
 

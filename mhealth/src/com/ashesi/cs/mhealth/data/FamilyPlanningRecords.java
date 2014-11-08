@@ -575,12 +575,18 @@ public class FamilyPlanningRecords extends DataClass {
 			 familyPlanningData.append("("+ record.getId());
 			 familyPlanningData.append(","+record.getFamilyPlanningServiceId());
 			 familyPlanningData.append(","+record.getCommunityMemberId());
-			 familyPlanningData.append(","+record.getServiceDate());
-			 familyPlanningData.append(","+record.getScheduleDate());
+			 familyPlanningData.append(",'"+record.getServiceDate()+"'");
+			 familyPlanningData.append(",'"+record.getScheduleDate()+"'");
 			 familyPlanningData.append(","+record.getQuantity());
 			 familyPlanningData.append(","+record.getServiceType());
+			 record=fetch();
+			 
+			 if(record==null){
+				 familyPlanningData.append(")");	//the last one
+			 }else{
+				 familyPlanningData.append("),");
+			 }
 		 }
-		 familyPlanningData.setLength(Math.max(familyPlanningData.length() - 1, 0))  ; 
 		 return familyPlanningData.toString();
 	}
 } 
