@@ -80,6 +80,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	}
 	
 	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		if(currentCHO!=null){
+			ListView list=(ListView)findViewById(R.id.list);
+			Tasks tasks=new Tasks(this);
+			list.setAdapter(tasks.getTaskAdapterForTheMonth());
+		}
+		super.onStart();
+	}
+
+	@Override
 	public void onClick(View v) {
 		
 		switch(v.getId()){
@@ -152,6 +163,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		EditText editCHO=(EditText)findViewById(R.id.editCHOName);
 		editCHO.setEnabled(true);
 		editCHO.setText("");
+		ListView list=(ListView)findViewById(R.id.list);
+		list.setAdapter(null);
 	}
 	
 	@Override

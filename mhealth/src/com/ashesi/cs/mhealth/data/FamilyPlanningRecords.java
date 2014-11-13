@@ -473,6 +473,31 @@ public class FamilyPlanningRecords extends DataClass {
 		}
 	}
 	
+	
+	public int getNumberCommunityMembersScheduledForFamilyPlanning(){
+		try{
+			db=getReadableDatabase();
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			Calendar calendar=Calendar.getInstance();
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			String firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.set(Calendar.DAY_OF_MONTH,calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			String lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+			
+			String strQuery="select count(*) as NO_REC from "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS 
+						+" where ("+FamilyPlanningRecords.SCHEDULE_DATE +">=\""+firstDateOfTheMonth +"\""
+							+" AND "+FamilyPlanningRecords.SCHEDULE_DATE +"<=\""+lastDateOfTheMonth +"\")";
+			
+			cursor=db.rawQuery(strQuery,null);
+			cursor.moveToFirst();
+			int n=cursor.getInt(0);
+			close();
+			return n;
+		}catch(Exception ex){
+			return -1;
+		}
+	}
+	
 	/**
 	 * returns a string for creating service_records table
 	 * @return
@@ -538,4 +563,5 @@ public class FamilyPlanningRecords extends DataClass {
 				+" on "+ TABLE_NAME_FAMILY_PLANNING_RECORDS+ "."+FamilyPlanningServices.SERVICE_ID +"="
 						+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES +"." +FamilyPlanningServices.SERVICE_ID;
 	}
+
 } 

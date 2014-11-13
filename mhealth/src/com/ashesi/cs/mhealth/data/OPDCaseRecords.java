@@ -25,7 +25,7 @@ public class OPDCaseRecords extends DataClass {
 	public static final String NO_CASES="no_cases";
 	public static final String TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES="community_members_opd_cases";
 	public static final String VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES="view_community_member_opd_cases";
-	public static final String VIEW_COMMUNITIY_MEMBERS_IN_OPD_CASES="view_community_members_in_opd_cases";
+	//public static final String VIEW_COMMUNITIY_MEMBERS_IN_OPD_CASES="view_community_members_in_opd_cases";
 	
 	public static final int GROUP_BY_COMMUNITY=1;
 	public static final int GROUP_BY_OPD_CASE=2;
@@ -494,6 +494,28 @@ public class OPDCaseRecords extends DataClass {
 			return list;
 		}catch(Exception ex){
 			return null;
+		}
+	}
+	
+	public int getOPDCasesFollowupCount(){
+		try{
+			db=getReadableDatabase();
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			Calendar calendar=Calendar.getInstance();
+			String firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar.add(Calendar.DAY_OF_MONTH, -30);
+			String lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+			String strQuery="select count(*) as NO_REC from " +OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
+					+" where ("+OPDCaseRecords.REC_DATE +">=\""+firstDateOfTheMonth +"\""
+					+" AND "+OPDCaseRecords.REC_DATE +"<=\""+lastDateOfTheMonth +"\")";
+			
+			cursor=db.rawQuery(strQuery,null);
+			cursor.moveToFirst();
+			int n=cursor.getInt(0);
+			close();
+			return n;
+		}catch(Exception ex){
+			return -1;
 		}
 	}
 	

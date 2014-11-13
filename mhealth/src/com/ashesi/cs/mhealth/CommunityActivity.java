@@ -192,6 +192,9 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 			case 8: //count community members
 				countCommunityMembers();
 				return; // dont go any further because the method deals with display
+			case 9:
+				listCommunityMembers=members.findCommunityMemberWithFPSchedule(communityId, -2, 30, page);
+				break;
 			default:
 				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
 				break;
@@ -297,7 +300,6 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		startActivity(intent);
 	}
 	
-	
 	public boolean loadCommunitySpinner(){
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerCommunities);
 		Communities communities=new Communities(getApplicationContext());
@@ -314,7 +316,7 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	
 	
 	public boolean loadSearchTypeSpinner(){
-		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr","Count"};
+		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr","Count","FP appointment"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);
