@@ -122,7 +122,7 @@ public class VaccineRecords extends DataClass {
 	 * modified by NAmanquah to return all rows if communityMemberID is 0
 	 */
 	public ArrayList<VaccineRecord> getVaccineRecords(int communityMemberId){
-		ArrayList<VaccineRecord> list=new ArrayList<VaccineRecord>();
+		ArrayList<VaccineRecord> list=new ArrayList<VaccineRecord>();//TODO: id change
 		try{
 			db=getReadableDatabase();
 			String sql= VaccineRecords.getVaccineRecordSQLString() 

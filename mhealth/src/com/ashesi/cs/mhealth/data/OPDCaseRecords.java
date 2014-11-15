@@ -46,7 +46,7 @@ public class OPDCaseRecords extends DataClass {
 	 */
 	public boolean getCommunityMemberOPDCases(int communityMemberId){
 		try
-		{
+		{//TODO: id change
 			db=getReadableDatabase();
 			String[] columns={REC_NO,CommunityMembers.COMMUNITY_MEMBER_ID, OPDCases.OPD_CASE_ID,
 						CommunityMembers.COMMUNITY_MEMBER_NAME,OPD_CASE_NAME,REC_DATE,LAB,CHOs.CHO_ID};

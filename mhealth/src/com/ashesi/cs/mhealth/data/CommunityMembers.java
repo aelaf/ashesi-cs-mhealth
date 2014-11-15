@@ -141,7 +141,7 @@ public class CommunityMembers extends DataClass {
 			return list;
 		}
 	}
-	
+	//TODO: id change
 	public int getNextId(){
 		try
 		{
@@ -179,7 +179,7 @@ public class CommunityMembers extends DataClass {
 		try
 		{
 			
-			
+			//TODO: id change
 			if(id==0){
 				id=getNextId();
 			}
@@ -224,7 +224,7 @@ public class CommunityMembers extends DataClass {
 	public int updateCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate){
 		try
 		{
-			CommunityMember cm=getCommunityMember(id);
+			CommunityMember cm=getCommunityMember(id);//TODO: id change
 			int currentState=cm.getRecState();
 			
 			db=getWritableDatabase();
@@ -261,7 +261,7 @@ public class CommunityMembers extends DataClass {
 	
 	public boolean confirmBirthDate(int id,Date birthdate){
 		try
-		{
+		{//TODO: id change
 			CommunityMember cm=getCommunityMember(id);
 			int currentState=cm.getRecState();
 			
@@ -293,7 +293,7 @@ public class CommunityMembers extends DataClass {
 	
 	public boolean confirmBirthDate(int id){
 		try
-		{
+		{//TODO: id change
 			CommunityMember cm=getCommunityMember(id);
 			int currentState=cm.getRecState();
 			
@@ -323,7 +323,7 @@ public class CommunityMembers extends DataClass {
 	
 	public boolean unconfirmBirthDate(int id){
 		try
-		{
+		{//TODO: id change
 			CommunityMember cm=getCommunityMember(id);
 			int currentState=cm.getRecState();
 			
@@ -353,7 +353,7 @@ public class CommunityMembers extends DataClass {
 	
 	public boolean updateNHISRecord(int id,String nhisID, Date nhisExpiryDate){
 		try
-		{
+		{//TODO: id change
 			CommunityMember cm=getCommunityMember(id);
 			int currentState=cm.getRecState();
 			
@@ -869,7 +869,7 @@ public class CommunityMembers extends DataClass {
 			return false;
 		}
 	}
-	
+	//TODO: id change
 	public CommunityMember getCommunityMember(int id){
 		try{
 			String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,Communities.COMMUNITY_NAME,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE};
@@ -899,7 +899,7 @@ public class CommunityMembers extends DataClass {
 			if(cursor.isBeforeFirst()){
 				cursor.moveToFirst();
 			}
-			int index=cursor.getColumnIndex(COMMUNITY_MEMBER_ID);
+			int index=cursor.getColumnIndex(COMMUNITY_MEMBER_ID);//TODO: id change
 			int id=cursor.getInt(index);
 			
 			index=cursor.getColumnIndex(COMMUNITY_ID);

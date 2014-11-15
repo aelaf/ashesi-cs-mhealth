@@ -205,7 +205,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	 * @return
 	 */
 	public int getCommunityMemberId(){
-		return this.communityMemberId;
+		return this.communityMemberId;//TODO: id change
 	}
 	
 	
@@ -281,7 +281,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		ArrayList<Community> listCommunities;
 		
 		private int state=0;
-		private int communityMemberId=0;
+		private int communityMemberId=0;//TODO: id change
 		
 		private EditText editAge;
 		private DatePicker dpBirthdate;
@@ -995,7 +995,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		String[] opdCaseCategories={"ALL","CI","CNI","NCD","MHC","SC","OGC","RETD","IO","REF","OTH"}; 
 		
 		View rootView;
-		int communityMemberId=0;
+		int communityMemberId=0;//TODO: id change
 		AdapterContextMenuInfo info;
 		
 		public OPDFragment(){
@@ -1193,7 +1193,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		VaccineGridAdapter adapter; 
 		View rootView;
-		int communityMemberId=0;
+		int communityMemberId=0;//TODO: id change
 		
 		public VaccineFragment(){
 			
@@ -1469,7 +1469,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 	
 	public static class FamilyPlanFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
 		
-		int communityMemberId=0;
+		int communityMemberId=0; //TODO: id change
 		View rootView;
 		TextView textStatus;
 		

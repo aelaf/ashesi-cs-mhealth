@@ -228,7 +228,7 @@ public class FamilyPlanningRecords extends DataClass {
 	 * @return
 	 */
 	public FamilyPlanningRecord addRecord(int communityMemberId, int serviceId, Date serviceDate){
-		return addRecord(communityMemberId,serviceId,serviceDate,0);
+		return addRecord(communityMemberId,serviceId,serviceDate,0);//TODO: id change
 
 	}
 	

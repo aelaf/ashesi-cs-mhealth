@@ -7,7 +7,7 @@ import java.util.Locale;
 import org.json.JSONObject;
 
 public class CommunityMember {
-	private int id;
+	private int id;	//TODO:ID Change
 	private int communityId;
 	private String fullname;
 	private String birthdate;
@@ -21,7 +21,7 @@ public class CommunityMember {
 	private String nhisExpiryDate;
 	private boolean isBirthDateConfirmed;
 	
-
+	//TODO:ID CHANGE
 	CommunityMember(int id,int communityId,String fullname,String birthdate,boolean isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
 		this.id=id;
 		this.communityId=communityId;
@@ -179,7 +179,7 @@ public class CommunityMember {
 	public String getGender(){
 		return gender;
 	}
-	
+	//TODO:id change
 	public int getId(){
 		return id;
 	}
