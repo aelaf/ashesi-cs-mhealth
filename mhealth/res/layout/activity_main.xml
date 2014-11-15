@@ -18,7 +18,10 @@
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+    		android:shrinkColumns="*"
+     		>
 
             <TableRow
                 android:id="@+id/tableRow1"
@@ -28,30 +31,20 @@
 
 					<EditText
 					    android:id="@+id/editCHOName"
-					    android:layout_width="wrap_content"
 					    android:layout_height="wrap_content"
-					    android:layout_weight="0.25" >
+					    android:layout_span="1" >
 
 					    <requestFocus />
 					</EditText>
 					
                     <Button
                         android:id="@+id/buttonMainLoginStart"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
+                        android:layout_span="1" 
                         android:text="@string/open" />
              
                
             </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-            </TableRow>
-
             <TableRow
                 android:id="@+id/tableRow3"
                 android:layout_width="wrap_content"
@@ -59,30 +52,23 @@
 
                     <Button
                         android:id="@+id/buttonMainOpenRecord"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/record"
-                        android:enabled="false" />
-
-
+                        android:enabled="false" 
+                        android:layout_span="1" 
+                        />
             </TableRow>
 
             <TableRow
                 android:id="@+id/tableRow4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
-
-                
-
                     <Button
                         android:id="@+id/buttonMainKnowledge"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:enabled="false"
+                        android:layout_span="1" 
                         android:text="@string/knowledge" />
-
-                
-               
 
             </TableRow>
             <TableRow
@@ -92,9 +78,9 @@
 
 				  <Button
 				      android:id="@+id/buttonAddCommunity"
-				      android:layout_width="match_parent"
 				      android:layout_height="wrap_content"
 				      android:enabled="false"
+				      android:layout_span="1" 
 				      android:text="@string/add_community" />
             
         </TableRow>
@@ -105,18 +91,31 @@
 
 				  <Button
 				      android:id="@+id/buttonHealthPromotions"
-				      android:layout_width="match_parent"
 				      android:layout_height="wrap_content"
 				      android:enabled="false"
+				      android:layout_span="1" 
 				      android:text="@string/HealthPromotion" />
             
         </TableRow>
         
-            
-        </TableLayout>
-
         <TableRow
-            android:id="@+id/tableRow7"
+            android:id="@+id/tableRow8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ListView
+                android:id="@+id/list"
+                android:layout_span="2" 
+                android:layout_height="wrap_content" >
+            </ListView>
+				  
+		</TableRow>		      
+       
+
+        
+        </TableLayout>
+		<LinearLayout
+    		android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -124,14 +123,15 @@
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
                 android:layout_height="96dp"
+                android:contentDescription="Ashesi Logo"
                 android:src="@drawable/ashesilogo" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="96dp"
+                android:contentDescription="STAR-Ghana"
                 android:src="@drawable/star_ghana" />
 
-        </TableRow>
-
+        </LinearLayout>
 </LinearLayout>

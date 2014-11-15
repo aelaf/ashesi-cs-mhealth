@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.data.Tasks;
 import com.ashesi.cs.mhealth.knowledge.ResourceMaterials;
 
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +79,17 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	
 	}
 	
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		if(currentCHO!=null){
+			ListView list=(ListView)findViewById(R.id.list);
+			Tasks tasks=new Tasks(this);
+			list.setAdapter(tasks.getTaskAdapterForTheMonth());
+		}
+		super.onStart();
+	}
+
 	@Override
 	public void onClick(View v) {
 		
@@ -132,6 +145,9 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		//findViewById(R.id.buttonAddCommunity).setEnabled(true);
 		textStatus.setText("application open");
 		textStatus.setTextColor(this.getResources().getColor(R.color.text_color_black));
+		ListView list=(ListView)findViewById(R.id.list);
+		Tasks tasks=new Tasks(this);
+		list.setAdapter(tasks.getTaskAdapterForTheMonth());
 	}
 	
 	private void logout(){
@@ -147,6 +163,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		EditText editCHO=(EditText)findViewById(R.id.editCHOName);
 		editCHO.setEnabled(true);
 		editCHO.setText("");
+		ListView list=(ListView)findViewById(R.id.list);
+		list.setAdapter(null);
 	}
 	
 	@Override

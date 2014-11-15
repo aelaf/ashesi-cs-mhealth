@@ -680,6 +680,7 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 	
+
 	/**
 	 * gets all new community members in a community 
 	 * @param communityId
@@ -723,6 +724,64 @@ public class CommunityMembers extends DataClass {
 			return list;
 		}
 	}
+
+	public ArrayList<CommunityMember> findCommunityMemberWithFPSchedule(int communityID,int startDate, int endDate, int page){
+		ArrayList<CommunityMember> list=new ArrayList<CommunityMember>();
+		try{
+			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+			Calendar calendar=Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_MONTH,startDate);
+			String firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			calendar=Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_MONTH,endDate);
+			String lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+			
+			String strOrder=orderBy+" "+direction;
+			
+			String limit="";
+			if(page>=0){
+				page=page*PAGE_SIZE;
+				limit=" limit "+page +"," +PAGE_SIZE;
+			}
+			
+			String strQuery="select "
+					+ FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS +"."+COMMUNITY_MEMBER_ID +" as "+ COMMUNITY_MEMBER_ID
+					+","+COMMUNITY_ID
+					+","+Communities.COMMUNITY_NAME
+					+","+COMMUNITY_MEMBER_NAME
+					+","+BIRTHDATE
+					+","+IS_BIRTHDATE_CONFIRMED
+					+","+GENDER
+					+","+CARD_NO
+					+","+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS +"."+REC_STATE
+					+","+NHIS_ID
+					+","+NHIS_EXPIRY_DATE
+					+" from " + FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS 
+					+" left join " +CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS 
+					+" using ("+CommunityMembers.COMMUNITY_MEMBER_ID +") "
+					+" where ("+FamilyPlanningRecords.SCHEDULE_DATE +">=\""+firstDateOfTheMonth +"\""
+					+" AND "+FamilyPlanningRecords.SCHEDULE_DATE +"<=\""+lastDateOfTheMonth +"\")"
+					+" order by "+ strOrder
+					+limit; 
+					
+			db=getReadableDatabase();		
+			cursor=db.rawQuery(strQuery, null);		
+			cursor.moveToFirst();
+			CommunityMember c=fetch();
+			while(c!=null){
+				list.add(c);
+				c=fetch();
+			}
+			close();
+			return list;
+			
+								
+		}catch(Exception ex){
+			return list;
+		}
+	}
+	
+	
 	/**
 	 * gets the number of community members with in a given age range. if both min and max age are 0, it will count all community members.
 	 * it groups the count by gender and community
@@ -1191,5 +1250,22 @@ public class CommunityMembers extends DataClass {
 		}catch(Exception ex){
 			return false;
 		}
+	}
+	
+	public int getCommunityMembersCount(){
+		try{
+			db=getReadableDatabase();
+			
+			String strQuery="select count(*) as NO_REC from "+ VIEW_NAME_COMMUNITY_MEMBERS;
+
+			cursor=db.rawQuery(strQuery,null);
+			cursor.moveToFirst();
+			int n=cursor.getInt(0);
+			close();
+			return n;
+		}catch(Exception ex){
+			return -1;
+		}
+		
 	}
 }
