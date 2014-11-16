@@ -9,6 +9,7 @@ import java.util.Calendar;
 
 import org.json.JSONObject;
 
+import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.CHPSZones;
 import com.ashesi.cs.mhealth.data.Communities;
@@ -33,20 +34,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class Synch extends Activity implements OnClickListener {
 	ProgressBar progressBar;
 	TextView textStatus;
-	Button buttonSynchCommunities;
+	Button buttonStartTask;
 	Button buttonSynchOPDCases;
 	Button buttonSynchVaccine;
 	Button buttonSynchBackup;
 	Button buttonSynchCancel;
 	Button buttonSynchRestore;
+	Spinner spinnerTasks;
+	int choId;
+	
 	AsyncTask task;
 	static final String SUPPORT_DATA_FILENAME="/mhealthsupportdata";
 	
@@ -55,23 +61,24 @@ public class Synch extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_synch);
 		
+		choId=getIntent().getIntExtra("choId", 0);
+		
 		progressBar=(ProgressBar)findViewById(R.id.progressBarSynchCommunity);
 		textStatus=(TextView)findViewById(R.id.textSynchStatus);
+		spinnerTasks=(Spinner)findViewById(R.id.spinnerTasks);
+		fillTaskSpinner();
 		try
 		{
-			buttonSynchCommunities=(Button)findViewById(R.id.buttonSynchCommunities);
-			buttonSynchCommunities.setOnClickListener(this);
+			buttonStartTask=(Button)findViewById(R.id.buttonStartTask);
+			buttonStartTask.setOnClickListener(this);
 		}catch(Exception ex){
 			Log.e("Synch", ex.getMessage());
 		}
-		buttonSynchOPDCases=(Button)findViewById(R.id.buttonSynchOPDCases);
-		buttonSynchOPDCases.setOnClickListener(this);
+		
 		buttonSynchCancel=(Button)findViewById(R.id.buttonSynchCancel);
 		buttonSynchCancel.setOnClickListener(this);
 		buttonSynchBackup=(Button)findViewById(R.id.buttonSynchBackup);
 		buttonSynchBackup.setOnClickListener(this);
-		buttonSynchVaccine=(Button)findViewById(R.id.buttonSynchVaccine);
-		buttonSynchVaccine.setOnClickListener(this);
 		buttonSynchRestore=(Button)findViewById(R.id.buttonSynchRestore);
 		buttonSynchRestore.setOnClickListener(this);
 		View buttonSychronizeData=findViewById(R.id.buttonSynchronizeData);
@@ -93,17 +100,12 @@ public class Synch extends Activity implements OnClickListener {
 		progressBar.setMax(5);
 		progressBar.setProgress(0);
 		switch(v.getId()){
-			case R.id.buttonSynchOPDCases:
-				downloadOPDcases();
-				break;
-			case R.id.buttonSynchCommunities:
-				downloadCommunities();
+			
+			case R.id.buttonStartTask:
+				startTask();
 				break;
 			case R.id.buttonSynchBackup:
 				backupData();
-				break;
-			case R.id.buttonSynchVaccine:
-				downloadVaccine();
 				break;
 			case R.id.buttonSynchRestore:
 				confirmRestore();
@@ -129,6 +131,28 @@ public class Synch extends Activity implements OnClickListener {
 	public void showError(String msg){
 		textStatus.setText(msg);
 		textStatus.setTextColor(this.getResources().getColor(R.color.text_color_error));
+	}
+	
+	public void startTask(){
+		//String tasks[]={"update community members", "update CHOs", "update OPD cases", "update vaccines","update all"};
+		int n=spinnerTasks.getSelectedItemPosition();
+		switch(n){
+			case 0:
+				downloadCommunities();
+				break;
+			case 1:
+				loadCHOFromFile();
+				break;
+			case 2:
+				downloadOPDcases();
+				break;
+			case 3:
+				downloadVaccine();
+				break;
+			case 4:
+				loadFamilyPlanningServicesFromFile();
+				break;
+		}
 	}
 	
 	public void downloadCommunities(){
@@ -174,6 +198,39 @@ public class Synch extends Activity implements OnClickListener {
 			Communities communities=new Communities(getApplicationContext());
 			communities.processDownloadData(data);
 			
+			CHOs chos=new CHOs(getApplicationContext());
+			chos.processDownloadData(data);
+			
+			CHPSZones zones=new CHPSZones(getApplicationContext());
+			zones.processDownloadData(data);
+			
+			progressBar.setProgress(5);
+			showStatus("complete");
+			fis.close();
+		}catch(Exception ex){
+			textStatus.setText("loading from file failed");
+		}
+	}
+	
+	public void loadCHOFromFile(){
+		try{
+			progressBar.setMax(5);
+			progressBar.setProgress(0);
+			showStatus("starting...");
+			
+			File downloadPath=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+			String communityFilename=downloadPath.getPath() + SUPPORT_DATA_FILENAME; 
+			FileInputStream fis=new FileInputStream(communityFilename);
+			
+			progressBar.setProgress(2);
+			showStatus("reading data file...");
+			
+			byte[] buffer=new byte[fis.available()];
+			fis.read(buffer);
+			String data=new String(buffer);
+			progressBar.setProgress(4);
+			showStatus("loading...");
+						
 			CHOs chos=new CHOs(getApplicationContext());
 			chos.processDownloadData(data);
 			
@@ -253,7 +310,6 @@ public class Synch extends Activity implements OnClickListener {
 		RadioButton radioLocalBackup=(RadioButton)findViewById(R.id.radioSynchLocalBackup);
 		if(radioLocalBackup.isChecked()){
 			loadVaccinesFromFile();
-			loadFamilyPlanningServicesFromFile();
 			return;
 		}
 		
@@ -436,8 +492,42 @@ public class Synch extends Activity implements OnClickListener {
 		dialog.show();
 		return true;
 	}
-	/*
 	
+	private void createUniqueCommunityMemberID(){
+		int done=0;
+		try{
+			done=this.getPreferences(MODE_PRIVATE).getInt("iss5", 0);
+			
+		}catch(Exception ex){
+			done=0;
+		}
+		if(done!=0){
+			return;
+		}
+		if(choId==0){
+			return;
+		}
+		CHOs chos=new CHOs(getApplicationContext());
+		CHO cho=chos.getCHO(choId);
+		if(cho==null){
+			textStatus.setText("fixing community member id failed");
+			return;
+		}
+		int chpsZoneId=cho.getCHPSZoneId();
+		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
+		SharedPreferences.Editor editor=this.getPreferences(MODE_PRIVATE).edit();
+		if(communityMembers.createUniqueCommunityMemberId(chpsZoneId)){
+			editor.putInt("iss4", 1);
+			textStatus.setText("fixing community member id done");
+		}else{
+			editor.putInt("iss4", 0);
+			textStatus.setText("fixing community member id failed");
+		}
+		editor.commit();
+		
+		
+	}
+	/*
 	// this method runs once only to correct birth dates stored in the wrong format
 	 
 	private void correctBirthdate(){
@@ -474,17 +564,18 @@ public class Synch extends Activity implements OnClickListener {
 	}
 	
 	public void disableButtons(){
-		buttonSynchCommunities.setEnabled(false);
-		buttonSynchOPDCases.setEnabled(false);
+		buttonStartTask.setEnabled(false);
 		buttonSynchBackup.setEnabled(false);
-		buttonSynchVaccine.setEnabled(false);
 	}
 	
 	public void enableButtons(){
-		buttonSynchCommunities.setEnabled(true);
-		buttonSynchOPDCases.setEnabled(true);
-		buttonSynchBackup.setEnabled(true);
-		buttonSynchVaccine.setEnabled(true);
+		buttonStartTask.setEnabled(true);
+	}
+	
+	public void fillTaskSpinner(){
+		String tasks[]={"update community members", "update CHOs", "update OPD cases", "update vaccines","update all"};
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.mhealth_simple_spinner,tasks);
+		spinnerTasks.setAdapter(adapter);
 	}
 	
 	private class DownloadCommunities extends AsyncTask<Integer, Integer, Integer> {
@@ -492,7 +583,7 @@ public class Synch extends Activity implements OnClickListener {
 		String strErrorMessage;
 		@Override
 		protected Integer doInBackground(Integer... n) {
-			// TODO Auto-generated method stub
+
 			try
 			{
 				if(n==null){

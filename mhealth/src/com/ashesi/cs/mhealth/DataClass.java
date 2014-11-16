@@ -888,8 +888,7 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		setDataVersion(db,DATABASE_NAME,14); 
 	}
-
-	
+		
 	public String getDataFilePath(){
 		db=this.getReadableDatabase();
 		String str=db.getPath();
@@ -930,8 +929,7 @@ public class DataClass extends SQLiteOpenHelper {
 		this.context = context;
 	}
 	
-	
-	
+
 /**
  * Synchronize data with server using data returned from other child classes.
  * @param theMainActivity A reference to the main activity, to provide context for this method.

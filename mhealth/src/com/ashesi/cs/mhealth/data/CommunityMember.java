@@ -7,7 +7,8 @@ import java.util.Locale;
 import org.json.JSONObject;
 
 public class CommunityMember {
-	private int id;	//TODO:ID Change
+	private int id;
+	private int serialNo;
 	private int communityId;
 	private String fullname;
 	private String birthdate;
@@ -20,6 +21,29 @@ public class CommunityMember {
 	private String nhisId;
 	private String nhisExpiryDate;
 	private boolean isBirthDateConfirmed;
+	
+		
+	CommunityMember(int id,int serialNo,int communityId,String fullname,String birthdate,int isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
+		this.id=id;
+		this.communityId=communityId;
+		this.fullname=fullname;
+		this.birthdate=birthdate;
+		this.gender=gender;
+		this.cardNo=cardNo;
+		this.recState=recState;
+		this.communityName=communityName;
+		this.nhisId="none";
+		this.nhisExpiryDate="";
+		if(isBirthDateConfirmed==1){
+			this.isBirthDateConfirmed=true;
+		}else{
+			this.isBirthDateConfirmed=false;
+		}
+		this.nhisId=nhisId;
+		this.nhisExpiryDate=nhisExpiryDate;
+		this.serialNo=serialNo;
+		
+	}
 	
 	//TODO:ID CHANGE
 	CommunityMember(int id,int communityId,String fullname,String birthdate,boolean isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
@@ -179,7 +203,7 @@ public class CommunityMember {
 	public String getGender(){
 		return gender;
 	}
-	//TODO:id change
+
 	public int getId(){
 		return id;
 	}
@@ -204,6 +228,10 @@ public class CommunityMember {
 		return nhisId;
 	}
 
+	public int getSerialNo(){
+		return serialNo;
+	}
+	
 	public String getNHISExpiryDate(){
 		return nhisExpiryDate;
 	}

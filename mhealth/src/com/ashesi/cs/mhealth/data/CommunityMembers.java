@@ -41,7 +41,7 @@ public class CommunityMembers extends DataClass {
 	
 	public static final String VIEW_NAME_COMMUNITY_MEMBERS="view_community_members";
 	
-	String[] columns={COMMUNITY_MEMBER_ID,COMMUNITY_ID,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE,FIRST_ACCESS_DATE,Communities.COMMUNITY_NAME};
+	String[] columns={COMMUNITY_MEMBER_ID,SERIAL_NO,COMMUNITY_ID,COMMUNITY_MEMBER_NAME,BIRTHDATE,IS_BIRTHDATE_CONFIRMED,GENDER,CARD_NO,REC_STATE,NHIS_ID,NHIS_EXPIRY_DATE,FIRST_ACCESS_DATE,Communities.COMMUNITY_NAME};
 	
 	
 	public CommunityMembers(Context context){
@@ -144,9 +144,10 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 	//TODO: id change
-	public int getNextId(){
+	public int getNextId(int chpsZoneId){
 		try
 		{
+		
 			db=getReadableDatabase();
 			String [] columns={"MAX(" +SERIAL_NO+")"};
 			cursor=db.query(TABLE_NAME_COMMUNITY_MEMBERS,columns, null, null, null, null, null);
@@ -158,12 +159,13 @@ public class CommunityMembers extends DataClass {
 			cursor.moveToFirst();
 			int id=cursor.getInt(0);
 			close();
-			return id+1;
+			return (chpsZoneId*1000000)+(id+1);
 		}catch(Exception ex){
 			close();
 			return 0;
 		}
 	}
+	
 	/**
 	 * add community member to table
 	 * @param id if id supplied it will be used, other with a new id is generated
@@ -177,13 +179,14 @@ public class CommunityMembers extends DataClass {
 	 * @param nhisExpiryDate
 	 * @return
 	 */
-	public int addCommunityMember(int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate,boolean newClient){
+	public int addCommunityMember(int chpsZoneId,int id, int community_id, String communityMemberName,Date birthdate,boolean isBirthDateConfirmed,String gender,String cardNo,String nhisId,Date nhisExpiryDate,boolean newClient){
+		
 		try
 		{
 			
 			//TODO: id change
 			if(id==0){
-				id=getNextId();
+				id=getNextId(chpsZoneId);
 			}
 			db=getWritableDatabase();
 			ContentValues cv=new ContentValues();
@@ -333,6 +336,29 @@ public class CommunityMembers extends DataClass {
 			Log.e("CommunityMembers.confirmBirthdate", "Exception "+ex.getMessage());
 			return false;
 		}
+	}
+	
+	public boolean createUniqueCommunityMemberId(int chpsZoneId){
+		//get each community member
+		//give it a new id
+		//update all records :OPD,Vaccine,FamilyPlanning
+		db=getWritableDatabase();
+		int newId=0;
+		int oldId=0;
+		CommunityMember member;
+		CommunityMembers members=new CommunityMembers(getContext());			
+		ArrayList<CommunityMember> list=members.getAllCommunityMember(0);
+		for(int i=0;i<list.size();i++){
+			member=list.get(i);
+			oldId=member.getId();
+			newId=(chpsZoneId*100000)+member.getSerialNo();
+			db.execSQL("update "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+			db.execSQL("update "+VaccineRecords.TABLE_NAME_VACCINE_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+			db.execSQL("update "+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+			db.execSQL("update "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+		}
+		
+		return true;
 	}
 	
 	public boolean unconfirmBirthDate(int id){
@@ -1040,13 +1066,21 @@ public class CommunityMembers extends DataClass {
 			index=cursor.getColumnIndex(NHIS_EXPIRY_DATE);
 			String nhisExpiryDate=cursor.getString(index);
 			
+			int serialNo=0;
+			index=cursor.getColumnIndex(SERIAL_NO);
+			if(index>=0){
+				serialNo=cursor.getInt(index);
+			}
+			
 			index=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
 			String communityName="";
+			
 			if(index>=0){
 				communityName=cursor.getString(index);
 			}
 			
-			CommunityMember c=new CommunityMember(id,communityID,name,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate);
+			//(id,serialNo,communityId,fullname,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate)
+			CommunityMember c=new CommunityMember(id, serialNo, communityID,name,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate);
 			cursor.moveToNext();
 			return c;
 		}
@@ -1218,6 +1252,7 @@ public class CommunityMembers extends DataClass {
 				+NHIS_ID+", "
 				+NHIS_EXPIRY_DATE+", "
 				+FIRST_ACCESS_DATE+", "
+				+CommunityMembers.SERIAL_NO+","
 				+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+"."+DataClass.REC_STATE+", "
 				+" ((julianday('now')-julianday("+CommunityMembers.BIRTHDATE+"))/366) as "+CommunityMembers.AGE+", "
 				+Communities.COMMUNITY_NAME
@@ -1232,7 +1267,7 @@ public class CommunityMembers extends DataClass {
 	 */
 	public boolean reomveCommunityMember(int id){
 		CommunityMember cm=this.getCommunityMember(id);
-		if(cm.getRecState()!=DataClass.REC_STATE_NEW){
+		if(cm.getRecState()!=DataClass.REC_STATE_DELETED){
 			return false;
 		}
 		
@@ -1253,7 +1288,6 @@ public class CommunityMembers extends DataClass {
 		}
 	}
 	
-
 	public int getCommunityMembersCount(){
 		try{
 			db=getReadableDatabase();

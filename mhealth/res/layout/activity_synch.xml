@@ -42,30 +42,20 @@
             android:layout_height="wrap_content"
             android:text="@string/local" />
     </RadioGroup>
-
+	
+    <Spinner
+        android:id="@+id/spinnerTasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    
     <Button
-        android:id="@+id/buttonSynchCommunities"
+        android:id="@+id/buttonStartTask"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/updateCommunityData" />
 
-    <Button
-        android:id="@+id/buttonSynchOPDCases"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/updateOpdCases" />
-
-    <Button
-        android:id="@+id/buttonSynchVaccine"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/updateVaccineData" />
-
-
-
+    
     <Button
             android:id="@+id/buttonSynchBackup"
             style="?android:attr/buttonStyleSmall"

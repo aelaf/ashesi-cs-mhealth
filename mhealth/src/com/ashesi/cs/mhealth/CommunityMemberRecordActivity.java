@@ -731,7 +731,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			boolean confirmed=(!birthDateNotConfirmed);
 			
 			if(state==STATE_NEW_MEMBER){
-				int id=members.addCommunityMember(0, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate,newClient);
+				int id=members.addCommunityMember(currentCHO.getCHPSZoneId(),0, communityId, name, birthdate,confirmed, gender,cardNo,nhisId,nhisExpiryDate,newClient);
 				if(id!=0){
 					communityMemberId=id;
 					setCommunityMemberId(id); //make the new id available to the other fragments through the activity
