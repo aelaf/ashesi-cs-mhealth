@@ -951,8 +951,8 @@ public class DataClass extends SQLiteOpenHelper {
 	        		return;
 	        	}
 	        	String result= request(response);
-	        	String tailEnd=result.substring(result.length()-100, result.length()-1);
-	        	Log.v("nnaResult", tailEnd);
+	        	//String tailEnd=result.substring(result.length()-100, result.length()-1);
+	        	//Log.v("nnaResult", tailEnd);
 	        	//now write to db
 	        	if (result.endsWith(":OK")  ){
 	        		if (result.endsWith("failed:OK")  ){
@@ -983,7 +983,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        		
 	        		
 	        	}
-	        	//Log.v("DataClass.threadedPost",result);
+	        	Log.v("DataClass.threadedPost",result);
 	        	
 	        }
 		}).start();
