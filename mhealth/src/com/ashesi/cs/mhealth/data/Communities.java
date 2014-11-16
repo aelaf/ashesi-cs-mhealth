@@ -246,7 +246,8 @@ public class Communities extends DataClass {
 	public String fetchSQLDumpToUpload(){
 		StringBuilder communitiesData= new StringBuilder(" (community_id, community_name, subdistrict_id, latitude, longitude, population, household) VALUES ");    	 
     	ArrayList<Community> communitiesRawData= getCommunties(0);
-    	if(communitiesRawData.size()!=0){
+    	
+    	if(communitiesRawData.size()!=0){    	
 	    	 for(Community oneCommunity: communitiesRawData){    		 
 	    		 communitiesData.append("('"+oneCommunity.getId()+"',");  //includes starting brace
 	    		 communitiesData.append("'"+oneCommunity.getCommunityName()+"',");
@@ -255,14 +256,22 @@ public class Communities extends DataClass {
 	    		 communitiesData.append("'"+oneCommunity.getLongitude()+"',");
 	    		 communitiesData.append("'"+oneCommunity.getPopulation()+"',");
 	    		 communitiesData.append("'"+oneCommunity.getHousehold()+"'),");  //with closing brace and starting comma. 
-	    		 																//Need to remove comma after the last
+	    		// System.out.println(oneCommunity.getId()+" "+oneCommunity.getCommunityName()+" "+oneCommunity.getSubdistrictId()+" "+oneCommunity.getLatitude());	 		//Need to remove comma after the last
 	    	 }
-	    	 if (communitiesData.length()>0)
-	    	 communitiesData.setLength(communitiesData.length()-1);   //more efficient than deleting last character.
-	    	 return communitiesData.toString();	    	 
+	    	 if (communitiesData.length()>0){
+	    		 //System.out.println("length= "+communitiesData.length());
+	    		 communitiesData.setLength(communitiesData.length()-1);   //more efficient than deleting last character.
+	    		 //System.out.println(communitiesData.toString());
+	    		 //String x= communitiesData.toString();
+	    		 //System.out.println("Lenght from string ="+x.length());
+	    		 //System.out.println("New string x____________________="+x);
+	    	 }
+	    	 //System.out.println(communitiesData.toString());
+	    	 return communitiesData.toString();
     	}else{
     		return null;
     	}
+    	
 	}
 
 }

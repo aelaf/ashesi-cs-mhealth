@@ -76,16 +76,16 @@ public class OPDCaseRecords extends DataClass {
 			}
 			String fullname="";
 			String opdCaseName="";
-			String lab=OPDCaseRecords.LAB_NOT_CONFIRMED;
+			String lab=OPDCaseRecords.LAB_NOT_CONFIRMED;			
 			int index=cursor.getColumnIndex(REC_NO);
 			int recNo=cursor.getInt(index);
 			index=cursor.getColumnIndex(CommunityMembers.COMMUNITY_MEMBER_ID);
 			int communityMemberId=cursor.getInt(index);
 			index=cursor.getColumnIndex(OPDCases.OPD_CASE_ID);
-			int opdCaseId=cursor.getInt(index);
+			int opdCaseId=cursor.getInt(index);			
 			index=cursor.getColumnIndex(REC_DATE);
 			String recDate=cursor.getString(index);
-			index=cursor.getColumnIndex(CHOs.CHO_ID);
+			index=cursor.getColumnIndex(CHOs.CHO_ID);			
 			int choId=cursor.getInt(index);
 			index=cursor.getColumnIndex(CommunityMembers.COMMUNITY_MEMBER_NAME);
 			if(index>=0){
