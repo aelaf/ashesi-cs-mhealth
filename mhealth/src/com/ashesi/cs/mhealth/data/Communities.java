@@ -3,6 +3,7 @@ package com.ashesi.cs.mhealth.data;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -240,6 +241,28 @@ public class Communities extends DataClass {
 			return false;
 		}
 		
+	}
+	
+	public String fetchSQLDumpToUpload(){
+		StringBuilder communitiesData= new StringBuilder(" (community_id, community_name, subdistrict_id, latitude, longitude, population, household) VALUES ");    	 
+    	ArrayList<Community> communitiesRawData= getCommunties(0);
+    	if(communitiesRawData.size()!=0){
+	    	 for(Community oneCommunity: communitiesRawData){    		 
+	    		 communitiesData.append("('"+oneCommunity.getId()+"',");  //includes starting brace
+	    		 communitiesData.append("'"+oneCommunity.getCommunityName()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getSubdistrictId()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getLatitude()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getLongitude()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getPopulation()+"',");
+	    		 communitiesData.append("'"+oneCommunity.getHousehold()+"'),");  //with closing brace and starting comma. 
+	    		 																//Need to remove comma after the last
+	    	 }
+	    	 if (communitiesData.length()>0)
+	    	 communitiesData.setLength(communitiesData.length()-1);   //more efficient than deleting last character.
+	    	 return communitiesData.toString();	    	 
+    	}else{
+    		return null;
+    	}
 	}
 
 }

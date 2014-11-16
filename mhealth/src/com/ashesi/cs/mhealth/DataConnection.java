@@ -34,7 +34,7 @@ public class DataConnection {
 	public static final String SERVER_URL="http://cs2.ashesi.edu.gh/~www_developer/yaresa/";
 	public static final int CONNECTION_TIMEOUT=60000;
 	public static final String KNOWLEDGE_URL="knowledge/";
-	public static final String RECORD_URL="record/";
+	public static final String RECORD_URL="mobile/";
 	
 	Context context;
 	String strError;

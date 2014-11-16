@@ -46,7 +46,7 @@ public class OPDCaseRecords extends DataClass {
 	 */
 	public boolean getCommunityMemberOPDCases(int communityMemberId){
 		try
-		{
+		{//TODO: id change
 			db=getReadableDatabase();
 			String[] columns={REC_NO,CommunityMembers.COMMUNITY_MEMBER_ID, OPDCases.OPD_CASE_ID,
 						CommunityMembers.COMMUNITY_MEMBER_NAME,OPD_CASE_NAME,REC_DATE,LAB,CHOs.CHO_ID};
@@ -624,8 +624,7 @@ public class OPDCaseRecords extends DataClass {
 	}	
 	
 	public String fetchSQLDumpToUpload(){
-   	 StringBuilder OPDCasesData = new StringBuilder("Replace into community_members_opd_cases  " +
- 	 		"(rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");
+   	 StringBuilder OPDCasesData = new StringBuilder(" (rec_no, community_member_id, opd_case_id, cho_id, rec_date, server_rec_no, rec_state, lab) VALUES ");
    	 
    	getCommunityMemberOPDCases(0); //in order to create a cursor.
  	 ArrayList<OPDCaseRecord> OPDCaseRecordsRawData= getArrayList();

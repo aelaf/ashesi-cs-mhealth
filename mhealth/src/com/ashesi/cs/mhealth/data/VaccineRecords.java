@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import android.content.ContentValues;
 import android.content.Context;
 
@@ -120,7 +122,7 @@ public class VaccineRecords extends DataClass {
 	 * modified by NAmanquah to return all rows if communityMemberID is 0
 	 */
 	public ArrayList<VaccineRecord> getVaccineRecords(int communityMemberId){
-		ArrayList<VaccineRecord> list=new ArrayList<VaccineRecord>();
+		ArrayList<VaccineRecord> list=new ArrayList<VaccineRecord>();//TODO: id change
 		try{
 			db=getReadableDatabase();
 			String sql= VaccineRecords.getVaccineRecordSQLString() 
@@ -347,5 +349,25 @@ public class VaccineRecords extends DataClass {
 				+" left join "+Vaccines.TABLE_NAME_VACCINES 
 				+" on "+ TABLE_NAME_VACCINE_RECORDS+ "."+Vaccines.VACCINE_ID +"="
 						+Vaccines.TABLE_NAME_VACCINES +"." +Vaccines.VACCINE_ID;
+	}
+	
+	public String fetchSQLDumpToUpload(){
+		 StringBuilder vaccineRecordsData = new StringBuilder(" (vaccine_rec_id, vaccine_id, community_member_id, vaccine_date, rec_state) VALUES ");
+     	 ArrayList<VaccineRecord> vaccineRecordsRawData=getVaccineRecords(0);
+     	 if(vaccineRecordsRawData.size()!=0){
+	     	 for(VaccineRecord oneVaccineRecord: vaccineRecordsRawData){    		 
+	     		vaccineRecordsData.append("('"+oneVaccineRecord.getId()+"',");  //includes starting brace,
+	     		vaccineRecordsData.append("'"+oneVaccineRecord.getVaccineId()+"',");
+	     		vaccineRecordsData.append("'"+oneVaccineRecord.getCommunityMemberId()+"',");
+	     		vaccineRecordsData.append("'"+oneVaccineRecord.getVaccineDate()+"',");  
+	     		vaccineRecordsData.append("'"+"'),"); //missing record state
+	     	
+	    	 }
+	     	 
+	     	return  vaccineRecordsData.toString();
+	     	
+     	 }else{
+     		 return null;
+     	 }
 	}
 } 

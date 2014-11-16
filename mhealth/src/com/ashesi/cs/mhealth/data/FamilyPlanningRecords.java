@@ -228,7 +228,7 @@ public class FamilyPlanningRecords extends DataClass {
 	 * @return
 	 */
 	public FamilyPlanningRecord addRecord(int communityMemberId, int serviceId, Date serviceDate){
-		return addRecord(communityMemberId,serviceId,serviceDate,0);
+		return addRecord(communityMemberId,serviceId,serviceDate,0);//TODO: id change
 
 	}
 	
@@ -323,6 +323,26 @@ public class FamilyPlanningRecords extends DataClass {
 			return list;
 		}catch(Exception ex){
 			return list;
+		}
+		
+	}
+	
+	/**
+	 * Get all community member
+	 * @param communityMemberId
+	 * @return
+	 */
+	public boolean getAllServiceRecords(){
+		ArrayList<FamilyPlanningRecord> list=new ArrayList<FamilyPlanningRecord>();
+		try{
+			db=getReadableDatabase();
+			String sql= FamilyPlanningRecords.getServiceRecordSQLString(); 
+		
+			cursor=db.rawQuery(sql, null);
+			
+			return true;
+		}catch(Exception ex){
+			return false;
 		}
 		
 	}
@@ -562,6 +582,38 @@ public class FamilyPlanningRecords extends DataClass {
 				+" left join "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES 
 				+" on "+ TABLE_NAME_FAMILY_PLANNING_RECORDS+ "."+FamilyPlanningServices.SERVICE_ID +"="
 						+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES +"." +FamilyPlanningServices.SERVICE_ID;
+	}
+
+
+	public String fetchSQLDumpToUpload(){
+		StringBuilder familyPlanningData = new StringBuilder("("
+				 					+SERVICE_REC_ID+","
+				 					+FamilyPlanningServices.SERVICE_ID+","
+				 					+CommunityMembers.COMMUNITY_MEMBER_ID+","
+				 					+SERVICE_DATE+","
+				 					+SCHEDULE_DATE+","
+				 					+QUANTITY+" ,"
+				 					+SERVICE_TYPE
+				 				    +") VALUES ");
+		 this.getAllServiceRecords();
+		 FamilyPlanningRecord record=fetch();
+		 while(record!=null){
+			 familyPlanningData.append("("+ record.getId());
+			 familyPlanningData.append(","+record.getFamilyPlanningServiceId());
+			 familyPlanningData.append(","+record.getCommunityMemberId());
+			 familyPlanningData.append(",'"+record.getServiceDate()+"'");
+			 familyPlanningData.append(",'"+record.getScheduleDate()+"'");
+			 familyPlanningData.append(","+record.getQuantity());
+			 familyPlanningData.append(","+record.getServiceType());
+			 record=fetch();
+			 
+			 if(record==null){
+				 familyPlanningData.append(")");	//the last one
+			 }else{
+				 familyPlanningData.append("),");
+			 }
+		 }
+		 return familyPlanningData.toString();
 	}
 
 } 
