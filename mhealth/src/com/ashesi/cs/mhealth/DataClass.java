@@ -307,7 +307,7 @@ public class DataClass extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public  HttpResponse postRequest(String urlAddress, List<NameValuePair> nameValuePairs){
-		urlAddress=mServerUrl+urlAddress;
+		//urlAddress=mServerUrl+urlAddress;  //a fully formed URL is passed. -commented by NA
 		
 		System.out.println("Making a Post Request");
 		Log.d("URL", urlAddress);
@@ -943,14 +943,13 @@ public class DataClass extends SQLiteOpenHelper {
 	        	//obtain the data to post, save them as key value pairs
 	        	List<NameValuePair> nameValuePairs=getDataToPost( theMainActivity);
 	        	
-	        	
 	        	//List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	        	//nameValuePairs.addAll(allData);
 	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
 	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
 		        
 	        	String urlAddress= SERVER_URL+DataConnection.RECORD_URL+MOBILE_APPLICATION_PATH;//"mhealth_android/mhealth_android.php";
-
+     
 	        	HttpResponse response=postRequest(urlAddress, nameValuePairs);
 	        	if(response==null){
 	        		//This entire class is a background thread. Need to run this Toast on the UI thread.
@@ -962,6 +961,8 @@ public class DataClass extends SQLiteOpenHelper {
 	        		return;
 	        	}
 	        	String result= request(response);
+	        	//String tailEnd=result.substring(result.length()-100, result.length()-1);
+	        	//Log.v("nnaResult", tailEnd);
 	        	//now write to db
 	        	if (result.endsWith(":OK")  ){
 	        		if (result.endsWith("failed:OK")  ){
@@ -992,7 +993,7 @@ public class DataClass extends SQLiteOpenHelper {
 	        		
 	        		
 	        	}
-	        	Log.v("mHealthDebug",result);
+	        	Log.v("DataClass.threadedPost",result);
 	        	
 	        }
 		}).start();

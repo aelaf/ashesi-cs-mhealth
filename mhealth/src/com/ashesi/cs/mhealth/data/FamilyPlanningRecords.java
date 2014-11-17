@@ -613,6 +613,7 @@ public class FamilyPlanningRecords extends DataClass {
 				 familyPlanningData.append("),");
 			 }
 		 }
+		// familyPlanningData.setLength(Math.max(familyPlanningData.length() - 1, 0))  ; //dispense with explicit check if length>0
 		 return familyPlanningData.toString();
 	}
 

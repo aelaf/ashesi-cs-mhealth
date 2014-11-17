@@ -363,7 +363,7 @@ public class VaccineRecords extends DataClass {
 	     		vaccineRecordsData.append("'"+"'),"); //missing record state
 	     	
 	    	 }
-	     	 
+	     	vaccineRecordsData.setLength(Math.max(vaccineRecordsData.length() - 1, 0))  ; //dispense with explicit check if length>0 
 	     	return  vaccineRecordsData.toString();
 	     	
      	 }else{
