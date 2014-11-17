@@ -159,7 +159,7 @@ public class CommunityMembers extends DataClass {
 			cursor.moveToFirst();
 			int id=cursor.getInt(0);
 			close();
-			return (chpsZoneId*1000000)+(id+1);
+			return (id+1);
 		}catch(Exception ex){
 			close();
 			return 0;
@@ -185,14 +185,15 @@ public class CommunityMembers extends DataClass {
 		{
 			
 			//TODO: id change
+			int serialNo=0;
 			if(id==0){
-				id=getNextId(chpsZoneId);
+				serialNo=getNextId(chpsZoneId);
 			}
 			db=getWritableDatabase();
 			ContentValues cv=new ContentValues();
-			
+			id=(chpsZoneId*1000000)+serialNo;
 			cv.put(COMMUNITY_MEMBER_ID, id);
-			cv.put(SERIAL_NO, id);
+			cv.put(SERIAL_NO, serialNo);
 			cv.put(COMMUNITY_ID, community_id);
 			cv.put(COMMUNITY_MEMBER_NAME, communityMemberName);
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
@@ -1266,10 +1267,8 @@ public class CommunityMembers extends DataClass {
 	 * @return
 	 */
 	public boolean reomveCommunityMember(int id){
-		CommunityMember cm=this.getCommunityMember(id);
-		if(cm.getRecState()!=DataClass.REC_STATE_DELETED){
-			return false;
-		}
+		//CommunityMember cm=this.getCommunityMember(id);
+		
 		
 		try{
 			db=getReadableDatabase();
