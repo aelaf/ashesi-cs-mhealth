@@ -343,23 +343,33 @@ public class CommunityMembers extends DataClass {
 		//get each community member
 		//give it a new id
 		//update all records :OPD,Vaccine,FamilyPlanning
-		db=getWritableDatabase();
+		db=getReadableDatabase();
+		SQLiteDatabase dbw=getWritableDatabase();	//for editing
+		
 		int newId=0;
 		int oldId=0;
 		CommunityMember member;
-		CommunityMembers members=new CommunityMembers(getContext());			
-		ArrayList<CommunityMember> list=members.getAllCommunityMember(0);
-		for(int i=0;i<list.size();i++){
-			member=list.get(i);
-			oldId=member.getId();
-			newId=(chpsZoneId*100000)+member.getSerialNo();
-			db.execSQL("update "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-			db.execSQL("update "+VaccineRecords.TABLE_NAME_VACCINE_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-			db.execSQL("update "+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-			db.execSQL("update "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+		cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, null,null, null, null, null );
+		try{
+			member=fetch();
+			while(member!=null){
+
+				oldId=member.getId();
+				newId=(chpsZoneId*100000)+member.getSerialNo();
+				dbw.execSQL("update "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+				dbw.execSQL("update "+VaccineRecords.TABLE_NAME_VACCINE_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+				dbw.execSQL("update "+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+				dbw.execSQL("update "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+				member=fetch();
+			}
+		
+			dbw.close();
+			close();
+			return true;
+		}catch(Exception ex){
+			return false;
 		}
 		
-		return true;
 	}
 	
 	public boolean unconfirmBirthDate(int id){

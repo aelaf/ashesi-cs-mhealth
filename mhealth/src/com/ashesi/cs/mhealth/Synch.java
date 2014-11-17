@@ -134,23 +134,27 @@ public class Synch extends Activity implements OnClickListener {
 	}
 	
 	public void startTask(){
-		//String tasks[]={"update community members", "update CHOs", "update OPD cases", "update vaccines","update all"};
+		
+		//{"select task","update community members", "update CHOs", "update OPD cases", "update vaccines","update family planning items","update all"};
 		int n=spinnerTasks.getSelectedItemPosition();
 		switch(n){
-			case 0:
+			case 1:
 				downloadCommunities();
 				break;
-			case 1:
+			case 2:
 				loadCHOFromFile();
 				break;
-			case 2:
+			case 3:
 				downloadOPDcases();
 				break;
-			case 3:
+			case 4:
 				downloadVaccine();
 				break;
-			case 4:
+			case 5:
 				loadFamilyPlanningServicesFromFile();
+				break;
+			case 6:
+				//update all
 				break;
 		}
 	}
@@ -427,7 +431,7 @@ public class Synch extends Activity implements OnClickListener {
 			fis.close();
 			progressBar.setProgress(5);
 			showStatus("local backup complete");
-			//correctBirthdate(); 					//call  to correct birth dates recorded in yyyy-mm-d form instead of yyyy-mm-dd 	
+			createUniqueCommunityMemberID(); 					//call  to correct birth dates recorded in yyyy-mm-d form instead of yyyy-mm-dd 	
 		}catch(Exception ex){
 			showError("local backup fialed");
 		}
@@ -494,6 +498,10 @@ public class Synch extends Activity implements OnClickListener {
 	}
 	
 	private void createUniqueCommunityMemberID(){
+		if(spinnerTasks.getSelectedItemPosition()!=6){
+			return;
+		}
+		
 		int done=0;
 		try{
 			done=this.getPreferences(MODE_PRIVATE).getInt("iss5", 0);
@@ -501,9 +509,9 @@ public class Synch extends Activity implements OnClickListener {
 		}catch(Exception ex){
 			done=0;
 		}
-		if(done!=0){
-			return;
-		}
+		//if(done!=0){
+		//	return;
+		//}
 		if(choId==0){
 			return;
 		}
@@ -517,10 +525,10 @@ public class Synch extends Activity implements OnClickListener {
 		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
 		SharedPreferences.Editor editor=this.getPreferences(MODE_PRIVATE).edit();
 		if(communityMembers.createUniqueCommunityMemberId(chpsZoneId)){
-			editor.putInt("iss4", 1);
+			editor.putInt("iss5", 1);
 			textStatus.setText("fixing community member id done");
 		}else{
-			editor.putInt("iss4", 0);
+			editor.putInt("iss5", 0);
 			textStatus.setText("fixing community member id failed");
 		}
 		editor.commit();
@@ -573,7 +581,7 @@ public class Synch extends Activity implements OnClickListener {
 	}
 	
 	public void fillTaskSpinner(){
-		String tasks[]={"update community members", "update CHOs", "update OPD cases", "update vaccines","update all"};
+		String tasks[]={"select task","update community members", "update CHOs", "update OPD cases", "update vaccines","update family planning items","update all"};
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.mhealth_simple_spinner,tasks);
 		spinnerTasks.setAdapter(adapter);
 	}

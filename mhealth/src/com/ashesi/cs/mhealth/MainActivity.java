@@ -223,6 +223,7 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	 */
 	private boolean synch(){
 		Intent intent=new Intent(this,Synch.class);
+		intent.putExtra("choId",choId);
 		startActivity(intent);
 
 		return true;

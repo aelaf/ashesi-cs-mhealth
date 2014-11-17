@@ -159,4 +159,5 @@
 	<string name="continuing">Continuing</string>
 	<string name="newClient">New Client</string>
 	<string name="oldClient">Old Client</string>
+	<string name="startTask">Start Task</string>
 </resources>
