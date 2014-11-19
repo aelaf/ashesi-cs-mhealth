@@ -165,6 +165,9 @@ public class Synch extends Activity implements OnClickListener {
 			case 6:
 				//update all
 				break;
+			default:
+				showStatus("select task");
+				break;
 		}
 	}
 	
@@ -550,15 +553,18 @@ public class Synch extends Activity implements OnClickListener {
 	
 	public void disableButtons(){
 		buttonStartTask.setEnabled(false);
+		spinnerTasks.setEnabled(false);
 		buttonSynchBackup.setEnabled(false);
 	}
 	
 	public void enableButtons(){
 		buttonStartTask.setEnabled(true);
+		spinnerTasks.setEnabled(true);
+		buttonSynchBackup.setEnabled(true);
 	}
 	
 	public void fillTaskSpinner(){
-		String tasks[]={"select task","update community members", "update CHOs", "update OPD cases", "update vaccines","update family planning items","update all"};
+		String tasks[]={"select task","update communities", "update CHOs", "update OPD cases", "update vaccines","update family planning items","update all"};
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,R.layout.mhealth_simple_spinner,tasks);
 		spinnerTasks.setAdapter(adapter);
 	}
