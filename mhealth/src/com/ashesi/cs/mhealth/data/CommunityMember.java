@@ -21,8 +21,31 @@ public class CommunityMember {
 	private String nhisId;
 	private String nhisExpiryDate;
 	private boolean isBirthDateConfirmed;
+	private String firstAccessDate;
 	
+	CommunityMember(int id,int serialNo,int communityId,String fullname,String birthdate,int isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate, String fristAccessDate){
+		this.id=id;
+		this.communityId=communityId;
+		this.fullname=fullname;
+		this.birthdate=birthdate;
+		this.gender=gender;
+		this.cardNo=cardNo;
+		this.recState=recState;
+		this.communityName=communityName;
+		this.nhisId="none";
+		this.nhisExpiryDate="";
+		if(isBirthDateConfirmed==1){
+			this.isBirthDateConfirmed=true;
+		}else{
+			this.isBirthDateConfirmed=false;
+		}
+		this.nhisId=nhisId;
+		this.nhisExpiryDate=nhisExpiryDate;
+		this.serialNo=serialNo;
+		this.firstAccessDate=firstAccessDate;
 		
+	}
+	
 	CommunityMember(int id,int serialNo,int communityId,String fullname,String birthdate,int isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
 		this.id=id;
 		this.communityId=communityId;
@@ -45,7 +68,6 @@ public class CommunityMember {
 		
 	}
 	
-	//TODO:ID CHANGE
 	CommunityMember(int id,int communityId,String fullname,String birthdate,boolean isBirthDateConfirmed, String gender,String cardNo,int recState,String communityName,String nhisId, String nhisExpiryDate){
 		this.id=id;
 		this.communityId=communityId;
@@ -285,6 +307,9 @@ public class CommunityMember {
 		return recState;
 	}
 	
+	public String getFirstAccessDate(){
+		return this.firstAccessDate;
+	}
 	public String getJSON(){
 		try{
 			JSONObject obj=new JSONObject();

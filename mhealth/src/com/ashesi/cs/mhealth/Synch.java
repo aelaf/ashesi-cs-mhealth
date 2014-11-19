@@ -5,19 +5,28 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.ashesi.cs.mhealth.data.CHO;
 import com.ashesi.cs.mhealth.data.CHOs;
 import com.ashesi.cs.mhealth.data.CHPSZones;
 import com.ashesi.cs.mhealth.data.Communities;
+import com.ashesi.cs.mhealth.data.CommunityMember;
 import com.ashesi.cs.mhealth.data.CommunityMembers;
+import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
 import com.ashesi.cs.mhealth.data.FamilyPlanningServices;
 import com.ashesi.cs.mhealth.data.OPDCaseCategories;
+import com.ashesi.cs.mhealth.data.OPDCaseRecords;
 import com.ashesi.cs.mhealth.data.OPDCases;
 import com.ashesi.cs.mhealth.data.R;
+import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.R.layout;
 import com.ashesi.cs.mhealth.data.R.menu;
 import com.ashesi.cs.mhealth.data.Vaccines;
@@ -40,6 +49,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Synch extends Activity implements OnClickListener {
 	ProgressBar progressBar;
@@ -114,10 +124,9 @@ public class Synch extends Activity implements OnClickListener {
 				cancel();
 				break;
 			case R.id.buttonSynchronizeData: //synch data
-				DataClass data= new DataClass(getApplicationContext());
-				Log.v("mhealthDebug1_main activity","before thread");
-				data.threadedPost(Synch.this);
-				Log.v("mhealthDebug1_main activity","after thread");
+				UploadData up=new UploadData();
+				Integer[] n={1};
+				up.execute(n);
 				break;
 		}
 	}
@@ -502,16 +511,15 @@ public class Synch extends Activity implements OnClickListener {
 			return;
 		}
 		
-		int done=0;
+		/*int done=0;
 		try{
 			done=this.getPreferences(MODE_PRIVATE).getInt("iss5", 0);
 			
 		}catch(Exception ex){
 			done=0;
-		}
-		//if(done!=0){
-		//	return;
-		//}
+		}*/
+		
+		
 		if(choId==0){
 			return;
 		}
@@ -521,46 +529,15 @@ public class Synch extends Activity implements OnClickListener {
 			textStatus.setText("fixing community member id failed");
 			return;
 		}
-		int chpsZoneId=cho.getCHPSZoneId();
-		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
-		SharedPreferences.Editor editor=this.getPreferences(MODE_PRIVATE).edit();
-		if(communityMembers.createUniqueCommunityMemberId(chpsZoneId)){
-			editor.putInt("iss5", 1);
-			textStatus.setText("fixing community member id done");
-		}else{
-			editor.putInt("iss5", 0);
-			textStatus.setText("fixing community member id failed");
-		}
-		editor.commit();
+		UpdateID updateID=new UpdateID();
+		Integer[] n={1};
+		updateID.execute(n);
+		
+		
 		
 		
 	}
-	/*
-	// this method runs once only to correct birth dates stored in the wrong format
-	 
-	private void correctBirthdate(){
-		int done=0;
-		try{
-			done=this.getPreferences(MODE_PRIVATE).getInt("iss4", 0);
-			
-		}catch(Exception ex){
-			done=0;
-		}
-		if(done!=0){
-			return;
-		}
-		CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
-		SharedPreferences.Editor editor=this.getPreferences(MODE_PRIVATE).edit();
-		if(communityMembers.correctBirthdate()){
-			editor.putInt("iss4", 1);
-			textStatus.setText("local backup complete birthdate corrected");
-		}else{
-			editor.putInt("iss4", 0);
-			textStatus.setText("local backup complete birthdate failed to correct");
-		}
-		editor.commit();
-	}
-	*/
+	
 	public void cancel(){
 		if(task==null){
 			return;
@@ -745,4 +722,222 @@ public class Synch extends Activity implements OnClickListener {
 		
 		
 	}
+	/**
+	 * this class is just to update the ID once
+	 * @author Aelaf Dafla
+	 *
+	 */
+	private class UpdateID extends AsyncTask<Integer,Integer,Integer>{
+
+		String strResultMessage;
+		@Override
+		protected Integer doInBackground(Integer... n) {
+			
+			try
+			{
+				Integer[] progress={1};
+
+				CHOs chos=new CHOs(getApplicationContext());
+				CHO cho=chos.getCHO(choId);
+				if(cho==null){
+					textStatus.setText("fixing community member id failed");
+					return 0;
+				}
+				int chpsZoneId=cho.getCHPSZoneId();
+
+				CommunityMembers communityMembers=new CommunityMembers(getApplicationContext());
+				ArrayList<CommunityMember> members=communityMembers.getAllCommunityMember(0);
+				progressBar.setMax(members.size());
+				for(int i=0;i<members.size();i++){
+					communityMembers.updateCommunityMemberId(chpsZoneId, members.get(i));
+					progress[0]=i;
+					publishProgress(progress);
+				}
+				return 1;
+			}catch(Exception ex){
+				Log.e("BackupData.doInBackground",ex.getMessage());
+				return 0;
+			}
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result){
+			SharedPreferences.Editor editor=getPreferences(MODE_PRIVATE).edit();
+			//if(communityMembers.createUniqueCommunityMemberId(chpsZoneId)){
+			if(result!=0){
+				editor.putInt("iss5", 1);
+				textStatus.setText("fixing community member id done");
+			}else{
+				editor.putInt("iss5", 0);
+				textStatus.setText("fixing community member id failed");
+			}
+			editor.commit();
+			
+		}
+		
+		 protected void onProgressUpdate(Integer... progress) {
+				
+			 if(progress==null){
+				 return;
+			 }
+			 if(progress.length<=0){
+				 return;
+			 }
+			 
+			 showStatus("updating "+progress[0]);
+			
+			 progressBar.setProgress(progress[0]);
+	     }
+		
+		
+	}
+	
+	private class UploadData extends AsyncTask<Integer,Integer,Integer>{
+
+		@Override
+		protected void onPreExecute() {
+			showStatus("uploading data");
+			progressBar.setMax(8);
+			progressBar.setProgress(0);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Integer doInBackground(Integer... n) {
+
+			try
+			{
+				
+				Integer[] progress={1};
+
+				List<NameValuePair> nameValuePairs=getDataToPost();
+	        	
+	        	//List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	        	//nameValuePairs.addAll(allData);
+	        	nameValuePairs.add(new BasicNameValuePair("data1", "my long data to post"));
+	        	nameValuePairs.add(new BasicNameValuePair("action", "UPLOAD_SAVED_DATA"));
+		        
+	        	String urlAddress= DataClass.SERVER_URL+DataConnection.RECORD_URL+DataClass.MOBILE_APPLICATION_PATH;//"mhealth_android/mhealth_android.php";
+	        	DataClass dc=new DataClass(getApplicationContext());
+	        	HttpResponse response=dc.postRequest(urlAddress, nameValuePairs);
+	        	if(response==null){
+	        		return 0;
+	        	}
+	        	progress[0]=7;
+				publishProgress(progress);
+				
+				String result= dc.request(response);
+				progress[0]=8;
+				publishProgress(progress);
+				if (result.endsWith(":OK")  ){
+	        		if (result.endsWith("failed:OK")  ){
+	        			return 0;
+	        		}
+	        		
+	        		if (result.endsWith("success:OK")  ){
+		        		return 1;
+		        	}
+	        		
+	        	}else
+	        	{
+	        		return 0;
+	        	}
+				
+				return 1;
+			}catch(Exception ex){
+				Log.e("BackupData.doInBackground",ex.getMessage());
+				return 0;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Integer result){
+			
+			if(result!=0){
+				textStatus.setText("upload successfull");
+			}else{
+				textStatus.setText("upload failed");
+			}
+		}
+
+		protected void onProgressUpdate(Integer... progress) {
+			if(progress[0]<6){
+				showStatus("preparing data for upload.");
+			}else if(progress[0]==6){
+				showStatus("please wait, this will take some time.");
+			}else if(progress[0]==7){
+				showStatus("waiting for response.");
+			}else{
+				showStatus("uploading.");
+			}
+			progressBar.setProgress(progress[0]);
+		}
+
+
+		/**
+		 * 
+		 * @param theMainActivity the active activity that forms the current app context
+		 * @return the key-value list of data feteched from local db, and prepared as REPLACE into SQL statements.
+		 * 			which can be directly executed on remote server. The return value is a list of NameValuePairs.
+		 * @author namanquah
+		 * 
+		 */
+		public List<NameValuePair> getDataToPost(){
+			/*
+			 * the coupling between this function and the PHP script:
+			 * the $_POST[] variables are fixed here. eg
+			 * $_POST["communities"]
+			 * See all occurrences of returnValues.add(new BasicNameValuePair("key"...
+			 * 
+			 * The set of data collected are for:
+			 * communities,  communityMembers, community_members_opd_cases, vaccine_records
+			 */
+			Integer[] progress={1};
+			List<NameValuePair> returnValues = new ArrayList<NameValuePair>();
+
+			String str= new Communities(getApplicationContext()).fetchSQLDumpToUpload();
+			if(str!=null){
+				returnValues.add(new BasicNameValuePair("communities", str));
+			}
+
+			progress[0]=1;
+			publishProgress(progress);
+
+			//community_members:
+			str= new CommunityMembers(getApplicationContext()).fetchSQLDumpToUpload();
+
+			if(str!=null){
+				returnValues.add(new BasicNameValuePair("communitymembers", str));
+			}
+			progress[0]=2;
+			publishProgress(progress);
+
+			//OPDCases
+			str=  new OPDCaseRecords(getApplicationContext()).fetchSQLDumpToUpload();
+			if(str!=null){
+				returnValues.add(new BasicNameValuePair("OPDCaseData",str));
+			}
+			progress[0]=3;
+			publishProgress(progress);
+			//VaccineRecords    
+			str=new VaccineRecords(getApplicationContext()).fetchSQLDumpToUpload();
+			if(str!=null){
+				returnValues.add(new BasicNameValuePair("vaccine_records", str));
+			}
+			progress[0]=4;
+			publishProgress(progress);
+			//family planing records
+			str=new FamilyPlanningRecords(getApplicationContext()).fetchSQLDumpToUpload();
+			if(str!=null){
+				returnValues.add(new BasicNameValuePair("family_planning_records",str));
+			}
+			progress[0]=5;
+			publishProgress(progress);
+			return returnValues;
+		}
+
+
+	}
+
+	
 }

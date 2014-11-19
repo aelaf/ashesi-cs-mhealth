@@ -338,33 +338,18 @@ public class CommunityMembers extends DataClass {
 			return false;
 		}
 	}
-	
-	public boolean createUniqueCommunityMemberId(int chpsZoneId){
-		//get each community member
-		//give it a new id
-		//update all records :OPD,Vaccine,FamilyPlanning
-		db=getReadableDatabase();
-		SQLiteDatabase dbw=getWritableDatabase();	//for editing
 		
+	public boolean updateCommunityMemberId(int chpsZoneId,CommunityMember member){
 		int newId=0;
 		int oldId=0;
-		CommunityMember member;
-		cursor=db.query(VIEW_NAME_COMMUNITY_MEMBERS, columns, null,null, null, null, null );
+		db=getWritableDatabase();	//for editing
 		try{
-			member=fetch();
-			while(member!=null){
-
-				oldId=member.getId();
-				newId=(chpsZoneId*100000)+member.getSerialNo();
-				dbw.execSQL("update "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-				dbw.execSQL("update "+VaccineRecords.TABLE_NAME_VACCINE_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-				dbw.execSQL("update "+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-				dbw.execSQL("update "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
-				member=fetch();
-			}
-		
-			dbw.close();
-			close();
+			oldId=member.getId();
+			newId=(chpsZoneId*100000)+member.getSerialNo();
+			db.execSQL("update "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+			db.execSQL("update "+VaccineRecords.TABLE_NAME_VACCINE_RECORDS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+			db.execSQL("update "+OPDCaseRecords.TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
+			db.execSQL("update "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" set "+CommunityMembers.COMMUNITY_MEMBER_ID +"=" +newId +" where "+CommunityMembers.COMMUNITY_MEMBER_ID+"="+oldId);
 			return true;
 		}catch(Exception ex){
 			return false;
@@ -1085,13 +1070,17 @@ public class CommunityMembers extends DataClass {
 			
 			index=cursor.getColumnIndex(Communities.COMMUNITY_NAME);
 			String communityName="";
-			
 			if(index>=0){
 				communityName=cursor.getString(index);
 			}
 			
-			//(id,serialNo,communityId,fullname,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate)
-			CommunityMember c=new CommunityMember(id, serialNo, communityID,name,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate);
+			index=cursor.getColumnIndex(FIRST_ACCESS_DATE);
+			String firstAccessDate="1900-01-01";
+			if(index>=0){
+				firstAccessDate=cursor.getString(index);
+			}
+			
+			CommunityMember c=new CommunityMember(id, serialNo, communityID,name,birthdate,isBirthDateConfirmed,gender,cardNo,recState,communityName,nhisId,nhisExpiryDate,firstAccessDate);
 			cursor.moveToNext();
 			return c;
 		}
@@ -1316,7 +1305,7 @@ public class CommunityMembers extends DataClass {
 	public String fetchSQLDumpToUpload(){
 		StringBuilder communityMembersData= new StringBuilder("  (community_member_id, " +
     	 		"serial_no, community_id, community_member_surname, community_member_other_names, birthdate, gender, " +
-    	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed) VALUES ");
+    	 		"card_no, nhis_id, nhis_expiry_date, rec_state, is_birthdate_confirmed,first_access_date) VALUES ");
     	 ArrayList<CommunityMember> communityMembersRawData=getAllCommunityMember(0);
     	 if (communityMembersRawData.size()!=0){
     	 
@@ -1332,6 +1321,7 @@ public class CommunityMembers extends DataClass {
 	    		 communityMembersData.append("'"+oneCommunityMember.getNHISId()+"',");
 	    		 communityMembersData.append("'"+oneCommunityMember.getNHISExpiryDate()+"',");
 	    		 communityMembersData.append("'"+oneCommunityMember.getRecState()+"',");
+	    		 communityMembersData.append("'"+oneCommunityMember.getFirstAccessDate()+"',");
 	    		 communityMembersData.append("'"+"'),"); //****for is_birthdate_confirmed is not returned. //this includes )    		 
 	    	 }
 	    	 communityMembersData.setLength(Math.max(communityMembersData.length() - 1, 0))  ; //dispense with explicit check if length>0
