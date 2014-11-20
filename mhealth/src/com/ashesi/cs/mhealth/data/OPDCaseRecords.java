@@ -382,6 +382,7 @@ public class OPDCaseRecords extends DataClass {
 				    +" from  "
 					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
 					+" where "
+					+ strNewClientFilter  +" AND "
 					+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
 					+ filter
 					+" group by "
@@ -511,12 +512,12 @@ public class OPDCaseRecords extends DataClass {
 			db=getReadableDatabase();
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			Calendar calendar=Calendar.getInstance();
-			String firstDateOfTheMonth=dateFormat.format(calendar.getTime());
+			String endDate=dateFormat.format(calendar.getTime());
 			calendar.add(Calendar.DAY_OF_MONTH, -30);
-			String lastDateOfTheMonth=dateFormat.format(calendar.getTime());
+			String startDate=dateFormat.format(calendar.getTime());
 			String strQuery="select count(*) as NO_REC from " +OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES
-					+" where ("+OPDCaseRecords.REC_DATE +">=\""+firstDateOfTheMonth +"\""
-					+" AND "+OPDCaseRecords.REC_DATE +"<=\""+lastDateOfTheMonth +"\")";
+					+" where ("+OPDCaseRecords.REC_DATE +">=\""+startDate +"\""
+					+" AND "+OPDCaseRecords.REC_DATE +"<=\""+endDate +"\")";
 			
 			cursor=db.rawQuery(strQuery,null);
 			cursor.moveToFirst();

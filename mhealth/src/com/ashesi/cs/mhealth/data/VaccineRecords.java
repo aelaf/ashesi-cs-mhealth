@@ -306,7 +306,7 @@ public class VaccineRecords extends DataClass {
 	
 	public int getVaccineCountForTheMonth(){
 		Calendar calendar=Calendar.getInstance();
-		int past=calendar.get(Calendar.DAY_OF_MONTH);
+		int past=calendar.get(Calendar.DAY_OF_MONTH)*(-1);
 		int future=calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-past;
 		
 		return getNumberCommunityMembersToVaccine(past,future);

@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -114,7 +115,8 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 				Intent knowledge = new Intent(this,KnowledgeActivity.class);
 				knowledge.putExtra("choId", currentCHO.getId());
 				startActivity(knowledge);
-				break;				
+				break;	
+				
 		}
 	}
 	
@@ -148,6 +150,12 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		ListView list=(ListView)findViewById(R.id.list);
 		Tasks tasks=new Tasks(this);
 		list.setAdapter(tasks.getTaskAdapterForTheMonth());
+		list.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+				openRecordFromTask(position);
+			}
+		});
 	}
 	
 	private void logout(){
@@ -227,6 +235,31 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 		startActivity(intent);
 
 		return true;
+	}
+	
+	private void openRecordFromTask(int position){
+		Intent intent=new Intent(this,CommunityActivity.class);
+		intent.putExtra("choId", currentCHO.getId());
+		switch(position){
+			case 1:
+				intent.putExtra("searchOption", 6);
+				startActivity(intent);
+				break;
+			case 3:
+				intent.putExtra("searchOption", 4);
+				startActivity(intent);
+				break;
+			case 2:
+				intent.putExtra("searchOption", 8);
+				startActivity(intent);
+				break;
+			case 5:
+				intent.putExtra("searchOption", 0);
+				startActivity(intent);
+				break;
+		}
+	
+	
 	}
 	
 	@Override

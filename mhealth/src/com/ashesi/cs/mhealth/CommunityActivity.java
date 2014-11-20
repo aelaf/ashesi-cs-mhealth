@@ -73,10 +73,12 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		int choId=intent.getIntExtra("choId", 0);
 		CHOs chos=new CHOs(getApplicationContext());
 		currentCHO=chos.getCHO(choId);
+		int searchOption=intent.getIntExtra("searchOption", 0);
 		
 		loadSortSpinner();
 		loadCommunitySpinner();
-		loadSearchTypeSpinner();
+		loadSearchTypeSpinner(searchOption);
+		find();
 	}
 
 	@Override
@@ -131,6 +133,10 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 		int sortType=getSelectedSortType();
 		members.setOrder(sortType,0);	//ascending 
 		//listCommunityMembers=members.findCommunityMember(commmunityId, communityMemberName);
+		//{0"All in Community",1"By Name",2"By Card No",3"NHIS expiring",4"OPD in last 30 days", 
+		//	5"Vaccine in a week",6"Vaccine This Month",7"Vaccine Next Month",8"FP appointment",
+		//9"Under 2 yr",10"By Age",11"Count",12"New Clients",
+		//	};
 		switch(searchType){
 			case 0:	//get all in community	
 				listCommunityMembers=members.getAllCommunityMember(communityId,page);
@@ -142,15 +148,31 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 				listCommunityMembers=members.findCommunityMemberWithCardNo(communityId, searchText, page);
 				break;
 			case 3: //search NHIS expiring
+				txtCommunityName.setText("");
 				listCommunityMembers=members.findCommunityMemberInsuranceExpiring(communityId, page);
 				break;
 			case 4:	//opd in the last 30 days
+				txtCommunityName.setText("");
 				listCommunityMembers=members.findCommunityMemberWithRecord(communityId, page);
 				break;
 			case 5: //vaccine within 7 days
+				txtCommunityName.setText("");
 				listCommunityMembers=members.findCommunityMemberWithScheduled(communityId, 7, page);
+
 				break;
-			case 6:// by age
+			case 6: //Vaccine This Month
+				txtCommunityName.setText("");
+				listCommunityMembers=members.findCommunityMembersWithVaccineThisMonth(communityId,page);		
+				break;
+			case 7: //Vaccine Next Month
+				txtCommunityName.setText("");
+				listCommunityMembers=members.findCommunityMembersWithVaccineNextMonth(communityId,page);
+				break;
+			case 8:	//FP appointment
+				txtCommunityName.setText("");
+				listCommunityMembers=members.findCommunityMemberWithFPSchedule(communityId, -2, 30, page);				
+				break;
+			case 9:// by age
 				int ageMax=0;
 				int ageMin=0;
 				try{
@@ -170,22 +192,21 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 				
 				listCommunityMembers=members.findCommunityMemberWithAge(communityId, ageMin,ageMax, page);
 				break;
-			case 7: // children
+			case 10: // children
 				txtCommunityName.setText("under 2 years");
 				listCommunityMembers=members.findCommunityMemberWithAge(communityId, 0,2, page);
 				break;
-			case 8: //count community members
+			case 11: //count community members
+				txtCommunityName.setText("");
 				countCommunityMembers();
 				return; // dont go any further because the method deals with display
 
-			case 9: //count community members
+			case 12: //count community members
+				txtCommunityName.setText("");
 				listCommunityMembers=members.findNewCommunityMember(communityId,page);
 				break; // dont go any further because the method deals with display				
-			case 10:
-				listCommunityMembers=members.findCommunityMemberWithFPSchedule(communityId, -2, 30, page);
-				break;
-
 			default:
+				txtCommunityName.setText("");
 				listCommunityMembers=members.findCommunityMember(communityId,searchText, page);
 				break;
 				
@@ -288,12 +309,15 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 	}
 	
 	
-	public boolean loadSearchTypeSpinner(){
+	public boolean loadSearchTypeSpinner(int searchOption){
 
-		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", "Vaccine in a week","By Age","Under 2 yr","Count","New Clients","FP appointment"};
+		String searchTypes[]={"All in Community","By Name","By Card No","NHIS expiring","OPD in last 30 days", 
+						"Vaccine in a week","Vaccine This Month","Vaccine Next Month","FP appointment","By Age",
+						"Under 2 yr","Count","New Clients"};
 		Spinner spinner=(Spinner)findViewById(R.id.spinnerSearchType);
 		ArrayAdapter<String> adapter=new ArrayAdapter<String>(getApplicationContext(),R.layout.mhealth_simple_spinner,searchTypes);
 		spinner.setAdapter(adapter);
+		spinner.setSelection(searchOption);
 		return true;
 	}
 	

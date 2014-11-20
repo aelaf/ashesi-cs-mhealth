@@ -101,7 +101,7 @@ public class OPDCaseCategories extends DataClass {
 		add(8,"IO");
 		add(9,"Referral");
 		add(10,"Other Cases");
-		add(11,"Mental Health Extended");
+		add(11,"Mental Health Ext");
 		return true;
 	
 	}
