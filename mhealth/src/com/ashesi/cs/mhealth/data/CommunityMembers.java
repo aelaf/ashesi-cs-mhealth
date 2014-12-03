@@ -587,19 +587,20 @@ public class CommunityMembers extends DataClass {
 		Calendar calendar=Calendar.getInstance();
 		int past=calendar.get(Calendar.DAY_OF_MONTH);
 		int future=calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-past;
-		return findCommunityMemberWithScheduled(communityID,past*(-1), future,page);
+		return findCommunityMemberWithScheduled(communityID,past, future*(-1),page);
 	}
 	
 	public ArrayList<CommunityMember> findCommunityMembersWithVaccineNextMonth(int communityID, int page){
 		Calendar calendar=Calendar.getInstance();
 		int past=calendar.get(Calendar.DAY_OF_MONTH);
+		past=calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-past;
 		calendar.add(Calendar.MONTH, 1); //go to next month
 		int future=calendar.getActualMaximum(Calendar.DAY_OF_MONTH)+past;
-		return findCommunityMemberWithScheduled(communityID,past, future,page);
+		return findCommunityMemberWithScheduled(communityID,past*(-1), future*(-1),page);
 	}
 	
 	public ArrayList<CommunityMember> findCommunityMemberWithScheduled(int communityID,int scheduledIn, int page){
-		return findCommunityMemberWithScheduled(communityID,scheduledIn*(-1), scheduledIn,page);
+		return findCommunityMemberWithScheduled(communityID,scheduledIn, scheduledIn*(-1),page);
 	}
 	
 	public ArrayList<CommunityMember> findCommunityMemberWithScheduled(int communityID,int past, int future, int page){		
@@ -622,8 +623,8 @@ public class CommunityMembers extends DataClass {
 							+" inner join "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
 							+" using (" + CommunityMembers.COMMUNITY_MEMBER_ID +")"
 							+" where  ("
-							+ Vaccines.SCHEDULED_ON +" < " +future
-							+" AND "+Vaccines.SCHEDULED_ON +"> " +past +")"; 
+							+ Vaccines.SCHEDULED_ON +" > " +future
+							+" AND "+Vaccines.SCHEDULED_ON +"< " +past +")"; 
 		
 		if(communityID!=0){
 			strQuery+= " AND "+ COMMUNITY_ID+"="+communityID;
