@@ -161,9 +161,10 @@ public class ReportActivity extends FragmentActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			//OPD and Vaccination report use DummySectionFragment
-			//0: OPD
-			//1: Vaccination
-			//2: FamilyPlanning
+			//0: OPD Cases
+			//1: OPD Number
+			//2: Vaccination
+			//3: FamilyPlanning
 			Fragment fragment = new ReportFragment();
 			Bundle args = new Bundle();
 			args.putInt(ReportFragment.ARG_SECTION_NUMBER, position);
@@ -173,7 +174,7 @@ public class ReportActivity extends FragmentActivity implements
 
 		@Override
 		public int getCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
@@ -183,8 +184,10 @@ public class ReportActivity extends FragmentActivity implements
 			case 0:
 				return getString(R.string.title_report_opdsection).toUpperCase(l);
 			case 1:
-				return getString(R.string.title_report_vaccine).toUpperCase(l);
+				return "No Clients";
 			case 2:
+				return getString(R.string.title_report_vaccine).toUpperCase(l);
+			case 3:
 				return "Family Plan";//getString("Family Plan").toUpperCase(l);
 			}
 			return null;
@@ -201,7 +204,7 @@ public class ReportActivity extends FragmentActivity implements
 		 * fragment.
 		 */
 		int sectionNumber=0;
-		int mode=1;
+		int mode=0;
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private String[] ageGroups={"Total","under 28 days", "1m-11m","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70yr"};
 		private String[] vaccineAgeGroups={"Total","under 12m","12-23","above 24m"};
@@ -245,20 +248,14 @@ public class ReportActivity extends FragmentActivity implements
 			TextView reportTitle = (TextView) rootView.findViewById(R.id.section_label);
 				switch(sectionNumber){
 				case 0:
-					
-					if(mode==2){
-						reportTitle.setText("OPD: No Community Members");
-						loadReportTotalData(rootView,false);
-					}else if(mode==3){
-						reportTitle.setText("OPD: No New Community Members");
-						loadReportTotalData(rootView,true);
-					}else{
-						reportTitle.setText("OPD: No Cases");
+						reportTitle.setText("OPD Cases");
 						loadOPDReportData(rootView);
-					}
-					break;
+						break;
 				case 1:
-					if(mode==2 && mode==3){
+					loadReportTotalData(rootView);
+					break;
+				case 2:
+					if(mode>=1){
 						reportTitle.setText("Vaccination: No Community Members");
 						loadVaccinationReportTotalData(rootView);
 					}else{
@@ -267,8 +264,8 @@ public class ReportActivity extends FragmentActivity implements
 					}
 
 					break;
-				case 2:
-					if(mode==2 && mode==3){
+				case 3:
+					if(mode>=1){
 						reportTitle.setText("Family Planning: No Community Members");
 						loadFamilyPlanningReportTotalData(rootView);
 					}else{
@@ -309,7 +306,8 @@ public class ReportActivity extends FragmentActivity implements
 			}
 		}
 		
-		private void loadReportTotalData(View rootView,boolean newClient){
+		private void loadReportTotalData(View rootView){
+			TextView reportTitle = (TextView) rootView.findViewById(R.id.section_label);
 			GridView gridView=(GridView)rootView.findViewById(R.id.gridView1);
 			
 			int ageGroup=getSelectedAgeGroup();
@@ -321,11 +319,19 @@ public class ReportActivity extends FragmentActivity implements
 			String[] headers={"Community","Gender","No Members"};
 			OPDCaseRecords opdCaseRecords=new OPDCaseRecords(this.getActivity().getApplicationContext());
 			ArrayList<String> list;
-			if(newClient){
-				list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup,1);
-			}else{
-				list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup,0);
+			if(mode==OPDCaseRecords.REPORT_MODE_ALL){
+				reportTitle.setText("Number of community members");
+			}else if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_INSURED){
+				reportTitle.setText("Number of new insured community members");
+			}else if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_NON_INSURED){
+				reportTitle.setText("Number of new non-insured community members");
+			}else if(mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_INSURED){
+				reportTitle.setText("Number of old insured community members");
+			}else if(mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_NON_INSURED){
+				reportTitle.setText("Number of old non-insured community members");
 			}
+			
+			list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup,mode);
 			if(list==null){
 				ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, headers);
 				gridView.setAdapter(adapter);
@@ -447,10 +453,34 @@ public class ReportActivity extends FragmentActivity implements
 		}
 
 		private void modeButtonClicked(){
-			mode=mode+1;
-			if(mode>3){		//if more than maximum reset;
-				mode=1;
+			switch(sectionNumber){
+				case 0:			//opd cases
+					mode=0;
+					break;
+				case 1:			//opd cases community members count
+					mode=mode+1;
+					if(mode>4){	
+						mode=0;
+					}
+					break;
+				case 2:			//vaccine
+					mode=mode+1;
+					if(mode>1){		
+						mode=0;
+					}
+					break;
+				case 3:			//family planning
+					mode=mode+1;
+					if(mode>1){		
+						mode=0;
+					}
+					break;
+				default:
+					mode=0;
+					break;
+					
 			}
+			
 			loadData(this.getView());
 		}
 		
@@ -487,8 +517,10 @@ public class ReportActivity extends FragmentActivity implements
 			if(sectionNumber==0){
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
 			}else if(sectionNumber==1){
-				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,vaccineAgeGroups);
+				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
 			}else if(sectionNumber==2){
+				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,vaccineAgeGroups);
+			}else if(sectionNumber==3){
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,familyPlanAgeGroups);
 			}else{
 				adapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_dropdown_item_1line,ageGroups);
@@ -509,13 +541,12 @@ public class ReportActivity extends FragmentActivity implements
 		}
 		
 		private void fillYearSpinner(View rootView){
-			String[] strYears=new String[2];
-			//TODO: year drop down should be field based on records available 
-			//get the lowest date on record and populate from today's year to the final year  
+			String[] strYears=new String[3];
+			//TODO: year drop down should be field based on records available  
 			int year=Calendar.getInstance().get(Calendar.YEAR); //this year
 			strYears[0]=Integer.toString(year);
 			strYears[1]=Integer.toString((year-1));
-			strYears[1]=Integer.toString((year-2));
+			strYears[2]=Integer.toString((year-2));
 			
 			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
 			ArrayAdapter<String> adapter=new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,strYears);

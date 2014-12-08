@@ -32,6 +32,12 @@ public class OPDCaseRecords extends DataClass {
 	public static final int GROUP_BY_GENDER=3;
 	public static final int GROUP_BY_NONE=0;
 	
+	public static final int REPORT_MODE_ALL=0;
+	public static final int REPORT_MODE_NEW_CLIENT_INSURED=1;
+	public static final int REPORT_MODE_NEW_CLIENT_NON_INSURED=2;
+	public static final int REPORT_MODE_OLD_CLIENT_INSURED=3;
+	public static final int REPORT_MODE_OLD_CLIENT_NON_INSURED=4;
+	
 	//define age range
 	private double[] ageLimit={0,0.076712329,1,5,10,15,18,20,35,50,60,70};
 	
@@ -280,7 +286,7 @@ public class OPDCaseRecords extends DataClass {
 	 * @param gender
 	 * @return
 	 */
-	public ArrayList<String> getMontlyTotalsReport(int month,int year, int ageRange, int  newClient){
+	public ArrayList<String> getMontlyTotalsReport(int month,int year, int ageRange, int mode){
 		//query report for the age range, period grouped by gender and OPD case
 		ArrayList<String>list=new ArrayList<String>();
 		//define period for the report
@@ -323,14 +329,21 @@ public class OPDCaseRecords extends DataClass {
 			}
 		}
 
+		
 		String strNewClientFilter=" 1 ";
-		if(newClient==1){	//new
+		if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_INSURED || mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_NON_INSURED){	//new
 			//Registered with in the elected period
 			strNewClientFilter= "("+CommunityMembers.FIRST_ACCESS_DATE +">=\""+ firstDateOfTheMonth +"\" AND "
 								+CommunityMembers.FIRST_ACCESS_DATE +"<=\""+ lastDateOfTheMonth+"\")";
-		}else if(newClient==2){ //old
-			//Registered with in the elected period
+		}else if(mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_INSURED || mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_NON_INSURED){ //old
+			//Registered before the elected period
 			strNewClientFilter= "("+CommunityMembers.FIRST_ACCESS_DATE +"<\""+ firstDateOfTheMonth +"\")";
+		}
+		String strInsuredFilter=" 1 ";
+		if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_INSURED || mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_INSURED){//insured
+			strInsuredFilter="( "+CommunityMembers.NHIS_ID +"!='none'" + ")"; 
+		}else if ( mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_NON_INSURED || mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_NON_INSURED ){ //not insured
+			strInsuredFilter="( "+CommunityMembers.NHIS_ID +"='none'" + ")";
 		}
 		String filter=" (select "
 				+ CommunityMembers.COMMUNITY_MEMBER_ID 
@@ -352,6 +365,7 @@ public class OPDCaseRecords extends DataClass {
 							+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
 							+" where "
 							+ strNewClientFilter  +" AND "
+							+  strInsuredFilter +" AND "
 							+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
 							+ filter
 							+" group by " +CommunityMembers.GENDER;
@@ -383,6 +397,7 @@ public class OPDCaseRecords extends DataClass {
 					+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
 					+" where "
 					+ strNewClientFilter  +" AND "
+					+  strInsuredFilter +" AND "
 					+ CommunityMembers.COMMUNITY_MEMBER_ID +" in "
 					+ filter
 					+" group by "

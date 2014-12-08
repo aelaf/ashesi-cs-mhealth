@@ -57,9 +57,12 @@ public class DetailReport extends Activity implements OnClickListener {
 				showOPDDetail();
 				break;
 			case 1:
-				showVaccineDetail();
+				showOPDDetail();
 				break;
 			case 2:
+				showVaccineDetail();
+				break;
+			case 3:
 				showFamilyPlanningDetail();
 				break;	
 		}

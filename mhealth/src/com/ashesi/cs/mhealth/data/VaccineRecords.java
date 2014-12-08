@@ -289,7 +289,7 @@ public class VaccineRecords extends DataClass {
 								" from " + Vaccines.VIEW_PENDING_VACCINES +" inner join "
 								+ CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS
 								+" using ("+CommunityMembers.COMMUNITY_MEMBER_ID+ ") "
-								+" where   (scheduled_on> "+past+" AND scheduled_on < "+future
+								+" where   (scheduled_on < "+past+" AND scheduled_on > "+future
 								+") group by "+CommunityMembers.COMMUNITY_MEMBER_ID+")";
 								
 					
@@ -306,10 +306,10 @@ public class VaccineRecords extends DataClass {
 	
 	public int getVaccineCountForTheMonth(){
 		Calendar calendar=Calendar.getInstance();
-		int past=calendar.get(Calendar.DAY_OF_MONTH)*(-1);
+		int past=calendar.get(Calendar.DAY_OF_MONTH);
 		int future=calendar.getActualMaximum(Calendar.DAY_OF_MONTH)-past;
 		
-		return getNumberCommunityMembersToVaccine(past,future);
+		return getNumberCommunityMembersToVaccine(past,future*(-1));
 	}
 	
 	public static String getVaccineRecordSQLString(){
