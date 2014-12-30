@@ -737,7 +737,7 @@ public class CommunityMembers extends DataClass {
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
 			Calendar calendar=Calendar.getInstance();
 			calendar.set(Calendar.DAY_OF_MONTH,1);
-			String selector= CommunityMembers.FIRST_ACCESS_DATE +">"+dateFormat.format(calendar.getTime());
+			String selector= CommunityMembers.FIRST_ACCESS_DATE +">="+dateFormat.format(calendar.getTime());
 			
 			if(communityId!=0){
 				selector+=" AND " +COMMUNITY_ID+"="+communityId;

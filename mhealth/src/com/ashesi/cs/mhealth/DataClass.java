@@ -680,19 +680,19 @@ public class DataClass extends SQLiteOpenHelper {
 			}
 			
 			if(oldVersion<=9){
-				upgradeToVersion10(db);
+				upgradeToVersion10(db,oldVersion);
 			}
 			
 			if(oldVersion<=10){
-				upgradeToVersion11(db);
+				upgradeToVersion11(db,oldVersion);
 			}
 			
 			if(oldVersion<=11){
-				upgradeToVersion12(db);
+				upgradeToVersion12(db,oldVersion);
 			}
 
 			if(oldVersion<=12){
-				upgradeToVersion13(db);
+				upgradeToVersion13(db,oldVersion);
 			}
 			
 			if(oldVersion<=13){
@@ -745,8 +745,8 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL("drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);
 		db.execSQL(OPDCaseRecords.getCreateViewString());
 		
-		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
-		db.execSQL(CommunityMembers.getViewCreateSQLString());
+		//db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
+		//db.execSQL(CommunityMembers.getViewCreateSQLString());	//create in the last update after all changes
 		
 		setDataVersion(db,DATABASE_NAME,4); 			//note down the database version
 	}
@@ -788,11 +788,9 @@ public class DataClass extends SQLiteOpenHelper {
 		db.execSQL("alter table "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS +" add column "+CommunityMembers.IS_BIRTHDATE_CONFIRMED +" integer default "+CommunityMembers.BIRTHDATE_NOT_CONFIRMED);
 		
 		//recreate community member view with IS_BIRTHDATE_CONFIRM column
-		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
-		db.execSQL(CommunityMembers.getViewCreateSQLString());
-		
-
-
+		//create in the last update after all changes
+		//db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
+		//db.execSQL(CommunityMembers.getViewCreateSQLString()); 
 		setDataVersion(db,DATABASE_NAME,6);
 	}
 		
@@ -819,7 +817,7 @@ public class DataClass extends SQLiteOpenHelper {
 	
 	private void upgradeToVersion8(SQLiteDatabase db){
 		//updates the family planing and vaccine record views for querying based on gender
-		db.execSQL("drop view "+ VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL);
+		db.execSQL("drop view if exists "+ VaccineRecords.VIEW_NAME_VACCINE_RECORDS_DETAIL);
 		db.execSQL(VaccineRecords.getCreateViewSQLString());
 		//db.execSQL("drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
 		//view should be created in the last upgrade function
@@ -834,40 +832,45 @@ public class DataClass extends SQLiteOpenHelper {
 		setDataVersion(db,DATABASE_NAME,9); 
 	}
 	
-	private void upgradeToVersion10(SQLiteDatabase db){
-		db.execSQL("alter table "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES +
+	private void upgradeToVersion10(SQLiteDatabase db,int oldVersion){
+		if(oldVersion>=7){	//Family Planning tables are added on version seven. They have to be updgraded
+			db.execSQL("alter table "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES +
 					" add column " +FamilyPlanningServices.SERVICE_SCHEDULE +" integer default 0"
 				);
 		
-		db.execSQL("alter table " + FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS + 
+			db.execSQL("alter table " + FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS + 
 					" add column " +FamilyPlanningRecords.SCHEDULE_DATE +" text ");
-		
+		}
 		//view should be create in the last upgrade that changes it
 		//db.execSQL("drop view "+FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);	
 		//db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,10); 	
 	}
 	
-	private void upgradeToVersion11(SQLiteDatabase db){
+	private void upgradeToVersion11(SQLiteDatabase db,int oldVersion){
 		db.execSQL(Questions.getCreateQuery());
 		setDataVersion(db,DATABASE_NAME,11); 	
 	}
 	
-	private void upgradeToVersion12(SQLiteDatabase db){
-		db.execSQL(" drop view "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);	//modfied to include community name
+	private void upgradeToVersion12(SQLiteDatabase db,int oldVersion){
+		db.execSQL(" drop view if exists "+OPDCaseRecords.VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES);	//modfied to include community name
 		db.execSQL(OPDCaseRecords.getCreateViewString());//two views are created through this statement
 		db.execSQL("alter table "+OPDCases.TABLE_NAME_OPD_CASES + " add column "+ OPDCases.OPD_CASE_DISPLAY_ORDER + " integer default 0");
 		db.execSQL(OPDCaseCategories.getCreateSQLString());
-		db.execSQL("alter table "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS+ 
+		if(oldVersion>=7){
+			db.execSQL("alter table "+FamilyPlanningRecords.TABLE_NAME_FAMILY_PLANNING_RECORDS+ 
 						" add column "+FamilyPlanningRecords.SERVICE_TYPE+" integer default 0");
-		db.execSQL(" drop view "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
+		}
+		db.execSQL(" drop view if exists "+ FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL);
 		db.execSQL(FamilyPlanningRecords.getCreateViewSQLString());
 		setDataVersion(db,DATABASE_NAME,12); 	
 	}
 	
-	private void upgradeToVersion13(SQLiteDatabase db){
-		db.execSQL("alter table "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES+ 
+	private void upgradeToVersion13(SQLiteDatabase db,int oldVersion){
+		if(oldVersion>=7){
+			db.execSQL("alter table "+FamilyPlanningServices.TABLE_NAME_FAMILY_PLANNING_SERVICES+ 
 				" add column "+FamilyPlanningServices.DISPLAY_ORDER+" integer default 1000");
+		}
 		db.execSQL(CHPSZones.getCreateSQLString());
 		//communitis were organized under sub districts but this has to change to zones
 				//to enable proper join query the subdistrict_id had to be replaced by chps_zone_id
@@ -884,7 +887,7 @@ public class DataClass extends SQLiteOpenHelper {
 	private void upgradeToVersion14(SQLiteDatabase db){
 		db.execSQL("alter table "+CommunityMembers.TABLE_NAME_COMMUNITY_MEMBERS+
 						" add column "+CommunityMembers.FIRST_ACCESS_DATE+" text default '1900-01-01'");
-		db.execSQL("drop view "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
+		db.execSQL("drop view if exists "+CommunityMembers.VIEW_NAME_COMMUNITY_MEMBERS);
 		db.execSQL(CommunityMembers.getViewCreateSQLString());
 		setDataVersion(db,DATABASE_NAME,14); 
 	}
