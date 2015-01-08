@@ -1,6 +1,7 @@
 package com.ashesi.cs.mhealth;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.ashesi.cs.mhealth.data.FamilyPlanningRecord;
 import com.ashesi.cs.mhealth.data.FamilyPlanningRecords;
@@ -144,6 +145,7 @@ public class DetailReport extends Activity implements OnClickListener {
 		int month=intent.getIntExtra("month", 0);
 		int ageGroup=intent.getIntExtra("ageGroup", 0);
 		int year=intent.getIntExtra("year", 0);
+		year=Calendar.getInstance().get(Calendar.YEAR)-year;
 		int gender=intent.getIntExtra("gender", 0);
 		String strGender=null;
 		if(gender==1){
@@ -169,6 +171,7 @@ public class DetailReport extends Activity implements OnClickListener {
 		int month=intent.getIntExtra("month", 0);
 		int ageGroup=intent.getIntExtra("ageGroup", 0);
 		int year=intent.getIntExtra("year", 0);
+		year=Calendar.getInstance().get(Calendar.YEAR)-year;
 		int gender=intent.getIntExtra("gender", 0);
 		String strGender=null;
 		if(gender==1){
@@ -194,6 +197,7 @@ public class DetailReport extends Activity implements OnClickListener {
 		int month=intent.getIntExtra("month", 0);
 		int ageGroup=intent.getIntExtra("ageGroup", 0);
 		int year=intent.getIntExtra("year", 0);
+		year=Calendar.getInstance().get(Calendar.YEAR)-year;
 		int gender=intent.getIntExtra("gender", 0);
 		String strGender=null;
 		if(gender==1){

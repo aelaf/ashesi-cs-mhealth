@@ -224,6 +224,22 @@ public class ReportActivity extends FragmentActivity implements
 			return rootView;
 		}
 		
+		@Override
+		public void onResume() {
+			// TODO Auto-generated method stub
+			
+			ReportActivity activity=(ReportActivity)this.getActivity();
+			View rootView=getView();
+			Spinner spinner=(Spinner)rootView.findViewById(R.id.spinnerReportMonth);
+			spinner.setSelection(activity.mMonth);
+			spinner=(Spinner)rootView.findViewById(R.id.spinnerReportYear);
+			spinner.setSelection(activity.mYear);
+			spinner=(Spinner)rootView.findViewById(R.id.spinnerGender);
+			spinner.setSelection(activity.mGender);
+			super.onResume();
+			
+		}
+
 		private void displayReport(View rootView){
 			
 			fillAgeGroupSpinner(rootView);
@@ -607,7 +623,7 @@ public class ReportActivity extends FragmentActivity implements
 			}
 			year=year-n;
 			ReportActivity activity=(ReportActivity)this.getActivity();
-			activity.mYear=year;	
+			activity.mYear=n;	
 			return year;
 		}
 	
