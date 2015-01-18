@@ -30,6 +30,7 @@ import com.ashesi.cs.mhealth.data.VaccineGridAdapter;
 import com.ashesi.cs.mhealth.data.VaccineRecord;
 import com.ashesi.cs.mhealth.data.VaccineRecords;
 import com.ashesi.cs.mhealth.data.Vaccines;
+import com.ashesi.cs.mhealth.knowledge.LogData;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -1015,6 +1016,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		ArrayList<OPDCase> listOPDCases;
 		String[] opdCaseCategories={"ALL","CI","CNI","NCD","MHC","SC","OGC","RETD","IO","REF","OTH"}; 
 		
+		TextView textStatus;
 		View rootView;
 		int communityMemberId=0;//TODO: id change
 		AdapterContextMenuInfo info;
@@ -1036,17 +1038,22 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			
 			communityMemberId=getArguments().getInt("id");
 			
+			textStatus=(TextView)rootView.findViewById(R.id.textStatus);
+			
 			this.rootView=rootView;
 			getListOfOPDCases();
 			this.fillOPDCaseCategoriesSpinner();
 			this.fillOPDCaseSpinner();
+			
 			return rootView;
 		}
 
 		@Override
 		public void onClick(View v) {
 			if(v.getId()==R.id.buttonCommunityMemberRecordOPDCase){
-				recordOPDCase();
+				DatePickerFragment datePicker=new DatePickerFragment();
+				datePicker.showDatePicker(this.getActivity().getSupportFragmentManager(), this);
+				//recordOPDCase();
 			}
 		}
 		
@@ -1136,7 +1143,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			return true;
 		}
 		
-		protected void recordOPDCase(){
+		protected void recordOPDCase(java.util.Date date){
 			
 			if(communityMemberId==0){
 				CommunityMemberRecordActivity a=(CommunityMemberRecordActivity)this.getActivity();
@@ -1155,10 +1162,19 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 				return;
 			}
 			CommunityMembers members=new CommunityMembers(getActivity().getApplicationContext());
-			Calendar calendar=Calendar.getInstance();
+			Calendar aweek=Calendar.getInstance();
+			aweek.add(Calendar.DAY_OF_MONTH, -7); 	//go back a week
+			if(aweek.getTime().after(date) ){
+				Toast toast=Toast.makeText(getActivity(), R.string.opdLateEntryAlert , Toast.LENGTH_LONG);
+				toast.show();
+				showError(getResources().getString(R.string.opdLateEntryAlert));
+				LogData log=new LogData(getActivity());
+				log.addLog(5001, "user", "OPDFragment","an opd case was added after 7 days");
+				return;
+			}
 			
 			SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
-			String todaysDate=dateFormat.format(calendar.getTime());
+			String todaysDate=dateFormat.format(date.getTime());
 			
 			CheckBox cbLab=(CheckBox)rootView.findViewById(R.id.cbLab);
 			
@@ -1206,7 +1222,15 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			dialog.show();
 		}
 		
-
+		protected void showError(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_error));
+		}
+		
+		protected void showStatus(String msg){
+			textStatus.setText(msg);
+			textStatus.setTextColor(rootView.getResources().getColor(R.color.text_color_black));
+		}
 	}
 	
 	public static class VaccineFragment extends Fragment implements OnClickListener, OnItemSelectedListener{
@@ -1727,6 +1751,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		
 		public void onDateSet(DatePicker view, int year, int month, int day) {
 		// Do something with the date chosen by the user
+			
 			calendar.set(year, month, day);
 			if(returnTo==1){
 				VaccineFragment vf=(VaccineFragment)fragment;
@@ -1734,6 +1759,11 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			}else if(returnTo==2){
 				FamilyPlanFragment fp=(FamilyPlanFragment)fragment;
 				fp.recordService(calendar.getTime());
+			}else if(returnTo==3){
+				Calendar aweek=Calendar.getInstance();
+				aweek.add(Calendar.DAY_OF_MONTH, -7);
+				OPDFragment op=(OPDFragment)fragment;
+				op.recordOPDCase(calendar.getTime());
 			}
 		}
 		
@@ -1767,7 +1797,13 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 		public void showDatePicker(FragmentManager fm,FamilyPlanFragment fragment){
 			this.returnTo=2;
 			this.fragment=fragment;
-			this.show(fm, "dpvaccine");
+			this.show(fm, "dpfamilyplanning");
+		}
+		
+		public void showDatePicker(FragmentManager fm,OPDFragment fragment){
+			this.returnTo=3;
+			this.fragment=fragment;
+			this.show(fm, "dpopd");
 		}
 		
 	}

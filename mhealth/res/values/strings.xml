@@ -160,4 +160,6 @@
 	<string name="newClient">New Client</string>
 	<string name="oldClient">Old Client</string>
 	<string name="startTask">Start Task</string>
+	<string name="status">status</string>
+	<string name="opdLateEntryAlert">You are recording this OPD case after 7 days. It is much better to record cases daily</string>
 </resources>

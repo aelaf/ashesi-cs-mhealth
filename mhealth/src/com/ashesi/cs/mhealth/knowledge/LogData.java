@@ -1,6 +1,9 @@
 package com.ashesi.cs.mhealth.knowledge;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,6 +62,25 @@ public class LogData extends DataClass{
 			ContentValues values = new ContentValues();
 			values.put(KEY_LOG_CODE, log_code);
 			values.put(KEY_DATE, date);
+			values.put(KEY_USERNAME, username);
+			values.put(KEY_MSG, msg);
+			values.put(KEY_SOURCE, source);
+			db.insertWithOnConflict(TABLE_NAME_LOG, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+			return true;
+		}catch(Exception ex){
+			return false;
+		}
+	}
+	
+	public boolean addLog(int log_code, String username, String source, String msg){
+		Calendar date=Calendar.getInstance();
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.UK);
+		String todaysDate=dateFormat.format(date.getTime());
+		try{
+			db = getReadableDatabase();
+			ContentValues values = new ContentValues();
+			values.put(KEY_LOG_CODE, log_code);
+			values.put(KEY_DATE, todaysDate);
 			values.put(KEY_USERNAME, username);
 			values.put(KEY_MSG, msg);
 			values.put(KEY_SOURCE, source);
