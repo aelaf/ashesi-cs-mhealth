@@ -154,12 +154,17 @@
     <string name="title_activity_health_promotion_list">Health Promotions</string>
     <string name="modeNoCases">No Cases</string>
     <string name="modeNoCommuintyMembers">People</string>
-	<string name="mode">Mode</string>
-	<string name="newAcceptor">New Acceptor</string>
-	<string name="continuing">Continuing</string>
-	<string name="newClient">New Client</string>
-	<string name="oldClient">Old Client</string>
-	<string name="startTask">Start Task</string>
-	<string name="status">status</string>
-	<string name="opdLateEntryAlert">You are recording this OPD case after 7 days. It is much better to record cases daily</string>
+    <string name="mode">Mode</string>
+    <string name="newAcceptor">New Acceptor</string>
+    <string name="continuing">Continuing</string>
+    <string name="newClient">New Client</string>
+    <string name="oldClient">Old Client</string>
+    <string name="startTask">Start Task</string>
+    <string name="status">status</string>
+    <string name="opdLateEntryAlert">You are recording this OPD case after 7 days. It is much better to record cases daily</string>
+    <string name="title_activity_tasks">Tasks</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
 </resources>

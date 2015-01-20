@@ -238,22 +238,30 @@ public class MainActivity extends Activity implements OnClickListener, OnItemSel
 	}
 	
 	private void openRecordFromTask(int position){
-		Intent intent=new Intent(this,CommunityActivity.class);
+		Intent intent=new Intent();
 		intent.putExtra("choId", currentCHO.getId());
 		switch(position){
 			case 1:
+				intent.setClass(this,CommunityActivity.class);
 				intent.putExtra("searchOption", 6);
 				startActivity(intent);
 				break;
 			case 3:
+				intent.setClass(this,CommunityActivity.class);
 				intent.putExtra("searchOption", 4);
 				startActivity(intent);
 				break;
 			case 2:
+				intent.setClass(this,CommunityActivity.class);
 				intent.putExtra("searchOption", 8);
 				startActivity(intent);
 				break;
-			case 5:
+			case 4:
+				intent.setClass(this,TasksActivity.class);
+				startActivity(intent);
+				break;
+			case 6:
+				intent.setClass(this,CommunityActivity.class);
 				intent.putExtra("searchOption", 0);
 				startActivity(intent);
 				break;

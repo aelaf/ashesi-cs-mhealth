@@ -234,6 +234,51 @@ public class Vaccines extends DataClass {
 			return list;
 		}
 	}
+	
+	/**
+	 * Returns number of people who are scheduled to be vaccinated particular vaccination
+	 * @param past
+	 * @param future
+	 * @return
+	 */
+	public ArrayList<String> getVaccinesNeeded(int past,int future)
+	{
+		ArrayList<String> list=new ArrayList<String>();
+		list.add("Vaccine");
+		list.add("Number");
+		try{
+			db=getReadableDatabase();
+			String strQuery="select "
+					+Vaccines.VIEW_PENDING_VACCINES +"."+Vaccines.VACCINE_ID +","
+					+Vaccines.VACCINE_NAME+","
+					+"count(*) as NO_REC"
+					+" from "+Vaccines.VIEW_PENDING_VACCINES 
+					+" left join vaccines on "
+					+Vaccines.VIEW_PENDING_VACCINES +"."+Vaccines.VACCINE_ID +"="+Vaccines.TABLE_NAME_VACCINES+"."+Vaccines.VACCINE_ID
+					+" where ("
+					+Vaccines.SCHEDULED_ON +"<=" +past +" AND "
+					+Vaccines.SCHEDULED_ON +">="+future 
+					+") group by "+Vaccines.VIEW_PENDING_VACCINES +"."+Vaccines.VACCINE_ID;
+			cursor=db.rawQuery(strQuery, null);
+			cursor.moveToFirst();
+			int index=0;
+			String str;
+			int n=0;
+			while(!cursor.isAfterLast()){
+				index=cursor.getColumnIndex(Vaccines.VACCINE_NAME);
+				str=cursor.getString(index);
+				list.add(str);
+				index=cursor.getColumnIndex("NO_REC");
+				n=cursor.getInt(index);
+				str=Integer.toString(n);
+				list.add(str);
+				cursor.moveToNext();
+			}
+			return list;
+		}catch(Exception ex){
+			return list;
+		}
+	}
 
 	
 }

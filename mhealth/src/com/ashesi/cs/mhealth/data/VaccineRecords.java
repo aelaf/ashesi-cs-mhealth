@@ -304,6 +304,7 @@ public class VaccineRecords extends DataClass {
 		}
 	}
 	
+
 	public int getVaccineCountForTheMonth(){
 		Calendar calendar=Calendar.getInstance();
 		int past=calendar.get(Calendar.DAY_OF_MONTH);

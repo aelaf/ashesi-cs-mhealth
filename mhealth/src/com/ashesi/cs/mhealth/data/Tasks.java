@@ -62,6 +62,7 @@ public class Tasks extends DataClass {
 		list.add(getVaccineTask());
 		list.add(getFamilyPlanningTask());
 		list.add(getODPFollowupTask());
+		list.add("Other tasks ...");
 		list.add("Data Summary:" );
 		list.add(getCommunityMembersCount());
 		return list;
