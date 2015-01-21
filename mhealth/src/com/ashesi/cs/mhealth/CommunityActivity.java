@@ -178,8 +178,8 @@ public class CommunityActivity extends Activity implements OnClickListener, OnIt
 				try{
 					if(searchText.contains(",")){
 						String strs[]=searchText.split(","); //if a comma, that means two numbers min and max
-						ageMin=Integer.parseInt(strs[0]);
-						ageMax=Integer.parseInt(strs[1]);
+						ageMin=Integer.parseInt(strs[0].trim());
+						ageMax=Integer.parseInt(strs[1].trim());
 					}else{
 						ageMin=0;							//if not, then it is just max	
 						ageMax=Integer.parseInt(searchText); 
