@@ -50,21 +50,27 @@
             android:id="@+id/raidoGroupServiceType"
             android:layout_span="4"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             >
             <RadioButton
                 android:id="@+id/radioNewAcceptor"
                 android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
-            	android:text="@string/newAcceptor" >
+            	android:text="@string/fpNewAcceptor" >
             	</RadioButton>
              <RadioButton
                 android:id="@+id/radioContinuing"
                 android:layout_width="wrap_content"
             	android:layout_height="wrap_content"
-            	android:text="@string/continuing" >
-                
-            </RadioButton>
+            	android:text="@string/fpContinuing" >
+            	</RadioButton>
+            <RadioButton
+                android:id="@+id/radioRevisit"
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:text="@string/fpRevisit" >
+            	</RadioButton>
+
         </RadioGroup>
 	</TableRow>
 	    

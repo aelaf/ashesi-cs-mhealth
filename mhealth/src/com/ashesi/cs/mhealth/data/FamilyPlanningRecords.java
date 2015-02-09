@@ -269,23 +269,23 @@ public class FamilyPlanningRecords extends DataClass {
 			
 			index=cursor.getColumnIndex(CommunityMembers.COMMUNITY_MEMBER_NAME);
 			String fullname="";
-			if(index>=0){
+			if(index>0){
 				fullname=cursor.getString(index);
 			}
 			String serviceName="";
 			index=cursor.getColumnIndex(FamilyPlanningServices.SERVICE_NAME);
-			if(index>=0){
+			if(index>0){
 				serviceName=cursor.getString(index);
 			}
 			String scheduleDate="";
 			index=cursor.getColumnIndex(SCHEDULE_DATE);
-			if(index>=0){
+			if(index>0){
 				scheduleDate=cursor.getString(index);
 			}
 			
 			int serviceType=0;
 			index=cursor.getColumnIndex(SERVICE_TYPE);
-			if(index>=0){
+			if(index>0){
 				serviceType=cursor.getInt(index);
 			}
 			
@@ -454,7 +454,8 @@ public class FamilyPlanningRecords extends DataClass {
 					+QUANTITY+", "
 					+SERVICE_DATE +","
 					+CommunityMembers.BIRTHDATE +", "
-					+CommunityMembers.COMMUNITY_ID 
+					+CommunityMembers.COMMUNITY_ID+", "
+					+SERVICE_TYPE
 					//+","
 					//+CommunityMembers.GENDER
 					+" from " +FamilyPlanningRecords.VIEW_NAME_FAMILY_PLANING_RECORDS_DETAIL
@@ -486,8 +487,10 @@ public class FamilyPlanningRecords extends DataClass {
 	public static String getServiceTypeName(int type){
 		if(type==1){
 			return "New Acceptor";
-		}else if(type==2){
+		}else if(type==3){
 			return "Continuing";
+		}else if(type==2){
+			return "Revisiting";
 		}else{
 			return "Other";
 		}

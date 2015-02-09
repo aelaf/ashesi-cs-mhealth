@@ -158,6 +158,8 @@ public class FamilyPlanningGridAdapter extends BaseAdapter {
 			image.setImageResource(R.drawable.newitem);
 		}else if(type==2){
 			image.setImageResource(R.drawable.revisit);
+		}else if(type==3){
+			image.setImageResource(R.drawable.continuing);
 		}else{
 			image.setImageResource(R.drawable.unknown);
 		}

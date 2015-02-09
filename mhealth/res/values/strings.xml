@@ -155,8 +155,10 @@
     <string name="modeNoCases">No Cases</string>
     <string name="modeNoCommuintyMembers">People</string>
     <string name="mode">Mode</string>
-    <string name="newAcceptor">New Acceptor</string>
-    <string name="continuing">Continuing</string>
+    <string name="fpNewAcceptor">New Acceptor: accepted for the first time</string>
+    <string name="fpContinuing">Continuing: stopped, but now continuing</string>
+    <string name="fpRevisit">Revisit: revisiting for refill</string>
+    <string name="fpVisit">Visit: is visiting to enquire but not accepted</string>
     <string name="newClient">New Client</string>
     <string name="oldClient">Old Client</string>
     <string name="startTask">Start Task</string>
