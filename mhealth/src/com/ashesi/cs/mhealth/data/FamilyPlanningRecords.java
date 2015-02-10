@@ -487,9 +487,9 @@ public class FamilyPlanningRecords extends DataClass {
 	public static String getServiceTypeName(int type){
 		if(type==1){
 			return "New Acceptor";
-		}else if(type==3){
-			return "Continuing";
 		}else if(type==2){
+			return "Continuing";
+		}else if(type==3){
 			return "Revisiting";
 		}else{
 			return "Other";

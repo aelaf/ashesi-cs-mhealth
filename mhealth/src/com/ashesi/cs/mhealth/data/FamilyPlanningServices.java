@@ -201,7 +201,8 @@ public class FamilyPlanningServices extends DataClass {
 		{
 			db=getReadableDatabase();
 			String order=DISPLAY_ORDER +", "+SERVICE_NAME;
-			cursor=db.query(TABLE_NAME_FAMILY_PLANNING_SERVICES, columns,null,null, null, null, order);
+			String where=DISPLAY_ORDER +">=0";
+			cursor=db.query(TABLE_NAME_FAMILY_PLANNING_SERVICES, columns,where,null, null, null, order);
 			cursor.moveToFirst();
 			FamilyPlanningService v=fetch();
 			while(v!=null){

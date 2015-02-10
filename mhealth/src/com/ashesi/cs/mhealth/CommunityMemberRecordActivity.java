@@ -1702,9 +1702,9 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			if(id==R.id.radioNewAcceptor){
 				return 1;
 			}else if(id==R.id.radioContinuing){
-				return 3;
-			}else if(id==R.id.radioRevisit){
 				return 2;
+			}else if(id==R.id.radioRevisit){
+				return 3;
 			}else{
 				return 0;
 			}
