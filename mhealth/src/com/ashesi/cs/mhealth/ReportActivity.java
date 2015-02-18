@@ -338,13 +338,13 @@ public class ReportActivity extends FragmentActivity implements
 			if(mode==OPDCaseRecords.REPORT_MODE_ALL){
 				reportTitle.setText("Number of community members");
 			}else if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_INSURED){
-				reportTitle.setText("Number of new insured community members");
+				reportTitle.setText("Number of new insured (NHIS expiry not considered)  community members");
 			}else if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_NON_INSURED){
-				reportTitle.setText("Number of new non-insured community members");
+				reportTitle.setText("Number of new non-insured (NHIS expiry not considered) community members");
 			}else if(mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_INSURED){
-				reportTitle.setText("Number of old insured community members");
+				reportTitle.setText("Number of old insured (NHIS expiry not considered) community members");
 			}else if(mode==OPDCaseRecords.REPORT_MODE_OLD_CLIENT_NON_INSURED){
-				reportTitle.setText("Number of old non-insured community members");
+				reportTitle.setText("Number of old non-insured (NHIS expiry not considered) community members");
 			}
 			
 			list=opdCaseRecords.getMontlyTotalsReport(month, year, ageGroup,mode);
