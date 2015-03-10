@@ -208,7 +208,7 @@ public class ReportActivity extends FragmentActivity implements
 		public static final String ARG_SECTION_NUMBER = "section_number";
 		private String[] ageGroups={"Total","under 28 days", "1m-11m","1-4","5-9","10-14","15-17","18-19","20-34","35-49","50-59","60-69","above 70yr"};
 		private String[] vaccineAgeGroups={"Total","under 12m","12-23","above 24m"};
-		private String[] familyPlanAgeGroups={"Total","under 1yr","10-14","15-19","20-24","30-34","above 35yr"};
+		private String[] familyPlanAgeGroups={"Total","under 10yr","10-14","15-19","20-24","25-29","30-34","above 35yr"};
 		
 		private String[] months={"this month","whole year","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 		private String[] genderOptions={"all","male","female"};
@@ -236,6 +236,8 @@ public class ReportActivity extends FragmentActivity implements
 			spinner.setSelection(activity.mYear);
 			spinner=(Spinner)rootView.findViewById(R.id.spinnerGender);
 			spinner.setSelection(activity.mGender);
+			//spinner=(Spinner)rootView.findViewById(R.id.spinnerOPDReportAgeGroup);
+			//spinner.setSelection(activity.mAgeGroup);
 			super.onResume();
 			
 		}

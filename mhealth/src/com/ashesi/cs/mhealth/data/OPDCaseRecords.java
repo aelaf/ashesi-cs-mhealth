@@ -217,7 +217,7 @@ public class OPDCaseRecords extends DataClass {
 			ageRange=ageRange-1;
 			if(ageRange==0){
 				strAgeFilter=CommunityMembers.AGE+"<" +Double.toString(ageLimit[1]);	//under 28 days year
-			}else if(ageRange>=1 && ageRange<10){	//compute range
+			}else if(ageRange>=1 && ageRange<11){	//compute range
 				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
 				strAgeFilter=CommunityMembers.AGE+">=70";
@@ -322,7 +322,7 @@ public class OPDCaseRecords extends DataClass {
 			ageRange=ageRange-1;
 			if(ageRange==0){
 				strAgeFilter=CommunityMembers.AGE+"<" +Double.toString(ageLimit[1]);	//under 1 year
-			}else if(ageRange>=1 && ageRange<10){	//compute range
+			}else if(ageRange>=1 && ageRange<11){	//compute range
 				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
 				strAgeFilter=CommunityMembers.AGE+">=70";
@@ -459,7 +459,7 @@ public class OPDCaseRecords extends DataClass {
 			ageRange=ageRange-1;
 			if(ageRange==0){
 				strAgeFilter=CommunityMembers.AGE+ Double.toString(ageLimit[1]);	//under 1 year
-			}else if(ageRange>=1 && ageRange<10){	//compute range
+			}else if(ageRange>=1 && ageRange<11){	//compute range
 				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
 				strAgeFilter=CommunityMembers.AGE+">=70";

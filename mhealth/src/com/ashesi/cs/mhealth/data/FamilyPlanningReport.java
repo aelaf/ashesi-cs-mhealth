@@ -15,6 +15,8 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 	final static String NO_RECORDS="no_records";
 	final static String TOTAL_QUANTITY="total_quanity";
 	
+	private int[] ageLimit={0,10,15,20,25,30,35};
+	
 	public FamilyPlanningReport(Context context){
 		super(context);
 		
@@ -61,16 +63,15 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 
 		//define age range
 
-		int[] limit={10,15,18,20,35,50,60,70};
 		String strAgeFilter=" 1 ";
 		if(ageRange>0){//if it is not total
 			ageRange=ageRange-1;
 			if(ageRange==0){
 				strAgeFilter=CommunityMembers.AGE+"<10";	//under 10 year
-			}else if(ageRange>=1 && ageRange<7){	//compute range
-				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+			}else if(ageRange>=1 && ageRange<6){	//compute range
+				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
-				strAgeFilter=CommunityMembers.AGE+">=70";
+				strAgeFilter=CommunityMembers.AGE+">=35";
 			}
 		}
 		
@@ -161,16 +162,15 @@ public class FamilyPlanningReport extends FamilyPlanningRecords {
 
 		//define age range
 
-		int[] limit={10,15,18,20,35,50,60,70};
 		String strAgeFilter=" 1 ";
 		if(ageRange>0){//if it is not total
 			ageRange=ageRange-1;
 			if(ageRange==0){
 				strAgeFilter=CommunityMembers.AGE+"<10";	//under 10 year
-			}else if(ageRange>=1 && ageRange<7){	//compute range
-				strAgeFilter="("+CommunityMembers.AGE+">="+limit[ageRange]+" AND "+CommunityMembers.AGE+"<"+limit[ageRange+1]+")";
+			}else if(ageRange>=1 && ageRange<6){	//compute range
+				strAgeFilter="("+CommunityMembers.AGE+">="+ageLimit[ageRange]+" AND "+CommunityMembers.AGE+"<"+ageLimit[ageRange+1]+")";
 			}else{	
-				strAgeFilter=CommunityMembers.AGE+">=70";
+				strAgeFilter=CommunityMembers.AGE+">=35";
 			}
 		}
 		
