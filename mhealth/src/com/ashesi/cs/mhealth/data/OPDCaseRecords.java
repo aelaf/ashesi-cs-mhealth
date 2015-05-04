@@ -15,17 +15,23 @@ import android.content.Context;
 import android.util.Log;
 
 public class OPDCaseRecords extends DataClass {
-	public static final String LAB_CONFIRMED="true";
-	public static final String LAB_NOT_CONFIRMED="false";
+	
 	public static final String REC_NO="rec_no";
 	public static final String REC_DATE="rec_date";
 	public static final String OPD_CASE_NAME="opd_case_name";
 	public static final String LAB="lab";
+	public static final String INSURED="insured";
 	public static final String SERVER_REC_NO="server_rec_no";
 	public static final String NO_CASES="no_cases";
 	public static final String TABLE_NAME_COMMUNITY_MEMBER_OPD_CASES="community_members_opd_cases";
 	public static final String VIEW_NAME_COMMUNITY_MEMBER_OPD_CASES="view_community_member_opd_cases";
-	//public static final String VIEW_COMMUNITIY_MEMBERS_IN_OPD_CASES="view_community_members_in_opd_cases";
+
+	public static final String LAB_CONFIRMED="true";
+	public static final String LAB_NOT_CONFIRMED="false";
+	
+	public static final int CLIENT_INSURED_UNKNOWN=0;
+	public static final int CLIENT_INSURED_YES=1;
+	public static final int CLIENT_INSURED_NO=2;
 	
 	public static final int GROUP_BY_COMMUNITY=1;
 	public static final int GROUP_BY_OPD_CASE=2;
@@ -104,6 +110,11 @@ public class OPDCaseRecords extends DataClass {
 			index=cursor.getColumnIndex(LAB);
 			if(index>=0){
 				lab=cursor.getString(index);
+			}
+			int insured=CLIENT_INSURED_UNKNOWN;
+			index=cursor.getColumnIndex(INSURED);
+			if(index>=0){
+				insured=cursor.getInt(index);
 			}
 			OPDCaseRecord opdCaseRecord=new OPDCaseRecord(recNo,communityMemberId,opdCaseId,recDate,fullname,opdCaseName,choId,lab);
 			cursor.moveToNext();
@@ -330,7 +341,8 @@ public class OPDCaseRecords extends DataClass {
 		}
 
 		
-		String strNewClientFilter=" 1 ";
+		String strNewClientFilter=" ("+CommunityMembers.FIRST_ACCESS_DATE +"<=\""+ lastDateOfTheMonth+"\") ";
+		
 		if(mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_INSURED || mode==OPDCaseRecords.REPORT_MODE_NEW_CLIENT_NON_INSURED){	//new
 			//Registered with in the elected period
 			strNewClientFilter= "("+CommunityMembers.FIRST_ACCESS_DATE +">=\""+ firstDateOfTheMonth +"\" AND "

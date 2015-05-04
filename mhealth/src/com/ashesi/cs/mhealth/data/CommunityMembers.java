@@ -253,8 +253,8 @@ public class CommunityMembers extends DataClass {
 			cv.put(NHIS_ID,nhisId);
 			String regDate="1900-01-01";
 			if(newClient){
-				Calendar date=Calendar.getInstance(); 
-				regDate=dateFormat.format(date);
+				Calendar c=Calendar.getInstance(); 
+				regDate=dateFormat.format(c.getTime());
 			}
 			cv.put(FIRST_ACCESS_DATE, regDate);
 			cv.put(NHIS_EXPIRY_DATE,dateFormat.format(nhisExpiryDate));

@@ -782,6 +782,7 @@ public class CommunityMemberRecordActivity extends FragmentActivity implements A
 			AlertDialog dialog = builder.create();
 			dialog.show();
 		}
+		
 		public void removeButtonClicked(){
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setMessage("Are you sure you want to remove community member from your record? All opd and vaccination record of the community member will be removed. Do you want to continue?" );
