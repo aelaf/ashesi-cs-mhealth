@@ -1,0 +1,460 @@
+Community member ID,Community member name, birthdate ,gender,vaccine name,vaccine date
+345,Ofori Akua,2013-05-08,female,Measles 1,2014-02-04
+345,Ofori Akua,2013-05-08,female,Yellow Fever,2014-02-04
+347,Yeboah Janet,2013-08-05,female,Vitamin A (6month),2014-02-04
+348,Lartey Kojo,2013-09-16,male,OPV-3,2014-02-04
+348,Lartey Kojo,2013-09-16,male,DPT-HepB-Hib-3,2014-02-04
+348,Lartey Kojo,2013-09-16,male,Penumococcal 3,2014-02-04
+349,Otu Kwaku,2013-04-14,male,Measles 1,2014-02-04
+349,Otu Kwaku,2013-04-14,male,Yellow Fever,2014-02-04
+350,Otu Janet,2013-10-29,female,OPV-2,2014-02-10
+350,Otu Janet,2013-10-29,female,DPT-HepB-Hib 2,2014-02-10
+350,Otu Janet,2013-10-29,female,Penumococcal 2,2014-02-10
+350,Otu Janet,2013-10-29,female,Rotavirus 2,2014-02-10
+351,Tetteh Kojo,2013-06-01,male,Measles 1,2014-02-10
+351,Tetteh Kojo,2013-06-01,male,Yellow Fever,2014-02-10
+352,Addo Kofi,2013-05-02,male,Measles 1,2014-02-10
+352,Addo Kofi,2013-05-02,male,Yellow Fever,2014-02-10
+353,Mensah Kwabena,2013-01-01,male,Measles 1,2014-02-10
+353,Mensah Kwabena,2013-01-01,male,Yellow Fever,2014-02-10
+354,Mensah Akua,2013-12-24,female,OPV-1,2014-02-10
+354,Mensah Akua,2013-12-24,female,DPT-HepB-Hib1,2014-02-10
+354,Mensah Akua,2013-12-24,female,Penumococcal 1,2014-02-10
+354,Mensah Akua,2013-12-24,female,Rotavirus-1,2014-02-10
+355,Appiah Kwaku,2013-11-13,male,OPV-2,2014-02-10
+355,Appiah Kwaku,2013-11-13,male,DPT-HepB-Hib 2,2014-02-10
+355,Appiah Kwaku,2013-11-13,male,Penumococcal 2,2014-02-10
+355,Appiah Kwaku,2013-11-13,male,Rotavirus 2,2014-02-10
+356,Appiah Janet,2013-12-16,female,OPV-1,2014-02-10
+356,Appiah Janet,2013-12-16,female,DPT-HepB-Hib1,2014-02-10
+356,Appiah Janet,2013-12-16,female,Penumococcal 1,2014-02-10
+356,Appiah Janet,2013-12-16,female,Rotavirus-1,2014-02-10
+357,Mensah Kwaku,2012-07-26,male,Measles 2 ,2014-02-10
+358,Yeboah Kofi,2012-05-30,male,Vitamin A(18 month),2014-02-10
+359,Appiah Kojo,2011-08-15,male,Vitamin A,2014-02-10
+360,Otu Janet,2012-07-24,female,Measles 2 ,2014-02-10
+371,Yeboah Kwabena,2013-12-02,male,DPT-HepB-Hib 2,2014-02-11
+371,Yeboah Kwabena,2013-12-02,male,Penumococcal 2,2014-02-11
+371,Yeboah Kwabena,2013-12-02,male,Rotavirus 2,2014-02-11
+371,Yeboah Kwabena,2013-12-02,male,OPV-2,2014-02-11
+372,Otu Kwabena,2013-11-27,male,OPV-2,2014-02-11
+372,Otu Kwabena,2013-11-27,male,DPT-HepB-Hib 2,2014-02-11
+372,Otu Kwabena,2013-11-27,male,Penumococcal 2,2014-02-11
+372,Otu Kwabena,2013-11-27,male,Rotavirus 2,2014-02-11
+373,Amoh Kwaku,2013-07-16,male,Vitamin A (6month),2014-02-11
+375,Ofori Kwaku,2013-09-14,male,OPV-2,2014-02-11
+375,Ofori Kwaku,2013-09-14,male,DPT-HepB-Hib 2,2014-02-11
+375,Ofori Kwaku,2013-09-14,male,Penumococcal 2,2014-02-11
+375,Ofori Kwaku,2013-09-14,male,Rotavirus 2,2014-02-11
+376,Adu Abena,2014-02-10,female,BCG,2014-02-11
+376,Adu Abena,2014-02-10,female,OPV-0,2014-02-11
+356,Appiah Janet,2013-12-16,female,BCG,2014-02-10
+377,Adu Kojo,2014-02-16,male,OPV-0,2014-02-16
+378,Lartey Kwaku,2013-12-09,male,OPV-2,2014-02-18
+378,Lartey Kwaku,2013-12-09,male,DPT-HepB-Hib 2,2014-02-18
+378,Lartey Kwaku,2013-12-09,male,Penumococcal 2,2014-02-18
+378,Lartey Kwaku,2013-12-09,male,Rotavirus 2,2014-02-18
+379,Addo Kwabena,2012-12-23,male,Vitamin A (12month),2014-02-18
+380,Amoh Janet,2013-02-02,female,Vitamin A (12month),2014-02-18
+381,Mensah Kofi,2014-01-07,male,OPV-1,2014-02-18
+381,Mensah Kofi,2014-01-07,male,DPT-HepB-Hib1,2014-02-18
+381,Mensah Kofi,2014-01-07,male,Penumococcal 1,2014-02-18
+381,Mensah Kofi,2014-01-07,male,Rotavirus-1,2014-02-18
+382,Ofori Kwaku,2014-01-07,male,OPV-1,2014-02-18
+382,Ofori Kwaku,2014-01-07,male,DPT-HepB-Hib1,2014-02-18
+382,Ofori Kwaku,2014-01-07,male,Penumococcal 1,2014-02-18
+382,Ofori Kwaku,2014-01-07,male,Rotavirus-1,2014-02-18
+382,Ofori Kwaku,2014-01-07,male,BCG,2014-01-07
+382,Ofori Kwaku,2014-01-07,male,OPV-0,2014-01-07
+381,Mensah Kofi,2014-01-07,male,BCG,2014-01-07
+381,Mensah Kofi,2014-01-07,male,OPV-0,2014-01-07
+371,Yeboah Kwabena,2013-12-02,male,Rotavirus-1,2014-01-14
+371,Yeboah Kwabena,2013-12-02,male,Penumococcal 1,2014-01-14
+371,Yeboah Kwabena,2013-12-02,male,DPT-HepB-Hib1,2014-01-14
+371,Yeboah Kwabena,2013-12-02,male,OPV-1,2014-01-14
+372,Otu Kwabena,2013-11-27,male,OPV-1,2014-01-14
+372,Otu Kwabena,2013-11-27,male,DPT-HepB-Hib1,2014-01-14
+372,Otu Kwabena,2013-11-27,male,Penumococcal 1,2014-01-14
+372,Otu Kwabena,2013-11-27,male,Rotavirus-1,2014-01-14
+383,Adu Akua,2013-12-02,female,DPT-HepB-Hib1,2014-01-14
+383,Adu Akua,2013-12-02,female,OPV-1,2014-01-14
+383,Adu Akua,2013-12-02,female,Penumococcal 1,2014-01-14
+383,Adu Akua,2013-12-02,female,Rotavirus-1,2014-01-14
+383,Adu Akua,2013-12-02,female,OPV-2,2014-02-11
+383,Adu Akua,2013-12-02,female,DPT-HepB-Hib 2,2014-02-11
+383,Adu Akua,2013-12-02,female,Penumococcal 2,2014-02-11
+383,Adu Akua,2013-12-02,female,Rotavirus 2,2014-02-11
+384,Yeboah Akua,2013-07-23,female,Vitamin A (6month),2014-02-18
+378,Lartey Kwaku,2013-12-09,male,OPV-1,2014-01-21
+378,Lartey Kwaku,2013-12-09,male,DPT-HepB-Hib1,2014-01-21
+378,Lartey Kwaku,2013-12-09,male,Penumococcal 1,2014-01-21
+378,Lartey Kwaku,2013-12-09,male,Rotavirus-1,2014-01-21
+385,Yeboah Kwaku,2013-07-25,male,Vitamin A (6month),2014-02-18
+386,Appiah Yaa,2013-07-25,female,Vitamin A (6month),2014-02-18
+387,Appiah Kwaku,2014-01-14,male,BCG,2014-01-28
+387,Appiah Kwaku,2014-01-14,male,OPV-0,2014-01-28
+388,Addo Yaa,2013-12-23,female,OPV-1,2014-02-18
+388,Addo Yaa,2013-12-23,female,DPT-HepB-Hib1,2014-02-18
+388,Addo Yaa,2013-12-23,female,Penumococcal 1,2014-02-18
+388,Addo Yaa,2013-12-23,female,Rotavirus-1,2014-02-18
+389,Otu Abena,2014-01-02,female,OPV-1,2014-02-18
+389,Otu Abena,2014-01-02,female,DPT-HepB-Hib1,2014-02-18
+389,Otu Abena,2014-01-02,female,Penumococcal 1,2014-02-18
+389,Otu Abena,2014-01-02,female,Rotavirus-1,2014-02-18
+390,Appiah Kwaku,2013-05-29,male,Vitamin A (6month),2013-02-18
+401,Tetteh Kwaku,2014-01-01,male,BCG,2014-01-28
+401,Tetteh Kwaku,2014-01-01,male,OPV-1,2014-02-25
+401,Tetteh Kwaku,2014-01-01,male,DPT-HepB-Hib1,2014-02-25
+401,Tetteh Kwaku,2014-01-01,male,Penumococcal 1,2014-02-25
+401,Tetteh Kwaku,2014-01-01,male,Rotavirus-1,2014-02-25
+402,Appiah Akua,2013-12-16,female,OPV-1,2014-01-28
+402,Appiah Akua,2013-12-16,female,DPT-HepB-Hib1,2014-01-28
+402,Appiah Akua,2013-12-16,female,Penumococcal 1,2014-01-28
+402,Appiah Akua,2013-12-16,female,Rotavirus-1,2014-01-28
+402,Appiah Akua,2013-12-16,female,OPV-2,2014-02-25
+402,Appiah Akua,2013-12-16,female,DPT-HepB-Hib 2,2014-02-25
+403,Tetteh Janet,2013-11-17,female,OPV-2,2014-01-28
+403,Tetteh Janet,2013-11-17,female,DPT-HepB-Hib 2,2014-01-28
+403,Tetteh Janet,2013-11-17,female,Penumococcal 2,2014-01-28
+403,Tetteh Janet,2013-11-17,female,Rotavirus 2,2014-01-28
+403,Tetteh Janet,2013-11-17,female,DPT-HepB-Hib-3,2014-02-24
+405,Ofori Kojo,2013-11-17,male,OPV-2,2014-01-28
+405,Ofori Kojo,2013-11-17,male,DPT-HepB-Hib 2,2014-01-28
+405,Ofori Kojo,2013-11-17,male,Penumococcal 2,2014-01-28
+405,Ofori Kojo,2013-11-17,male,Rotavirus 2,2014-01-28
+405,Ofori Kojo,2013-11-17,male,OPV-3,2014-02-25
+405,Ofori Kojo,2013-11-17,male,DPT-HepB-Hib-3,2014-02-25
+405,Ofori Kojo,2013-11-17,male,Penumococcal 3,2014-02-25
+403,Tetteh Janet,2013-11-17,female,Penumococcal 3,2014-02-25
+403,Tetteh Janet,2013-11-17,female,OPV-3,2014-02-25
+404,Amoh Yaa,2013-10-19,female,OPV-1,2014-01-28
+404,Amoh Yaa,2013-10-19,female,DPT-HepB-Hib1,2014-01-28
+404,Amoh Yaa,2013-10-19,female,Penumococcal 1,2014-01-28
+404,Amoh Yaa,2013-10-19,female,Rotavirus-1,2014-01-28
+404,Amoh Yaa,2013-10-19,female,OPV-2,2014-02-25
+404,Amoh Yaa,2013-10-19,female,DPT-HepB-Hib 2,2014-02-25
+404,Amoh Yaa,2013-10-19,female,Penumococcal 2,2014-02-25
+404,Amoh Yaa,2013-10-19,female,Rotavirus 2,2014-02-25
+406,Ofori Janet,2013-12-12,female,OPV-1,2014-01-28
+406,Ofori Janet,2013-12-12,female,DPT-HepB-Hib1,2014-01-28
+406,Ofori Janet,2013-12-12,female,Penumococcal 1,2014-01-28
+406,Ofori Janet,2013-12-12,female,Rotavirus-1,2014-01-28
+406,Ofori Janet,2013-12-12,female,OPV-2,2014-02-25
+406,Ofori Janet,2013-12-12,female,DPT-HepB-Hib 2,2014-02-25
+406,Ofori Janet,2013-12-12,female,Penumococcal 2,2014-02-25
+406,Ofori Janet,2013-12-12,female,Rotavirus 2,2014-02-25
+407,Yeboah Kwabena,2014-01-02,male,BCG,2014-01-28
+407,Yeboah Kwabena,2014-01-02,male,DPT-HepB-Hib1,2014-02-25
+407,Yeboah Kwabena,2014-01-02,male,Penumococcal 1,2014-02-25
+407,Yeboah Kwabena,2014-01-02,male,OPV-1,2014-02-25
+407,Yeboah Kwabena,2014-01-02,male,Rotavirus-1,2014-02-25
+409,Lartey Abena,2013-12-09,female,OPV-1,2014-01-28
+409,Lartey Abena,2013-12-09,female,DPT-HepB-Hib1,2014-01-28
+409,Lartey Abena,2013-12-09,female,Rotavirus-1,2014-01-28
+409,Lartey Abena,2013-12-09,female,Penumococcal 1,2014-01-28
+402,Appiah Akua,2013-12-16,female,Rotavirus 2,2014-02-25
+402,Appiah Akua,2013-12-16,female,Penumococcal 2,2014-02-25
+410,Adu Kwabena,2013-01-01,male,Vitamin A(18 month),2014-02-25
+411,Lartey Kwabena,2014-02-16,male,BCG,2014-02-25
+411,Lartey Kwabena,2014-02-16,male,OPV-0,2014-02-16
+412,Addo Kwaku,2013-08-08,male,Vitamin A (6month),2014-02-25
+413,Otu Kojo,2013-01-01,male,Vitamin A (12month),2014-02-25
+414,Otu Kwabena,2012-12-23,male,Vitamin A (12month),2014-02-18
+415,Mensah Kofi,2011-05-10,male,Vitamin A,2014-02-25
+416,Yeboah Kojo,2013-01-01,male,Vitamin A (12month),2014-02-18
+285,Yeboah Yaa,2012-05-07,female,Vitamin A(18 month),2014-03-04
+479,Otu Janet,2011-11-27,female,Vitamin A,2014-03-10
+480,Appiah Akua,2012-12-09,female,Vitamin A (12month),2014-03-04
+481,Lartey Yaa,2012-05-08,female,Measles 2 ,2014-03-10
+482,Addo Abena,2012-05-08,female,Measles 2 ,2014-03-10
+483,Lartey Kwaku,2011-02-01,male,Vitamin A,2014-03-10
+484,Yeboah Kofi,2012-11-11,male,Vitamin A (12month),2014-03-10
+484,Yeboah Kofi,2012-11-11,male,Measles 1,2014-03-10
+484,Yeboah Kofi,2012-11-11,male,Yellow Fever,2014-03-10
+485,Amoh Abena,2012-04-21,female,Vitamin A(18 month),2014-03-10
+350,Otu Janet,2013-10-29,female,OPV-3,2014-03-10
+350,Otu Janet,2013-10-29,female,DPT-HepB-Hib-3,2014-03-10
+350,Otu Janet,2013-10-29,female,Penumococcal 3,2014-03-10
+486,Mensah Akua,2013-02-25,female,Vitamin A (12month),2014-03-10
+487,Tetteh Kojo,2013-08-16,male,Vitamin A (6month),2014-03-10
+355,Appiah Kwaku,2013-11-13,male,OPV-3,2014-03-10
+355,Appiah Kwaku,2013-11-13,male,DPT-HepB-Hib-3,2014-03-10
+355,Appiah Kwaku,2013-11-13,male,Penumococcal 3,2014-03-10
+356,Appiah Janet,2013-12-16,female,OPV-2,2014-03-10
+356,Appiah Janet,2013-12-16,female,DPT-HepB-Hib 2,2014-03-10
+356,Appiah Janet,2013-12-16,female,Penumococcal 2,2014-03-10
+356,Appiah Janet,2013-12-16,female,Rotavirus 2,2014-03-10
+488,Otu Kofi,2013-12-28,male,OPV-2,2014-03-10
+488,Otu Kofi,2013-12-28,male,DPT-HepB-Hib 2,2014-03-10
+488,Otu Kofi,2013-12-28,male,Penumococcal 2,2014-03-10
+488,Otu Kofi,2013-12-28,male,Rotavirus 2,2014-03-10
+504,Lartey Kwabena,2013-05-20,male,Measles 1,2014-03-04
+504,Lartey Kwabena,2013-05-20,male,Yellow Fever,2014-03-04
+505,Amoh Abena,2013-05-15,female,Yellow Fever,2014-03-04
+505,Amoh Abena,2013-05-15,female,Measles 1,2014-03-04
+371,Yeboah Kwabena,2013-12-02,male,OPV-3,2014-03-11
+371,Yeboah Kwabena,2013-12-02,male,DPT-HepB-Hib-3,2014-03-11
+371,Yeboah Kwabena,2013-12-02,male,Penumococcal 3,2014-03-11
+506,Tetteh Kwaku,2013-12-01,male,OPV-2,2014-02-11
+506,Tetteh Kwaku,2013-12-01,male,DPT-HepB-Hib 2,2014-02-11
+506,Tetteh Kwaku,2013-12-01,male,Penumococcal 2,2014-02-11
+506,Tetteh Kwaku,2013-12-01,male,Rotavirus 2,2014-02-11
+506,Tetteh Kwaku,2013-12-01,male,OPV-3,2014-03-11
+506,Tetteh Kwaku,2013-12-01,male,DPT-HepB-Hib-3,2014-03-11
+506,Tetteh Kwaku,2013-12-01,male,Penumococcal 3,2014-03-11
+507,Lartey Kwaku,2013-05-28,male,Measles 1,2014-03-11
+507,Lartey Kwaku,2013-05-28,male,Yellow Fever,2014-03-11
+508,Ofori Janet,2013-12-15,female,OPV-1,2014-01-28
+508,Ofori Janet,2013-12-15,female,DPT-HepB-Hib1,2014-01-28
+508,Ofori Janet,2013-12-15,female,Penumococcal 1,2014-01-28
+508,Ofori Janet,2013-12-15,female,Rotavirus-1,2014-01-28
+508,Ofori Janet,2013-12-15,female,OPV-2,2014-03-11
+508,Ofori Janet,2013-12-15,female,DPT-HepB-Hib 2,2014-03-11
+508,Ofori Janet,2013-12-15,female,Penumococcal 2,2014-03-11
+508,Ofori Janet,2013-12-15,female,Rotavirus 2,2014-03-11
+408,Tetteh Kofi,2014-01-17,male,BCG,2014-01-21
+408,Tetteh Kofi,2014-01-17,male,DPT-HepB-Hib1,2014-03-11
+408,Tetteh Kofi,2014-01-17,male,Penumococcal 1,2014-03-11
+408,Tetteh Kofi,2014-01-17,male,Rotavirus-1,2014-03-11
+408,Tetteh Kofi,2014-01-17,male,OPV-1,2014-03-11
+409,Lartey Abena,2013-12-09,female,OPV-2,2014-03-11
+409,Lartey Abena,2013-12-09,female,DPT-HepB-Hib 2,2014-03-11
+409,Lartey Abena,2013-12-09,female,Penumococcal 2,2014-03-11
+409,Lartey Abena,2013-12-09,female,Rotavirus 2,2014-03-11
+509,Addo Kwaku,2013-04-09,male,Measles 1,2014-03-11
+509,Addo Kwaku,2013-04-09,male,Yellow Fever,2014-03-11
+510,Addo Kofi,2013-04-02,male,Measles 1,2014-03-11
+510,Addo Kofi,2013-04-02,male,Yellow Fever,2014-03-11
+381,Mensah Kofi,2014-01-07,male,OPV-2,2014-03-18
+381,Mensah Kofi,2014-01-07,male,DPT-HepB-Hib 2,2014-03-18
+381,Mensah Kofi,2014-01-07,male,Penumococcal 2,2014-03-18
+381,Mensah Kofi,2014-01-07,male,Rotavirus 2,2014-03-18
+527,Adu Yaa,2011-09-04,female,Vitamin A,2014-03-18
+378,Lartey Kwaku,2013-12-09,male,OPV-3,2014-03-18
+378,Lartey Kwaku,2013-12-09,male,DPT-HepB-Hib-3,2014-03-18
+378,Lartey Kwaku,2013-12-09,male,Penumococcal 3,2014-03-18
+528,Amoh Kojo,2013-08-12,male,Vitamin A (6month),2014-03-18
+382,Ofori Kwaku,2014-01-07,male,OPV-2,2014-03-18
+382,Ofori Kwaku,2014-01-07,male,DPT-HepB-Hib 2,2014-03-18
+382,Ofori Kwaku,2014-01-07,male,Penumococcal 2,2014-03-18
+382,Ofori Kwaku,2014-01-07,male,Rotavirus 2,2014-03-18
+529,Amoh Kojo,2013-05-16,male,Measles 1,2014-03-18
+529,Amoh Kojo,2013-05-16,male,Yellow Fever,2014-03-18
+530,Appiah Akua,2013-06-03,female,Yellow Fever,2014-03-18
+530,Appiah Akua,2013-06-03,female,Measles 1,2014-03-18
+530,Appiah Akua,2013-06-03,female,Vitamin A (6month),2013-01-08
+531,Appiah Janet,2012-01-01,female,Vitamin A,2014-03-20
+532,Mensah Kofi,2013-09-26,male,OPV-3,2014-01-07
+532,Mensah Kofi,2013-09-26,male,DPT-HepB-Hib-3,2014-01-07
+532,Mensah Kofi,2013-09-26,male,Penumococcal 3,2014-01-07
+532,Mensah Kofi,2013-09-26,male,Vitamin A (6month),2014-03-25
+388,Addo Yaa,2013-12-23,female,OPV-2,2014-03-18
+388,Addo Yaa,2013-12-23,female,DPT-HepB-Hib 2,2014-03-18
+388,Addo Yaa,2013-12-23,female,Penumococcal 2,2014-03-18
+388,Addo Yaa,2013-12-23,female,Rotavirus 2,2014-03-18
+389,Otu Abena,2014-01-02,female,OPV-2,2014-03-18
+389,Otu Abena,2014-01-02,female,DPT-HepB-Hib 2,2014-03-18
+389,Otu Abena,2014-01-02,female,Penumococcal 2,2014-03-18
+389,Otu Abena,2014-01-02,female,Rotavirus 2,2014-03-18
+533,Ofori Janet,2012-12-09,female,Vitamin A (12month),2014-03-18
+425,Tetteh Kwaku,2012-08-29,male,Measles 2 ,2014-03-18
+208,Yeboah Kwaku,2012-08-15,male,Measles 2 ,2014-03-18
+534,Addo Kojo,2011-12-11,male,Measles 2 ,2014-03-18
+227,Ofori Abena,2011-11-11,female,Vitamin A,2014-03-20
+535,Tetteh Yaa,2014-02-09,female,OPV-1,2014-03-25
+535,Tetteh Yaa,2014-02-09,female,DPT-HepB-Hib1,2014-03-25
+535,Tetteh Yaa,2014-02-09,female,Penumococcal 1,2014-03-25
+535,Tetteh Yaa,2014-02-09,female,Rotavirus-1,2014-03-25
+383,Adu Akua,2013-12-02,female,OPV-3,2014-03-25
+383,Adu Akua,2013-12-02,female,DPT-HepB-Hib-3,2014-03-25
+383,Adu Akua,2013-12-02,female,Penumococcal 3,2014-03-25
+401,Tetteh Kwaku,2014-01-01,male,OPV-2,2014-03-25
+401,Tetteh Kwaku,2014-01-01,male,DPT-HepB-Hib 2,2014-03-25
+401,Tetteh Kwaku,2014-01-01,male,Penumococcal 2,2014-03-25
+401,Tetteh Kwaku,2014-01-01,male,Rotavirus 2,2014-03-25
+536,Yeboah Kojo,2013-01-01,male,Measles 1,2014-03-25
+536,Yeboah Kojo,2013-01-01,male,Yellow Fever,2014-03-25
+402,Appiah Akua,2013-12-16,female,OPV-3,2014-03-25
+402,Appiah Akua,2013-12-16,female,DPT-HepB-Hib-3,2014-03-25
+402,Appiah Akua,2013-12-16,female,Penumococcal 3,2014-03-25
+537,Ofori Janet,2013-09-06,female,Vitamin A (6month),2014-03-25
+404,Amoh Yaa,2013-10-19,female,OPV-3,2014-03-25
+404,Amoh Yaa,2013-10-19,female,DPT-HepB-Hib-3,2014-03-25
+404,Amoh Yaa,2013-10-19,female,Penumococcal 3,2014-03-25
+406,Ofori Janet,2013-12-12,female,OPV-3,2014-03-25
+406,Ofori Janet,2013-12-12,female,DPT-HepB-Hib-3,2014-03-25
+406,Ofori Janet,2013-12-12,female,Penumococcal 3,2014-03-25
+375,Ofori Kwaku,2013-09-14,male,OPV-3,2015-03-25
+375,Ofori Kwaku,2013-09-14,male,DPT-HepB-Hib-3,2014-03-25
+375,Ofori Kwaku,2013-09-14,male,Penumococcal 3,2014-03-25
+375,Ofori Kwaku,2013-09-14,male,Vitamin A (6month),2014-03-25
+538,Yeboah Akua,2013-06-05,female,Measles 1,2014-03-25
+538,Yeboah Akua,2013-06-05,female,Yellow Fever,2014-03-25
+539,Addo Janet,2014-01-08,female,OPV-1,2014-03-25
+539,Addo Janet,2014-01-08,female,DPT-HepB-Hib1,2014-03-25
+539,Addo Janet,2014-01-08,female,Penumococcal 1,2014-03-25
+539,Addo Janet,2014-01-08,female,Rotavirus-1,2014-03-25
+376,Adu Abena,2014-02-10,female,OPV-1,2014-03-25
+376,Adu Abena,2014-02-10,female,DPT-HepB-Hib1,2014-03-25
+376,Adu Abena,2014-02-10,female,Penumococcal 1,2014-03-25
+376,Adu Abena,2014-02-10,female,Rotavirus-1,2014-03-25
+539,Addo Janet,2014-01-08,female,OPV-2,2014-03-25
+539,Addo Janet,2014-01-08,female,DPT-HepB-Hib 2,2014-03-25
+539,Addo Janet,2014-01-08,female,Penumococcal 2,2014-03-25
+539,Addo Janet,2014-01-08,female,Rotavirus 2,2014-03-25
+137,Adu Yaa,2012-09-01,female,Measles 2 ,2014-03-25
+177,Otu Janet,2012-10-02,female,Measles 2 ,2014-03-25
+177,Otu Janet,2012-10-02,female,Vitamin A(18 month),2014-03-31
+227,Ofori Abena,2011-11-11,female,Measles 2 ,2014-03-25
+592,Appiah Janet,2013-03-18,female,Vitamin A (12month),2014-04-01
+593,Tetteh Kwabena,2013-05-22,male,Measles 1,2014-04-01
+593,Tetteh Kwabena,2013-05-22,male,Yellow Fever,2014-04-01
+594,Lartey Kofi,2014-02-14,male,DPT-HepB-Hib1,2014-04-01
+594,Lartey Kofi,2014-02-14,male,OPV-1,2014-04-01
+594,Lartey Kofi,2014-02-14,male,Penumococcal 1,2014-04-01
+594,Lartey Kofi,2014-02-14,male,Rotavirus-1,2014-04-01
+595,Lartey Yaa,2014-01-01,female,DPT-HepB-Hib1,2014-04-01
+595,Lartey Yaa,2014-01-01,female,OPV-1,2014-04-01
+595,Lartey Yaa,2014-01-01,female,Penumococcal 1,2014-04-01
+595,Lartey Yaa,2014-01-01,female,Rotavirus-1,2014-04-01
+596,Ofori Abena,2014-02-22,female,OPV-1,2014-04-08
+596,Ofori Abena,2014-02-22,female,DPT-HepB-Hib1,2014-04-08
+596,Ofori Abena,2014-02-22,female,Penumococcal 1,2014-04-08
+596,Ofori Abena,2014-02-22,female,Rotavirus-1,2014-04-08
+597,Yeboah Abena,2014-02-03,female,OPV-1,2014-04-08
+597,Yeboah Abena,2014-02-03,female,DPT-HepB-Hib1,2014-04-08
+597,Yeboah Abena,2014-02-03,female,Penumococcal 1,2014-04-08
+597,Yeboah Abena,2014-02-03,female,Rotavirus-1,2014-04-08
+598,Lartey Kwaku,2013-12-30,male,OPV-2,2014-04-08
+598,Lartey Kwaku,2013-12-30,male,DPT-HepB-Hib 2,2014-04-08
+598,Lartey Kwaku,2013-12-30,male,Penumococcal 2,2014-04-08
+598,Lartey Kwaku,2013-12-30,male,Rotavirus 2,2014-04-08
+599,Adu Akua,2014-04-05,female,BCG,2014-04-15
+599,Adu Akua,2014-04-05,female,OPV-0,2014-04-05
+600,Lartey Janet,2014-04-01,female,BCG,2014-04-15
+600,Lartey Janet,2014-04-01,female,OPV-0,2014-04-15
+601,Yeboah Kwaku,2014-03-26,male,BCG,2014-04-15
+601,Yeboah Kwaku,2014-03-26,male,OPV-0,2014-04-08
+602,Adu Abena,2013-10-03,female,Vitamin A (6month),2014-04-15
+356,Appiah Janet,2013-12-16,female,OPV-3,2014-04-14
+356,Appiah Janet,2013-12-16,female,DPT-HepB-Hib-3,2014-04-14
+356,Appiah Janet,2013-12-16,female,Penumococcal 3,2014-04-14
+603,Appiah Kwaku,2013-06-20,male,Measles 1,2014-04-15
+603,Appiah Kwaku,2013-06-20,male,Yellow Fever,2014-04-15
+488,Otu Kofi,2013-12-28,male,OPV-3,2014-04-15
+488,Otu Kofi,2013-12-28,male,DPT-HepB-Hib-3,2014-04-15
+488,Otu Kofi,2013-12-28,male,Penumococcal 3,2014-04-15
+604,Amoh Abena,2013-05-06,female,Yellow Fever,2014-04-15
+604,Amoh Abena,2013-05-06,female,Measles 1,2014-04-15
+605,Appiah Abena,2012-12-03,female,Measles 2 ,2014-04-14
+606,Appiah Kofi,2012-11-20,male,Measles 2 ,2014-04-14
+607,Otu Yaa,2011-11-09,female,Measles 2 ,2014-04-14
+608,Addo Kojo,2013-01-01,male,Measles 2 ,2014-04-14
+609,Appiah Akua,2013-03-31,female,Yellow Fever,2014-04-15
+373,Amoh Kwaku,2013-07-16,male,Measles 1,2014-04-15
+373,Amoh Kwaku,2013-07-16,male,Yellow Fever,2014-04-15
+610,Ofori Janet,2013-04-09,female,Vitamin A (12month),2014-04-15
+409,Lartey Abena,2013-12-09,female,OPV-3,2014-04-15
+409,Lartey Abena,2013-12-09,female,DPT-HepB-Hib-3,2014-04-15
+409,Lartey Abena,2013-12-09,female,Penumococcal 3,2014-04-15
+408,Tetteh Kofi,2014-01-17,male,OPV-2,2014-04-15
+408,Tetteh Kofi,2014-01-17,male,DPT-HepB-Hib 2,2014-04-15
+408,Tetteh Kofi,2014-01-17,male,Penumococcal 2,2014-04-15
+408,Tetteh Kofi,2014-01-17,male,Rotavirus 2,2014-04-15
+388,Addo Yaa,2013-12-23,female,OPV-3,2014-04-15
+388,Addo Yaa,2013-12-23,female,DPT-HepB-Hib-3,2014-04-15
+388,Addo Yaa,2013-12-23,female,Penumococcal 3,2014-04-15
+389,Otu Abena,2014-01-02,female,OPV-3,2014-04-15
+389,Otu Abena,2014-01-02,female,DPT-HepB-Hib-3,2014-04-15
+389,Otu Abena,2014-01-02,female,Penumococcal 3,2014-04-15
+611,Appiah Kwabena,2013-06-23,male,Measles 1,2014-04-15
+611,Appiah Kwabena,2013-06-23,male,Yellow Fever,2014-04-15
+612,Ofori Kwaku,2014-02-27,male,OPV-1,2014-04-15
+612,Ofori Kwaku,2014-02-27,male,DPT-HepB-Hib1,2014-04-15
+612,Ofori Kwaku,2014-02-27,male,Penumococcal 1,2014-04-15
+612,Ofori Kwaku,2014-02-27,male,Rotavirus-1,2014-04-15
+612,Ofori Kwaku,2014-02-27,male,OPV-0,2014-02-27
+613,Amoh Akua,2013-07-01,female,Vitamin A (6month),2014-04-15
+613,Amoh Akua,2013-07-01,female,Measles 1,2014-04-15
+613,Amoh Akua,2013-07-01,female,Yellow Fever,2014-04-15
+614,Lartey Kwabena,2014-03-31,male,BCG,2014-04-15
+614,Lartey Kwabena,2014-03-31,male,OPV-0,2014-04-08
+408,Tetteh Kofi,2014-01-17,male,OPV-0,2014-01-21
+188,Mensah Kojo,2011-01-01,male,Vitamin A,2014-04-17
+208,Yeboah Kwaku,2012-08-15,male,Vitamin A(18 month),2014-04-15
+425,Tetteh Kwaku,2012-08-29,male,Vitamin A(18 month),2014-04-15
+615,Tetteh Janet,2012-09-14,female,Vitamin A(18 month),2014-04-15
+480,Appiah Akua,2012-12-09,female,Measles 2 ,2014-04-15
+55,Appiah Kojo,2013-01-01,male,Vitamin A (12month),2014-04-10
+295,Appiah Kofi,2012-08-18,male,Measles 2 ,2014-04-10
+616,Otu Janet,2012-11-01,female,Measles 2 ,2014-04-10
+616,Otu Janet,2012-11-01,female,Vitamin A(18 month),2014-04-10
+617,Adu Yaa,2013-12-31,female,OPV-2,2014-04-10
+617,Adu Yaa,2013-12-31,female,DPT-HepB-Hib 2,2014-04-10
+617,Adu Yaa,2013-12-31,female,Penumococcal 2,2014-04-10
+617,Adu Yaa,2013-12-31,female,Rotavirus 2,2014-04-10
+700,Ofori Kofi,2013-08-25,male,Vitamin A (6month),2014-04-29
+701,Otu Janet,2014-03-20,female,BCG,2014-04-29
+701,Otu Janet,2014-03-20,female,OPV-0,2014-03-20
+550,Amoh Akua,2013-07-17,female,Measles 1,2014-04-29
+550,Amoh Akua,2013-07-17,female,Yellow Fever,2014-04-29
+702,Ofori Yaa,2014-04-28,female,BCG,2014-04-29
+702,Ofori Yaa,2014-04-28,female,OPV-0,2014-04-29
+703,Tetteh Kwaku,2013-07-09,male,Vitamin A (6month),2014-04-29
+703,Tetteh Kwaku,2013-07-09,male,Measles 1,2014-04-29
+703,Tetteh Kwaku,2013-07-09,male,Yellow Fever,2014-04-29
+704,Amoh Kwaku,2014-02-01,male,OPV-1,2014-04-22
+704,Amoh Kwaku,2014-02-01,male,DPT-HepB-Hib1,2014-04-22
+704,Amoh Kwaku,2014-02-01,male,Penumococcal 1,2014-04-22
+704,Amoh Kwaku,2014-02-01,male,Rotavirus-1,2014-04-22
+705,Lartey Yaa,2013-06-26,female,Measles 1,2014-04-29
+705,Lartey Yaa,2013-06-26,female,Yellow Fever,2014-04-29
+539,Addo Janet,2014-01-08,female,OPV-3,2014-04-29
+539,Addo Janet,2014-01-08,female,DPT-HepB-Hib-3,2014-04-29
+539,Addo Janet,2014-01-08,female,Penumococcal 3,2014-04-29
+535,Tetteh Yaa,2014-02-09,female,OPV-2,2014-04-29
+535,Tetteh Yaa,2014-02-09,female,DPT-HepB-Hib 2,2014-04-29
+535,Tetteh Yaa,2014-02-09,female,Penumococcal 2,2014-04-29
+535,Tetteh Yaa,2014-02-09,female,Rotavirus 2,2014-04-29
+200017,Mensah Kofi,2013-10-19,male,Vitamin A (6month),2014-04-29
+706,Adu Yaa,2013-10-14,female,Vitamin A (6month),2014-04-29
+401,Tetteh Kwaku,2014-01-01,male,OPV-3,2014-04-22
+401,Tetteh Kwaku,2014-01-01,male,DPT-HepB-Hib-3,2014-04-22
+401,Tetteh Kwaku,2014-01-01,male,Penumococcal 3,2014-04-22
+707,Tetteh Kojo,2013-07-13,male,Measles 1,2014-04-29
+707,Tetteh Kojo,2013-07-13,male,Yellow Fever,2014-04-29
+708,Ofori Akua,2013-08-28,female,Vitamin A (6month),2014-04-29
+709,Appiah Yaa,2013-06-24,female,Yellow Fever,2014-04-22
+709,Appiah Yaa,2013-06-24,female,Measles 1,2014-04-22
+710,Mensah Abena,2013-06-27,female,Yellow Fever,2014-04-29
+710,Mensah Abena,2013-06-27,female,Measles 1,2014-04-29
+711,Amoh Yaa,2013-04-08,female,Vitamin A (12month),2014-04-29
+382,Ofori Kwaku,2014-01-07,male,OPV-3,2014-04-29
+382,Ofori Kwaku,2014-01-07,male,DPT-HepB-Hib-3,2014-04-29
+382,Ofori Kwaku,2014-01-07,male,Penumococcal 3,2014-04-29
+381,Mensah Kofi,2014-01-07,male,OPV-3,2014-04-22
+381,Mensah Kofi,2014-01-07,male,DPT-HepB-Hib-3,2014-04-22
+381,Mensah Kofi,2014-01-07,male,Penumococcal 3,2014-04-15
+413,Otu Kojo,2013-01-01,male,Measles 2 ,2014-04-29
+159,Ofori Kwabena,2012-01-01,male,Vitamin A,2014-04-29
+533,Ofori Janet,2012-12-09,female,Measles 2 ,2014-04-29
+712,Adu Abena,2013-01-01,female,Measles 2 ,2014-04-29
+769,Tetteh Yaa,1990-01-01,female,Vitamin A,2014-05-18
+835,Addo Abena,2013-08-17,female,Measles 1,2014-06-10
+835,Addo Abena,2013-08-17,female,Yellow Fever,2014-06-10
+836,Addo Kwaku,2013-07-25,male,Measles 1,2014-05-06
+836,Addo Kwaku,2013-07-25,male,Yellow Fever,2014-05-06
+837,Appiah Kwabena,2013-05-12,male,Vitamin A (12month),2014-06-03
+529,Amoh Kojo,2013-05-16,male,Vitamin A (12month),2014-06-03
+372,Otu Kwabena,2013-11-27,male,DPT-HepB-Hib-3,2014-03-25
+372,Otu Kwabena,2013-11-27,male,OPV-3,2014-03-25
+372,Otu Kwabena,2013-11-27,male,Penumococcal 3,2014-03-25
+372,Otu Kwabena,2013-11-27,male,Vitamin A (6month),2014-06-03
+66,Lartey Janet,2013-03-23,female,Vitamin A (12month),2014-05-06
+383,Adu Akua,2013-12-02,female,Vitamin A (6month),2014-06-17
+864,Appiah Yaa,2014-05-08,female,BCG,2014-05-13
+864,Appiah Yaa,2014-05-08,female,OPV-0,2014-05-13
+864,Appiah Yaa,2014-05-08,female,OPV-1,2014-06-24
+864,Appiah Yaa,2014-05-08,female,DPT-HepB-Hib1,2014-06-24
+864,Appiah Yaa,2014-05-08,female,Penumococcal 1,2014-06-24
+864,Appiah Yaa,2014-05-08,female,Rotavirus-1,2014-06-24

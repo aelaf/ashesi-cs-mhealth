@@ -1,0 +1,17 @@
+.bold-text{
+	font-weight: bold;
+}
+
+.big-icon{
+	font-size: 50px;
+}
+
+.medium-icon{
+	font-size: 25px;
+}
+
+.disabled{
+	pointer-events: none;
+	cursor: default;
+	opacity: 0.5;
+}

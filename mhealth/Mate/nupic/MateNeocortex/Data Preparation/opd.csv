@@ -1,0 +1,1876 @@
+Community member ID,Community member name, gender ,Birthdate,OPD case name,opd case rec_date
+200013,Amoh Kwabena,male,2009-01-01,U Malaria Lab,2013-12-02
+200019,Ofori Abena,female,1982-01-01,Home Injuries,2013-12-02
+200020,Addo Akua,female,2011-01-01,All Other Cases,2013-12-02
+200021,Appiah Yaa,female,2011-01-01,U Malaria Lab,2013-12-02
+200022,Tetteh Akua,female,1988-01-01,All Other Cases,2013-12-02
+200021,Appiah Yaa,female,2011-01-01,Acute RTI,2013-12-03
+200023,Yeboah Janet,female,2011-01-01,U Malaria Lab,2013-12-03
+200025,Adu Yaa,female,1961-01-01,Other Animal Bites,2013-12-03
+200026,Otu Yaa,female,1998-01-01,U Malaria Lab,2013-12-03
+200027,Lartey Kwaku,male,1981-01-01,U Malaria Lab,2013-12-03
+200028,Amoh Yaa,female,1996-01-01,U Malaria Lab,2013-12-03
+200029,Amoh Yaa,female,1996-01-01,U Malaria Lab,2013-12-03
+200030,Appiah Janet,female,1983-01-01,Acute RTI,2013-12-03
+200029,Amoh Yaa,female,1996-01-01,Acute RTI,2013-12-03
+31,Yeboah Kwaku,male,2001-01-01,Acute RTI,2013-12-03
+32,Appiah Janet,female,2008-11-24,U Malaria Lab,2013-12-03
+33,Appiah Abena,female,1988-01-03,U Malaria Lab,2013-12-06
+34,Amoh Yaa,female,2003-01-01,Occupational Injuries,2013-12-06
+35,Mensah Janet,female,1998-01-01,U Malaria Lab,2013-12-06
+36,Addo Janet,female,2011-01-01,U Malaria Non Lab,2013-12-06
+37,Ofori Kojo,male,2011-01-01,U Malaria Lab,2013-12-06
+38,Tetteh Kojo,male,2012-01-01,U Malaria Lab,2013-12-06
+39,Otu Janet,female,1988-01-01,Skin Diseases,2013-12-06
+40,Lartey Yaa,female,2011-01-01,U Malaria Lab,2013-12-06
+41,Yeboah Akua,female,1988-01-01,Skin Diseases,2013-12-06
+42,Ofori Kwabena,male,2010-01-01,U Malaria Lab,2013-12-06
+43,Yeboah Kwabena,male,1999-01-01,U Malaria Lab,2013-12-06
+42,Ofori Kwabena,male,2010-01-01,All Other Cases,2013-12-06
+44,Appiah Kwabena,male,2005-01-01,Acute RTI,2013-12-06
+45,Amoh Yaa,female,2002-01-01,U Malaria Lab,2013-12-06
+45,Amoh Yaa,female,2002-01-01,Acute RTI,2013-12-06
+46,Mensah Kwabena,male,2012-01-01,U Malaria Lab,2013-12-07
+47,Yeboah Kwaku,male,2000-01-01,U Malaria Lab,2013-12-07
+48,Appiah Kwaku,male,2007-01-01,All Other Cases,2013-12-07
+49,Amoh Kwabena,male,2012-01-01,Skin Diseases,2013-12-07
+50,Yeboah Kwaku,male,2012-01-01,All Other Cases,2013-12-07
+51,Amoh Akua,female,2012-01-01,U Malaria Lab,2013-12-09
+52,Adu Kwaku,male,2007-01-01,U Malaria Lab,2013-12-09
+53,Yeboah Kwaku,male,1993-01-01,U Malaria Lab,2013-12-09
+54,Mensah Yaa,female,1989-01-01,U Malaria Non Lab,2013-12-09
+55,Appiah Kojo,male,2013-01-01,U Malaria Lab,2013-12-09
+56,Mensah Akua,female,1980-01-01,U Malaria Lab,2013-12-09
+56,Mensah Akua,female,1980-01-01,Acute RTI,2013-12-09
+57,Otu Kwaku,male,1992-01-01,U Malaria Lab,2013-12-11
+57,Otu Kwaku,male,1992-01-01,Rheumatism & Other Joint Pain,2013-12-11
+58,Amoh Janet,female,2009-01-01,U Malaria Lab,2013-12-12
+58,Amoh Janet,female,2009-01-01,Acute RTI,2013-12-12
+59,Adu Kwaku,male,2005-01-01,U Malaria Lab,2013-12-12
+59,Adu Kwaku,male,2005-01-01,Acute RTI,2013-12-12
+60,Ofori Janet,female,1946-01-01,U Malaria Lab,2013-12-12
+60,Ofori Janet,female,1946-01-01,U Malaria Lab,2013-12-12
+61,Otu Kwaku,male,2008-01-01,U Malaria Lab,2013-12-12
+62,Yeboah Janet,female,2007-01-01,Acute RTI,2013-12-12
+63,Amoh Kofi,male,2013-05-16,Acute RTI,2013-12-12
+64,Ofori Akua,female,2008-01-01,U Malaria Lab,2013-12-12
+65,Addo Kwaku,male,2012-01-01,Skin Diseases,2013-12-12
+66,Lartey Janet,female,2013-03-23,U Malaria Non Lab,2013-12-12
+66,Lartey Janet,female,2013-03-23,Acute RTI,2013-12-12
+67,Mensah Janet,female,2008-01-01,U Malaria Lab,2013-12-12
+67,Mensah Janet,female,2008-01-01,Acute RTI,2013-12-12
+68,Mensah Kwaku,male,2011-01-01,U Malaria Lab,2013-12-12
+69,Otu Kwabena,male,2011-01-01,U Malaria Lab,2013-12-12
+70,Appiah Kojo,male,2013-02-01,Acute RTI,2013-12-16
+71,Adu Kofi,male,2005-01-01,U Malaria Lab,2013-12-16
+72,Amoh Kwaku,male,1980-01-01,U Malaria Lab,2013-12-16
+73,Mensah Kwaku,male,1941-01-01,Skin Diseases,2013-12-16
+74,Adu Kwaku,male,2005-01-01,U Malaria Lab,2013-12-16
+75,Yeboah Kwaku,male,2011-01-01,U Malaria Lab,2013-12-16
+76,Adu Kwaku,male,2005-01-01,All Other Cases,2013-12-16
+77,Lartey Akua,female,2013-03-01,U Malaria Lab,2013-12-16
+78,Otu Akua,female,2010-01-01,U Malaria Lab,2013-12-19
+79,Adu Kojo,male,2009-01-01,U Malaria Lab,2013-12-19
+80,Amoh Kwaku,male,2012-01-01,U Malaria Lab,2013-12-19
+80,Amoh Kwaku,male,2012-01-01,Acute RTI,2013-12-19
+81,Lartey Abena,female,2004-01-01,U Malaria Lab,2013-12-19
+82,Yeboah Akua,female,1967-01-01,U Malaria Lab,2013-12-19
+83,Amoh Akua,female,2010-01-01,U Malaria Lab,2013-12-19
+84,Otu Janet,female,2012-01-01,U Malaria Lab,2013-12-19
+85,Mensah Kwaku,male,2011-01-01,U Malaria Lab,2013-12-19
+86,Mensah Kofi,male,2009-01-01,U Malaria Lab,2013-12-19
+86,Mensah Kofi,male,2009-01-01,Acute RTI,2013-12-19
+87,Lartey Kwaku,male,2010-01-01,U Malaria Lab,2013-12-19
+88,Adu Abena,female,2003-01-01,Acute RTI,2013-12-19
+88,Adu Abena,female,2003-01-01,Acute Ear Infection,2013-12-19
+89,Ofori Abena,female,1985-01-01,U Malaria Lab,2013-12-19
+90,Yeboah Kwaku,male,2010-01-01,Acute RTI,2013-12-19
+91,Addo Kwaku,male,1955-01-01,Home Injuries,2013-12-19
+92,Mensah Kwaku,male,2011-01-01,Home Injuries,2013-12-19
+93,Ofori Kojo,male,2007-01-01,U Malaria Lab,2013-12-19
+94,Appiah Kwaku,male,2011-01-01,U Malaria Lab,2013-12-19
+95,Appiah Akua,female,2007-01-01,U Malaria Lab,2013-12-19
+96,Amoh Kofi,male,2011-01-01,U Malaria Lab,2013-12-19
+94,Appiah Kwaku,male,2011-01-01,Acute RTI,2013-12-19
+97,Adu Akua,female,1934-01-01,Rheumatism & Other Joint Pain,2013-12-19
+98,Otu Kwabena,male,2011-01-01,Home Injuries,2013-12-19
+99,Tetteh Akua,female,1989-01-01,U Malaria Lab,2013-12-19
+99,Tetteh Akua,female,1989-01-01,Rheumatism & Other Joint Pain,2013-12-19
+100,Mensah Janet,female,1999-05-09,Rheumatism & Other Joint Pain,2013-12-19
+101,Adu Kwabena,male,1940-01-01,Rheumatism & Other Joint Pain,2013-12-19
+102,Otu Kwabena,male,2010-01-01,U Malaria Lab,2013-12-24
+103,Lartey Yaa,female,2008-01-01,All Other Cases,2013-12-24
+104,Amoh Kwaku,male,2009-01-01,Acute RTI,2013-12-24
+105,Lartey Kwaku,male,2012-01-01,U Malaria Lab,2013-12-24
+106,Yeboah Kojo,male,1992-01-01,All Other Cases,2013-12-24
+107,Addo Kwaku,male,1992-01-01,U Malaria Lab,2013-12-24
+108,Yeboah Yaa,female,1973-01-01,Acute Urinary Tract Infection,2013-12-24
+108,Yeboah Yaa,female,1973-01-01,Anaemia,2013-12-24
+109,Otu Janet,female,1949-01-01,Skin Diseases,2013-12-24
+110,Addo Janet,female,2004-01-01,U Malaria Lab,2013-12-24
+111,Otu Kwaku,male,2009-01-01,U Malaria Lab,2013-12-24
+112,Tetteh Akua,female,2009-01-01,Acute RTI,2013-12-24
+113,Adu Akua,female,2009-01-01,U Malaria Lab,2013-12-24
+113,Adu Akua,female,2009-01-01,Acute RTI,2013-12-24
+114,Ofori Yaa,female,2008-01-01,U Malaria Lab,2013-12-24
+115,Mensah Akua,female,2011-01-01,U Malaria Lab,2013-12-24
+115,Mensah Akua,female,2011-01-01,Acute RTI,2013-12-24
+116,Appiah Abena,female,2011-01-01,U Malaria Lab,2013-12-24
+116,Appiah Abena,female,2011-01-01,Acute RTI,2013-12-24
+117,Otu Abena,female,1932-01-01,U Malaria Lab,2013-12-24
+117,Otu Abena,female,1932-01-01,Hypertension,2013-12-24
+118,Otu Janet,female,2011-01-01,U Malaria Lab,2013-12-24
+119,Addo Yaa,female,1935-01-01,U Malaria Lab,2013-12-24
+120,Otu Kwaku,male,1953-01-01,Acute RTI,2013-12-25
+120,Otu Kwaku,male,1953-01-01,All Other Cases,2013-12-25
+121,Yeboah Akua,female,2008-01-01,All Other Cases,2013-12-25
+122,Tetteh Akua,female,2011-01-01,Diarrhoea Diseases,2013-12-25
+123,Mensah Yaa,female,1952-01-01,Acute RTI,2013-12-25
+124,Ofori Kwaku,male,2012-01-01,Acute RTI,2013-12-25
+125,Appiah Akua,female,1957-01-01,U Malaria Lab,2013-12-25
+125,Appiah Akua,female,1957-01-01,Rheumatism & Other Joint Pain,2013-12-25
+125,Appiah Akua,female,1957-01-01,Acute RTI,2013-12-25
+126,Yeboah Kofi,male,1938-01-01,Rheumatism & Other Joint Pain,2013-12-25
+127,Amoh Akua,female,1947-01-01,All Other Cases,2013-12-25
+128,Amoh Akua,female,2009-01-01,U Malaria Lab,2013-12-25
+128,Amoh Akua,female,2009-01-01,Acute RTI,2013-12-25
+128,Amoh Akua,female,2009-01-01,Skin Diseases,2013-12-25
+129,Yeboah Kofi,male,2011-01-01,U Malaria Lab,2013-12-25
+130,Appiah Abena,female,1948-01-01,U Malaria Lab,2013-12-26
+131,Yeboah Akua,female,1961-01-01,U Malaria Lab,2013-12-26
+131,Yeboah Akua,female,1961-01-01,Acute Ear Infection,2013-12-26
+132,Addo Janet,female,1953-01-01,Rheumatism & Other Joint Pain,2013-12-26
+133,Mensah Kwabena,male,2012-01-01,U Malaria Lab,2013-12-26
+134,Appiah Janet,female,2010-01-01,U Malaria Lab,2013-12-26
+134,Appiah Janet,female,2010-01-01,Acute RTI,2013-12-26
+135,Tetteh Abena,female,2010-01-01,U Malaria Lab,2013-12-26
+136,Ofori Yaa,female,1994-01-01,U Malaria Lab,2013-12-26
+136,Ofori Yaa,female,1994-01-01,Acute Urinary Tract Infection,2013-12-26
+137,Adu Yaa,female,2012-09-01,U Malaria Lab,2013-12-26
+137,Adu Yaa,female,2012-09-01,Acute RTI,2013-12-26
+138,Adu Kofi,male,2011-01-01,Acute RTI,2013-12-26
+139,Mensah Yaa,female,2010-01-01,U Malaria Lab,2013-12-26
+139,Mensah Yaa,female,2010-01-01,Acute RTI,2013-12-26
+140,Otu Yaa,female,2012-01-01,U Malaria Lab,2013-12-26
+140,Otu Yaa,female,2012-01-01,Diarrhoea Diseases,2013-12-26
+141,Otu Kojo,male,2010-01-01,U Malaria Lab,2013-12-26
+141,Otu Kojo,male,2010-01-01,Acute RTI,2013-12-26
+142,Appiah Kwaku,male,2012-01-01,U Malaria Lab,2013-12-26
+142,Appiah Kwaku,male,2012-01-01,Acute RTI,2013-12-26
+143,Adu Kojo,male,2010-01-01,U Malaria Lab,2013-12-26
+143,Adu Kojo,male,2010-01-01,Acute RTI,2013-12-26
+144,Yeboah Akua,female,2012-01-01,U Malaria Lab,2013-12-26
+144,Yeboah Akua,female,2012-01-01,Acute RTI,2013-12-26
+145,Addo Kwaku,male,2005-01-01,U Malaria Lab,2013-12-26
+146,Otu Akua,female,2007-01-01,U Malaria Lab,2013-12-26
+146,Otu Akua,female,2007-01-01,Diarrhoea Diseases,2013-12-26
+147,Adu Kwaku,male,2013-02-01,U Malaria Lab,2013-12-26
+147,Adu Kwaku,male,2013-02-01,Acute RTI,2013-12-26
+148,Mensah Kwabena,male,2013-03-01,U Malaria Lab,2013-12-26
+200024,Tetteh Akua,female,2013-01-01,Diarrhoea Diseases,2013-12-26
+149,Appiah Kojo,male,2012-01-01,U Malaria Lab,2013-12-27
+150,Addo Akua,female,2012-01-01,Skin Diseases,2013-12-27
+151,Otu Kwaku,male,2009-01-01,U Malaria Lab,2013-12-27
+152,Addo Kwabena,male,2006-01-01,U Malaria Lab,2013-12-31
+153,Ofori Yaa,female,2008-01-01,U Malaria Lab,2013-12-31
+154,Lartey Kojo,male,2009-01-01,Acute RTI,2013-12-31
+154,Lartey Kojo,male,2009-01-01,All Other Cases,2013-12-31
+155,Adu Janet,female,2007-01-01,U Malaria Lab,2013-12-31
+156,Addo Akua,female,2009-01-01,U Malaria Lab,2013-12-31
+157,Adu Kojo,male,2007-01-01,U Malaria Lab,2013-12-31
+158,Amoh Kofi,male,2009-01-01,U Malaria Lab,2013-12-31
+159,Ofori Kwabena,male,2012-01-01,U Malaria Lab,2013-12-31
+160,Mensah Kojo,male,1957-01-01,U Malaria Lab,2013-12-31
+160,Mensah Kojo,male,1957-01-01,Rheumatism & Other Joint Pain,2013-12-31
+161,Lartey Yaa,female,1974-01-01,Rheumatism & Other Joint Pain,2013-12-31
+161,Lartey Yaa,female,1974-01-01,Skin Diseases,2013-12-31
+162,Amoh Yaa,female,2009-01-01,Home Injuries,2014-01-06
+163,Adu Kofi,male,2011-01-01,U Malaria Lab,2014-01-06
+164,Mensah Yaa,female,2013-04-20,Diarrhoea Diseases,2014-01-06
+165,Yeboah Kwaku,male,2012-01-01,Diarrhoea Diseases,2014-01-06
+166,Appiah Akua,female,1988-01-01,Rheumatism & Other Joint Pain,2014-01-06
+167,Appiah Kwaku,male,2000-01-01,U Malaria Lab,2014-01-06
+167,Appiah Kwaku,male,2000-01-01,Anaemia,2014-01-06
+168,Mensah Yaa,female,1940-01-01,Acute RTI,2014-01-06
+169,Yeboah Yaa,female,2013-01-01,U Malaria Lab,2014-01-09
+170,Mensah Kwaku,male,2002-01-01,U Malaria Lab,2014-01-09
+170,Mensah Kwaku,male,2002-01-01,Acute RTI,2014-01-09
+171,Tetteh Kwaku,male,2012-01-01,All Other Cases,2014-01-09
+172,Adu Kojo,male,1940-01-01,U Malaria Lab,2014-01-09
+172,Adu Kojo,male,1940-01-01,Acute RTI,2014-01-09
+173,Lartey Kofi,male,2013-01-01,U Malaria Lab,2014-01-09
+173,Lartey Kofi,male,2013-01-01,Acute RTI,2014-01-09
+174,Amoh Akua,female,1936-01-01,Rheumatism & Other Joint Pain,2014-01-09
+174,Amoh Akua,female,1936-01-01,Acute RTI,2014-01-09
+175,Mensah Janet,female,2004-01-01,U Malaria Lab,2014-01-09
+176,Ofori Abena,female,2006-01-01,Anaemia,2014-01-09
+177,Otu Janet,female,2012-10-02,Diarrhoea Diseases,2014-01-09
+178,Appiah Janet,female,2002-01-01,Skin Diseases,2014-01-14
+179,Lartey Kwabena,male,2008-01-01,Diarrhoea Diseases,2014-01-14
+180,Appiah Yaa,female,2013-01-01,Diarrhoea Diseases,2014-01-14
+181,Adu Yaa,female,2014-01-01,Skin Diseases,2014-01-14
+182,Lartey Kofi,male,2012-01-01,Acute RTI,2014-01-14
+183,Amoh Kojo,male,1939-01-01,Rheumatism & Other Joint Pain,2014-01-14
+184,Lartey Abena,female,2012-01-01,Skin Diseases,2014-01-14
+186,Otu Kwabena,male,2011-01-01,U Malaria Non Lab,2014-01-14
+187,Mensah Akua,female,1941-01-01,U Malaria Non Lab,2014-01-14
+187,Mensah Akua,female,1941-01-01,Rheumatism & Other Joint Pain,2014-01-14
+188,Mensah Kojo,male,2011-01-01,U Malaria Non Lab,2014-01-14
+188,Mensah Kojo,male,2011-01-01,Diarrhoea Diseases,2014-01-14
+189,Adu Abena,female,1943-01-01,Rheumatism & Other Joint Pain,2014-01-14
+190,Appiah Kwaku,male,2009-01-01,U Malaria Lab,2014-01-14
+191,Yeboah Kofi,male,2006-01-01,U Malaria Lab,2014-01-14
+193,Lartey Yaa,female,1989-01-01,Skin Diseases,2014-01-14
+194,Appiah Akua,female,1947-01-01,Skin Diseases,2014-01-14
+195,Adu Yaa,female,1969-01-01,Rheumatism & Other Joint Pain,2014-01-14
+195,Adu Yaa,female,1969-01-01,Anaemia,2014-01-14
+196,Appiah Kofi,male,1978-01-01,Acute RTI,2014-01-25
+196,Appiah Kofi,male,1978-01-01,Rheumatism & Other Joint Pain,2014-01-25
+197,Otu Janet,female,2012-01-01,U Malaria Lab,2014-01-25
+198,Ofori Kwaku,male,2012-01-01,Diarrhoea Diseases,2014-01-25
+200,Addo Kwaku,male,1991-01-01,Rheumatism & Other Joint Pain,2014-01-25
+201,Ofori Abena,female,1989-01-01,All Other Cases,2014-01-25
+202,Otu Yaa,female,2007-01-01,U Malaria Lab,2014-01-25
+203,Addo Abena,female,2008-01-01,U Malaria Lab,2014-01-25
+204,Lartey Yaa,female,1978-01-01,U Malaria Lab,2014-01-25
+206,Lartey Janet,female,1996-01-01,Acute RTI,2014-01-25
+207,Yeboah Yaa,female,1992-01-01,Rheumatism & Other Joint Pain,2014-01-25
+209,Adu Abena,female,1997-01-01,U Malaria Lab,2014-01-25
+210,Ofori Yaa,female,1970-01-01,Rheumatism & Other Joint Pain,2014-01-25
+211,Yeboah Kwaku,male,2014-01-01,U Malaria Lab,2014-01-25
+211,Yeboah Kwaku,male,2014-01-01,Acute RTI,2014-01-25
+203,Addo Abena,female,2008-01-01,Anaemia,2014-01-25
+204,Lartey Yaa,female,1978-01-01,Anaemia,2014-01-25
+205,Mensah Kwaku,male,2011-01-01,Severe Malaria Lab,2014-01-25
+208,Yeboah Kwaku,male,2012-08-15,Acute RTI,2014-01-25
+212,Tetteh Kwaku,male,1966-01-01,U Malaria Lab,2014-01-25
+212,Tetteh Kwaku,male,1966-01-01,Diarrhoea Diseases,2014-01-25
+213,Mensah Kofi,male,2008-01-01,Skin Diseases,2014-01-25
+214,Otu Janet,female,1976-01-01,U Malaria Lab,2014-01-25
+215,Lartey Akua,female,2012-01-01,Skin Diseases,2014-01-25
+216,Yeboah Kwaku,male,2003-01-01,U Malaria Lab,2014-01-25
+217,Tetteh Akua,female,1943-01-01,All Other Cases,2014-01-25
+218,Yeboah Akua,female,1988-01-01,U Malaria Lab,2014-01-25
+219,Ofori Abena,female,1983-01-01,Diarrhoea Diseases,2014-01-25
+220,Lartey Kojo,male,2009-01-01,U Malaria Lab,2014-01-25
+221,Adu Kwaku,male,2006-01-01,Home Injuries,2014-01-25
+222,Ofori Yaa,female,1985-01-01,U Malaria Lab,2014-01-25
+223,Ofori Yaa,female,1968-01-01,All Other Cases,2014-01-26
+224,Yeboah Kojo,male,1977-01-01,U Malaria Lab,2014-01-26
+225,Adu Abena,female,2011-01-01,U Malaria Lab,2014-01-26
+226,Tetteh Akua,female,2006-01-01,U Malaria Lab,2014-01-26
+229,Appiah Akua,female,2013-01-01,U Malaria Non Lab,2014-01-26
+230,Yeboah Yaa,female,2004-01-01,Domestic Voilence,2014-01-26
+231,Lartey Kofi,male,2013-01-01,U Malaria Lab,2014-01-26
+232,Ofori Kofi,male,2000-01-01,All Other Cases,2014-01-26
+233,Lartey Akua,female,2013-01-01,U Malaria Lab,2014-01-26
+234,Yeboah Akua,female,1974-01-01,All Other Cases,2014-01-26
+235,Mensah Kwaku,male,2006-01-01,U Malaria Lab,2014-01-26
+236,Amoh Yaa,female,2006-01-01,U Malaria Lab,2014-01-26
+236,Amoh Yaa,female,2006-01-01,Acute RTI,2014-01-26
+237,Yeboah Kwaku,male,2011-01-01,U Malaria Lab,2014-01-26
+237,Yeboah Kwaku,male,2011-01-01,Acute RTI,2014-01-26
+239,Adu Kofi,male,2012-01-01,Home Injuries,2014-01-26
+240,Tetteh Kojo,male,2007-01-01,U Malaria Lab,2014-01-27
+241,Addo Kojo,male,2012-01-01,U Malaria Lab,2014-01-27
+242,Addo Kofi,male,2000-01-01,All Other Cases,2014-01-27
+243,Ofori Janet,female,1988-01-01,All Other Cases,2014-01-27
+244,Appiah Abena,female,1988-01-01,All Other Cases,2014-01-27
+245,Otu Abena,female,1942-01-01,All Other Cases,2014-01-27
+246,Otu Kwaku,male,2009-01-01,U Malaria Lab,2014-01-27
+244,Appiah Abena,female,1988-01-01,Anaemia,2014-01-27
+240,Tetteh Kojo,male,2007-01-01,Skin Diseases,2014-01-27
+247,Amoh Kwaku,male,1976-01-01,Occupational Injuries,2014-01-27
+249,Adu Kwaku,male,2009-01-01,Diarrhoea Diseases,2014-01-27
+250,Yeboah Kwaku,male,1936-01-01,Rheumatism & Other Joint Pain,2014-01-27
+251,Tetteh Janet,female,1986-01-01,Acute Urinary Tract Infection,2014-01-27
+252,Adu Janet,female,1941-01-01,Rheumatism & Other Joint Pain,2014-01-27
+253,Tetteh Abena,female,2009-01-01,All Other Cases,2014-01-27
+254,Amoh Akua,female,2006-01-01,All Other Cases,2014-01-27
+255,Amoh Akua,female,2011-01-01,All Other Cases,2014-01-27
+256,Amoh Kwaku,male,2011-09-01,All Other Cases,2014-01-27
+257,Appiah Kwaku,male,2003-01-01,U Malaria Lab,2014-01-27
+258,Adu Abena,female,2005-01-01,U Malaria Lab,2014-01-27
+259,Otu Kwaku,male,2010-01-01,U Malaria Lab,2014-01-27
+260,Otu Kojo,male,1969-01-01,Tuberculosis,2014-01-27
+261,Otu Akua,female,1990-01-01,All Other Cases,2014-01-27
+262,Tetteh Kofi,male,1983-01-01,U Malaria Lab,2014-01-27
+262,Tetteh Kofi,male,1983-01-01,Acute RTI,2014-01-27
+252,Adu Janet,female,1941-01-01,Anaemia,2014-01-27
+263,Ofori Abena,female,1996-01-01,All Other Cases,2014-01-27
+264,Addo Abena,female,2012-01-01,U Malaria Lab,2014-01-27
+265,Adu Yaa,female,1958-01-01,U Malaria Lab,2014-01-27
+266,Mensah Kojo,male,2008-01-01,U Malaria Lab,2014-01-27
+267,Tetteh Yaa,female,2001-01-01,U Malaria Lab,2014-01-27
+268,Ofori Abena,female,2011-01-01,U Malaria Lab,2014-01-27
+269,Appiah Akua,female,2012-01-01,U Malaria Lab,2014-01-28
+270,Yeboah Abena,female,1971-01-01,Acute RTI,2014-01-28
+271,Amoh Kwaku,male,2014-01-01,Pyrexia UO (not Malaria),2014-01-28
+273,Lartey Yaa,female,1942-01-01,Rheumatism & Other Joint Pain,2014-01-28
+273,Lartey Yaa,female,1942-01-01,Anaemia,2014-01-28
+274,Lartey Yaa,female,1984-01-01,U Malaria Lab,2014-01-28
+275,Lartey Kwabena,male,2011-01-01,Acute RTI,2014-01-28
+276,Tetteh Kwaku,male,1972-01-01,U Malaria Lab,2014-01-28
+277,Otu Kojo,male,2013-01-01,Diarrhoea Diseases,2014-01-28
+277,Otu Kojo,male,2013-01-01,Acute RTI,2014-01-28
+278,Adu Janet,female,2010-01-01,U Malaria Lab,2014-01-28
+279,Addo Abena,female,1957-01-01,U Malaria Lab,2014-01-28
+280,Amoh Kofi,male,2012-01-01,U Malaria Lab,2014-01-28
+281,Ofori Yaa,female,1992-01-01,All Other Cases,2014-01-28
+282,Yeboah Kwaku,male,2009-01-01,U Malaria Lab,2014-01-30
+283,Mensah Akua,female,1969-01-01,Acute RTI,2014-01-30
+284,Ofori Yaa,female,2009-01-01,Diarrhoea Diseases,2014-01-30
+285,Yeboah Yaa,female,2012-05-07,U Malaria Lab,2014-01-30
+286,Ofori Kwaku,male,1984-01-01,Rheumatism & Other Joint Pain,2014-01-30
+287,Mensah Kwaku,male,1995-01-01,Acute Urinary Tract Infection,2014-01-30
+288,Amoh Akua,female,2007-01-01,All Other Cases,2014-01-31
+289,Addo Kwabena,male,2010-01-01,U Malaria Lab,2014-01-31
+289,Addo Kwabena,male,2010-01-01,Acute RTI,2014-01-31
+291,Yeboah Yaa,female,1983-01-01,Pregnancy Related Complication,2014-01-31
+292,Adu Abena,female,2008-01-01,Diarrhoea Diseases,2014-01-31
+293,Addo Kwaku,male,2010-01-01,U Malaria Lab,2014-01-31
+294,Mensah Janet,female,1958-01-01,Acute RTI,2014-01-31
+295,Appiah Kofi,male,2012-08-18,Acute RTI,2014-01-31
+296,Ofori Kwaku,male,2012-01-01,Skin Diseases,2014-01-31
+295,Appiah Kofi,male,2012-08-18,Diarrhoea Diseases,2014-01-31
+297,Lartey Kwaku,male,2005-01-01,U Malaria Lab,2014-01-31
+298,Lartey Janet,female,2013-01-01,Acute RTI,2014-01-31
+298,Lartey Janet,female,2013-01-01,Diarrhoea Diseases,2014-01-31
+299,Adu Akua,female,2010-01-01,Pyrexia UO (not Malaria),2014-01-31
+301,Tetteh Kwabena,male,2012-01-01,All Other Cases,2014-01-31
+302,Appiah Kojo,male,2000-01-01,U Malaria Lab,2014-01-31
+303,Yeboah Akua,female,2013-01-01,Diarrhoea Diseases,2014-01-31
+304,Yeboah Abena,female,2007-01-01,U Malaria Lab,2014-01-31
+305,Mensah Akua,female,1958-01-01,Rheumatism & Other Joint Pain,2014-01-31
+306,Mensah Janet,female,2010-01-01,U Malaria Lab,2014-01-31
+307,Tetteh Janet,female,2013-01-01,U Malaria Lab,2014-01-31
+102,Otu Kwabena,male,2010-01-01,U Malaria Lab,2014-02-09
+206,Lartey Janet,female,1996-01-01,Acute RTI,2014-02-09
+38,Tetteh Kojo,male,2012-01-01,Skin Diseases,2014-02-09
+151,Otu Kwaku,male,2009-01-01,U Malaria Lab,2014-02-09
+308,Amoh Yaa,female,2013-01-01,Diarrhoea Diseases,2014-02-09
+309,Tetteh Kofi,male,1974-01-01,Skin Diseases,2014-02-09
+310,Otu Janet,female,1940-01-01,Rheumatism & Other Joint Pain,2014-02-09
+190,Appiah Kwaku,male,2009-01-01,Diarrhoea Diseases,2014-02-09
+181,Adu Yaa,female,2014-01-01,U Malaria Lab,2014-02-09
+311,Appiah Akua,female,1990-01-01,U Malaria Lab,2014-02-09
+65,Addo Kwaku,male,2012-01-01,All Other Cases,2014-02-09
+312,Tetteh Kwaku,male,1935-01-01,Diarrhoea Diseases,2014-02-09
+313,Yeboah Kwaku,male,2007-01-01,Acute RTI,2014-02-09
+109,Otu Janet,female,1949-01-01,U Malaria Lab,2014-02-09
+109,Otu Janet,female,1949-01-01,Acute RTI,2014-02-09
+314,Mensah Kwaku,male,2012-01-01,U Malaria Lab,2014-02-09
+315,Otu Kofi,male,2010-01-01,Acute RTI,2014-02-09
+315,Otu Kofi,male,2010-01-01,Diarrhoea Diseases,2014-02-09
+316,Amoh Yaa,female,1970-01-01,U Malaria Lab,2014-02-09
+317,Addo Kwaku,male,2000-01-01,Acute RTI,2014-02-09
+318,Yeboah Abena,female,1970-01-01,U Malaria Lab,2014-02-09
+319,Appiah Akua,female,1994-01-01,U Malaria Lab,2014-02-09
+320,Mensah Abena,female,1991-01-01,Rheumatism & Other Joint Pain,2014-02-09
+321,Lartey Kwaku,male,2014-03-01,Diarrhoea Diseases,2014-02-09
+154,Lartey Kojo,male,2009-01-01,U Malaria Lab,2014-02-09
+322,Appiah Kwaku,male,2012-01-01,U Malaria Lab,2014-02-09
+323,Appiah Janet,female,2012-01-01,U Malaria Lab,2014-02-09
+320,Mensah Abena,female,1991-01-01,Anaemia,2014-02-09
+283,Mensah Akua,female,1969-01-01,Anaemia,2014-02-09
+324,Mensah Yaa,female,1985-06-18,All Other Cases,2014-02-09
+325,Tetteh Abena,female,2004-01-01,All Other Cases,2014-02-09
+326,Appiah Kwabena,male,2004-01-01,All Other Cases,2014-02-10
+327,Yeboah Kwabena,male,2012-01-01,All Other Cases,2014-02-10
+328,Tetteh Kwaku,male,1982-01-01,U Malaria Lab,2014-02-10
+329,Amoh Kojo,male,2005-01-01,U Malaria Lab,2014-02-10
+330,Amoh Kofi,male,2005-01-01,U Malaria Lab,2014-02-10
+331,Otu Yaa,female,1958-01-01,U Malaria Lab,2014-02-10
+331,Otu Yaa,female,1958-01-01,Anaemia,2014-02-10
+332,Addo Kojo,male,1967-01-01,All Other Cases,2014-02-10
+333,Yeboah Kwabena,male,2010-01-01,U Malaria Lab,2014-02-10
+190,Appiah Kwaku,male,2009-01-01,U Malaria Lab,2014-02-10
+334,Tetteh Abena,female,1957-01-01,U Malaria Lab,2014-02-10
+335,Appiah Abena,female,1977-01-01,Anaemia,2014-02-10
+335,Appiah Abena,female,1977-01-01,Rheumatism & Other Joint Pain,2014-02-10
+336,Yeboah Janet,female,1970-01-01,Diarrhoea Diseases,2014-02-10
+337,Tetteh Abena,female,1993-01-01,Rheumatism & Other Joint Pain,2014-02-10
+339,Yeboah Janet,female,2000-01-01,U Malaria Lab,2014-02-10
+340,Otu Janet,female,1996-01-01,Domestic Voilence,2014-02-10
+341,Amoh Kofi,male,2009-01-01,U Malaria Lab,2014-02-10
+342,Yeboah Abena,female,2013-03-01,U Malaria Lab,2014-02-10
+343,Adu Kwaku,male,2008-01-01,U Malaria Lab,2014-02-10
+344,Ofori Kojo,male,2002-01-01,U Malaria Lab,2014-02-10
+35,Mensah Janet,female,1998-01-01,Gynecological Condition,2014-02-10
+338,Adu Yaa,female,1986-01-01,Malaria in Pregnancy Lab,2014-02-10
+338,Adu Yaa,female,1986-01-01,Diarrhoea Diseases,2014-02-10
+361,Yeboah Akua,female,2005-01-01,U Malaria Lab,2014-02-12
+362,Addo Yaa,female,1974-01-01,Anaemia,2014-02-12
+363,Ofori Abena,female,2010-01-01,Home Injuries,2014-02-12
+364,Adu Abena,female,1955-01-01,Diarrhoea Diseases,2014-02-12
+365,Appiah Janet,female,2012-01-01,U Malaria Lab,2014-02-12
+366,Adu Yaa,female,1988-01-01,U Malaria Lab,2014-02-12
+338,Adu Yaa,female,1986-01-01,Pregnancy Related Complication,2014-02-12
+367,Otu Kofi,male,1976-01-01,Rheumatism & Other Joint Pain,2014-02-12
+368,Tetteh Kofi,male,2010-01-01,Acute RTI,2014-02-12
+368,Tetteh Kofi,male,2010-01-01,All Other Cases,2014-02-12
+369,Adu Akua,female,1986-01-01,Malaria in Pregnancy Lab,2014-02-12
+370,Appiah Kwaku,male,2010-01-01,U Malaria Lab,2014-02-12
+391,Yeboah Janet,female,2013-01-01,U Malaria Lab,2014-02-24
+174,Amoh Akua,female,1936-01-01,Rheumatism & Other Joint Pain,2014-02-24
+392,Amoh Kwabena,male,1992-01-01,Anaemia,2014-02-24
+271,Amoh Kwaku,male,2014-01-01,All Other Cases,2014-02-24
+197,Otu Janet,female,2012-01-01,U Malaria Lab,2014-02-24
+197,Otu Janet,female,2012-01-01,Skin Diseases,2014-02-24
+205,Mensah Kwaku,male,2011-01-01,U Malaria Lab,2014-02-24
+205,Mensah Kwaku,male,2011-01-01,Acute RTI,2014-02-24
+393,Amoh Kofi,male,1985-01-01,Anaemia,2014-02-24
+394,Amoh Janet,female,1985-01-01,Rheumatism & Other Joint Pain,2014-02-24
+395,Mensah Yaa,female,1964-01-01,Acute RTI,2014-02-24
+396,Appiah Akua,female,1976-01-01,Acute RTI,2014-02-24
+397,Tetteh Yaa,female,2008-01-01,Acute RTI,2014-02-24
+397,Tetteh Yaa,female,2008-01-01,All Other Cases,2014-02-24
+398,Otu Akua,female,2013-01-01,Acute RTI,2014-02-24
+399,Adu Kojo,male,2012-01-01,U Malaria Lab,2014-02-24
+399,Adu Kojo,male,2012-01-01,Acute RTI,2014-02-24
+400,Yeboah Kwabena,male,2012-01-01,U Malaria Lab,2014-02-24
+325,Tetteh Abena,female,2004-01-01,U Malaria Lab,2014-02-25
+417,Yeboah Abena,female,1962-01-01,U Malaria Lab,2014-02-25
+83,Amoh Akua,female,2010-01-01,U Malaria Lab,2014-02-25
+163,Adu Kofi,male,2011-01-01,U Malaria Lab,2014-02-25
+418,Appiah Kojo,male,2011-01-01,U Malaria Lab,2014-02-25
+419,Yeboah Yaa,female,1977-01-01,Acute Ear Infection,2014-02-25
+200030,Appiah Janet,female,1983-01-01,U Malaria Lab,2014-02-25
+200030,Appiah Janet,female,1983-01-01,Acute Ear Infection,2014-02-25
+420,Ofori Akua,female,2009-01-01,U Malaria Lab,2014-02-25
+420,Ofori Akua,female,2009-01-01,Acute RTI,2014-02-25
+421,Tetteh Abena,female,2000-01-01,Rheumatism & Other Joint Pain,2014-02-25
+422,Amoh Kwaku,male,1984-01-01,Rheumatism & Other Joint Pain,2014-02-25
+187,Mensah Akua,female,1941-01-01,Home Injuries,2014-02-25
+423,Ofori Kwabena,male,2006-01-01,U Malaria Lab,2014-02-25
+424,Otu Akua,female,1969-01-01,U Malaria Lab,2014-02-25
+425,Tetteh Kwaku,male,2012-08-29,Acute RTI,2014-02-25
+148,Mensah Kwabena,male,2013-03-01,Skin Diseases,2014-02-25
+426,Addo Kwaku,male,2009-01-01,U Malaria Lab,2014-02-25
+42,Ofori Kwabena,male,2010-01-01,U Malaria Lab,2014-02-25
+337,Tetteh Abena,female,1993-01-01,U Malaria Lab,2014-02-25
+79,Adu Kojo,male,2009-01-01,U Malaria Lab,2014-02-25
+427,Amoh Yaa,female,2012-01-01,U Malaria Lab,2014-02-26
+427,Amoh Yaa,female,2012-01-01,Acute RTI,2014-02-26
+428,Amoh Akua,female,1964-01-01,Rheumatism & Other Joint Pain,2014-02-26
+429,Lartey Kwaku,male,2001-01-01,U Malaria Lab,2014-02-26
+430,Tetteh Kojo,male,2012-01-01,U Malaria Lab,2014-02-26
+431,Yeboah Abena,female,2012-01-01,All Other Cases,2014-02-26
+238,Addo Kojo,male,2010-01-01,U Malaria Lab,2014-02-26
+432,Amoh Kwaku,male,1964-01-01,U Malaria Lab,2014-02-26
+433,Yeboah Yaa,female,2012-01-01,U Malaria Lab,2014-02-26
+434,Adu Kwaku,male,1944-01-01,U Malaria Lab,2014-02-26
+86,Mensah Kofi,male,2009-01-01,Home Injuries,2014-02-26
+435,Mensah Janet,female,1979-01-01,Acute RTI,2014-02-26
+435,Mensah Janet,female,1979-01-01,Rheumatism & Other Joint Pain,2014-02-26
+187,Mensah Akua,female,1941-01-01,Anaemia,2014-02-26
+436,Mensah Janet,female,1987-01-01,Rheumatism & Other Joint Pain,2014-02-26
+437,Mensah Kofi,male,2008-01-01,Acute RTI,2014-02-26
+438,Tetteh Akua,female,2011-01-01,All Other Cases,2014-02-26
+439,Lartey Akua,female,2013-01-01,Acute RTI,2014-02-26
+440,Appiah Janet,female,2010-01-01,U Malaria Lab,2014-02-26
+441,Lartey Kofi,male,2013-01-01,Diarrhoea Diseases,2014-02-26
+442,Tetteh Janet,female,1954-01-01,U Malaria Lab,2014-02-26
+441,Lartey Kofi,male,2013-01-01,Acute RTI,2014-02-26
+440,Appiah Janet,female,2010-01-01,Acute RTI,2014-02-26
+443,Addo Abena,female,1981-01-01,U Malaria Lab,2014-02-26
+159,Ofori Kwabena,male,2012-01-01,U Malaria Lab,2014-02-26
+444,Adu Kwaku,male,2010-01-01,U Malaria Lab,2014-02-26
+445,Amoh Kwaku,male,1990-01-01,Anaemia,2014-02-26
+445,Amoh Kwaku,male,1990-01-01,Skin Diseases,2014-02-26
+446,Tetteh Kwaku,male,2013-06-01,All Other Cases,2014-02-26
+447,Otu Kwaku,male,2013-08-01,Acute RTI,2014-02-26
+448,Yeboah Kwaku,male,1958-01-01,Rheumatism & Other Joint Pain,2014-02-26
+449,Ofori Yaa,female,1976-01-01,Acute RTI,2014-02-26
+450,Lartey Kofi,male,2013-01-01,Skin Diseases,2014-02-26
+451,Amoh Kwabena,male,1989-01-01,U Malaria Lab,2014-02-26
+452,Addo Kojo,male,1969-01-01,U Malaria Lab,2014-02-26
+453,Amoh Yaa,female,2005-01-01,U Malaria Lab,2014-03-04
+454,Yeboah Kofi,male,1980-01-01,Skin Diseases,2014-03-04
+454,Yeboah Kofi,male,1980-01-01,Rheumatism & Other Joint Pain,2014-03-04
+296,Ofori Kwaku,male,2012-01-01,Diarrhoea Diseases,2014-03-04
+455,Appiah Akua,female,1991-01-01,Malaria in Pregnancy Lab,2014-03-04
+367,Otu Kofi,male,1976-01-01,Acute RTI,2014-03-04
+368,Tetteh Kofi,male,2010-01-01,U Malaria Lab,2014-03-04
+456,Tetteh Akua,female,1945-01-01,U Malaria Lab,2014-03-04
+458,Amoh Janet,female,1984-01-01,U Malaria Lab,2014-03-04
+459,Tetteh Kwabena,male,1965-01-01,Diarrhoea Diseases,2014-03-04
+460,Ofori Abena,female,1990-01-01,Malaria in Pregnancy Lab,2014-03-04
+461,Adu Akua,female,2010-01-01,U Malaria Lab,2014-03-04
+462,Yeboah Kojo,male,1998-01-01,U Malaria Lab,2014-03-04
+463,Tetteh Kojo,male,2008-01-01,U Malaria Lab,2014-03-04
+464,Adu Akua,female,2003-01-01,U Malaria Lab,2014-03-04
+465,Tetteh Abena,female,1986-01-01,Acute RTI,2014-03-05
+466,Ofori Yaa,female,2009-01-01,Skin Diseases,2014-03-05
+467,Yeboah Kwabena,male,2013-01-01,Skin Diseases,2014-03-05
+468,Amoh Yaa,female,2008-01-01,U Malaria Lab,2014-03-05
+119,Addo Yaa,female,1935-01-01,Rheumatism & Other Joint Pain,2014-03-05
+455,Appiah Akua,female,1991-01-01,Skin Diseases,2014-03-05
+120,Otu Kwaku,male,1953-01-01,Anaemia,2014-03-07
+467,Yeboah Kwabena,male,2013-01-01,Transport Injuries,2014-03-07
+469,Mensah Abena,female,1969-01-01,Rheumatism & Other Joint Pain,2014-03-07
+277,Otu Kojo,male,2013-01-01,U Malaria Lab,2014-03-07
+277,Otu Kojo,male,2013-01-01,Acute RTI,2014-03-07
+470,Appiah Abena,female,1987-01-01,Acute RTI,2014-03-07
+200023,Yeboah Janet,female,2011-01-01,U Malaria Lab,2014-03-07
+191,Yeboah Kofi,male,2006-01-01,U Malaria Lab,2014-03-07
+190,Appiah Kwaku,male,2009-01-01,U Malaria Lab,2014-03-07
+471,Appiah Kwaku,male,1978-01-01,Substance Abuse,2014-03-07
+472,Yeboah Yaa,female,1928-01-01,Acute RTI,2014-03-07
+133,Mensah Kwabena,male,2012-01-01,U Malaria Lab,2014-03-07
+474,Ofori Kwabena,male,1994-01-01,Acute RTI,2014-03-07
+77,Lartey Akua,female,2013-03-01,Diarrhoea Diseases,2014-03-07
+475,Amoh Janet,female,1983-01-01,Diarrhoea Diseases,2014-03-07
+457,Otu Akua,female,1996-01-01,U Malaria Lab,2014-03-07
+477,Lartey Abena,female,1981-01-01,All Other Cases,2014-03-07
+143,Adu Kojo,male,2010-01-01,U Malaria Lab,2014-03-07
+52,Adu Kwaku,male,2007-01-01,Acute RTI,2014-03-07
+478,Tetteh Kwaku,male,1989-01-01,U Malaria Lab,2014-03-07
+200013,Amoh Kwabena,male,2009-01-01,All Other Cases,2014-03-07
+200014,Otu Kofi,male,2013-01-01,U Malaria Lab,2014-03-07
+200015,Amoh Kwaku,male,2013-01-01,Acute RTI,2014-03-07
+210,Ofori Yaa,female,1970-01-01,U Malaria Lab,2014-03-07
+100,Mensah Janet,female,1999-05-09,Rheumatism & Other Joint Pain,2014-03-07
+43,Yeboah Kwabena,male,1999-01-01,U Malaria Lab,2014-03-07
+116,Appiah Abena,female,2011-01-01,U Malaria Lab,2014-03-12
+116,Appiah Abena,female,2011-01-01,Acute RTI,2014-03-12
+489,Mensah Kwaku,male,2008-01-01,Acute RTI,2014-03-12
+490,Addo Kojo,male,2011-01-01,U Malaria Lab,2014-03-12
+490,Addo Kojo,male,2011-01-01,Acute RTI,2014-03-12
+177,Otu Janet,female,2012-10-02,U Malaria Lab,2014-03-12
+160,Mensah Kojo,male,1957-01-01,U Malaria Lab,2014-03-12
+491,Mensah Akua,female,2011-01-01,U Malaria Lab,2014-03-12
+491,Mensah Akua,female,2011-01-01,Acute RTI,2014-03-12
+492,Otu Janet,female,1993-01-01,U Malaria Lab,2014-03-12
+493,Ofori Kwabena,male,2003-01-01,Skin Diseases,2014-03-12
+494,Tetteh Yaa,female,2008-04-24,Acute RTI,2014-03-12
+495,Tetteh Abena,female,2012-01-01,Acute RTI,2014-03-12
+273,Lartey Yaa,female,1942-01-01,U Malaria Lab,2014-03-12
+66,Lartey Janet,female,2013-03-23,U Malaria Lab,2014-03-12
+66,Lartey Janet,female,2013-03-23,Acute RTI,2014-03-12
+208,Yeboah Kwaku,male,2012-08-15,U Malaria Lab,2014-03-12
+208,Yeboah Kwaku,male,2012-08-15,Acute RTI,2014-03-12
+496,Lartey Abena,female,1984-01-01,U Malaria Lab,2014-03-12
+163,Adu Kofi,male,2011-01-01,U Malaria Lab,2014-03-12
+497,Amoh Akua,female,2012-01-01,Acute RTI,2014-03-12
+184,Lartey Abena,female,2012-01-01,Diarrhoea Diseases,2014-03-12
+498,Adu Kwaku,male,2013-01-01,Skin Diseases,2014-03-12
+499,Ofori Kwaku,male,2009-01-01,U Malaria Lab,2014-03-12
+254,Amoh Akua,female,2006-01-01,U Malaria Lab,2014-03-12
+85,Mensah Kwaku,male,2011-01-01,U Malaria Lab,2014-03-12
+500,Lartey Janet,female,1984-01-01,U Malaria Lab,2014-03-12
+501,Lartey Akua,female,1964-01-01,U Malaria Lab,2014-03-12
+501,Lartey Akua,female,1964-01-01,Home Injuries,2014-03-12
+502,Ofori Abena,female,2013-01-01,Diarrhoea Diseases,2014-03-12
+503,Adu Janet,female,2012-01-01,Diarrhoea Diseases,2014-03-12
+220,Lartey Kojo,male,2009-01-01,U Malaria Lab,2014-03-14
+511,Tetteh Akua,female,1972-01-01,Rheumatism & Other Joint Pain,2014-03-14
+159,Ofori Kwabena,male,2012-01-01,U Malaria Lab,2014-03-14
+512,Amoh Kofi,male,1996-07-25,Transport Injuries,2014-03-14
+513,Tetteh Kwaku,male,1984-01-01,U Malaria Lab,2014-03-14
+467,Yeboah Kwabena,male,2013-01-01,Rheumatism & Other Joint Pain,2014-03-14
+515,Amoh Janet,female,1986-01-01,Rheumatism & Other Joint Pain,2014-03-14
+516,Mensah Kojo,male,2003-01-01,U Malaria Lab,2014-03-14
+110,Addo Janet,female,2004-01-01,U Malaria Lab,2014-03-14
+517,Amoh Akua,female,1985-01-01,U Malaria Lab,2014-03-14
+518,Addo Kwaku,male,1976-01-01,U Malaria Lab,2014-03-14
+519,Otu Kwaku,male,1972-01-01,Diarrhoea Diseases,2014-03-14
+520,Tetteh Kwabena,male,2011-01-01,Diarrhoea Diseases,2014-03-14
+521,Mensah Janet,female,2011-01-01,U Malaria Lab,2014-03-14
+58,Amoh Janet,female,2009-01-01,U Malaria Lab,2014-03-17
+522,Lartey Yaa,female,1943-01-01,U Malaria Lab,2014-03-17
+523,Tetteh Janet,female,1940-01-01,U Malaria Lab,2014-03-17
+524,Otu Akua,female,1995-01-01,Rheumatism & Other Joint Pain,2014-03-17
+41,Yeboah Akua,female,1988-01-01,Acute RTI,2014-03-17
+525,Yeboah Janet,female,2011-01-01,U Malaria Lab,2014-03-17
+526,Lartey Akua,female,1959-01-01,Rheumatism & Other Joint Pain,2014-03-17
+526,Lartey Akua,female,1959-01-01,All Other Cases,2014-03-17
+522,Lartey Yaa,female,1943-01-01,Home Injuries,2014-03-17
+32,Appiah Janet,female,2008-11-24,U Malaria Lab,2014-03-17
+37,Ofori Kojo,male,2011-01-01,U Malaria in P Not Tested Treated,2014-03-20
+542,Appiah Akua,female,1968-01-01,U Malaria Lab,2014-03-29
+498,Adu Kwaku,male,2013-01-01,Acute RTI,2014-03-29
+543,Otu Kwaku,male,1949-01-01,Anaemia,2014-03-29
+544,Tetteh Yaa,female,1992-01-01,Gynecological Condition,2014-03-29
+227,Ofori Abena,female,2011-11-11,U Malaria Lab,2014-03-29
+363,Ofori Abena,female,2010-01-01,U Malaria Lab,2014-03-29
+545,Ofori Kwaku,male,2010-01-01,Acute RTI,2014-03-29
+546,Otu Kwabena,male,1996-01-01,U Malaria Lab,2014-03-29
+547,Addo Kwaku,male,1958-01-01,U Malaria Lab,2014-03-29
+548,Appiah Kojo,male,2013-05-01,Acute RTI,2014-03-29
+549,Tetteh Abena,female,2012-01-01,U Malaria Lab,2014-03-29
+549,Tetteh Abena,female,2012-01-01,Acute RTI,2014-03-29
+550,Amoh Akua,female,2013-07-17,U Malaria Lab,2014-03-29
+550,Amoh Akua,female,2013-07-17,Acute RTI,2014-03-29
+551,Tetteh Kwaku,male,2000-01-01,U Malaria Lab,2014-03-29
+102,Otu Kwabena,male,2010-01-01,U Malaria Lab,2014-03-29
+419,Yeboah Yaa,female,1977-01-01,All Other Cases,2014-03-29
+552,Addo Akua,female,1961-01-01,U Malaria Lab,2014-03-29
+151,Otu Kwaku,male,2009-01-01,U Malaria Lab,2014-03-29
+299,Adu Akua,female,2010-01-01,Acute RTI,2014-03-29
+553,Amoh Kofi,male,2009-01-01,U Malaria Lab,2014-03-29
+553,Amoh Kofi,male,2009-01-01,Diarrhoea Diseases,2014-03-29
+554,Mensah Abena,female,1962-01-01,Rheumatism & Other Joint Pain,2014-03-29
+317,Addo Kwaku,male,2000-01-01,U Malaria Lab,2014-03-29
+317,Addo Kwaku,male,2000-01-01,Acute RTI,2014-03-29
+169,Yeboah Yaa,female,2013-01-01,U Malaria Lab,2014-03-29
+169,Yeboah Yaa,female,2013-01-01,Acute RTI,2014-03-29
+555,Lartey Kofi,male,2005-01-01,U Malaria Lab,2014-03-29
+303,Yeboah Akua,female,2013-01-01,U Malaria Lab,2014-03-29
+299,Adu Akua,female,2010-01-01,Acute RTI,2014-03-29
+299,Adu Akua,female,2010-01-01,Home Injuries,2014-03-29
+272,Tetteh Akua,female,2005-01-01,All Other Cases,2014-03-29
+171,Tetteh Kwaku,male,2012-01-01,Acute RTI,2014-03-29
+556,Ofori Kofi,male,2008-01-01,All Other Cases,2014-03-29
+67,Mensah Janet,female,2008-01-01,U Malaria Lab,2014-03-30
+557,Lartey Kwaku,male,1997-01-01,U Malaria Lab,2014-03-30
+391,Yeboah Janet,female,2013-01-01,U Malaria Lab,2014-03-30
+542,Appiah Akua,female,1968-01-01,Re-Attendance,2014-03-30
+558,Mensah Yaa,female,1979-01-01,Malaria in Pregnancy Lab,2014-03-30
+168,Mensah Yaa,female,1940-01-01,Rheumatism & Other Joint Pain,2014-03-30
+559,Appiah Kofi,male,2001-01-01,U Malaria Lab,2014-03-30
+269,Appiah Akua,female,2012-01-01,Skin Diseases,2014-03-30
+560,Addo Janet,female,1986-01-01,Rheumatism & Other Joint Pain,2014-03-30
+561,Otu Kwaku,male,1948-01-01,Rheumatism & Other Joint Pain,2014-03-30
+562,Otu Abena,female,2010-01-01,Skin Diseases,2014-03-30
+563,Otu Abena,female,2008-01-01,U Malaria Lab,2014-03-30
+564,Addo Kwaku,male,2007-01-01,Acute RTI,2014-03-30
+263,Ofori Abena,female,1996-01-01,U Malaria Lab,2014-03-30
+565,Otu Janet,female,2010-01-01,Diarrhoea Diseases,2014-03-30
+566,Adu Kojo,male,2012-01-01,Home Injuries,2014-03-30
+44,Appiah Kwabena,male,2005-01-01,U Malaria Lab,2014-03-30
+567,Ofori Kwaku,male,1992-01-01,Ulcers,2014-03-30
+568,Ofori Janet,female,1967-01-01,Re-Attendance,2014-03-30
+189,Adu Abena,female,1943-01-01,Diarrhoea Diseases,2014-03-30
+467,Yeboah Kwabena,male,2013-01-01,All Other Cases,2014-03-30
+569,Tetteh Kwaku,male,2008-01-01,U Malaria Lab,2014-03-30
+570,Amoh Yaa,female,2007-01-01,U Malaria Lab,2014-03-30
+571,Ofori Yaa,female,1986-01-01,Acute RTI,2014-03-30
+572,Ofori Janet,female,2012-01-01,U Malaria Lab,2014-03-30
+572,Ofori Janet,female,2012-01-01,Acute RTI,2014-03-30
+573,Ofori Abena,female,1966-01-01,U Malaria Lab,2014-03-30
+154,Lartey Kojo,male,2009-01-01,U Malaria Lab,2014-03-30
+574,Tetteh Abena,female,2012-01-01,U Malaria Lab,2014-03-30
+574,Tetteh Abena,female,2012-01-01,Referral,2014-03-30
+575,Otu Kofi,male,2004-01-01,U Malaria Lab,2014-03-30
+576,Adu Kojo,male,1953-01-01,Skin Diseases,2014-04-05
+577,Addo Janet,female,2010-01-01,Acute RTI,2014-04-05
+578,Tetteh Kwabena,male,2013-10-01,Skin Diseases,2014-04-05
+579,Amoh Kwaku,male,2004-01-01,Home Injuries,2014-04-05
+184,Lartey Abena,female,2012-01-01,U Malaria Suspected,2014-04-05
+184,Lartey Abena,female,2012-01-01,U Malaria Suspected Tested,2014-04-05
+184,Lartey Abena,female,2012-01-01,U Malaria Tested Positive,2014-04-05
+205,Mensah Kwaku,male,2011-01-01,U Malaria Suspected,2014-04-05
+205,Mensah Kwaku,male,2011-01-01,U Malaria Suspected Tested,2014-04-05
+205,Mensah Kwaku,male,2011-01-01,U Malaria Tested Positive,2014-04-05
+391,Yeboah Janet,female,2013-01-01,Skin Diseases,2014-04-05
+580,Addo Kwaku,male,2014-02-01,Skin Diseases,2014-04-05
+41,Yeboah Akua,female,1988-01-01,Acute RTI,2014-04-05
+581,Otu Kofi,male,2007-01-01,U Malaria Suspected,2014-04-05
+581,Otu Kofi,male,2007-01-01,U Malaria Suspected Tested,2014-04-05
+581,Otu Kofi,male,2007-01-01,U Malaria Tested Positive,2014-04-05
+167,Appiah Kwaku,male,2000-01-01,U Malaria Tested Positive,2014-04-05
+167,Appiah Kwaku,male,2000-01-01,U Malaria Suspected Tested,2014-04-05
+119,Addo Yaa,female,1935-01-01,Diarrhoea Diseases,2014-04-05
+582,Adu Kwaku,male,1988-01-01,U Malaria Tested Positive,2014-04-05
+582,Adu Kwaku,male,1988-01-01,U Malaria Suspected Tested,2014-04-05
+582,Adu Kwaku,male,1988-01-01,U Malaria Suspected,2014-04-05
+583,Otu Janet,female,2000-01-01,U Malaria Tested Positive,2014-04-05
+583,Otu Janet,female,2000-01-01,U Malaria Suspected Tested,2014-04-05
+583,Otu Janet,female,2000-01-01,U Malaria Suspected,2014-04-05
+584,Lartey Kwabena,male,2013-09-01,U Malaria Tested Positive,2014-04-05
+584,Lartey Kwabena,male,2013-09-01,U Malaria Suspected Tested,2014-04-05
+584,Lartey Kwabena,male,2013-09-01,U Malaria Suspected,2014-04-05
+585,Otu Janet,female,2008-01-01,U Malaria Tested Positive,2014-04-05
+585,Otu Janet,female,2008-01-01,U Malaria Suspected Tested,2014-04-05
+585,Otu Janet,female,2008-01-01,U Malaria Suspected,2014-04-05
+159,Ofori Kwabena,male,2012-01-01,U Malaria Tested Positive,2014-04-05
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected Tested,2014-04-05
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected,2014-04-05
+586,Amoh Abena,female,2000-01-01,U Malaria Tested Positive,2014-04-05
+586,Amoh Abena,female,2000-01-01,U Malaria Suspected Tested,2014-04-05
+586,Amoh Abena,female,2000-01-01,U Malaria Suspected,2014-04-05
+587,Adu Kofi,male,2012-01-01,Acute RTI,2014-04-05
+587,Adu Kofi,male,2012-01-01,U Malaria Tested Positive,2014-04-05
+587,Adu Kofi,male,2012-01-01,U Malaria Suspected Tested,2014-04-05
+587,Adu Kofi,male,2012-01-01,U Malaria Suspected,2014-04-05
+588,Tetteh Janet,female,1963-01-01,U Malaria Tested Positive,2014-04-05
+588,Tetteh Janet,female,1963-01-01,U Malaria Suspected Tested,2014-04-05
+588,Tetteh Janet,female,1963-01-01,U Malaria Suspected,2014-04-05
+167,Appiah Kwaku,male,2000-01-01,All Other Cases,2014-04-05
+589,Lartey Janet,female,2010-01-01,U Malaria Tested Positive,2014-04-05
+589,Lartey Janet,female,2010-01-01,U Malaria Suspected Tested,2014-04-05
+589,Lartey Janet,female,2010-01-01,U Malaria Suspected,2014-04-05
+336,Yeboah Janet,female,1970-01-01,Rheumatism & Other Joint Pain,2014-04-05
+208,Yeboah Kwaku,male,2012-08-15,Skin Diseases,2014-04-05
+102,Otu Kwabena,male,2010-01-01,Home Injuries,2014-04-05
+590,Adu Kofi,male,2012-01-01,U Malaria Tested Positive,2014-04-05
+590,Adu Kofi,male,2012-01-01,U Malaria Suspected Tested,2014-04-05
+590,Adu Kofi,male,2012-01-01,U Malaria Suspected,2014-04-05
+591,Tetteh Yaa,female,2011-01-01,U Malaria Tested Positive,2014-04-05
+591,Tetteh Yaa,female,2011-01-01,U Malaria Suspected Tested,2014-04-05
+591,Tetteh Yaa,female,2011-01-01,U Malaria Suspected,2014-04-05
+167,Appiah Kwaku,male,2000-01-01,U Malaria Suspected,2014-04-05
+618,Tetteh Kofi,male,2012-01-01,U Malaria Tested Positive,2014-04-27
+618,Tetteh Kofi,male,2012-01-01,U Malaria Suspected Tested,2014-04-27
+618,Tetteh Kofi,male,2012-01-01,U Malaria Suspected,2014-04-27
+620,Ofori Kwaku,male,2010-01-01,U Malaria Tested Positive,2014-04-27
+620,Ofori Kwaku,male,2010-01-01,U Malaria Suspected Tested,2014-04-27
+620,Ofori Kwaku,male,2010-01-01,U Malaria Suspected,2014-04-27
+280,Amoh Kofi,male,2012-01-01,U Malaria Tested Positive,2014-04-27
+280,Amoh Kofi,male,2012-01-01,U Malaria Suspected Tested,2014-04-27
+280,Amoh Kofi,male,2012-01-01,U Malaria Suspected,2014-04-27
+280,Amoh Kofi,male,2012-01-01,Acute RTI,2014-04-27
+621,Amoh Kojo,male,2011-01-01,U Malaria Tested Positive,2014-04-27
+621,Amoh Kojo,male,2011-01-01,U Malaria Suspected Tested,2014-04-27
+621,Amoh Kojo,male,2011-01-01,U Malaria Suspected,2014-04-27
+447,Otu Kwaku,male,2013-08-01,U Malaria Tested Positive,2014-04-27
+447,Otu Kwaku,male,2013-08-01,U Malaria Suspected Tested,2014-04-27
+447,Otu Kwaku,male,2013-08-01,U Malaria Suspected,2014-04-27
+622,Otu Abena,female,1980-01-01,Anaemia,2014-04-27
+622,Otu Abena,female,1980-01-01,U Malaria Suspected Tested,2014-04-27
+622,Otu Abena,female,1980-01-01,U Malaria Suspected,2014-04-27
+623,Yeboah Kofi,male,1987-01-01,Skin Diseases,2014-04-27
+623,Yeboah Kofi,male,1987-01-01,U Malaria Tested Positive,2014-04-27
+623,Yeboah Kofi,male,1987-01-01,U Malaria Suspected Tested,2014-04-27
+623,Yeboah Kofi,male,1987-01-01,U Malaria Suspected,2014-04-27
+562,Otu Abena,female,2010-01-01,Skin Diseases,2014-04-27
+624,Mensah Kojo,male,1998-01-01,U Malaria Tested Positive,2014-04-27
+624,Mensah Kojo,male,1998-01-01,U Malaria Suspected Tested,2014-04-27
+624,Mensah Kojo,male,1998-01-01,U Malaria Suspected,2014-04-27
+120,Otu Kwaku,male,1953-01-01,U Malaria Tested Positive,2014-04-27
+120,Otu Kwaku,male,1953-01-01,U Malaria Suspected Tested,2014-04-27
+120,Otu Kwaku,male,1953-01-01,U Malaria Suspected,2014-04-27
+31,Yeboah Kwaku,male,2001-01-01,U Malaria Tested Positive,2014-04-27
+31,Yeboah Kwaku,male,2001-01-01,U Malaria Suspected Tested,2014-04-27
+31,Yeboah Kwaku,male,2001-01-01,U Malaria Suspected,2014-04-27
+625,Appiah Akua,female,2000-01-01,Rheumatism & Other Joint Pain,2014-04-27
+152,Addo Kwabena,male,2006-01-01,U Malaria Tested Positive,2014-04-27
+152,Addo Kwabena,male,2006-01-01,U Malaria Suspected Tested,2014-04-27
+152,Addo Kwabena,male,2006-01-01,U Malaria Suspected,2014-04-27
+627,Ofori Akua,female,1992-01-01,U Malaria Tested Positive,2014-04-27
+627,Ofori Akua,female,1992-01-01,U Malaria Suspected Tested,2014-04-27
+627,Ofori Akua,female,1992-01-01,U Malaria Suspected,2014-04-27
+628,Amoh Abena,female,2011-01-01,Home Injuries,2014-04-27
+269,Appiah Akua,female,2012-01-01,U Malaria Tested Positive,2014-04-27
+269,Appiah Akua,female,2012-01-01,U Malaria Suspected Tested,2014-04-27
+269,Appiah Akua,female,2012-01-01,U Malaria Suspected,2014-04-27
+269,Appiah Akua,female,2012-01-01,Acute RTI,2014-04-27
+200023,Yeboah Janet,female,2011-01-01,U Malaria Tested Positive,2014-04-27
+200023,Yeboah Janet,female,2011-01-01,U Malaria Suspected Tested,2014-04-27
+200023,Yeboah Janet,female,2011-01-01,U Malaria Suspected,2014-04-27
+200023,Yeboah Janet,female,2011-01-01,Acute RTI,2014-04-27
+629,Tetteh Abena,female,1999-01-01,All Other Cases,2014-04-27
+303,Yeboah Akua,female,2013-01-01,U Malaria Tested Positive,2014-04-27
+303,Yeboah Akua,female,2013-01-01,U Malaria Suspected Tested,2014-04-27
+303,Yeboah Akua,female,2013-01-01,U Malaria Suspected,2014-04-27
+567,Ofori Kwaku,male,1992-01-01,U Malaria Tested Positive,2014-04-27
+567,Ofori Kwaku,male,1992-01-01,U Malaria Suspected Tested,2014-04-27
+567,Ofori Kwaku,male,1992-01-01,U Malaria Suspected,2014-04-27
+351,Tetteh Kojo,male,2013-06-01,Acute RTI,2014-04-27
+351,Tetteh Kojo,male,2013-06-01,U Malaria Tested Positive,2014-04-27
+351,Tetteh Kojo,male,2013-06-01,U Malaria Suspected Tested,2014-04-27
+351,Tetteh Kojo,male,2013-06-01,U Malaria Suspected,2014-04-27
+528,Amoh Kojo,male,2013-08-12,U Malaria Tested Positive,2014-04-27
+528,Amoh Kojo,male,2013-08-12,U Malaria Suspected Tested,2014-04-27
+528,Amoh Kojo,male,2013-08-12,U Malaria in P Suspected,2014-04-27
+619,Mensah Abena,female,1982-01-01,Rheumatism & Other Joint Pain,2014-04-27
+632,Appiah Kofi,male,2008-01-01,Acute RTI,2014-04-27
+632,Appiah Kofi,male,2008-01-01,U Malaria Tested Positive,2014-04-27
+632,Appiah Kofi,male,2008-01-01,U Malaria Suspected Tested,2014-04-27
+632,Appiah Kofi,male,2008-01-01,U Malaria Suspected,2014-04-27
+633,Adu Abena,female,1973-01-01,Acute Urinary Tract Infection,2014-04-27
+65,Addo Kwaku,male,2012-01-01,U Malaria Tested Positive,2014-04-27
+65,Addo Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-04-27
+65,Addo Kwaku,male,2012-01-01,U Malaria Suspected,2014-04-27
+591,Tetteh Yaa,female,2011-01-01,Skin Diseases,2014-04-27
+60,Ofori Janet,female,1946-01-01,Acute RTI,2014-04-27
+60,Ofori Janet,female,1946-01-01,U Malaria Tested Positive,2014-04-27
+60,Ofori Janet,female,1946-01-01,U Malaria Suspected Tested,2014-04-27
+60,Ofori Janet,female,1946-01-01,U Malaria Suspected,2014-04-27
+454,Yeboah Kofi,male,1980-01-01,U Malaria Tested Positive,2014-04-27
+454,Yeboah Kofi,male,1980-01-01,U Malaria Suspected Tested,2014-04-27
+454,Yeboah Kofi,male,1980-01-01,U Malaria Suspected,2014-04-27
+625,Appiah Akua,female,2000-01-01,Referral,2014-04-27
+634,Amoh Kwaku,male,1980-01-01,Rheumatism & Other Joint Pain,2014-04-27
+635,Addo Kojo,male,2008-07-01,Skin Diseases,2014-04-27
+636,Tetteh Akua,female,2002-01-01,U Malaria Tested Positive,2014-04-27
+636,Tetteh Akua,female,2002-01-01,U Malaria Suspected Tested,2014-04-27
+636,Tetteh Akua,female,2002-01-01,U Malaria Suspected,2014-04-27
+256,Amoh Kwaku,male,2011-09-01,U Malaria Tested Positive,2014-04-27
+256,Amoh Kwaku,male,2011-09-01,U Malaria Suspected Tested,2014-04-27
+256,Amoh Kwaku,male,2011-09-01,U Malaria Suspected,2014-04-27
+256,Amoh Kwaku,male,2011-09-01,Referral,2014-04-27
+637,Appiah Abena,female,1989-01-01,U Malaria Tested Positive,2014-04-27
+637,Appiah Abena,female,1989-01-01,U Malaria Suspected Tested,2014-04-27
+637,Appiah Abena,female,1989-01-01,U Malaria Suspected,2014-04-27
+637,Appiah Abena,female,1989-01-01,Skin Diseases,2014-04-27
+638,Mensah Akua,female,1997-01-01,Rheumatism & Other Joint Pain,2014-04-27
+639,Appiah Kwabena,male,2013-01-01,U Malaria Tested Positive,2014-04-27
+639,Appiah Kwabena,male,2013-01-01,U Malaria Suspected Tested,2014-04-27
+639,Appiah Kwabena,male,2013-01-01,U Malaria Suspected,2014-04-27
+639,Appiah Kwabena,male,2013-01-01,Skin Diseases,2014-04-27
+640,Amoh Kwaku,male,1988-01-01,U Malaria Tested Positive,2014-04-27
+640,Amoh Kwaku,male,1988-01-01,U Malaria Suspected Tested,2014-04-27
+640,Amoh Kwaku,male,1988-01-01,U Malaria Suspected,2014-04-27
+641,Tetteh Yaa,female,2004-01-01,U Malaria Tested Positive,2014-04-27
+641,Tetteh Yaa,female,2004-01-01,U Malaria Suspected Tested,2014-04-27
+641,Tetteh Yaa,female,2004-01-01,U Malaria Suspected,2014-04-27
+465,Tetteh Abena,female,1986-01-01,Acute RTI,2014-04-27
+189,Adu Abena,female,1943-01-01,Acute RTI,2014-04-27
+189,Adu Abena,female,1943-01-01,Rheumatism & Other Joint Pain,2014-04-27
+80,Amoh Kwaku,male,2012-01-01,U Malaria Tested Positive,2014-04-27
+80,Amoh Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-04-27
+80,Amoh Kwaku,male,2012-01-01,U Malaria Suspected,2014-04-27
+80,Amoh Kwaku,male,2012-01-01,Acute RTI,2014-04-27
+528,Amoh Kojo,male,2013-08-12,Re-Attendance,2014-04-27
+642,Mensah Janet,female,2002-01-01,All Other Cases,2014-04-27
+642,Mensah Janet,female,2002-01-01,Ulcers,2014-04-27
+327,Yeboah Kwabena,male,2012-01-01,Acute RTI,2014-04-27
+327,Yeboah Kwabena,male,2012-01-01,U Malaria Suspected Tested,2014-04-27
+327,Yeboah Kwabena,male,2012-01-01,U Malaria Suspected,2014-04-27
+642,Mensah Janet,female,2002-01-01,U Malaria Suspected Tested,2014-04-27
+642,Mensah Janet,female,2002-01-01,U Malaria Suspected,2014-04-27
+643,Appiah Janet,female,1995-01-01,Tuberculosis,2014-04-27
+469,Mensah Abena,female,1969-01-01,Acute RTI,2014-04-28
+469,Mensah Abena,female,1969-01-01,U Malaria Tested Positive,2014-04-28
+469,Mensah Abena,female,1969-01-01,U Malaria Suspected Tested,2014-04-28
+469,Mensah Abena,female,1969-01-01,U Malaria Suspected,2014-04-28
+644,Lartey Kojo,male,2009-01-01,Home Injuries,2014-04-28
+298,Lartey Janet,female,2013-01-01,Acute RTI,2014-04-28
+298,Lartey Janet,female,2013-01-01,U Malaria Tested Positive,2014-04-28
+298,Lartey Janet,female,2013-01-01,U Malaria Suspected Tested,2014-04-28
+298,Lartey Janet,female,2013-01-01,U Malaria Suspected,2014-04-28
+645,Tetteh Yaa,female,1940-01-01,Acute RTI,2014-04-28
+645,Tetteh Yaa,female,1940-01-01,U Malaria Tested Positive,2014-04-28
+645,Tetteh Yaa,female,1940-01-01,U Malaria Suspected Tested,2014-04-28
+645,Tetteh Yaa,female,1940-01-01,U Malaria Suspected,2014-04-28
+646,Amoh Kojo,male,2007-01-01,Acute RTI,2014-04-28
+646,Amoh Kojo,male,2007-01-01,U Malaria Tested Positive,2014-04-28
+646,Amoh Kojo,male,2007-01-01,U Malaria Suspected,2014-04-28
+646,Amoh Kojo,male,2007-01-01,U Malaria Suspected Tested,2014-04-28
+301,Tetteh Kwabena,male,2012-01-01,All Other Cases,2014-04-28
+170,Mensah Kwaku,male,2002-01-01,All Other Cases,2014-04-28
+170,Mensah Kwaku,male,2002-01-01,U Malaria Suspected,2014-04-28
+170,Mensah Kwaku,male,2002-01-01,U Malaria Suspected Tested,2014-04-28
+575,Otu Kofi,male,2004-01-01,All Other Cases,2014-04-28
+575,Otu Kofi,male,2004-01-01,U Malaria Suspected Tested,2014-04-28
+575,Otu Kofi,male,2004-01-01,U Malaria Suspected,2014-04-28
+493,Ofori Kwabena,male,2003-01-01,All Other Cases,2014-04-28
+511,Tetteh Akua,female,1972-01-01,Acute Urinary Tract Infection,2014-04-28
+647,Lartey Yaa,female,1999-01-01,Home Injuries,2014-04-28
+648,Yeboah Kofi,male,1972-01-01,Rheumatism & Other Joint Pain,2014-04-28
+648,Yeboah Kofi,male,1972-01-01,U Malaria Suspected Tested,2014-04-28
+648,Yeboah Kofi,male,1972-01-01,U Malaria Suspected,2014-04-28
+314,Mensah Kwaku,male,2012-01-01,Skin Diseases,2014-04-28
+185,Addo Yaa,female,1985-01-01,Rheumatism & Other Joint Pain,2014-04-28
+433,Yeboah Yaa,female,2012-01-01,U Malaria Tested Positive,2014-04-28
+433,Yeboah Yaa,female,2012-01-01,U Malaria Suspected Tested,2014-04-28
+433,Yeboah Yaa,female,2012-01-01,U Malaria Suspected,2014-04-28
+318,Yeboah Abena,female,1970-01-01,U Malaria Suspected Tested,2014-04-28
+318,Yeboah Abena,female,1970-01-01,U Malaria Suspected,2014-04-28
+318,Yeboah Abena,female,1970-01-01,Rheumatism & Other Joint Pain,2014-04-28
+649,Yeboah Abena,female,1990-01-01,U Malaria Tested Positive,2014-04-28
+649,Yeboah Abena,female,1990-01-01,U Malaria Suspected Tested,2014-04-28
+649,Yeboah Abena,female,1990-01-01,U Malaria Suspected,2014-04-28
+560,Addo Janet,female,1986-01-01,U Malaria Suspected Tested,2014-04-28
+560,Addo Janet,female,1986-01-01,U Malaria Suspected,2014-04-28
+560,Addo Janet,female,1986-01-01,Diarrhoea Diseases,2014-04-28
+650,Yeboah Yaa,female,2008-01-01,Acute RTI,2014-04-28
+650,Yeboah Yaa,female,2008-01-01,U Malaria Tested Positive,2014-04-28
+650,Yeboah Yaa,female,2008-01-01,U Malaria Suspected Tested,2014-04-28
+650,Yeboah Yaa,female,2008-01-01,U Malaria Suspected,2014-04-28
+651,Tetteh Kwaku,male,1958-01-01,U Malaria Tested Positive,2014-04-28
+651,Tetteh Kwaku,male,1958-01-01,U Malaria Suspected Tested,2014-04-28
+651,Tetteh Kwaku,male,1958-01-01,U Malaria Suspected,2014-04-28
+249,Adu Kwaku,male,2009-01-01,Skin Diseases,2014-04-28
+652,Adu Abena,female,1986-01-01,All Other Cases,2014-04-28
+653,Mensah Abena,female,1974-01-01,Rheumatism & Other Joint Pain,2014-04-28
+43,Yeboah Kwabena,male,1999-01-01,U Malaria Tested Positive,2014-04-28
+43,Yeboah Kwabena,male,1999-01-01,U Malaria Suspected Tested,2014-04-28
+43,Yeboah Kwabena,male,1999-01-01,U Malaria Suspected,2014-04-28
+654,Amoh Janet,female,1970-01-01,Home Injuries,2014-04-28
+655,Mensah Yaa,female,2009-01-01,U Malaria Tested Positive,2014-04-28
+655,Mensah Yaa,female,2009-01-01,U Malaria Suspected Tested,2014-04-28
+655,Mensah Yaa,female,2009-01-01,U Malaria Suspected,2014-04-28
+656,Addo Kwaku,male,1974-01-01,U Malaria Tested Positive,2014-04-28
+656,Addo Kwaku,male,1974-01-01,U Malaria Suspected Tested,2014-04-28
+656,Addo Kwaku,male,1974-01-01,U Malaria Suspected,2014-04-28
+657,Tetteh Kofi,male,2013-01-01,U Malaria Tested Positive,2014-04-28
+657,Tetteh Kofi,male,2013-01-01,U Malaria Suspected Tested,2014-04-28
+657,Tetteh Kofi,male,2013-01-01,U Malaria Suspected,2014-04-28
+658,Adu Abena,female,2013-01-01,U Malaria Suspected Tested,2014-04-28
+658,Adu Abena,female,2013-01-01,U Malaria Suspected,2014-04-28
+658,Adu Abena,female,2013-01-01,Acute RTI,2014-04-28
+659,Addo Kwaku,male,1956-01-01,U Malaria Tested Positive,2014-04-28
+659,Addo Kwaku,male,1956-01-01,U Malaria Suspected Tested,2014-04-28
+659,Addo Kwaku,male,1956-01-01,U Malaria Suspected,2014-04-28
+659,Addo Kwaku,male,1956-01-01,Acute RTI,2014-04-28
+323,Appiah Janet,female,2012-01-01,U Malaria Tested Positive,2014-04-28
+323,Appiah Janet,female,2012-01-01,U Malaria Suspected Tested,2014-04-28
+323,Appiah Janet,female,2012-01-01,U Malaria Suspected,2014-04-28
+151,Otu Kwaku,male,2009-01-01,U Malaria Tested Positive,2014-04-28
+151,Otu Kwaku,male,2009-01-01,U Malaria Suspected Tested,2014-04-28
+151,Otu Kwaku,male,2009-01-01,U Malaria Suspected,2014-04-28
+660,Appiah Kwaku,male,2011-01-01,U Malaria Tested Positive,2014-04-28
+660,Appiah Kwaku,male,2011-01-01,U Malaria Suspected Tested,2014-04-28
+660,Appiah Kwaku,male,2011-01-01,U Malaria Suspected,2014-04-28
+661,Tetteh Kwaku,male,1997-01-01,U Malaria Tested Positive,2014-04-28
+661,Tetteh Kwaku,male,1997-01-01,U Malaria Suspected Tested,2014-04-28
+661,Tetteh Kwaku,male,1997-01-01,U Malaria Suspected,2014-04-28
+662,Yeboah Abena,female,1978-01-01,U Malaria Tested Positive,2014-04-28
+662,Yeboah Abena,female,1978-01-01,U Malaria Suspected Tested,2014-04-28
+662,Yeboah Abena,female,1978-01-01,U Malaria Suspected,2014-04-28
+663,Yeboah Janet,female,2006-01-01,U Malaria Tested Positive,2014-04-28
+663,Yeboah Janet,female,2006-01-01,U Malaria Suspected Tested,2014-04-28
+663,Yeboah Janet,female,2006-01-01,U Malaria Suspected,2014-04-28
+664,Tetteh Janet,female,1971-01-01,Rheumatism & Other Joint Pain,2014-04-28
+491,Mensah Akua,female,2011-01-01,U Malaria Suspected Tested,2014-04-28
+491,Mensah Akua,female,2011-01-01,U Malaria Suspected,2014-04-28
+491,Mensah Akua,female,2011-01-01,All Other Cases,2014-04-28
+146,Otu Akua,female,2007-01-01,Substance Abuse,2014-04-28
+200018,Ofori Kwabena,male,2005-01-01,U Malaria Tested Positive,2014-04-28
+200018,Ofori Kwabena,male,2005-01-01,U Malaria Suspected Tested,2014-04-28
+200018,Ofori Kwabena,male,2005-01-01,U Malaria Suspected,2014-04-28
+665,Otu Akua,female,2006-01-01,U Malaria Tested Positive,2014-04-28
+665,Otu Akua,female,2006-01-01,U Malaria Suspected Tested,2014-04-28
+665,Otu Akua,female,2006-01-01,U Malaria Suspected,2014-04-28
+666,Addo Kwaku,male,1939-01-01,All Other Cases,2014-04-28
+497,Amoh Akua,female,2012-01-01,Acute RTI,2014-04-28
+667,Addo Yaa,female,1985-05-05,U Malaria in P Suspected,2014-04-28
+667,Addo Yaa,female,1985-05-05,U Malaria in Pregnacy Tested,2014-04-28
+667,Addo Yaa,female,1985-05-05,U Malaria in Pregnacy Positive,2014-04-28
+668,Appiah Kwaku,male,2013-08-01,All Other Cases,2014-04-28
+669,Addo Abena,female,1986-01-01,U Malaria Tested Positive,2014-04-28
+669,Addo Abena,female,1986-01-01,U Malaria Suspected Tested,2014-04-28
+669,Addo Abena,female,1986-01-01,U Malaria Suspected,2014-04-28
+77,Lartey Akua,female,2013-03-01,U Malaria Tested Positive,2014-04-28
+77,Lartey Akua,female,2013-03-01,U Malaria Suspected Tested,2014-04-28
+77,Lartey Akua,female,2013-03-01,U Malaria Suspected,2014-04-28
+670,Otu Kwaku,male,1974-01-01,Rheumatism & Other Joint Pain,2014-04-28
+236,Amoh Yaa,female,2006-01-01,Acute RTI,2014-04-28
+171,Tetteh Kwaku,male,2012-01-01,Acute RTI,2014-04-28
+543,Otu Kwaku,male,1949-01-01,Anaemia,2014-04-28
+556,Ofori Kofi,male,2008-01-01,Acute RTI,2014-04-28
+148,Mensah Kwabena,male,2013-03-01,All Other Cases,2014-04-28
+148,Mensah Kwabena,male,2013-03-01,U Malaria Suspected Tested,2014-04-28
+148,Mensah Kwabena,male,2013-03-01,U Malaria Suspected,2014-04-28
+671,Tetteh Akua,female,1976-01-01,HIV/AIDS related conditions,2014-04-28
+672,Addo Yaa,female,2011-01-01,U Malaria Tested Positive,2014-04-28
+672,Addo Yaa,female,2011-01-01,U Malaria Suspected Tested,2014-04-28
+672,Addo Yaa,female,2011-01-01,U Malaria Suspected,2014-04-28
+673,Yeboah Akua,female,1983-01-01,Acute RTI,2014-04-29
+674,Addo Janet,female,2006-01-01,Ulcers,2014-04-29
+675,Yeboah Kofi,male,2011-01-01,U Malaria Tested Positive,2014-04-29
+675,Yeboah Kofi,male,2011-01-01,U Malaria Suspected Tested,2014-04-29
+675,Yeboah Kofi,male,2011-01-01,U Malaria Suspected,2014-04-29
+676,Lartey Janet,female,2010-01-01,Skin Diseases,2014-04-29
+677,Adu Janet,female,2012-01-01,Skin Diseases,2014-04-29
+678,Amoh Akua,female,2013-01-01,U Malaria Tested Positive,2014-04-29
+678,Amoh Akua,female,2013-01-01,U Malaria Suspected Tested,2014-04-29
+678,Amoh Akua,female,2013-01-01,U Malaria Suspected,2014-04-29
+679,Adu Kwaku,male,1920-01-01,Rheumatism & Other Joint Pain,2014-04-29
+305,Mensah Akua,female,1958-01-01,Other Animal Bites,2014-04-29
+680,Addo Akua,female,2011-01-01,U Malaria Tested Positive,2014-04-29
+680,Addo Akua,female,2011-01-01,U Malaria Suspected Tested,2014-04-29
+680,Addo Akua,female,2011-01-01,U Malaria Suspected,2014-04-29
+681,Adu Yaa,female,1979-01-01,Diarrhoea Diseases,2014-04-29
+150,Addo Akua,female,2012-01-01,U Malaria Tested Positive,2014-04-29
+150,Addo Akua,female,2012-01-01,U Malaria Suspected Tested,2014-04-29
+150,Addo Akua,female,2012-01-01,U Malaria Suspected,2014-04-29
+193,Lartey Yaa,female,1989-01-01,U Malaria in P Suspected,2014-04-29
+193,Lartey Yaa,female,1989-01-01,U Malaria in Pregnacy Tested,2014-04-29
+193,Lartey Yaa,female,1989-01-01,U Malaria in Pregnacy Positive,2014-04-29
+682,Adu Abena,female,2013-06-01,Acute RTI,2014-04-29
+682,Adu Abena,female,2013-06-01,U Malaria Suspected Tested,2014-04-29
+682,Adu Abena,female,2013-06-01,U Malaria Suspected,2014-04-29
+683,Mensah Janet,female,1982-01-01,Rheumatism & Other Joint Pain,2014-04-29
+683,Mensah Janet,female,1982-01-01,Acute Ear Infection,2014-04-29
+684,Otu Yaa,female,1965-01-01,Rheumatism & Other Joint Pain,2014-04-29
+684,Otu Yaa,female,1965-01-01,U Malaria Suspected Tested,2014-04-29
+684,Otu Yaa,female,1965-01-01,U Malaria Suspected,2014-04-29
+169,Yeboah Yaa,female,2013-01-01,Diarrhoea Diseases,2014-04-29
+218,Yeboah Akua,female,1988-01-01,Rheumatism & Other Joint Pain,2014-04-29
+634,Amoh Kwaku,male,1980-01-01,All Other Cases,2014-04-29
+655,Mensah Yaa,female,2009-01-01,All Other Cases,2014-04-29
+685,Tetteh Janet,female,1979-01-01,U Malaria Tested Positive,2014-04-29
+685,Tetteh Janet,female,1979-01-01,U Malaria Suspected Tested,2014-04-29
+685,Tetteh Janet,female,1979-01-01,U Malaria Suspected,2014-04-29
+686,Addo Kwaku,male,1997-01-01,U Malaria Tested Positive,2014-04-29
+686,Addo Kwaku,male,1997-01-01,U Malaria Suspected Tested,2014-04-29
+686,Addo Kwaku,male,1997-01-01,U Malaria Suspected,2014-04-29
+687,Ofori Janet,female,1990-01-01,U Malaria Suspected Tested,2014-04-29
+687,Ofori Janet,female,1990-01-01,U Malaria Suspected,2014-04-29
+687,Ofori Janet,female,1990-01-01,Rheumatism & Other Joint Pain,2014-04-29
+531,Appiah Janet,female,2012-01-01,Acute Eye Infection,2014-04-29
+52,Adu Kwaku,male,2007-01-01,Acute RTI,2014-04-29
+52,Adu Kwaku,male,2007-01-01,U Malaria Tested Positive,2014-04-29
+52,Adu Kwaku,male,2007-01-01,U Malaria Suspected Tested,2014-04-29
+52,Adu Kwaku,male,2007-01-01,U Malaria Suspected,2014-04-29
+410,Adu Kwabena,male,2013-01-01,U Malaria Tested Positive,2014-04-29
+410,Adu Kwabena,male,2013-01-01,U Malaria Suspected Tested,2014-04-29
+410,Adu Kwabena,male,2013-01-01,U Malaria Suspected,2014-04-29
+98,Otu Kwabena,male,2011-01-01,U Malaria Suspected Tested,2014-04-29
+98,Otu Kwabena,male,2011-01-01,U Malaria Suspected,2014-04-29
+129,Yeboah Kofi,male,2011-01-01,Acute RTI,2014-04-29
+129,Yeboah Kofi,male,2011-01-01,U Malaria Tested Positive,2014-04-29
+129,Yeboah Kofi,male,2011-01-01,U Malaria Suspected Tested,2014-04-29
+129,Yeboah Kofi,male,2011-01-01,U Malaria Suspected,2014-04-29
+200030,Appiah Janet,female,1983-01-01,U Malaria Tested Positive,2014-04-29
+200030,Appiah Janet,female,1983-01-01,U Malaria Suspected Tested,2014-04-29
+200030,Appiah Janet,female,1983-01-01,U Malaria Suspected,2014-04-29
+368,Tetteh Kofi,male,2010-01-01,U Malaria Tested Positive,2014-04-29
+368,Tetteh Kofi,male,2010-01-01,U Malaria Suspected Tested,2014-04-29
+368,Tetteh Kofi,male,2010-01-01,U Malaria Suspected,2014-04-29
+688,Yeboah Kwaku,male,2009-01-01,U Malaria Tested Positive,2014-04-29
+688,Yeboah Kwaku,male,2009-01-01,U Malaria Suspected Tested,2014-04-29
+688,Yeboah Kwaku,male,2009-01-01,U Malaria Suspected,2014-04-29
+319,Appiah Akua,female,1994-01-01,U Malaria Tested Positive,2014-04-29
+319,Appiah Akua,female,1994-01-01,U Malaria Suspected Tested,2014-04-29
+319,Appiah Akua,female,1994-01-01,U Malaria Suspected,2014-04-29
+689,Ofori Yaa,female,2000-01-01,U Malaria Tested Positive,2014-04-29
+689,Ofori Yaa,female,2000-01-01,U Malaria Suspected Tested,2014-04-29
+689,Ofori Yaa,female,2000-01-01,U Malaria Suspected,2014-04-29
+690,Mensah Akua,female,1965-01-01,U Malaria Tested Positive,2014-04-29
+690,Mensah Akua,female,1965-01-01,U Malaria Suspected Tested,2014-04-29
+690,Mensah Akua,female,1965-01-01,U Malaria Suspected,2014-04-29
+691,Adu Kwaku,male,2005-01-01,All Other Cases,2014-04-29
+691,Adu Kwaku,male,2005-01-01,U Malaria Suspected Tested,2014-04-29
+691,Adu Kwaku,male,2005-01-01,U Malaria Suspected,2014-04-29
+692,Tetteh Kojo,male,1992-01-01,Other Dis of the Male Rep Sys,2014-04-29
+167,Appiah Kwaku,male,2000-01-01,U Malaria Tested Positive,2014-04-29
+167,Appiah Kwaku,male,2000-01-01,U Malaria Suspected Tested,2014-04-29
+167,Appiah Kwaku,male,2000-01-01,U Malaria Suspected,2014-04-29
+503,Adu Janet,female,2012-01-01,Acute RTI,2014-04-29
+503,Adu Janet,female,2012-01-01,U Malaria Tested Positive,2014-04-29
+503,Adu Janet,female,2012-01-01,U Malaria Suspected Tested,2014-04-29
+503,Adu Janet,female,2012-01-01,U Malaria Suspected,2014-04-29
+693,Addo Akua,female,1984-01-01,U Malaria Suspected Tested,2014-04-29
+693,Addo Akua,female,1984-01-01,U Malaria Suspected,2014-04-29
+693,Addo Akua,female,1984-01-01,All Other Cases,2014-04-29
+694,Adu Kwaku,male,2012-01-01,All Other Cases,2014-04-29
+694,Adu Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-04-29
+694,Adu Kwaku,male,2012-01-01,U Malaria Suspected,2014-04-29
+208,Yeboah Kwaku,male,2012-08-15,All Other Cases,2014-04-29
+208,Yeboah Kwaku,male,2012-08-15,U Malaria Suspected Tested,2014-04-29
+208,Yeboah Kwaku,male,2012-08-15,U Malaria Suspected,2014-04-29
+322,Appiah Kwaku,male,2012-01-01,U Malaria Tested Positive,2014-04-29
+322,Appiah Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-04-29
+322,Appiah Kwaku,male,2012-01-01,U Malaria Suspected,2014-04-29
+695,Yeboah Kwaku,male,1973-01-01,U Malaria Suspected Tested,2014-04-29
+695,Yeboah Kwaku,male,1973-01-01,U Malaria Suspected,2014-04-29
+695,Yeboah Kwaku,male,1973-01-01,All Other Cases,2014-04-29
+100,Mensah Janet,female,1999-05-09,U Malaria Tested Positive,2014-04-29
+100,Mensah Janet,female,1999-05-09,U Malaria Suspected Tested,2014-04-29
+100,Mensah Janet,female,1999-05-09,U Malaria Suspected,2014-04-29
+696,Tetteh Kwabena,male,1951-01-01,U Malaria Tested Positive,2014-04-29
+696,Tetteh Kwabena,male,1951-01-01,U Malaria Suspected Tested,2014-04-29
+696,Tetteh Kwabena,male,1951-01-01,U Malaria Suspected,2014-04-29
+697,Mensah Janet,female,2013-01-01,Diarrhoea Diseases,2014-04-29
+697,Mensah Janet,female,2013-01-01,U Malaria Suspected Tested,2014-04-29
+697,Mensah Janet,female,2013-01-01,U Malaria Suspected,2014-04-29
+549,Tetteh Abena,female,2012-01-01,Diarrhoea Diseases,2014-04-29
+549,Tetteh Abena,female,2012-01-01,U Malaria Suspected Tested,2014-04-29
+549,Tetteh Abena,female,2012-01-01,U Malaria Suspected,2014-04-29
+698,Tetteh Janet,female,2006-01-01,Acute RTI,2014-04-29
+148,Mensah Kwabena,male,2013-03-01,U Malaria Tested Positive,2014-04-29
+148,Mensah Kwabena,male,2013-03-01,U Malaria Suspected Tested,2014-04-29
+148,Mensah Kwabena,male,2013-03-01,U Malaria Suspected,2014-04-29
+699,Lartey Kwaku,male,2013-01-01,U Malaria Tested Positive,2014-04-29
+699,Lartey Kwaku,male,2013-01-01,U Malaria Suspected Tested,2014-04-29
+699,Lartey Kwaku,male,2013-01-01,U Malaria Suspected,2014-04-29
+334,Tetteh Abena,female,1957-01-01,U Malaria Tested Positive,2014-04-29
+334,Tetteh Abena,female,1957-01-01,U Malaria Suspected Tested,2014-04-29
+334,Tetteh Abena,female,1957-01-01,U Malaria Suspected,2014-04-29
+713,Mensah Yaa,female,1989-01-01,U Malaria Tested Positive,2014-04-30
+713,Mensah Yaa,female,1989-01-01,U Malaria Suspected Tested,2014-04-30
+713,Mensah Yaa,female,1989-01-01,U Malaria Suspected,2014-04-30
+125,Appiah Akua,female,1957-01-01,U Malaria Tested Positive,2014-04-30
+125,Appiah Akua,female,1957-01-01,U Malaria Suspected Tested,2014-04-30
+125,Appiah Akua,female,1957-01-01,U Malaria Suspected,2014-04-30
+220,Lartey Kojo,male,2009-01-01,U Malaria Tested Positive,2014-04-30
+220,Lartey Kojo,male,2009-01-01,U Malaria Suspected Tested,2014-04-30
+220,Lartey Kojo,male,2009-01-01,U Malaria Suspected,2014-04-30
+426,Addo Kwaku,male,2009-01-01,U Malaria Tested Positive,2014-04-30
+426,Addo Kwaku,male,2009-01-01,U Malaria Suspected Tested,2014-04-30
+426,Addo Kwaku,male,2009-01-01,U Malaria Suspected,2014-04-30
+714,Lartey Janet,female,1989-01-01,Diarrhoea Diseases,2014-04-30
+338,Adu Yaa,female,1986-01-01,Pregnancy Related Complication,2014-04-30
+200015,Amoh Kwaku,male,2013-01-01,Skin Diseases,2014-04-30
+715,Mensah Kojo,male,2011-01-01,U Malaria Tested Positive,2014-04-30
+715,Mensah Kojo,male,2011-01-01,U Malaria Suspected Tested,2014-04-30
+715,Mensah Kojo,male,2011-01-01,U Malaria Suspected,2014-04-30
+716,Yeboah Kofi,male,2012-01-01,U Malaria Tested Positive,2014-04-30
+716,Yeboah Kofi,male,2012-01-01,U Malaria Suspected Tested,2014-04-30
+716,Yeboah Kofi,male,2012-01-01,U Malaria Suspected,2014-04-30
+717,Otu Janet,female,2001-01-01,U Malaria Tested Positive,2014-04-30
+717,Otu Janet,female,2001-01-01,U Malaria Suspected Tested,2014-04-30
+717,Otu Janet,female,2001-01-01,U Malaria Suspected,2014-04-30
+396,Appiah Akua,female,1976-01-01,Anaemia,2014-04-30
+718,Amoh Janet,female,1988-01-01,U Malaria Tested Positive,2014-04-30
+718,Amoh Janet,female,1988-01-01,U Malaria Suspected Tested,2014-04-30
+718,Amoh Janet,female,1988-01-01,U Malaria Suspected,2014-04-30
+186,Otu Kwabena,male,2011-01-01,U Malaria Tested Positive,2014-04-30
+186,Otu Kwabena,male,2011-01-01,U Malaria Suspected Tested,2014-04-30
+186,Otu Kwabena,male,2011-01-01,U Malaria Suspected,2014-04-30
+719,Amoh Akua,female,1959-01-01,All Other Cases,2014-04-30
+70,Appiah Kojo,male,2013-02-01,U Malaria Tested Positive,2014-04-30
+70,Appiah Kojo,male,2013-02-01,U Malaria Suspected Tested,2014-04-30
+70,Appiah Kojo,male,2013-02-01,U Malaria Suspected,2014-04-30
+720,Ofori Yaa,female,2010-01-01,U Malaria Tested Positive,2014-04-30
+720,Ofori Yaa,female,2010-01-01,U Malaria Suspected Tested,2014-04-30
+720,Ofori Yaa,female,2010-01-01,U Malaria Suspected,2014-04-30
+721,Ofori Kojo,male,2009-01-01,Diarrhoea Diseases,2014-04-30
+109,Otu Janet,female,1949-01-01,Acute RTI,2014-04-30
+185,Addo Yaa,female,1985-01-01,Rheumatism & Other Joint Pain,2014-04-30
+498,Adu Kwaku,male,2013-01-01,Skin Diseases,2014-04-30
+719,Amoh Akua,female,1959-01-01,U Malaria Suspected Tested,2014-04-30
+719,Amoh Akua,female,1959-01-01,U Malaria Suspected,2014-04-30
+159,Ofori Kwabena,male,2012-01-01,U Malaria Tested Positive,2014-05-12
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected Tested,2014-05-12
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected,2014-05-12
+186,Otu Kwabena,male,2011-01-01,U Malaria Tested Positive,2014-05-12
+186,Otu Kwabena,male,2011-01-01,U Malaria Suspected Tested,2014-05-12
+186,Otu Kwabena,male,2011-01-01,U Malaria Suspected,2014-05-12
+722,Ofori Kwaku,male,1991-01-01,U Malaria Tested Positive,2014-05-12
+722,Ofori Kwaku,male,1991-01-01,U Malaria Suspected Tested,2014-05-12
+722,Ofori Kwaku,male,1991-01-01,U Malaria Suspected,2014-05-12
+273,Lartey Yaa,female,1942-01-01,Rheumatism & Other Joint Pain,2014-05-12
+273,Lartey Yaa,female,1942-01-01,Anaemia,2014-05-12
+135,Tetteh Abena,female,2010-01-01,All Other Cases,2014-05-12
+315,Otu Kofi,male,2010-01-01,U Malaria Tested Positive,2014-05-12
+315,Otu Kofi,male,2010-01-01,U Malaria Suspected Tested,2014-05-12
+315,Otu Kofi,male,2010-01-01,U Malaria Suspected,2014-05-12
+639,Appiah Kwabena,male,2013-01-01,Referral,2014-05-12
+723,Tetteh Akua,female,2006-08-18,Acute RTI,2014-05-12
+724,Otu Yaa,female,2008-01-01,Acute RTI,2014-05-12
+524,Otu Akua,female,1995-01-01,Anaemia,2014-05-12
+524,Otu Akua,female,1995-01-01,Rheumatism & Other Joint Pain,2014-05-12
+220,Lartey Kojo,male,2009-01-01,Skin Diseases,2014-05-12
+725,Addo Abena,female,1964-01-01,U Malaria Tested Positive,2014-05-12
+725,Addo Abena,female,1964-01-01,U Malaria Suspected Tested,2014-05-12
+725,Addo Abena,female,1964-01-01,U Malaria Suspected,2014-05-12
+725,Addo Abena,female,1964-01-01,Acute RTI,2014-05-12
+726,Tetteh Kofi,male,2003-01-01,U Malaria Tested Positive,2014-05-12
+726,Tetteh Kofi,male,2003-01-01,U Malaria Suspected Tested,2014-05-12
+726,Tetteh Kofi,male,2003-01-01,U Malaria Suspected,2014-05-12
+727,Otu Kojo,male,1988-01-01,Anaemia,2014-05-12
+728,Mensah Yaa,female,1991-01-01,U Malaria Tested Positive,2014-05-12
+728,Mensah Yaa,female,1991-01-01,U Malaria Suspected Tested,2014-05-12
+728,Mensah Yaa,female,1991-01-01,U Malaria Suspected,2014-05-12
+729,Amoh Janet,female,1999-01-01,U Malaria Tested Positive,2014-05-14
+729,Amoh Janet,female,1999-01-01,U Malaria Suspected Tested,2014-05-14
+729,Amoh Janet,female,1999-01-01,U Malaria Suspected,2014-05-14
+264,Addo Abena,female,2012-01-01,U Malaria Tested Positive,2014-05-14
+264,Addo Abena,female,2012-01-01,U Malaria Suspected Tested,2014-05-14
+264,Addo Abena,female,2012-01-01,U Malaria Suspected,2014-05-14
+264,Addo Abena,female,2012-01-01,Acute RTI,2014-05-14
+730,Ofori Kwaku,male,2010-01-01,U Malaria Tested Positive,2014-05-14
+730,Ofori Kwaku,male,2010-01-01,U Malaria Suspected Tested,2014-05-14
+730,Ofori Kwaku,male,2010-01-01,U Malaria Suspected,2014-05-14
+731,Mensah Akua,female,2012-01-01,U Malaria Tested Positive,2014-05-14
+731,Mensah Akua,female,2012-01-01,U Malaria Suspected Tested,2014-05-14
+731,Mensah Akua,female,2012-01-01,U Malaria Suspected,2014-05-14
+722,Ofori Kwaku,male,1991-01-01,Acute Urinary Tract Infection,2014-05-14
+732,Lartey Yaa,female,1979-01-01,U Malaria Suspected Tested,2014-05-14
+732,Lartey Yaa,female,1979-01-01,U Malaria Suspected,2014-05-14
+732,Lartey Yaa,female,1979-01-01,Anaemia,2014-05-14
+733,Ofori Abena,female,2012-01-01,U Malaria Suspected Tested,2014-05-14
+733,Ofori Abena,female,2012-01-01,U Malaria Suspected,2014-05-14
+733,Ofori Abena,female,2012-01-01,All Other Cases,2014-05-14
+455,Appiah Akua,female,1991-01-01,U Malaria in P Suspected,2014-05-14
+455,Appiah Akua,female,1991-01-01,U Malaria in Pregnacy Tested,2014-05-14
+455,Appiah Akua,female,1991-01-01,U Malaria in Pregnacy Positive,2014-05-14
+734,Amoh Kwaku,male,2010-01-01,U Malaria Tested Positive,2014-05-14
+734,Amoh Kwaku,male,2010-01-01,U Malaria Suspected Tested,2014-05-14
+734,Amoh Kwaku,male,2010-01-01,U Malaria Suspected,2014-05-14
+735,Ofori Kofi,male,2010-01-01,U Malaria Tested Positive,2014-05-14
+735,Ofori Kofi,male,2010-01-01,U Malaria Suspected Tested,2014-05-14
+735,Ofori Kofi,male,2010-01-01,U Malaria Suspected,2014-05-14
+736,Mensah Kojo,male,2013-05-29,U Malaria Tested Positive,2014-05-14
+736,Mensah Kojo,male,2013-05-29,U Malaria Suspected Tested,2014-05-14
+736,Mensah Kojo,male,2013-05-29,U Malaria Suspected,2014-05-14
+736,Mensah Kojo,male,2013-05-29,Acute RTI,2014-05-14
+737,Addo Kwaku,male,2013-01-01,U Malaria Suspected Tested,2014-05-14
+737,Addo Kwaku,male,2013-01-01,U Malaria Suspected,2014-05-14
+59,Adu Kwaku,male,2005-01-01,U Malaria Tested Positive,2014-05-14
+59,Adu Kwaku,male,2005-01-01,U Malaria Suspected,2014-05-14
+59,Adu Kwaku,male,2005-01-01,U Malaria Suspected Tested,2014-05-14
+733,Ofori Abena,female,2012-01-01,Diarrhoea Diseases,2014-05-14
+398,Otu Akua,female,2013-01-01,U Malaria Tested Positive,2014-05-14
+398,Otu Akua,female,2013-01-01,U Malaria Suspected Tested,2014-05-14
+398,Otu Akua,female,2013-01-01,U Malaria Suspected,2014-05-14
+738,Yeboah Akua,female,1999-01-01,U Malaria Tested Positive,2014-05-14
+738,Yeboah Akua,female,1999-01-01,U Malaria Suspected Tested,2014-05-14
+738,Yeboah Akua,female,1999-01-01,U Malaria Suspected,2014-05-14
+739,Yeboah Kwaku,male,1945-01-01,Rheumatism & Other Joint Pain,2014-05-14
+269,Appiah Akua,female,2012-01-01,Acute RTI,2014-05-14
+401,Tetteh Kwaku,male,2014-01-01,Diarrhoea Diseases,2014-05-26
+401,Tetteh Kwaku,male,2014-01-01,U Malaria Suspected Tested,2014-05-26
+401,Tetteh Kwaku,male,2014-01-01,U Malaria Suspected,2014-05-26
+737,Addo Kwaku,male,2013-01-01,U Malaria Tested Positive,2014-05-26
+737,Addo Kwaku,male,2013-01-01,Acute RTI,2014-05-26
+740,Ofori Yaa,female,1990-01-01,U Malaria in P Suspected,2014-05-26
+740,Ofori Yaa,female,1990-01-01,U Malaria in Pregnacy Tested,2014-05-26
+740,Ofori Yaa,female,1990-01-01,U Malaria in Pregnacy Positive,2014-05-26
+471,Appiah Kwaku,male,1978-01-01,All Other Cases,2014-05-26
+741,Mensah Kwabena,male,1974-01-01,Anaemia,2014-05-26
+93,Ofori Kojo,male,2007-01-01,U Malaria Tested Positive,2014-05-26
+93,Ofori Kojo,male,2007-01-01,U Malaria Suspected Tested,2014-05-26
+93,Ofori Kojo,male,2007-01-01,U Malaria Suspected,2014-05-26
+244,Appiah Abena,female,1988-01-01,All Other Cases,2014-05-26
+428,Amoh Akua,female,1964-01-01,All Other Cases,2014-05-26
+742,Mensah Abena,female,1923-01-01,All Other Cases,2014-05-26
+743,Addo Kofi,male,1949-01-01,U Malaria Suspected Tested,2014-05-26
+743,Addo Kofi,male,1949-01-01,U Malaria Suspected,2014-05-26
+566,Adu Kojo,male,2012-01-01,U Malaria Tested Positive,2014-05-26
+566,Adu Kojo,male,2012-01-01,U Malaria Suspected Tested,2014-05-26
+566,Adu Kojo,male,2012-01-01,U Malaria Suspected,2014-05-26
+743,Addo Kofi,male,1949-01-01,Diarrhoea Diseases,2014-05-26
+85,Mensah Kwaku,male,2011-01-01,Home Injuries,2014-05-26
+417,Yeboah Abena,female,1962-01-01,U Malaria Tested Positive,2014-05-26
+417,Yeboah Abena,female,1962-01-01,U Malaria Suspected Tested,2014-05-26
+417,Yeboah Abena,female,1962-01-01,U Malaria Suspected,2014-05-26
+744,Tetteh Kwaku,male,1983-01-01,All Other Cases,2014-05-26
+578,Tetteh Kwabena,male,2013-10-01,Acute RTI,2014-05-26
+578,Tetteh Kwabena,male,2013-10-01,Skin Diseases,2014-05-26
+496,Lartey Abena,female,1984-01-01,Rheumatism & Other Joint Pain,2014-05-26
+250,Yeboah Kwaku,male,1936-01-01,Rheumatism & Other Joint Pain,2014-05-26
+321,Lartey Kwaku,male,2014-03-01,U Malaria Tested Positive,2014-05-26
+321,Lartey Kwaku,male,2014-03-01,U Malaria Suspected Tested,2014-05-26
+321,Lartey Kwaku,male,2014-03-01,U Malaria Suspected,2014-05-26
+746,Ofori Akua,female,2013-11-01,U Malaria Tested Positive,2014-05-26
+746,Ofori Akua,female,2013-11-01,U Malaria Suspected,2014-05-26
+746,Ofori Akua,female,2013-11-01,U Malaria Suspected Tested,2014-05-26
+630,Tetteh Akua,female,1948-11-11,Rheumatism & Other Joint Pain,2014-05-26
+745,Lartey Kwaku,male,1978-01-01,U Malaria Tested Positive,2014-05-26
+745,Lartey Kwaku,male,1978-01-01,U Malaria Suspected Tested,2014-05-26
+745,Lartey Kwaku,male,1978-01-01,U Malaria Suspected,2014-05-26
+745,Lartey Kwaku,male,1978-01-01,Acute RTI,2014-05-26
+188,Mensah Kojo,male,2011-01-01,Skin Diseases,2014-05-26
+362,Addo Yaa,female,1974-01-01,U Malaria Tested Positive,2014-05-26
+362,Addo Yaa,female,1974-01-01,U Malaria Suspected Tested,2014-05-26
+362,Addo Yaa,female,1974-01-01,U Malaria Suspected,2014-05-26
+747,Ofori Kwabena,male,2004-01-01,U Malaria Tested Positive,2014-05-26
+747,Ofori Kwabena,male,2004-01-01,U Malaria Suspected Tested,2014-05-26
+747,Ofori Kwabena,male,2004-01-01,U Malaria Suspected,2014-05-26
+748,Appiah Janet,female,1943-01-01,U Malaria Tested Positive,2014-05-26
+748,Appiah Janet,female,1943-01-01,U Malaria Suspected Tested,2014-05-26
+748,Appiah Janet,female,1943-01-01,U Malaria Suspected,2014-05-26
+577,Addo Janet,female,2010-01-01,Home Injuries,2014-05-26
+749,Tetteh Yaa,female,1991-01-01,Anaemia,2014-05-26
+749,Tetteh Yaa,female,1991-01-01,U Malaria Tested Positive,2014-05-26
+749,Tetteh Yaa,female,1991-01-01,U Malaria Suspected Tested,2014-05-26
+749,Tetteh Yaa,female,1991-01-01,U Malaria Suspected,2014-05-26
+295,Appiah Kofi,male,2012-08-18,U Malaria Tested Positive,2014-05-26
+295,Appiah Kofi,male,2012-08-18,U Malaria Suspected Tested,2014-05-26
+295,Appiah Kofi,male,2012-08-18,U Malaria Suspected,2014-05-26
+750,Yeboah Yaa,female,2012-01-01,U Malaria Tested Positive,2014-05-26
+750,Yeboah Yaa,female,2012-01-01,U Malaria Suspected Tested,2014-05-26
+750,Yeboah Yaa,female,2012-01-01,U Malaria Suspected,2014-05-26
+750,Yeboah Yaa,female,2012-01-01,Acute RTI,2014-05-26
+446,Tetteh Kwaku,male,2013-06-01,Acute Ear Infection,2014-05-26
+506,Tetteh Kwaku,male,2013-12-01,U Malaria Tested Positive,2014-05-26
+506,Tetteh Kwaku,male,2013-12-01,U Malaria Suspected Tested,2014-05-26
+506,Tetteh Kwaku,male,2013-12-01,U Malaria Suspected,2014-05-26
+458,Amoh Janet,female,1984-01-01,Genital Ulcer,2014-05-26
+458,Amoh Janet,female,1984-01-01,U Malaria Suspected Tested,2014-05-26
+458,Amoh Janet,female,1984-01-01,U Malaria Suspected,2014-05-26
+678,Amoh Akua,female,2013-01-01,U Malaria Tested Positive,2014-05-26
+678,Amoh Akua,female,2013-01-01,U Malaria Suspected Tested,2014-05-26
+678,Amoh Akua,female,2013-01-01,U Malaria Suspected,2014-05-26
+298,Lartey Janet,female,2013-01-01,U Malaria Tested Positive,2014-05-26
+298,Lartey Janet,female,2013-01-01,U Malaria Suspected Tested,2014-05-26
+298,Lartey Janet,female,2013-01-01,U Malaria Suspected,2014-05-26
+751,Mensah Akua,female,1956-01-01,Skin Diseases,2014-05-26
+751,Mensah Akua,female,1956-01-01,U Malaria Tested Positive,2014-05-26
+751,Mensah Akua,female,1956-01-01,U Malaria Suspected Tested,2014-05-26
+751,Mensah Akua,female,1956-01-01,U Malaria Suspected,2014-05-26
+285,Yeboah Yaa,female,2012-05-07,U Malaria Tested Positive,2014-05-26
+285,Yeboah Yaa,female,2012-05-07,U Malaria Suspected Tested,2014-05-26
+285,Yeboah Yaa,female,2012-05-07,U Malaria Suspected,2014-05-26
+188,Mensah Kojo,male,2011-01-01,U Malaria Tested Positive,2014-05-26
+188,Mensah Kojo,male,2011-01-01,U Malaria Suspected Tested,2014-05-26
+188,Mensah Kojo,male,2011-01-01,U Malaria Suspected,2014-05-26
+752,Lartey Janet,female,2005-01-01,U Malaria Tested Positive,2014-05-26
+752,Lartey Janet,female,2005-01-01,U Malaria Suspected Tested,2014-05-26
+752,Lartey Janet,female,2005-01-01,U Malaria Suspected,2014-05-26
+224,Yeboah Kojo,male,1977-01-01,U Malaria Tested Positive,2014-05-26
+224,Yeboah Kojo,male,1977-01-01,U Malaria Suspected Tested,2014-05-26
+224,Yeboah Kojo,male,1977-01-01,U Malaria Suspected,2014-05-26
+753,Addo Kojo,male,1950-01-01,Rheumatism & Other Joint Pain,2014-05-26
+160,Mensah Kojo,male,1957-01-01,U Malaria Suspected,2014-05-26
+160,Mensah Kojo,male,1957-01-01,U Malaria Suspected Tested,2014-05-26
+160,Mensah Kojo,male,1957-01-01,U Malaria Tested Positive,2014-05-26
+336,Yeboah Janet,female,1970-01-01,U Malaria Tested Positive,2014-05-26
+336,Yeboah Janet,female,1970-01-01,U Malaria Suspected Tested,2014-05-26
+336,Yeboah Janet,female,1970-01-01,U Malaria Suspected,2014-05-26
+475,Amoh Janet,female,1983-01-01,Acute Ear Infection,2014-05-26
+526,Lartey Akua,female,1959-01-01,Rheumatism & Other Joint Pain,2014-05-26
+589,Lartey Janet,female,2010-01-01,U Malaria Tested Positive,2014-05-26
+589,Lartey Janet,female,2010-01-01,U Malaria Suspected Tested,2014-05-26
+589,Lartey Janet,female,2010-01-01,U Malaria Suspected,2014-05-26
+589,Lartey Janet,female,2010-01-01,Acute RTI,2014-05-26
+754,Addo Kwabena,male,2006-01-01,U Malaria Tested Positive,2014-05-29
+754,Addo Kwabena,male,2006-01-01,U Malaria Suspected Tested,2014-05-29
+754,Addo Kwabena,male,2006-01-01,U Malaria Suspected,2014-05-29
+500,Lartey Janet,female,1984-01-01,Acute Urinary Tract Infection,2014-05-29
+755,Lartey Akua,female,1985-01-01,Rheumatism & Other Joint Pain,2014-05-29
+323,Appiah Janet,female,2012-01-01,U Malaria Tested Positive,2014-05-29
+323,Appiah Janet,female,2012-01-01,U Malaria Suspected Tested,2014-05-29
+323,Appiah Janet,female,2012-01-01,U Malaria Suspected,2014-05-29
+46,Mensah Kwabena,male,2012-01-01,Diarrhoea Diseases,2014-05-29
+756,Tetteh Kojo,male,1952-01-01,Rheumatism & Other Joint Pain,2014-05-29
+143,Adu Kojo,male,2010-01-01,U Malaria Tested Positive,2014-05-29
+143,Adu Kojo,male,2010-01-01,U Malaria Suspected Tested,2014-05-29
+143,Adu Kojo,male,2010-01-01,U Malaria Suspected,2014-05-29
+757,Otu Kwabena,male,2011-01-01,U Malaria Tested Positive,2014-05-29
+757,Otu Kwabena,male,2011-01-01,U Malaria Suspected Tested,2014-05-29
+757,Otu Kwabena,male,2011-01-01,U Malaria Suspected,2014-05-29
+758,Appiah Janet,female,2009-01-01,U Malaria Tested Positive,2014-05-29
+758,Appiah Janet,female,2009-01-01,U Malaria Suspected Tested,2014-05-29
+758,Appiah Janet,female,2009-01-01,U Malaria Suspected,2014-05-29
+259,Otu Kwaku,male,2010-01-01,All Other Cases,2014-05-29
+759,Addo Kwabena,male,1997-01-01,U Malaria Tested Positive,2014-05-29
+759,Addo Kwabena,male,1997-01-01,U Malaria Suspected Tested,2014-05-29
+759,Addo Kwabena,male,1997-01-01,U Malaria Suspected,2014-05-29
+326,Appiah Kwabena,male,2004-01-01,Acute RTI,2014-05-29
+326,Appiah Kwabena,male,2004-01-01,U Malaria Suspected Tested,2014-05-29
+326,Appiah Kwabena,male,2004-01-01,U Malaria Suspected,2014-05-29
+364,Adu Abena,female,1955-01-01,Rheumatism & Other Joint Pain,2014-05-29
+578,Tetteh Kwabena,male,2013-10-01,Skin Diseases,2014-05-29
+176,Ofori Abena,female,2006-01-01,U Malaria Tested Positive,2014-05-29
+176,Ofori Abena,female,2006-01-01,U Malaria Suspected Tested,2014-05-29
+176,Ofori Abena,female,2006-01-01,U Malaria Suspected,2014-05-29
+251,Tetteh Janet,female,1986-01-01,Acute Urinary Tract Infection,2014-05-29
+760,Lartey Kwaku,male,2006-01-01,Skin Diseases,2014-05-29
+761,Ofori Yaa,female,1960-01-01,U Malaria Tested Positive,2014-05-29
+761,Ofori Yaa,female,1960-01-01,U Malaria Suspected Tested,2014-05-29
+761,Ofori Yaa,female,1960-01-01,U Malaria Suspected,2014-05-29
+536,Yeboah Kojo,male,2013-01-01,Diarrhoea Diseases,2014-05-29
+536,Yeboah Kojo,male,2013-01-01,U Malaria Suspected Tested,2014-05-29
+536,Yeboah Kojo,male,2013-01-01,U Malaria Suspected,2014-05-29
+98,Otu Kwabena,male,2011-01-01,Pyrexia UO (not Malaria),2014-05-29
+209,Adu Abena,female,1997-01-01,All Other Cases,2014-05-29
+500,Lartey Janet,female,1984-01-01,U Malaria in P Suspected,2014-05-29
+500,Lartey Janet,female,1984-01-01,U Malaria in Pregnacy Tested,2014-05-29
+500,Lartey Janet,female,1984-01-01,U Malaria in Pregnacy Positive,2014-05-29
+763,Otu Yaa,female,2008-01-01,U Malaria Tested Positive,2014-05-29
+763,Otu Yaa,female,2008-01-01,U Malaria Suspected Tested,2014-05-29
+763,Otu Yaa,female,2008-01-01,U Malaria Suspected,2014-05-29
+763,Otu Yaa,female,2008-01-01,Acute RTI,2014-05-29
+764,Addo Abena,female,1999-01-01,All Other Cases,2014-05-29
+413,Otu Kojo,male,2013-01-01,Skin Diseases,2014-05-29
+765,Yeboah Akua,female,1981-01-01,All Other Cases,2014-05-29
+766,Appiah Kwabena,male,1971-01-01,U Malaria Suspected Tested,2014-05-29
+766,Appiah Kwabena,male,1971-01-01,U Malaria Suspected,2014-05-29
+766,Appiah Kwabena,male,1971-01-01,Anaemia,2014-05-29
+767,Appiah Janet,female,2003-01-01,U Malaria Tested Positive,2014-05-29
+767,Appiah Janet,female,2003-01-01,U Malaria Suspected Tested,2014-05-29
+767,Appiah Janet,female,2003-01-01,U Malaria Suspected,2014-05-29
+558,Mensah Yaa,female,1979-01-01,U Malaria in P Suspected,2014-05-29
+558,Mensah Yaa,female,1979-01-01,U Malaria in Pregnacy Tested,2014-05-29
+558,Mensah Yaa,female,1979-01-01,U Malaria in Pregnacy Positive,2014-05-29
+528,Amoh Kojo,male,2013-08-12,U Malaria Tested Positive,2014-05-29
+528,Amoh Kojo,male,2013-08-12,U Malaria Suspected Tested,2014-05-29
+528,Amoh Kojo,male,2013-08-12,U Malaria Suspected,2014-05-29
+768,Lartey Kwaku,male,2009-01-01,Home Injuries,2014-05-29
+148,Mensah Kwabena,male,2013-03-01,Skin Diseases,2014-05-29
+470,Appiah Abena,female,1987-01-01,Skin Diseases,2014-05-29
+333,Yeboah Kwabena,male,2010-01-01,U Malaria Tested Positive,2014-05-29
+333,Yeboah Kwabena,male,2010-01-01,U Malaria Suspected Tested,2014-05-29
+333,Yeboah Kwabena,male,2010-01-01,U Malaria Suspected,2014-05-29
+770,Addo Kwabena,male,1996-01-01,U Malaria Tested Positive,2014-05-29
+770,Addo Kwabena,male,1996-01-01,U Malaria Suspected Tested,2014-05-29
+770,Addo Kwabena,male,1996-01-01,U Malaria Suspected,2014-05-29
+187,Mensah Akua,female,1941-01-01,Rheumatism & Other Joint Pain,2014-05-29
+771,Adu Kofi,male,1987-01-01,U Malaria Tested Positive,2014-05-29
+771,Adu Kofi,male,1987-01-01,U Malaria Suspected,2014-05-29
+771,Adu Kofi,male,1987-01-01,U Malaria Suspected Tested,2014-05-29
+772,Yeboah Yaa,female,1994-01-01,U Malaria Tested Positive,2014-05-29
+772,Yeboah Yaa,female,1994-01-01,U Malaria Suspected Tested,2014-05-29
+772,Yeboah Yaa,female,1994-01-01,U Malaria Suspected,2014-05-29
+719,Amoh Akua,female,1959-01-01,U Malaria Tested Positive,2014-05-29
+719,Amoh Akua,female,1959-01-01,U Malaria Suspected Tested,2014-05-29
+719,Amoh Akua,female,1959-01-01,U Malaria Suspected,2014-05-29
+124,Ofori Kwaku,male,2012-01-01,Diarrhoea Diseases,2014-05-29
+124,Ofori Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-05-29
+124,Ofori Kwaku,male,2012-01-01,U Malaria Suspected,2014-05-29
+410,Adu Kwabena,male,2013-01-01,Diarrhoea Diseases,2014-05-29
+677,Adu Janet,female,2012-01-01,Diarrhoea Diseases,2014-05-29
+39,Otu Janet,female,1988-01-01,Diarrhoea Diseases,2014-05-29
+658,Adu Abena,female,2013-01-01,Diarrhoea Diseases,2014-05-29
+773,Tetteh Abena,female,1977-01-01,U Malaria Suspected Tested,2014-05-29
+773,Tetteh Abena,female,1977-01-01,U Malaria Suspected,2014-05-29
+773,Tetteh Abena,female,1977-01-01,Referral,2014-05-29
+743,Addo Kofi,male,1949-01-01,Referral,2014-05-29
+417,Yeboah Abena,female,1962-01-01,Skin Diseases,2014-05-29
+200016,Mensah Kojo,male,2003-01-01,Skin Diseases,2014-05-29
+200016,Mensah Kojo,male,2003-01-01,U Malaria Suspected Tested,2014-05-29
+200016,Mensah Kojo,male,2003-01-01,U Malaria Suspected,2014-05-29
+200016,Mensah Kojo,male,2003-01-01,U Malaria Tested Positive,2014-05-29
+68,Mensah Kwaku,male,2011-01-01,Skin Diseases,2014-05-29
+69,Otu Kwabena,male,2011-01-01,Skin Diseases,2014-05-29
+159,Ofori Kwabena,male,2012-01-01,U Malaria Tested Positive,2014-05-29
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected Tested,2014-05-29
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected,2014-05-29
+580,Addo Kwaku,male,2014-02-01,Diarrhoea Diseases,2014-05-29
+668,Appiah Kwaku,male,2013-08-01,Anaemia,2014-05-30
+774,Otu Kwaku,male,1995-01-01,U Malaria Tested Positive,2014-05-30
+774,Otu Kwaku,male,1995-01-01,U Malaria Suspected Tested,2014-05-30
+774,Otu Kwaku,male,1995-01-01,U Malaria Suspected,2014-05-30
+180,Appiah Yaa,female,2013-01-01,Diarrhoea Diseases,2014-05-30
+416,Yeboah Kojo,male,2013-01-01,U Malaria Suspected Tested,2014-05-30
+416,Yeboah Kojo,male,2013-01-01,U Malaria Suspected,2014-05-30
+416,Yeboah Kojo,male,2013-01-01,Diarrhoea Diseases,2014-05-30
+202,Otu Yaa,female,2007-01-01,All Other Cases,2014-05-30
+775,Appiah Kwaku,male,1960-01-01,U Malaria Tested Positive,2014-05-30
+775,Appiah Kwaku,male,1960-01-01,U Malaria Suspected Tested,2014-05-30
+775,Appiah Kwaku,male,1960-01-01,U Malaria Suspected,2014-05-30
+476,Addo Akua,female,1994-01-01,U Malaria Tested Positive,2014-05-30
+476,Addo Akua,female,1994-01-01,U Malaria Suspected Tested,2014-05-30
+476,Addo Akua,female,1994-01-01,U Malaria Suspected,2014-05-30
+776,Adu Abena,female,1988-01-01,U Malaria Tested Positive,2014-05-30
+776,Adu Abena,female,1988-01-01,U Malaria Suspected Tested,2014-05-30
+776,Adu Abena,female,1988-01-01,U Malaria Suspected,2014-05-30
+678,Amoh Akua,female,2013-01-01,Skin Diseases,2014-05-30
+451,Amoh Kwabena,male,1989-01-01,Occupational Injuries,2014-05-30
+96,Amoh Kofi,male,2011-01-01,U Malaria Tested Positive,2014-05-30
+96,Amoh Kofi,male,2011-01-01,U Malaria Suspected Tested,2014-05-30
+96,Amoh Kofi,male,2011-01-01,U Malaria Suspected,2014-05-30
+777,Amoh Kwaku,male,2013-08-25,Acute RTI,2014-05-30
+677,Adu Janet,female,2012-01-01,U Malaria Tested Positive,2014-05-30
+677,Adu Janet,female,2012-01-01,U Malaria Suspected Tested,2014-05-30
+677,Adu Janet,female,2012-01-01,U Malaria Suspected,2014-05-30
+778,Lartey Kwaku,male,1975-01-01,U Malaria Tested Positive,2014-05-30
+778,Lartey Kwaku,male,1975-01-01,U Malaria Suspected Tested,2014-05-30
+778,Lartey Kwaku,male,1975-01-01,U Malaria Suspected,2014-05-30
+779,Ofori Janet,female,1981-01-01,U Malaria Tested Positive,2014-05-30
+779,Ofori Janet,female,1981-01-01,U Malaria Suspected Tested,2014-05-30
+779,Ofori Janet,female,1981-01-01,U Malaria Suspected,2014-05-30
+208,Yeboah Kwaku,male,2012-08-15,U Malaria Tested Positive,2014-05-30
+208,Yeboah Kwaku,male,2012-08-15,U Malaria Suspected Tested,2014-05-30
+208,Yeboah Kwaku,male,2012-08-15,U Malaria Suspected,2014-05-30
+277,Otu Kojo,male,2013-01-01,U Malaria Tested Positive,2014-05-30
+277,Otu Kojo,male,2013-01-01,U Malaria Suspected Tested,2014-05-30
+277,Otu Kojo,male,2013-01-01,U Malaria Suspected,2014-05-30
+780,Otu Kwaku,male,1977-01-01,U Malaria Tested Positive,2014-05-30
+780,Otu Kwaku,male,1977-01-01,U Malaria Suspected Tested,2014-05-30
+780,Otu Kwaku,male,1977-01-01,U Malaria Suspected,2014-05-30
+781,Yeboah Akua,female,1996-01-01,Home Injuries,2014-05-30
+220,Lartey Kojo,male,2009-01-01,Skin Diseases,2014-05-30
+200013,Amoh Kwabena,male,2009-01-01,U Malaria Tested Positive,2014-05-30
+200013,Amoh Kwabena,male,2009-01-01,U Malaria Suspected Tested,2014-05-30
+200013,Amoh Kwabena,male,2009-01-01,U Malaria Suspected,2014-05-30
+177,Otu Janet,female,2012-10-02,U Malaria Tested Positive,2014-05-30
+177,Otu Janet,female,2012-10-02,U Malaria Suspected Tested,2014-05-30
+177,Otu Janet,female,2012-10-02,U Malaria Suspected,2014-05-30
+477,Lartey Abena,female,1981-01-01,U Malaria in P Suspected,2014-05-30
+477,Lartey Abena,female,1981-01-01,U Malaria in Pregnacy Tested,2014-05-30
+477,Lartey Abena,female,1981-01-01,U Malaria in Pregnacy Positive,2014-05-30
+353,Mensah Kwabena,male,2013-01-01,U Malaria Suspected Tested,2014-05-30
+353,Mensah Kwabena,male,2013-01-01,U Malaria Suspected,2014-05-30
+353,Mensah Kwabena,male,2013-01-01,Acute RTI,2014-05-30
+727,Otu Kojo,male,1988-01-01,U Malaria Tested Positive,2014-05-30
+727,Otu Kojo,male,1988-01-01,U Malaria Suspected Tested,2014-05-30
+727,Otu Kojo,male,1988-01-01,U Malaria Suspected,2014-05-30
+531,Appiah Janet,female,2012-01-01,All Other Cases,2014-05-30
+782,Otu Kwaku,male,1961-01-01,Home Injuries,2014-05-30
+783,Mensah Kwaku,male,1998-01-01,U Malaria Suspected Tested,2014-05-30
+783,Mensah Kwaku,male,1998-01-01,U Malaria Suspected,2014-05-30
+783,Mensah Kwaku,male,1998-01-01,Rheumatism & Other Joint Pain,2014-05-30
+784,Otu Kwabena,male,2011-01-01,U Malaria Tested Positive,2014-05-30
+784,Otu Kwabena,male,2011-01-01,U Malaria Suspected Tested,2014-05-30
+784,Otu Kwabena,male,2011-01-01,U Malaria Suspected,2014-05-30
+726,Tetteh Kofi,male,2003-01-01,Home Injuries,2014-05-30
+646,Amoh Kojo,male,2007-01-01,All Other Cases,2014-05-30
+324,Mensah Yaa,female,1985-06-18,U Malaria Tested Positive,2014-05-30
+324,Mensah Yaa,female,1985-06-18,U Malaria Suspected,2014-05-30
+324,Mensah Yaa,female,1985-06-18,U Malaria Suspected Tested,2014-05-30
+785,Ofori Kwabena,male,2012-08-26,U Malaria Tested Positive,2014-05-30
+785,Ofori Kwabena,male,2012-08-26,U Malaria Suspected Tested,2014-05-30
+785,Ofori Kwabena,male,2012-08-26,U Malaria Suspected,2014-05-30
+786,Ofori Kwabena,male,2006-01-01,U Malaria Tested Positive,2014-05-30
+786,Ofori Kwabena,male,2006-01-01,U Malaria Suspected Tested,2014-05-30
+786,Ofori Kwabena,male,2006-01-01,U Malaria Suspected,2014-05-30
+786,Ofori Kwabena,male,2006-01-01,Skin Diseases,2014-05-30
+787,Yeboah Abena,female,2004-01-01,U Malaria Suspected Tested,2014-05-31
+787,Yeboah Abena,female,2004-01-01,U Malaria Suspected,2014-05-31
+787,Yeboah Abena,female,2004-01-01,Acute RTI,2014-05-31
+788,Amoh Abena,female,1942-01-01,Acute RTI,2014-05-31
+788,Amoh Abena,female,1942-01-01,U Malaria Suspected Tested,2014-05-31
+788,Amoh Abena,female,1942-01-01,U Malaria Suspected,2014-05-31
+788,Amoh Abena,female,1942-01-01,Diarrhoea Diseases,2014-05-31
+789,Amoh Kojo,male,1971-01-01,U Malaria Tested Positive,2014-05-31
+789,Amoh Kojo,male,1971-01-01,U Malaria Suspected Tested,2014-05-31
+789,Amoh Kojo,male,1971-01-01,U Malaria Suspected,2014-05-31
+790,Amoh Kofi,male,2007-01-01,Dental Caries,2014-05-31
+791,Lartey Akua,female,1998-01-01,Acute RTI,2014-05-31
+791,Lartey Akua,female,1998-01-01,U Malaria Suspected Tested,2014-05-31
+791,Lartey Akua,female,1998-01-01,U Malaria Suspected,2014-05-31
+792,Adu Kojo,male,1974-01-01,U Malaria Tested Positive,2014-05-31
+792,Adu Kojo,male,1974-01-01,U Malaria Suspected Tested,2014-05-31
+792,Adu Kojo,male,1974-01-01,U Malaria Suspected,2014-05-31
+793,Amoh Kojo,male,2005-01-01,U Malaria Tested Positive,2014-05-31
+793,Amoh Kojo,male,2005-01-01,U Malaria Suspected Tested,2014-05-31
+793,Amoh Kojo,male,2005-01-01,U Malaria Suspected,2014-05-31
+794,Addo Kwabena,male,2008-01-01,U Malaria Tested Positive,2014-06-05
+794,Addo Kwabena,male,2008-01-01,U Malaria Suspected Tested,2014-06-05
+794,Addo Kwabena,male,2008-01-01,U Malaria Suspected,2014-06-05
+200025,Adu Yaa,female,1961-01-01,Rheumatism & Other Joint Pain,2014-06-05
+530,Appiah Akua,female,2013-06-03,U Malaria Tested Positive,2014-06-05
+530,Appiah Akua,female,2013-06-03,U Malaria Suspected Tested,2014-06-05
+530,Appiah Akua,female,2013-06-03,U Malaria Suspected,2014-06-05
+123,Mensah Yaa,female,1952-01-01,U Malaria Tested Positive,2014-06-05
+123,Mensah Yaa,female,1952-01-01,U Malaria Suspected Tested,2014-06-05
+123,Mensah Yaa,female,1952-01-01,U Malaria Suspected,2014-06-05
+123,Mensah Yaa,female,1952-01-01,All Other Cases,2014-06-05
+795,Otu Janet,female,1992-01-01,All Other Cases,2014-06-05
+595,Lartey Yaa,female,2014-01-01,Acute RTI,2014-06-05
+426,Addo Kwaku,male,2009-01-01,U Malaria Tested Positive,2014-06-05
+426,Addo Kwaku,male,2009-01-01,U Malaria Suspected Tested,2014-06-05
+426,Addo Kwaku,male,2009-01-01,U Malaria Suspected,2014-06-05
+264,Addo Abena,female,2012-01-01,Diarrhoea Diseases,2014-06-05
+797,Addo Janet,female,1995-01-01,All Other Cases,2014-06-05
+721,Ofori Kojo,male,2009-01-01,Home Injuries,2014-06-05
+798,Amoh Abena,female,1992-01-01,U Malaria Tested Positive,2014-06-05
+798,Amoh Abena,female,1992-01-01,U Malaria Suspected Tested,2014-06-05
+798,Amoh Abena,female,1992-01-01,U Malaria Suspected,2014-06-05
+38,Tetteh Kojo,male,2012-01-01,U Malaria Tested Positive,2014-06-05
+38,Tetteh Kojo,male,2012-01-01,U Malaria Suspected Tested,2014-06-05
+38,Tetteh Kojo,male,2012-01-01,U Malaria Suspected,2014-06-05
+401,Tetteh Kwaku,male,2014-01-01,Diarrhoea Diseases,2014-06-05
+799,Addo Kofi,male,1976-01-01,U Malaria Tested Positive,2014-06-05
+799,Addo Kofi,male,1976-01-01,U Malaria Suspected Tested,2014-06-05
+799,Addo Kofi,male,1976-01-01,U Malaria Suspected,2014-06-05
+800,Yeboah Kofi,male,1996-01-01,Skin Diseases,2014-06-05
+218,Yeboah Akua,female,1988-01-01,U Malaria Tested Positive,2014-06-05
+218,Yeboah Akua,female,1988-01-01,U Malaria Suspected Tested,2014-06-05
+218,Yeboah Akua,female,1988-01-01,U Malaria Suspected,2014-06-05
+761,Ofori Yaa,female,1960-01-01,U Malaria Tested Positive,2014-06-05
+761,Ofori Yaa,female,1960-01-01,U Malaria Suspected Tested,2014-06-05
+761,Ofori Yaa,female,1960-01-01,U Malaria Suspected,2014-06-05
+400,Yeboah Kwabena,male,2012-01-01,U Malaria Suspected Tested,2014-06-14
+400,Yeboah Kwabena,male,2012-01-01,U Malaria Suspected,2014-06-14
+400,Yeboah Kwabena,male,2012-01-01,All Other Cases,2014-06-14
+801,Mensah Yaa,female,1972-01-01,Rheumatism & Other Joint Pain,2014-06-14
+802,Otu Kofi,male,2010-01-01,Skin Diseases,2014-06-14
+740,Ofori Yaa,female,1990-01-01,Acute Urinary Tract Infection,2014-06-14
+803,Lartey Akua,female,1985-01-01,U Malaria Tested Positive,2014-06-14
+803,Lartey Akua,female,1985-01-01,U Malaria Suspected Tested,2014-06-14
+803,Lartey Akua,female,1985-01-01,U Malaria Suspected,2014-06-14
+804,Amoh Abena,female,1962-01-01,Rheumatism & Other Joint Pain,2014-06-14
+804,Amoh Abena,female,1962-01-01,Anaemia,2014-06-14
+804,Amoh Abena,female,1962-01-01,U Malaria Suspected Tested,2014-06-14
+804,Amoh Abena,female,1962-01-01,U Malaria Suspected,2014-06-14
+805,Tetteh Janet,female,2009-01-01,All Other Cases,2014-06-14
+806,Mensah Yaa,female,1994-01-01,U Malaria in P Suspected,2014-06-14
+806,Mensah Yaa,female,1994-01-01,U Malaria in Pregnacy Tested,2014-06-14
+806,Mensah Yaa,female,1994-01-01,U Malaria in Pregnacy Positive,2014-06-14
+807,Lartey Kwabena,male,2009-01-01,U Malaria Suspected Tested,2014-06-14
+807,Lartey Kwabena,male,2009-01-01,U Malaria Suspected,2014-06-14
+807,Lartey Kwabena,male,2009-01-01,U Malaria Tested Positive,2014-06-14
+808,Addo Kwaku,male,2012-01-01,Diarrhoea Diseases,2014-06-14
+564,Addo Kwaku,male,2007-01-01,Acute RTI,2014-06-14
+564,Addo Kwaku,male,2007-01-01,U Malaria Tested Positive,2014-06-14
+564,Addo Kwaku,male,2007-01-01,U Malaria Suspected Tested,2014-06-14
+564,Addo Kwaku,male,2007-01-01,U Malaria Suspected,2014-06-14
+129,Yeboah Kofi,male,2011-01-01,U Malaria Tested Positive,2014-06-14
+129,Yeboah Kofi,male,2011-01-01,U Malaria Suspected Tested,2014-06-14
+129,Yeboah Kofi,male,2011-01-01,U Malaria Suspected,2014-06-14
+31,Yeboah Kwaku,male,2001-01-01,U Malaria Tested Positive,2014-06-14
+31,Yeboah Kwaku,male,2001-01-01,U Malaria Suspected Tested,2014-06-14
+31,Yeboah Kwaku,male,2001-01-01,U Malaria Suspected,2014-06-14
+300,Addo Akua,female,2013-12-01,Skin Diseases,2014-06-14
+809,Ofori Abena,female,1954-01-01,Rheumatism & Other Joint Pain,2014-06-14
+570,Amoh Yaa,female,2007-01-01,U Malaria Tested Positive,2014-06-14
+570,Amoh Yaa,female,2007-01-01,U Malaria Suspected Tested,2014-06-14
+570,Amoh Yaa,female,2007-01-01,U Malaria Suspected,2014-06-14
+810,Mensah Akua,female,2006-01-01,Skin Diseases,2014-06-14
+664,Tetteh Janet,female,1971-01-01,U Malaria Tested Positive,2014-06-14
+664,Tetteh Janet,female,1971-01-01,U Malaria Suspected Tested,2014-06-14
+664,Tetteh Janet,female,1971-01-01,U Malaria Suspected,2014-06-14
+664,Tetteh Janet,female,1971-01-01,Acute Ear Infection,2014-06-14
+811,Yeboah Yaa,female,2000-01-01,U Malaria Tested Positive,2014-06-14
+811,Yeboah Yaa,female,2000-01-01,U Malaria Suspected Tested,2014-06-14
+811,Yeboah Yaa,female,2000-01-01,U Malaria Suspected,2014-06-14
+812,Adu Kofi,male,2010-01-01,U Malaria Tested Positive,2014-06-14
+812,Adu Kofi,male,2010-01-01,U Malaria Suspected Tested,2014-06-14
+812,Adu Kofi,male,2010-01-01,U Malaria Suspected,2014-06-14
+353,Mensah Kwabena,male,2013-01-01,Diarrhoea Diseases,2014-06-14
+367,Otu Kofi,male,1976-01-01,U Malaria Tested Positive,2014-06-14
+367,Otu Kofi,male,1976-01-01,U Malaria Suspected Tested,2014-06-14
+367,Otu Kofi,male,1976-01-01,U Malaria Suspected,2014-06-14
+813,Appiah Yaa,female,1982-01-01,U Malaria Tested Positive,2014-06-14
+813,Appiah Yaa,female,1982-01-01,U Malaria Suspected Tested,2014-06-14
+813,Appiah Yaa,female,1982-01-01,U Malaria Suspected,2014-06-14
+814,Addo Yaa,female,2011-01-01,U Malaria Tested Positive,2014-06-14
+814,Addo Yaa,female,2011-01-01,U Malaria Suspected Tested,2014-06-14
+814,Addo Yaa,female,2011-01-01,U Malaria Suspected,2014-06-14
+815,Lartey Janet,female,1998-01-01,Rheumatism & Other Joint Pain,2014-06-14
+660,Appiah Kwaku,male,2011-01-01,U Malaria Tested Positive,2014-06-14
+660,Appiah Kwaku,male,2011-01-01,U Malaria Suspected Tested,2014-06-14
+660,Appiah Kwaku,male,2011-01-01,U Malaria Suspected,2014-06-14
+816,Mensah Akua,female,2009-01-01,U Malaria Tested Positive,2014-06-14
+816,Mensah Akua,female,2009-01-01,U Malaria Suspected Tested,2014-06-14
+816,Mensah Akua,female,2009-01-01,U Malaria Suspected,2014-06-14
+635,Addo Kojo,male,2008-07-01,U Malaria Tested Positive,2014-06-14
+635,Addo Kojo,male,2008-07-01,U Malaria Suspected Tested,2014-06-14
+635,Addo Kojo,male,2008-07-01,U Malaria Suspected,2014-06-14
+817,Yeboah Abena,female,1979-01-01,U Malaria Tested Positive,2014-06-14
+817,Yeboah Abena,female,1979-01-01,U Malaria Suspected Tested,2014-06-14
+817,Yeboah Abena,female,1979-01-01,U Malaria Suspected,2014-06-14
+818,Otu Kwabena,male,1986-01-01,U Malaria Tested Positive,2014-06-14
+818,Otu Kwabena,male,1986-01-01,U Malaria Suspected Tested,2014-06-14
+818,Otu Kwabena,male,1986-01-01,U Malaria Suspected,2014-06-14
+819,Mensah Kwaku,male,2005-01-01,U Malaria Tested Positive,2014-06-14
+819,Mensah Kwaku,male,2005-01-01,U Malaria Suspected Tested,2014-06-14
+819,Mensah Kwaku,male,2005-01-01,U Malaria Suspected,2014-06-14
+820,Amoh Kofi,male,2013-01-01,Skin Diseases,2014-06-14
+339,Yeboah Janet,female,2000-01-01,U Malaria Tested Positive,2014-06-14
+339,Yeboah Janet,female,2000-01-01,U Malaria Suspected Tested,2014-06-14
+339,Yeboah Janet,female,2000-01-01,U Malaria Suspected,2014-06-14
+545,Ofori Kwaku,male,2010-01-01,U Malaria Tested Positive,2014-06-14
+545,Ofori Kwaku,male,2010-01-01,U Malaria Suspected Tested,2014-06-14
+545,Ofori Kwaku,male,2010-01-01,U Malaria Suspected,2014-06-14
+821,Adu Yaa,female,2000-01-01,U Malaria Tested Positive,2014-06-14
+821,Adu Yaa,female,2000-01-01,U Malaria Suspected Tested,2014-06-14
+821,Adu Yaa,female,2000-01-01,U Malaria Suspected,2014-06-14
+822,Addo Kwabena,male,2007-01-01,Home Injuries,2014-06-14
+823,Ofori Abena,female,1978-01-01,Rheumatism & Other Joint Pain,2014-06-14
+426,Addo Kwaku,male,2009-01-01,Skin Diseases,2014-06-14
+496,Lartey Abena,female,1984-01-01,Anaemia,2014-06-14
+825,Adu Akua,female,1985-01-01,U Malaria Tested Positive,2014-06-14
+825,Adu Akua,female,1985-01-01,U Malaria Suspected Tested,2014-06-14
+825,Adu Akua,female,1985-01-01,U Malaria Suspected,2014-06-14
+826,Yeboah Yaa,female,2003-01-01,All Other Cases,2014-06-14
+179,Lartey Kwabena,male,2008-01-01,U Malaria Tested Positive,2014-06-14
+179,Lartey Kwabena,male,2008-01-01,U Malaria Suspected Tested,2014-06-14
+179,Lartey Kwabena,male,2008-01-01,U Malaria Suspected,2014-06-14
+158,Amoh Kofi,male,2009-01-01,U Malaria Tested Positive,2014-06-14
+158,Amoh Kofi,male,2009-01-01,U Malaria Suspected Tested,2014-06-14
+158,Amoh Kofi,male,2009-01-01,U Malaria Suspected,2014-06-14
+827,Lartey Akua,female,2006-01-01,U Malaria Tested Positive,2014-06-14
+827,Lartey Akua,female,2006-01-01,U Malaria Suspected Tested,2014-06-14
+827,Lartey Akua,female,2006-01-01,U Malaria Suspected,2014-06-14
+828,Lartey Akua,female,2003-01-01,U Malaria Tested Positive,2014-06-14
+828,Lartey Akua,female,2003-01-01,U Malaria Suspected Tested,2014-06-14
+828,Lartey Akua,female,2003-01-01,U Malaria Suspected,2014-06-14
+205,Mensah Kwaku,male,2011-01-01,U Malaria Tested Positive,2014-06-14
+205,Mensah Kwaku,male,2011-01-01,U Malaria Suspected Tested,2014-06-14
+205,Mensah Kwaku,male,2011-01-01,U Malaria Suspected,2014-06-14
+829,Adu Abena,female,1989-01-01,Diarrhoea Diseases,2014-06-14
+198,Ofori Kwaku,male,2012-01-01,U Malaria Tested Positive,2014-06-14
+198,Ofori Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-06-14
+198,Ofori Kwaku,male,2012-01-01,U Malaria Suspected,2014-06-14
+697,Mensah Janet,female,2013-01-01,Diarrhoea Diseases,2014-06-14
+102,Otu Kwabena,male,2010-01-01,Home Injuries,2014-06-14
+830,Ofori Janet,female,2002-01-01,U Malaria Tested Positive,2014-06-14
+830,Ofori Janet,female,2002-01-01,U Malaria Suspected Tested,2014-06-14
+830,Ofori Janet,female,2002-01-01,U Malaria Suspected,2014-06-14
+831,Mensah Kwabena,male,2004-01-01,U Malaria Tested Positive,2014-06-14
+831,Mensah Kwabena,male,2004-01-01,U Malaria Suspected Tested,2014-06-14
+831,Mensah Kwabena,male,2004-01-01,U Malaria Suspected,2014-06-14
+832,Ofori Abena,female,2007-01-01,U Malaria Tested Positive,2014-06-14
+832,Ofori Abena,female,2007-01-01,U Malaria Suspected Tested,2014-06-14
+832,Ofori Abena,female,2007-01-01,U Malaria Suspected,2014-06-14
+832,Ofori Abena,female,2007-01-01,Acute RTI,2014-06-14
+430,Tetteh Kojo,male,2012-01-01,U Malaria Tested Positive,2014-06-14
+430,Tetteh Kojo,male,2012-01-01,U Malaria Suspected Tested,2014-06-14
+430,Tetteh Kojo,male,2012-01-01,U Malaria Suspected,2014-06-14
+168,Mensah Yaa,female,1940-01-01,Rheumatism & Other Joint Pain,2014-06-14
+168,Mensah Yaa,female,1940-01-01,U Malaria Suspected Tested,2014-06-14
+168,Mensah Yaa,female,1940-01-01,U Malaria Suspected,2014-06-14
+833,Tetteh Kofi,male,2011-01-01,U Malaria Tested Positive,2014-06-14
+833,Tetteh Kofi,male,2011-01-01,U Malaria Suspected Tested,2014-06-14
+833,Tetteh Kofi,male,2011-01-01,U Malaria Suspected,2014-06-14
+833,Tetteh Kofi,male,2011-01-01,Diarrhoea Diseases,2014-06-14
+399,Adu Kojo,male,2012-01-01,U Malaria Tested Positive,2014-06-14
+399,Adu Kojo,male,2012-01-01,U Malaria Suspected Tested,2014-06-14
+399,Adu Kojo,male,2012-01-01,U Malaria Suspected,2014-06-14
+834,Tetteh Kofi,male,2003-01-01,U Malaria Tested Positive,2014-06-14
+834,Tetteh Kofi,male,2003-01-01,U Malaria Suspected Tested,2014-06-14
+834,Tetteh Kofi,male,2003-01-01,U Malaria Suspected,2014-06-14
+838,Adu Kojo,male,1999-01-01,Ulcers,2014-06-24
+554,Mensah Abena,female,1962-01-01,U Malaria Suspected Tested,2014-06-24
+554,Mensah Abena,female,1962-01-01,U Malaria Suspected,2014-06-24
+554,Mensah Abena,female,1962-01-01,Rheumatism & Other Joint Pain,2014-06-24
+683,Mensah Janet,female,1982-01-01,Home Injuries,2014-06-24
+839,Lartey Kofi,male,2003-01-01,U Malaria Tested Positive,2014-06-24
+839,Lartey Kofi,male,2003-01-01,U Malaria Suspected Tested,2014-06-24
+839,Lartey Kofi,male,2003-01-01,U Malaria Suspected,2014-06-24
+840,Ofori Yaa,female,1969-01-01,U Malaria Tested Positive,2014-06-24
+840,Ofori Yaa,female,1969-01-01,U Malaria Suspected Tested,2014-06-24
+840,Ofori Yaa,female,1969-01-01,U Malaria Suspected,2014-06-24
+433,Yeboah Yaa,female,2012-01-01,U Malaria Tested Positive,2014-06-24
+433,Yeboah Yaa,female,2012-01-01,U Malaria Suspected Tested,2014-06-24
+433,Yeboah Yaa,female,2012-01-01,U Malaria Suspected,2014-06-24
+148,Mensah Kwabena,male,2013-03-01,All Other Cases,2014-06-24
+456,Tetteh Akua,female,1945-01-01,Rheumatism & Other Joint Pain,2014-06-24
+841,Yeboah Abena,female,1993-01-01,Acute Urinary Tract Infection,2014-06-24
+842,Amoh Yaa,female,2001-01-01,U Malaria Tested Positive,2014-06-24
+842,Amoh Yaa,female,2001-01-01,U Malaria Suspected Tested,2014-06-24
+842,Amoh Yaa,female,2001-01-01,U Malaria Suspected,2014-06-24
+842,Amoh Yaa,female,2001-01-01,Acute RTI,2014-06-24
+844,Adu Abena,female,2014-06-24,Diarrhoea Diseases,2014-06-24
+446,Tetteh Kwaku,male,2013-06-01,Diarrhoea Diseases,2014-06-24
+462,Yeboah Kojo,male,1998-01-01,U Malaria Tested Positive,2014-06-26
+462,Yeboah Kojo,male,1998-01-01,U Malaria Suspected Tested,2014-06-26
+462,Yeboah Kojo,male,1998-01-01,U Malaria Suspected,2014-06-26
+413,Otu Kojo,male,2013-01-01,Skin Diseases,2014-06-26
+677,Adu Janet,female,2012-01-01,U Malaria Tested Positive,2014-06-26
+677,Adu Janet,female,2012-01-01,U Malaria Suspected Tested,2014-06-26
+677,Adu Janet,female,2012-01-01,U Malaria Suspected,2014-06-26
+676,Lartey Janet,female,2010-01-01,U Malaria Tested Positive,2014-06-26
+676,Lartey Janet,female,2010-01-01,U Malaria Suspected Tested,2014-06-26
+676,Lartey Janet,female,2010-01-01,U Malaria Suspected,2014-06-26
+661,Tetteh Kwaku,male,1997-01-01,Home Injuries,2014-06-26
+845,Mensah Kofi,male,2009-01-01,Acute RTI,2014-06-26
+846,Mensah Akua,female,1981-01-01,U Malaria Suspected Tested,2014-06-26
+846,Mensah Akua,female,1981-01-01,U Malaria Suspected,2014-06-26
+846,Mensah Akua,female,1981-01-01,Rheumatism & Other Joint Pain,2014-06-26
+847,Tetteh Kofi,male,2008-01-01,U Malaria Tested Positive,2014-06-27
+847,Tetteh Kofi,male,2008-01-01,U Malaria Suspected Tested,2014-06-27
+847,Tetteh Kofi,male,2008-01-01,U Malaria Suspected,2014-06-27
+41,Yeboah Akua,female,1988-01-01,Skin Diseases,2014-06-27
+41,Yeboah Akua,female,1988-01-01,U Malaria Suspected Tested,2014-06-27
+41,Yeboah Akua,female,1988-01-01,U Malaria Suspected,2014-06-27
+324,Mensah Yaa,female,1985-06-18,U Malaria Tested Positive,2014-06-27
+324,Mensah Yaa,female,1985-06-18,U Malaria Suspected Tested,2014-06-27
+324,Mensah Yaa,female,1985-06-18,U Malaria Suspected,2014-06-27
+630,Tetteh Akua,female,1948-11-11,U Malaria Tested Positive,2014-06-27
+630,Tetteh Akua,female,1948-11-11,U Malaria Suspected Tested,2014-06-27
+630,Tetteh Akua,female,1948-11-11,U Malaria Suspected,2014-06-27
+848,Tetteh Janet,female,2005-01-01,U Malaria Tested Positive,2014-06-27
+848,Tetteh Janet,female,2005-01-01,U Malaria Suspected Tested,2014-06-27
+848,Tetteh Janet,female,2005-01-01,U Malaria Suspected,2014-06-27
+788,Amoh Abena,female,1942-01-01,Diarrhoea Diseases,2014-06-27
+788,Amoh Abena,female,1942-01-01,U Malaria Suspected Tested,2014-06-27
+788,Amoh Abena,female,1942-01-01,U Malaria Suspected,2014-06-27
+788,Amoh Abena,female,1942-01-01,Acute RTI,2014-06-27
+849,Mensah Kwaku,male,1948-01-01,U Malaria Tested Positive,2014-06-27
+849,Mensah Kwaku,male,1948-01-01,U Malaria Suspected Tested,2014-06-27
+849,Mensah Kwaku,male,1948-01-01,U Malaria Suspected,2014-06-27
+729,Amoh Janet,female,1999-01-01,U Malaria Tested Positive,2014-06-27
+729,Amoh Janet,female,1999-01-01,U Malaria Suspected Tested,2014-06-27
+729,Amoh Janet,female,1999-01-01,U Malaria Suspected,2014-06-27
+851,Tetteh Kwabena,male,1984-01-01,U Malaria Tested Positive,2014-06-27
+851,Tetteh Kwabena,male,1984-01-01,U Malaria Suspected Tested,2014-06-27
+851,Tetteh Kwabena,male,1984-01-01,U Malaria Suspected,2014-06-27
+852,Addo Kwaku,male,1952-01-01,Rheumatism & Other Joint Pain,2014-06-27
+853,Addo Kwaku,male,2013-07-04,Diarrhoea Diseases,2014-06-27
+854,Ofori Janet,female,2001-01-01,U Malaria Tested Positive,2014-06-27
+854,Ofori Janet,female,2001-01-01,U Malaria Suspected Tested,2014-06-27
+854,Ofori Janet,female,2001-01-01,U Malaria Suspected,2014-06-27
+495,Tetteh Abena,female,2012-01-01,U Malaria Tested Positive,2014-06-27
+495,Tetteh Abena,female,2012-01-01,U Malaria Suspected Tested,2014-06-27
+495,Tetteh Abena,female,2012-01-01,U Malaria Suspected,2014-06-27
+495,Tetteh Abena,female,2012-01-01,Acute RTI,2014-06-27
+855,Adu Kwaku,male,1959-01-01,Home Injuries,2014-06-27
+856,Appiah Akua,female,1931-01-01,Rheumatism & Other Joint Pain,2014-06-27
+636,Tetteh Akua,female,2002-01-01,Skin Diseases,2014-06-27
+279,Addo Abena,female,1957-01-01,Acute Urinary Tract Infection,2014-06-27
+857,Appiah Janet,female,2013-01-01,U Malaria Tested Positive,2014-06-27
+857,Appiah Janet,female,2013-01-01,U Malaria Suspected Tested,2014-06-27
+857,Appiah Janet,female,2013-01-01,U Malaria Suspected,2014-06-27
+859,Addo Kofi,male,1998-01-01,U Malaria Tested Positive,2014-06-30
+859,Addo Kofi,male,1998-01-01,U Malaria Suspected Tested,2014-06-30
+859,Addo Kofi,male,1998-01-01,U Malaria Suspected,2014-06-30
+549,Tetteh Abena,female,2012-01-01,U Malaria Tested Positive,2014-06-30
+549,Tetteh Abena,female,2012-01-01,U Malaria Suspected Tested,2014-06-30
+549,Tetteh Abena,female,2012-01-01,U Malaria Suspected,2014-06-30
+860,Amoh Kofi,male,1989-01-01,Acute Urinary Tract Infection,2014-06-30
+721,Ofori Kojo,male,2009-01-01,U Malaria Tested Positive,2014-06-30
+721,Ofori Kojo,male,2009-01-01,U Malaria Suspected Tested,2014-06-30
+721,Ofori Kojo,male,2009-01-01,U Malaria Suspected,2014-06-30
+32,Appiah Janet,female,2008-11-24,All Other Cases,2014-06-30
+302,Appiah Kojo,male,2000-01-01,All Other Cases,2014-06-30
+859,Addo Kofi,male,1998-01-01,All Other Cases,2014-06-30
+861,Mensah Akua,female,2012-01-01,Diarrhoea Diseases,2014-06-30
+862,Tetteh Janet,female,2010-01-01,Snake Bite,2014-06-30
+863,Lartey Kojo,male,1975-01-01,U Malaria Tested Positive,2014-06-30
+863,Lartey Kojo,male,1975-01-01,U Malaria Suspected Tested,2014-06-30
+863,Lartey Kojo,male,1975-01-01,U Malaria Suspected,2014-06-30
+694,Adu Kwaku,male,2012-01-01,U Malaria Tested Positive,2014-06-30
+694,Adu Kwaku,male,2012-01-01,U Malaria Suspected Tested,2014-06-30
+694,Adu Kwaku,male,2012-01-01,U Malaria Suspected,2014-06-30
+577,Addo Janet,female,2010-01-01,All Other Cases,2014-06-30
+749,Tetteh Yaa,female,1991-01-01,U Malaria Tested Positive,2014-06-30
+749,Tetteh Yaa,female,1991-01-01,U Malaria Suspected Tested,2014-06-30
+749,Tetteh Yaa,female,1991-01-01,U Malaria Suspected,2014-06-30
+864,Appiah Yaa,female,2014-05-08,Skin Diseases,2014-06-30
+747,Ofori Kwabena,male,2004-01-01,U Malaria Tested Positive,2014-06-30
+747,Ofori Kwabena,male,2004-01-01,U Malaria Suspected Tested,2014-06-30
+747,Ofori Kwabena,male,2004-01-01,U Malaria Suspected,2014-06-30
+465,Tetteh Abena,female,1986-01-01,Other Dis of the Female Rep Sys,2014-06-30
+865,Mensah Janet,female,1961-01-01,U Malaria Tested Positive,2014-06-30
+865,Mensah Janet,female,1961-01-01,U Malaria Suspected Tested,2014-06-30
+865,Mensah Janet,female,1961-01-01,U Malaria Suspected,2014-06-30
+866,Tetteh Akua,female,2012-01-01,Acute RTI,2014-06-30
+159,Ofori Kwabena,male,2012-01-01,U Malaria Tested Positive,2014-06-30
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected Tested,2014-06-30
+159,Ofori Kwabena,male,2012-01-01,U Malaria Suspected,2014-06-30
+496,Lartey Abena,female,1984-01-01,Rheumatism & Other Joint Pain,2014-06-30
+434,Adu Kwaku,male,1944-01-01,U Malaria Tested Positive,2014-06-30
+434,Adu Kwaku,male,1944-01-01,U Malaria Suspected Tested,2014-06-30
+434,Adu Kwaku,male,1944-01-01,U Malaria Suspected,2014-06-30
+296,Ofori Kwaku,male,2012-01-01,Diarrhoea Diseases,2014-06-30
+867,Addo Yaa,female,1968-01-01,Acute RTI,2014-06-30
+867,Addo Yaa,female,1968-01-01,Skin Diseases,2014-06-30
+868,Otu Abena,female,1988-01-01,U Malaria Tested Positive,2014-06-30
+868,Otu Abena,female,1988-01-01,U Malaria Suspected Tested,2014-06-30
+868,Otu Abena,female,1988-01-01,U Malaria Suspected,2014-06-30
+324,Mensah Yaa,female,1985-06-18,U Malaria Tested Positive,2014-06-30
+324,Mensah Yaa,female,1985-06-18,U Malaria Suspected Tested,2014-06-30
+324,Mensah Yaa,female,1985-06-18,U Malaria Suspected,2014-06-30
+324,Mensah Yaa,female,1985-06-18,Acute RTI,2014-06-30
+182,Lartey Kofi,male,2012-01-01,U Malaria Tested Positive,2014-06-30
+182,Lartey Kofi,male,2012-01-01,U Malaria Suspected Tested,2014-06-30
+182,Lartey Kofi,male,2012-01-01,U Malaria Suspected,2014-06-30
+182,Lartey Kofi,male,2012-01-01,Acute RTI,2014-06-30
+869,Appiah Yaa,female,2013-12-01,U Malaria Tested Positive,2014-06-30
+869,Appiah Yaa,female,2013-12-01,U Malaria Suspected Tested,2014-06-30
+869,Appiah Yaa,female,2013-12-01,U Malaria Suspected,2014-06-30
+870,Addo Kwabena,male,2013-01-01,All Other Cases,2014-06-30
+327,Yeboah Kwabena,male,2012-01-01,Acute RTI,2014-06-30
+871,Appiah Kwaku,male,2009-01-01,Skin Diseases,2014-06-30
+872,Addo Janet,female,1956-01-01,Rheumatism & Other Joint Pain,2014-06-30
+873,Otu Kwaku,male,1984-01-01,Rheumatism & Other Joint Pain,2014-06-30
+874,Tetteh Janet,female,1984-01-01,U Malaria Tested Positive,2014-06-30
+874,Tetteh Janet,female,1984-01-01,U Malaria Suspected Tested,2014-06-30
+874,Tetteh Janet,female,1984-01-01,U Malaria Suspected,2014-06-30
+687,Ofori Janet,female,1990-01-01,U Malaria Tested Positive,2014-06-30
+687,Ofori Janet,female,1990-01-01,U Malaria Suspected Tested,2014-06-30
+687,Ofori Janet,female,1990-01-01,U Malaria Suspected,2014-06-30
+550,Amoh Akua,female,2013-07-17,U Malaria Tested Positive,2014-06-30
+550,Amoh Akua,female,2013-07-17,U Malaria Suspected Tested,2014-06-30
+550,Amoh Akua,female,2013-07-17,U Malaria Not Tested Treated,2014-06-30
+453,Amoh Yaa,female,2005-01-01,U Malaria Tested Positive,2014-06-30
+453,Amoh Yaa,female,2005-01-01,U Malaria Suspected Tested,2014-06-30
+453,Amoh Yaa,female,2005-01-01,U Malaria Suspected,2014-06-30
+875,Amoh Abena,female,2001-01-01,All Other Cases,2014-06-30
+193,Lartey Yaa,female,1989-01-01,Rheumatism & Other Joint Pain,2014-06-30
+193,Lartey Yaa,female,1989-01-01,U Malaria Suspected Tested,2014-06-30
+193,Lartey Yaa,female,1989-01-01,U Malaria Suspected,2014-06-30
+451,Amoh Kwabena,male,1989-01-01,Acute RTI,2014-06-30
+876,Appiah Kwabena,male,2012-01-01,Skin Diseases,2014-06-30
+877,Adu Abena,female,1974-01-01,Rheumatism & Other Joint Pain,2014-06-30
+877,Adu Abena,female,1974-01-01,U Malaria Suspected Tested,2014-06-30
+877,Adu Abena,female,1974-01-01,U Malaria Suspected,2014-06-30
+878,Adu Yaa,female,2007-01-01,Home Injuries,2014-06-30
+374,Mensah Kwaku,male,2014-01-01,U Malaria Tested Positive,2014-06-30
+374,Mensah Kwaku,male,2014-01-01,U Malaria Suspected Tested,2014-06-30
+374,Mensah Kwaku,male,2014-01-01,U Malaria Suspected,2014-06-30
+879,Otu Akua,female,1992-01-01,Occupational Injuries,2014-06-30
+880,Otu Janet,female,1941-01-01,Diarrhoea Diseases,2014-06-30
+881,Addo Kofi,male,1972-01-01,Rheumatism & Other Joint Pain,2014-06-30
+777,Amoh Kwaku,male,2013-08-25,Acute RTI,2014-06-30
+882,Amoh Akua,female,1999-01-01,All Other Cases,2014-06-30
+770,Addo Kwabena,male,1996-01-01,U Malaria Tested Positive,2014-06-30
+770,Addo Kwabena,male,1996-01-01,U Malaria Suspected Tested,2014-06-30
+770,Addo Kwabena,male,1996-01-01,U Malaria Suspected,2014-06-30
+642,Mensah Janet,female,2002-01-01,All Other Cases,2014-06-30
+883,Addo Akua,female,1990-01-01,Diarrhoea Diseases,2014-06-30
+801,Mensah Yaa,female,1972-01-01,U Malaria Tested Positive,2014-06-30
+801,Mensah Yaa,female,1972-01-01,U Malaria Suspected Tested,2014-06-30
+801,Mensah Yaa,female,1972-01-01,U Malaria Suspected,2014-06-30

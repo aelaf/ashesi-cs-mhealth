@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Mate Login</title>
+
+        <!-- CSS -->
+        <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">-->
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.min.css">
+		<!--<link rel="stylesheet" href="assets/css/form-elements.css">-->
+        <!--<link rel="stylesheet" href="assets/css/style.css">-->
+        <link rel="stylesheet" type="text/css" href="assets/css/custom_style.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="assets/ico/logo.png">
+        <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">-->
+
+        <!-- Javascript -->
+        <script src="assets/js/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="assets/js/bower_components/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/js/bower_components/moment/min/moment.min.js"></script>
+        <script type="text/javascript" src="assets/js/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <link rel="stylesheet" href="assets/js/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="assets/js/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <script src="assets/js/dygraph-combined.js"></script>
+        <script src="assets/js/highcharts/highcharts.js"></script>
+        <script src="assets/js/highcharts/modules/exporting.js"></script>
+        <script type="text/javascript" src="assets/js/custom_script.js"></script>
+
+
+        <script type="text/javascript">
+          $(function () {
+              $('#fromDate').datetimepicker();
+              $('#toDate').datetimepicker({
+                  useCurrent: false //Important! See issue #1075
+              });
+              $("#fromDate").on("dp.change", function (e) {
+                  $('#toDate').data("DateTimePicker").minDate(e.date);
+              });
+              $("#toDate").on("dp.change", function (e) {
+                  $('#fromDate').data("DateTimePicker").maxDate(e.date);
+              });
+          });
+      </script>
+
+    </head>
+
+    <body>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Mate</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Sign out</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <!-- Top content -->
+        <div class="top-content">
+            <div>
+                <div class="container">
+                    <div class="row">
+
+                      <div class="col-lg-6">
+                        <h3 class="bold-text text-primary">Achimota</h3>
+                      </div><!-- /.col-lg-6 -->
+                      <div class="col-lg-4">
+                      <div class="col-md-12"><a href="#" class="glyphicon glyphicon-stats text-primary big-icon disabled"></a>  <a href="#" class="glyphicon glyphicon-map-marker text-danger large-icon big-icon"></a></div>
+                      </div>
+                    </div><!-- /.row -->
+                    <!-- Date search area -->
+                    <hr>
+                    <div class="row">
+                      <div class="col-lg-5 text-success">
+                        <h3>Patients Temperature Analysis</h3>
+                      </div>
+                      <div class='col-md-3'>
+                        <div class="form-group">
+                            <div class='input-group date' id='fromDate'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-3'>
+                        <div class="form-group">
+                            <div class='input-group date' id='toDate'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <hr>
+
+
+                    <!-- End date search area -->
+
+                    <!-- Area for statistics -->
+                    <!-- Anomaly Detection -->
+                    <div class="row">
+                      <div class="col-lg-2">
+                        <h4 class="bg-primary" style="padding: 5px;">Anomaly Detection</h4>
+                        Finding anomalous temperatures.
+                      </div>
+                      <div class="col-lg-10">
+                      <div id="div_g" style="width: 100%;"></div>
+                    </div>
+                    </div>
+                    <hr>
+                    <!-- End Anomaly Detection -->
+                    <!-- Prediction -->
+
+                    <!-- End prediction -->
+                    <!-- Play Prediction -->
+                    <div class="row">
+                      <div class="col-lg-2">
+                        <h4 class="bg-primary" style="padding: 5px;">Prediction</h4>
+                          Predicting diseases
+                      </div>
+                      <div class="col-lg-10">
+                        <div id="mypredicts" style="min-width: 300px; height: 400px; margin: 0 auto"></div>
+                      </div>
+                    </div>
+                    <hr>
+                    <!-- End play prediction -->
+                    <!-- End Area for statistics -->
+                </div>
+            </div>
+        </div>
+
+        <!--[if lt IE 10]>
+            <script src="assets/js/placeholder.js"></script>
+        <![endif]-->
+
+    </body>
+
+</html>
