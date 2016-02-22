@@ -121,8 +121,9 @@ def runModel(model, inputFilePath):
             "vaccine_name": vaccine_name
         })
 
-        prediction = result.inferences["multiStepBestPredictions"][1]
         result = shifter.shift(result)
+        prediction = result.inferences["multiStepBestPredictions"][1]
+
         anomalyScore = result.inferences["anomalyScore"]
         #output.write([vaccine_date], [vaccine_name], [prediction])
         print len(vaccine_name)
