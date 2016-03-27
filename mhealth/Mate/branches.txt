@@ -1,3 +1,0 @@
-Main branch: Mate-salifu
-Logic branch: Mate-salifu-logic
-Client branch: Mate-salifu-client
